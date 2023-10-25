@@ -4,7 +4,7 @@ import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:port_pass_app/src/auth/presentation/views/sign_up_screen.dart';
-import 'package:port_pass_app/src/dashboard/presentation/views/dashboard_screen.dart';
+import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
 import 'package:port_pass_app/src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

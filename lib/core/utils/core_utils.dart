@@ -1,4 +1,4 @@
-import 'package:clean_architecture_tdd_flutter_template/core/res/colours.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 import 'package:flutter/material.dart';
 
 class CoreUtils {

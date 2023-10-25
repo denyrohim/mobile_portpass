@@ -1,4 +1,4 @@
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/user_model.dart';
+import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class UserProvider extends ChangeNotifier {

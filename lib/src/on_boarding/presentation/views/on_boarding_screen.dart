@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/common/views/loading_view.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/common/widgets/gradient_background.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/res/colours.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/res/media_res.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/domain/entities/page_content.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/presentation/widgets/on_boarding_body.dart';
+import 'package:port_pass_app/core/common/views/loading_view.dart';
+import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
+import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/src/on_boarding/domain/entities/page_content.dart';
+import 'package:port_pass_app/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
+import 'package:port_pass_app/src/on_boarding/presentation/widgets/on_boarding_body.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {

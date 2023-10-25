@@ -1,5 +1,5 @@
-import 'package:clean_architecture_tdd_flutter_template/core/res/colours.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/res/fonts.dart';
+import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {

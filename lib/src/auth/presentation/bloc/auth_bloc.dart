@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/forgot_password.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_in.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_up.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/update_user.dart';
+import 'package:port_pass_app/core/enums/update_user_action.dart';
+import 'package:port_pass_app/src/auth/domain/entities/user.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/forgot_password.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_up.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/update_user.dart';
 import 'package:equatable/equatable.dart';
 
 part 'auth_event.dart';

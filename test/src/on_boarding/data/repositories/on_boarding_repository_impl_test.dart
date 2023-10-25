@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/exceptions.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/failure.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/data/repositories/on_boarding_repository_impl.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/domain/repositories/on_boarding_repository.dart';
+import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/errors/failure.dart';
+import 'package:port_pass_app/src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
+import 'package:port_pass_app/src/on_boarding/data/repositories/on_boarding_repository_impl.dart';
+import 'package:port_pass_app/src/on_boarding/domain/repositories/on_boarding_repository.dart';
 
 class MockOnBoardingLocalDataSource extends Mock
     implements OnBoardingLocalDataSource {}

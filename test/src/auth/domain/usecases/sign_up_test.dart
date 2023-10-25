@@ -1,5 +1,5 @@
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/usecases/sign_up.dart';
+import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_up.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

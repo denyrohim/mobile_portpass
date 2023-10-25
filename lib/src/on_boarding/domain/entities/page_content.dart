@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/res/media_res.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 
 class PageContent extends Equatable {
   const PageContent({

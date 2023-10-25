@@ -1,7 +1,7 @@
-import 'package:clean_architecture_tdd_flutter_template/core/usecase/usecase.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
+import 'package:port_pass_app/core/usecase/usecase.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/auth/domain/entities/user.dart';
+import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
 import 'package:equatable/equatable.dart';
 
 class SignIn implements UsecaseWithParams<LocalUser, SignInParams> {

@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/exceptions.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/constanst.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/user_model.dart';
+import 'package:port_pass_app/core/enums/update_user_action.dart';
+import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/utils/constanst.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

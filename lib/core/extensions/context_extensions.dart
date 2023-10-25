@@ -1,5 +1,5 @@
-import 'package:clean_architecture_tdd_flutter_template/core/common/app/providers/user_provider.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
+import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
+import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

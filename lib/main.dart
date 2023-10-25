@@ -1,5 +1,5 @@
-import 'package:clean_architecture_tdd_flutter_template/core/common/app/providers/user_provider.dart';
-import 'package:clean_architecture_tdd_flutter_template/firebase_options.dart';
+import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
+import 'package:port_pass_app/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 

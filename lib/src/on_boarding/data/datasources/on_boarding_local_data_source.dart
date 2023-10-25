@@ -1,4 +1,4 @@
-import 'package:clean_architecture_tdd_flutter_template/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class OnBoardingLocalDataSource {

@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/domain/repositories/on_boarding_repository.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/domain/usecases/check_if_user_is_first_timer.dart';
+import 'package:port_pass_app/src/on_boarding/domain/repositories/on_boarding_repository.dart';
+import 'package:port_pass_app/src/on_boarding/domain/usecases/check_if_user_is_first_timer.dart';
 
 import 'on_boarding_repository.mock.dart';
 

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/exceptions.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/failure.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/domain/repositories/on_boarding_repository.dart';
+import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/errors/failure.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
+import 'package:port_pass_app/src/on_boarding/domain/repositories/on_boarding_repository.dart';
 
 class OnBoardingRepositoryImpl implements OnBoardingRepository {
   const OnBoardingRepositoryImpl(this._localDataSource);

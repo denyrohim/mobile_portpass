@@ -1,6 +1,6 @@
 {
-    "name": "clean_architecture_tdd_flutter_template",
-    "short_name": "clean_architecture_tdd_flutter_template",
+    "name": "port_pass_app",
+    "short_name": "port_pass_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
 
 abstract class OnBoardingRepository {
   const OnBoardingRepository();

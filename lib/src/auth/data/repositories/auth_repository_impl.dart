@@ -1,10 +1,10 @@
-import 'package:clean_architecture_tdd_flutter_template/core/enums/update_user_action.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/exceptions.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/errors/failure.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/datasources/auth_remote_data_source.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/repositories/auth_repository.dart';
+import 'package:port_pass_app/core/enums/update_user_action.dart';
+import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/errors/failure.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:port_pass_app/src/auth/domain/entities/user.dart';
+import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
 import 'package:dartz/dartz.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

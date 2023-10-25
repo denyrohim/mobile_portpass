@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:clean_architecture_tdd_flutter_template/core/utils/typedef.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/data/models/user_model.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/auth/domain/entities/user.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/auth/data/models/user_model.dart';
+import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../../fixtures/fixture_reader.dart';

@@ -1,4 +1,4 @@
-import 'package:clean_architecture_tdd_flutter_template/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {

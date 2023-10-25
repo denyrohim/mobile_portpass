@@ -1,10 +1,10 @@
-import 'package:clean_architecture_tdd_flutter_template/core/common/widgets/rounded_button.dart';
+import 'package:port_pass_app/core/common/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/extensions/context_extensions.dart';
-import 'package:clean_architecture_tdd_flutter_template/core/res/fonts.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/domain/entities/page_content.dart';
-import 'package:clean_architecture_tdd_flutter_template/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/res/fonts.dart';
+import 'package:port_pass_app/src/on_boarding/domain/entities/page_content.dart';
+import 'package:port_pass_app/src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 
 class OnBoardingBody extends StatelessWidget {
   const OnBoardingBody({required this.pageContent, super.key});

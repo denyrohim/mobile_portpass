@@ -11,6 +11,10 @@ class MediaRes {
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.jpg';
+  static const splashBackground = '$_baseImages/splash_background.png';
+
+  // Logo
+  static const logoPortPass = '$_baseImages/logo_port_pass.png';
 
   // Subjects
   static const flutterVectors = '$_baseVectors/flutter.png';

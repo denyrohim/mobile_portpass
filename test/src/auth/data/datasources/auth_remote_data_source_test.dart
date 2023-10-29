@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
-import 'package:port_pass_app/core/utils/constanst.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
@@ -88,51 +87,6 @@ void main() {
         'There is no user record corresponding to this identifier. The user may have been deleted.',
   );
 
-  group('forgotPassword', () {
-    test('should complete successfully when no [Exception] is thrown',
-        () async {
-      when(
-        () => authClient.sendPasswordResetEmail(
-          email: tEmail,
-        ),
-      ).thenAnswer((_) async => Future.value());
-      final call = dataSource.forgotPassword(tEmail);
-      expect(call, completes);
-
-      verify(
-        () => authClient.sendPasswordResetEmail(
-          email: tEmail,
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(authClient);
-    });
-
-    test(
-        'should throw [ServerException] when [FirebaseAuthException] is thrown',
-        () async {
-      when(
-        () => authClient.sendPasswordResetEmail(
-          email: any(named: 'email'),
-        ),
-      ).thenThrow(tFirebaseAuthException);
-
-      final call = dataSource.forgotPassword;
-      expect(
-        call(tEmail),
-        throwsA(
-          isA<ServerException>(),
-        ),
-      );
-
-      verify(
-        () => authClient.sendPasswordResetEmail(
-          email: tEmail,
-        ),
-      ).called(1);
-      verifyNoMoreInteractions(authClient);
-    });
-  });
-
   group(
     'signIn',
     () {
@@ -215,86 +169,6 @@ void main() {
       });
     },
   );
-
-  group('signUp', () {
-    test(
-      'should complete successfully when no [Exception] is thrown',
-      () async {
-        when(
-          () => authClient.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).thenAnswer((_) async => userCredential);
-
-        when(
-          () => userCredential.user?.updateDisplayName(any()),
-        ).thenAnswer((_) async => Future.value());
-
-        when(
-          () => userCredential.user?.updatePhotoURL(any()),
-        ).thenAnswer((_) async => Future.value());
-
-        final call = dataSource.signUp(
-          name: tName,
-          username: tUsername,
-          password: tPassword,
-          email: tEmail,
-        );
-        expect(call, completes);
-
-        verify(
-          () => authClient.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).called(1);
-
-        await untilCalled(() => userCredential.user?.updateDisplayName(any()));
-        verify(
-          () => userCredential.user?.updateDisplayName(tName),
-        ).called(1);
-
-        await untilCalled(() => userCredential.user?.updatePhotoURL(any()));
-        verify(
-          () => userCredential.user?.updatePhotoURL(kDefaultAvatar),
-        ).called(1);
-
-        verifyNoMoreInteractions(authClient);
-      },
-    );
-
-    test(
-      'should throw [ServerException] when [FirebaseAuthException] is thrown',
-      () async {
-        when(
-          () => authClient.createUserWithEmailAndPassword(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
-          ),
-        ).thenThrow(tFirebaseAuthException);
-
-        final call = dataSource.signUp;
-        expect(
-          () => call(
-            name: tName,
-            username: tUsername,
-            password: tPassword,
-            email: tEmail,
-          ),
-          throwsA(isA<ServerException>()),
-        );
-
-        verify(
-          () => authClient.createUserWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
-          ),
-        ).called(1);
-        verifyNoMoreInteractions(authClient);
-      },
-    );
-  });
 
   group('updateUser', () {
     setUp(() {

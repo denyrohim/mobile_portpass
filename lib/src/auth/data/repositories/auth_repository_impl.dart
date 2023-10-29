@@ -13,16 +13,6 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource _remoteDataSource;
 
   @override
-  ResultFuture<void> forgotPassword(String email) async {
-    try {
-      await _remoteDataSource.forgotPassword(email);
-      return const Right(null);
-    } on ServerException catch (e) {
-      return Left(ServerFailure.fromException(e));
-    }
-  }
-
-  @override
   ResultFuture<LocalUser> signIn({
     required String username,
     required String password,
@@ -33,26 +23,6 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
       return Right(result);
-    } on ServerException catch (e) {
-      return Left(ServerFailure.fromException(e));
-    }
-  }
-
-  @override
-  ResultFuture<void> signUp({
-    required String name,
-    required String username,
-    required String email,
-    required String password,
-  }) async {
-    try {
-      await _remoteDataSource.signUp(
-        name: name,
-        username: username,
-        email: email,
-        password: password,
-      );
-      return const Right(null);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

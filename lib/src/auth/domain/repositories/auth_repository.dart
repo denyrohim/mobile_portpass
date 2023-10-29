@@ -5,17 +5,8 @@ import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 abstract class AuthRepository {
   const AuthRepository();
 
-  ResultFuture<void> forgotPassword(String email);
-
   ResultFuture<LocalUser> signIn({
     required String username,
-    required String password,
-  });
-
-  ResultFuture<void> signUp({
-    required String name,
-    required String username,
-    required String email,
     required String password,
   });
 

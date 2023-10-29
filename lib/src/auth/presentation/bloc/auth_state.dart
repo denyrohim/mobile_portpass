@@ -37,14 +37,6 @@ class SignedIn extends AuthState {
   List<Object> get props => [user];
 }
 
-class SignedUp extends AuthState {
-  const SignedUp();
-}
-
-class ForgotPasswordSent extends AuthState {
-  const ForgotPasswordSent();
-}
-
 class UserUpdated extends AuthState {
   const UserUpdated();
 }

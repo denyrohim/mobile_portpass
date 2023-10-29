@@ -22,7 +22,7 @@ void main() {
   const tUser = LocalUser.empty();
 
   test(
-    'should call the [AuthRepo.forgotPassword]',
+    'should call the [AuthRepo.signIn]',
     () async {
       when(
         () => repository.signIn(

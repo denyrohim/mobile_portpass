@@ -23,7 +23,7 @@ void main() {
   });
 
   test(
-    'should call the [AuthRepo.forgotPassword]',
+    'should call the [AuthRepo.updateUser]',
     () async {
       when(
         () => repository.updateUser(

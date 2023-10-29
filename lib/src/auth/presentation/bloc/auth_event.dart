@@ -11,17 +11,6 @@ class CheckIfUserIsLoggedInEvent extends AuthEvent {
   List<Object> get props => [];
 }
 
-class ForgotPasswordEvent extends AuthEvent {
-  const ForgotPasswordEvent({
-    required this.email,
-  });
-
-  final String email;
-
-  @override
-  List<Object> get props => [email];
-}
-
 class SignInEvent extends AuthEvent {
   const SignInEvent({
     required this.username,
@@ -33,23 +22,6 @@ class SignInEvent extends AuthEvent {
 
   @override
   List<Object> get props => [username, password];
-}
-
-class SignUpEvent extends AuthEvent {
-  const SignUpEvent({
-    required this.username,
-    required this.password,
-    required this.email,
-    required this.name,
-  });
-
-  final String username;
-  final String password;
-  final String email;
-  final String name;
-
-  @override
-  List<Object> get props => [username, password, email, name];
 }
 
 class UpdateUserEvent extends AuthEvent {

@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
-import 'package:port_pass_app/core/utils/constanst.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,17 +13,8 @@ import 'package:flutter/material.dart';
 abstract class AuthRemoteDataSource {
   const AuthRemoteDataSource();
 
-  Future<void> forgotPassword(String email);
-
   Future<LocalUserModel> signIn({
     required String username,
-    required String password,
-  });
-
-  Future<void> signUp({
-    required String name,
-    required String username,
-    required String email,
     required String password,
   });
 
@@ -46,19 +36,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final FirebaseAuth _authClient;
   final FirebaseFirestore _cloudStoreClient;
   final FirebaseStorage _dbClient;
-
-  @override
-  Future<void> forgotPassword(String email) async {
-    try {
-      await _authClient.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e) {
-      throw ServerException(
-          message: e.message ?? "Error Occurred", statusCode: e.code);
-    } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      throw ServerException(message: e.toString(), statusCode: 505);
-    }
-  }
 
   @override
   Future<LocalUserModel> signIn({
@@ -94,31 +71,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           message: e.message ?? "Error Occurred", statusCode: e.code);
     } on ServerException {
       rethrow;
-    } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      throw ServerException(message: e.toString(), statusCode: 505);
-    }
-  }
-
-  @override
-  Future<void> signUp({
-    required String name,
-    required String username,
-    required String email,
-    required String password,
-  }) async {
-    try {
-      final userCred = await _authClient.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      await userCred.user?.updateDisplayName(name);
-      await userCred.user?.updatePhotoURL(kDefaultAvatar);
-      await _setUserData(userCred.user!, email);
-    } on FirebaseAuthException catch (e) {
-      throw ServerException(
-          message: e.message ?? "Error Occurred", statusCode: e.code);
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
       throw ServerException(message: e.toString(), statusCode: 505);

@@ -1,6 +1,7 @@
 import 'package:port_pass_app/core/common/widgets/i_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({
@@ -26,13 +27,30 @@ class _SignInFormState extends State<SignInForm> {
     return Form(
         key: widget.formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text(
+              'Email',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colours.primaryColour),
+            ),
+            const SizedBox(height: 10),
             IFields(
               controller: widget.usernameController,
               hintText: 'Username',
               keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 25),
+            const Text(
+              'Kata Sandi',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colours.primaryColour),
+            ),
+            const SizedBox(height: 10),
             IFields(
               controller: widget.passwordController,
               hintText: 'Password',
@@ -44,8 +62,8 @@ class _SignInFormState extends State<SignInForm> {
                   });
                 },
                 icon: Icon(
-                  obscurePassword ? IconlyLight.show : IconlyLight.hide,
-                  color: Colors.grey,
+                  obscurePassword ? IconlyBold.show : IconlyBold.hide,
+                  color: Colours.primaryColour,
                 ),
               ),
             ),

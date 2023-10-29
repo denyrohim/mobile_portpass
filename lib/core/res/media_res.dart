@@ -10,11 +10,12 @@ class MediaRes {
   static const flutterIcons = '$_baseIcons/flutter.png';
 
   // Backgrounds
-  static const defaultBackground = '$_baseImages/background.jpg';
+  static const defaultBackground = '$_baseImages/background.png';
   static const splashBackground = '$_baseImages/splash_background.png';
 
   // Logo
   static const logoPortPass = '$_baseImages/logo_port_pass.png';
+  static const logoPortPassColor = '$_baseImages/logo_port_pass_color.png';
 
   // Subjects
   static const flutterVectors = '$_baseVectors/flutter.png';

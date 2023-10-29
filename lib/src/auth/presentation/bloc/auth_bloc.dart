@@ -26,6 +26,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
     });
+    on<CheckIfUserIsLoggedInEvent>(_checkIfUserIsLoggedInHandler);
     on<SignInEvent>(_signInHandler);
     on<SignUpEvent>(_signUpHandler);
     on<ForgotPasswordEvent>(_forgetPasswordHandler);
@@ -35,6 +36,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUp _signUp;
   final ForgotPassword _forgotPassword;
   final UpdateUser _updateUser;
+
+  Future<void> _checkIfUserIsLoggedInHandler(
+    CheckIfUserIsLoggedInEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    await Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        emit(const AuthInitial());
+      },
+    );
+    // result.fold(
+    //   (failure) => emit(AuthError(failure.errorMessage)),
+    //   (user) => emit(SignedIn(user)),
+    // );
+    // emit(SignedIn(result));
+  }
 
   Future<void> _signInHandler(
     SignInEvent event,

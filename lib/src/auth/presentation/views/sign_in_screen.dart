@@ -1,17 +1,17 @@
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/common/widgets/rounded_button.dart';
-import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:port_pass_app/src/auth/presentation/views/sign_up_screen.dart';
 import 'package:port_pass_app/src/auth/presentation/widgets/sign_in_form.dart';
 import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../core/common/widgets/container_card.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -57,77 +57,45 @@ class _SignInScreenState extends State<SignInScreen> {
             image: MediaRes.defaultBackground,
             child: SafeArea(
               child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  children: [
-                    const Text(
-                      'Welcome to Clean Architecture TDD Flutter Template',
-                      style: TextStyle(
-                        fontFamily: Fonts.inter,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 32,
+                child: ContainerCard(
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: [
+                      Image.asset(
+                        MediaRes.logoPortPassColor,
+                        height: 172,
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Sign in to your account',
-                          style: TextStyle(fontSize: 14),
-                        ),
-                        Baseline(
-                          baseline: 100,
-                          baselineType: TextBaseline.alphabetic,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.pushNamed(
-                                  context, SignUpScreen.routeName);
-                            },
-                            child: const Text('Register Account'),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    SignInForm(
-                      usernameController: usernameController,
-                      passwordController: passwordController,
-                      formKey: formKey,
-                    ),
-                    const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, 'forget-password');
-                        },
-                        child: const Text('Forgot Password?'),
+                      const SizedBox(height: 20),
+                      SignInForm(
+                        usernameController: usernameController,
+                        passwordController: passwordController,
+                        formKey: formKey,
                       ),
-                    ),
-                    const SizedBox(height: 30),
-                    if (state is AuthLoading)
-                      const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    else
-                      RoundedButton(
-                        onPressed: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          FirebaseAuth.instance.currentUser?.reload();
-                          if (formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                                  SignInEvent(
-                                    username: usernameController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                  ),
-                                );
-                          }
-                        },
-                        text: 'Sign In',
-                      )
-                  ],
+                      const SizedBox(height: 30),
+                      if (state is AuthLoading)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      else
+                        RoundedButton(
+                          onPressed: () {
+                            FocusManager.instance.primaryFocus?.unfocus();
+                            FirebaseAuth.instance.currentUser?.reload();
+                            if (formKey.currentState!.validate()) {
+                              context.read<AuthBloc>().add(
+                                    SignInEvent(
+                                      username: usernameController.text.trim(),
+                                      password: passwordController.text.trim(),
+                                    ),
+                                  );
+                            }
+                          },
+                          text: 'Masuk',
+                        ),
+                      const SizedBox(height: 30),
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -12,7 +12,8 @@ class RoundedButton extends StatelessWidget {
       this.fontFamily,
       this.fontWeight,
       this.horizontalPadding,
-      this.verticalPadding});
+      this.verticalPadding,
+      this.radius});
 
   final Color? backgroundColor;
   final Color? foregroundColor;
@@ -22,11 +23,15 @@ class RoundedButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final double? horizontalPadding;
   final double? verticalPadding;
+  final double? radius;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radius ?? 10),
+        ),
         padding: EdgeInsets.symmetric(
           horizontal: horizontalPadding ?? 50,
           vertical: verticalPadding ?? 17,

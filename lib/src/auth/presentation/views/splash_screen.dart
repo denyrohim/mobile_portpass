@@ -1,40 +1,74 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
+import 'package:port_pass_app/src/auth/presentation/views/sign_in_screen.dart';
 
 import '../../../../core/common/app/providers/user_provider.dart';
 import '../../../../core/common/widgets/gradient_background.dart';
+import '../../../../core/res/fonts.dart';
 import '../../../../core/res/media_res.dart';
 import '../../../../core/utils/core_utils.dart';
 import '../../../dashboard/presentation/views/dashboard.dart';
 import '../../data/models/user_model.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   static const routeName = '/';
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    context.read<AuthBloc>().add(const CheckIfUserIsLoggedInEvent());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (_, state) {
+        listener: (context, state) {
           if (state is AuthError) {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as LocalUserModel);
             Navigator.pushReplacementNamed(context, Dashboard.routeName);
+          } else if (state is AuthInitial) {
+            Navigator.pushReplacementNamed(context, SignInScreen.routeName);
           }
         },
         builder: (context, state) {
-          return const GradientBackground(
-            image: MediaRes.defaultBackground,
+          return GradientBackground(
+            image: MediaRes.splashBackground,
             child: SafeArea(
               child: Center(
-                child: Placeholder(
-                  fallbackHeight: 100,
-                  fallbackWidth: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Selamat Datang',
+                      style: TextStyle(
+                        fontFamily: Fonts.inter,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                        color: Colors.white,
+                      ),
+                    ),
+                    Image.asset(MediaRes.logoPortPass),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .1,
+                    ),
+                    const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),

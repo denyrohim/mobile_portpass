@@ -9,7 +9,7 @@ class Colours {
     Color(0xFFFDFAD1),
   ];
 
-  static const Color primaryColour = Color(0xFF458CFF);
+  static const Color primaryColour = Color(0xFF315784);
 
   static const Color neutralTextColour = Color(0xFF757C8E);
 

@@ -4,6 +4,13 @@ abstract class AuthEvent extends Equatable {
   const AuthEvent();
 }
 
+class CheckIfUserIsLoggedInEvent extends AuthEvent {
+  const CheckIfUserIsLoggedInEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class ForgotPasswordEvent extends AuthEvent {
   const ForgotPasswordEvent({
     required this.email,

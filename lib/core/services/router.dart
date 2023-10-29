@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../src/auth/presentation/views/splash_screen.dart';
 import '../../src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import '../../src/on_boarding/presentation/views/on_boarding_screen.dart';
 import '../common/views/page_under_construction.dart';

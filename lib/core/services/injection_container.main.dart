@@ -12,7 +12,6 @@ Future<void> _initAuth() async {
     ..registerFactory(
       () => AuthBloc(
         signIn: sl(),
-        updateUser: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))

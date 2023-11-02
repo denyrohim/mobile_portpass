@@ -58,44 +58,40 @@ class _SignInScreenState extends State<SignInScreen> {
             child: SafeArea(
               child: Center(
                 child: ContainerCard(
-                  child: ListView(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: [
-                      Image.asset(
-                        MediaRes.logoPortPassColor,
-                        height: 172,
+                  children: [
+                    Image.asset(
+                      MediaRes.logoPortPassColor,
+                      height: 172,
+                    ),
+                    const SizedBox(height: 20),
+                    SignInForm(
+                      usernameController: usernameController,
+                      passwordController: passwordController,
+                      formKey: formKey,
+                    ),
+                    const SizedBox(height: 30),
+                    if (state is AuthLoading)
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    else
+                      RoundedButton(
+                        onPressed: () {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          FirebaseAuth.instance.currentUser?.reload();
+                          if (formKey.currentState!.validate()) {
+                            context.read<AuthBloc>().add(
+                                  SignInEvent(
+                                    username: usernameController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                  ),
+                                );
+                          }
+                        },
+                        text: 'Masuk',
                       ),
-                      const SizedBox(height: 20),
-                      SignInForm(
-                        usernameController: usernameController,
-                        passwordController: passwordController,
-                        formKey: formKey,
-                      ),
-                      const SizedBox(height: 30),
-                      if (state is AuthLoading)
-                        const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      else
-                        RoundedButton(
-                          onPressed: () {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                            FirebaseAuth.instance.currentUser?.reload();
-                            if (formKey.currentState!.validate()) {
-                              context.read<AuthBloc>().add(
-                                    SignInEvent(
-                                      username: usernameController.text.trim(),
-                                      password: passwordController.text.trim(),
-                                    ),
-                                  );
-                            }
-                          },
-                          text: 'Masuk',
-                        ),
-                      const SizedBox(height: 30),
-                    ],
-                  ),
+                    const SizedBox(height: 30),
+                  ],
                 ),
               ),
             ),

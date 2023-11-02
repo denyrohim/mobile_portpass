@@ -2,6 +2,7 @@ import 'package:port_pass_app/core/common/widgets/i_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/utils/core_utils.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({
@@ -39,8 +40,12 @@ class _SignInFormState extends State<SignInForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.usernameController,
-              hintText: 'Username',
+              hintText: 'Email',
               keyboardType: TextInputType.emailAddress,
+              overrideValidator: true,
+              validator: (value) {
+                return CoreUtils.emailValidator(value);
+              },
             ),
             const SizedBox(height: 25),
             const Text(

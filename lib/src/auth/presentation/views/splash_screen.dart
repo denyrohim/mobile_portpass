@@ -23,7 +23,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    context.read<AuthBloc>().add(const CheckIfUserIsLoggedInEvent());
+    context.read<AuthBloc>().add(const SignInWithCredentialEvent());
     super.initState();
   }
 
@@ -32,14 +32,16 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is AuthError) {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as LocalUserModel);
             Navigator.pushReplacementNamed(context, Dashboard.routeName);
-          } else if (state is AuthInitial) {
-            Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+          } else if (state is NotSignedIn) {
+            await Future.delayed(const Duration(seconds: 2), () {
+              Navigator.pushReplacementNamed(context, SignInScreen.routeName);
+            });
           }
         },
         builder: (context, state) {

@@ -37,6 +37,9 @@ class SignedIn extends AuthState {
   List<Object> get props => [user];
 }
 
-class UserUpdated extends AuthState {
-  const UserUpdated();
+class NotSignedIn extends AuthState {
+  const NotSignedIn();
+
+  @override
+  List<Object> get props => [];
 }

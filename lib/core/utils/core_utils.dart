@@ -26,4 +26,18 @@ class CoreUtils {
         ),
       );
   }
+
+  static String? emailValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return '**Field tidak boleh kosong';
+    } else if (!value.contains('@')) {
+      return '**Format email tidak valid';
+    } else if (!value.contains('.')) {
+      return '**Format email tidak valid';
+    } else if (value.contains(' ')) {
+      return '**Format email tidak valid';
+    }
+
+    return null;
+  }
 }

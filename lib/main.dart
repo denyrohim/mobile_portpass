@@ -36,10 +36,11 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             color: Colors.transparent,
           ),
-          colorScheme:
-              ColorScheme.fromSwatch(accentColor: Colours.primaryColour),
+          colorScheme: ColorScheme.fromSwatch(
+            accentColor: Colours.primaryColour,
+            errorColor: Colours.errorColour,
+          ),
         ),
-        // home: const LoginScreen(),
         onGenerateRoute: (settings) => generateRoute(settings),
       ),
     );

@@ -4,8 +4,8 @@ abstract class AuthEvent extends Equatable {
   const AuthEvent();
 }
 
-class CheckIfUserIsLoggedInEvent extends AuthEvent {
-  const CheckIfUserIsLoggedInEvent();
+class SignInWithCredentialEvent extends AuthEvent {
+  const SignInWithCredentialEvent();
 
   @override
   List<Object> get props => [];
@@ -24,16 +24,16 @@ class SignInEvent extends AuthEvent {
   List<Object> get props => [username, password];
 }
 
-class UpdateUserEvent extends AuthEvent {
-  UpdateUserEvent({required this.action, required this.userData})
-      : assert(
-          userData is String || userData is File,
-          'userData must be a String or a File, but was ${userData.runtimeType}',
-        );
+// class UpdateUserEvent extends AuthEvent {
+//   UpdateUserEvent({required this.action, required this.userData})
+//       : assert(
+//           userData is String || userData is File,
+//           'userData must be a String or a File, but was ${userData.runtimeType}',
+//         );
 
-  final UpdateUserAction action;
-  final dynamic userData;
+//   final UpdateUserAction action;
+//   final dynamic userData;
 
-  @override
-  List<Object> get props => [action, userData];
-}
+//   @override
+//   List<Object> get props => [action, userData];
+// }

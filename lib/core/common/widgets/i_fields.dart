@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 
 class IFields extends StatelessWidget {
   const IFields({
@@ -36,7 +37,7 @@ class IFields extends StatelessWidget {
           ? validator
           : (value) {
               if (value == null || value.isEmpty) {
-                return 'This field is required';
+                return '**Field tidak boleh kosong';
               }
               return validator?.call(value);
             },
@@ -52,7 +53,7 @@ class IFields extends StatelessWidget {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(color: Colors.grey),
+          borderSide: const BorderSide(color: Colours.primaryColour),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),

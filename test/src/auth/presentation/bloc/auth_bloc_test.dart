@@ -2,7 +2,6 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
-import 'package:port_pass_app/src/auth/domain/usecases/update_user.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -10,28 +9,21 @@ import 'package:mocktail/mocktail.dart';
 
 class MockSignIn extends Mock implements SignIn {}
 
-class MockUpdateUser extends Mock implements UpdateUser {}
-
 void main() {
   late MockSignIn signIn;
-  late MockUpdateUser updateUser;
   late AuthBloc authBloc;
 
   const tSignInParams = SignInParams.empty();
-  const tUpdateUserParams = UpdateUserParams.empty();
 
   setUp(() {
     signIn = MockSignIn();
-    updateUser = MockUpdateUser();
     authBloc = AuthBloc(
       signIn: signIn,
-      updateUser: updateUser,
     );
   });
 
   setUpAll(() {
     registerFallbackValue(tSignInParams);
-    registerFallbackValue(tUpdateUserParams);
   });
 
   tearDown(() => authBloc.close());
@@ -99,55 +91,93 @@ void main() {
     );
   });
 
-  group('updateUserEvent', () {
+  // group('updateUserEvent', () {
+  //   blocTest<AuthBloc, AuthState>(
+  //     "should emit [AuthLoading, UserUpdated] when [UserUpdatedEvent] is added and UserUpdated succeeds",
+  //     build: () {
+  //       when(() => updateUser(any()))
+  //           .thenAnswer((_) async => const Right(null));
+  //       return authBloc;
+  //     },
+  //     act: (bloc) {
+  //       bloc.add(
+  //         UpdateUserEvent(
+  //           action: tUpdateUserParams.action,
+  //           userData: tUpdateUserParams.userData,
+  //         ),
+  //       );
+  //     },
+  //     expect: () => [
+  //       const AuthLoading(),
+  //       const UserUpdated(),
+  //     ],
+  //     verify: (_) {
+  //       verify(() => updateUser(tUpdateUserParams)).called(1);
+  //       verifyNoMoreInteractions(updateUser);
+  //     },
+  //   );
+
+  //   blocTest<AuthBloc, AuthState>(
+  //     "should emit [AuthLoading, AuthError] when [UserUpdatedEvent] is added and UserUpdated fails",
+  //     build: () {
+  //       when(() => updateUser(any()))
+  //           .thenAnswer((_) async => const Left(tServerFailure));
+  //       return authBloc;
+  //     },
+  //     act: (bloc) {
+  //       bloc.add(
+  //         UpdateUserEvent(
+  //           action: tUpdateUserParams.action,
+  //           userData: tUpdateUserParams.userData,
+  //         ),
+  //       );
+  //     },
+  //     expect: () => [
+  //       const AuthLoading(),
+  //       AuthError(tServerFailure.errorMessage),
+  //     ],
+  //     verify: (_) {
+  //       verify(() => updateUser(tUpdateUserParams)).called(1);
+  //       verifyNoMoreInteractions(updateUser);
+  //     },
+  //   );
+  // });
+
+  group('SignInWithCredential', () {
     blocTest<AuthBloc, AuthState>(
-      "should emit [AuthLoading, UserUpdated] when [UserUpdatedEvent] is added and UserUpdated succeeds",
+      "should emit [AuthLoading, SignedIn] when [SignInWithCredentialEvent] is added",
       build: () {
-        when(() => updateUser(any()))
-            .thenAnswer((_) async => const Right(null));
         return authBloc;
       },
-      act: (bloc) {
+      act: (bloc) async {
         bloc.add(
-          UpdateUserEvent(
-            action: tUpdateUserParams.action,
-            userData: tUpdateUserParams.userData,
-          ),
+          const SignInWithCredentialEvent(),
         );
       },
       expect: () => [
         const AuthLoading(),
-        const UserUpdated(),
+        const SignedIn(
+          LocalUserModel.empty(),
+        ),
       ],
-      verify: (_) {
-        verify(() => updateUser(tUpdateUserParams)).called(1);
-        verifyNoMoreInteractions(updateUser);
-      },
+      verify: (_) {},
     );
 
     blocTest<AuthBloc, AuthState>(
-      "should emit [AuthLoading, AuthError] when [UserUpdatedEvent] is added and UserUpdated fails",
+      "should emit [AuthLoading, NotSignedIn] when [signInWithCredentialEvent] fails",
       build: () {
-        when(() => updateUser(any()))
-            .thenAnswer((_) async => const Left(tServerFailure));
         return authBloc;
       },
       act: (bloc) {
         bloc.add(
-          UpdateUserEvent(
-            action: tUpdateUserParams.action,
-            userData: tUpdateUserParams.userData,
-          ),
+          const SignInWithCredentialEvent(),
         );
       },
       expect: () => [
         const AuthLoading(),
-        AuthError(tServerFailure.errorMessage),
+        const NotSignedIn(),
       ],
-      verify: (_) {
-        verify(() => updateUser(tUpdateUserParams)).called(1);
-        verifyNoMoreInteractions(updateUser);
-      },
+      verify: (_) {},
     );
   });
 }

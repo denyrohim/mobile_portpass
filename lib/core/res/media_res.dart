@@ -11,6 +11,7 @@ class MediaRes {
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';
+  static const colorBackground = '$_baseImages/color_background.png';
   static const splashBackground = '$_baseImages/splash_background.png';
 
   // Logo

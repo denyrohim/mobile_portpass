@@ -12,10 +12,11 @@ Future<void> _initAuth() async {
     ..registerFactory(
       () => AuthBloc(
         signIn: sl(),
+        signInWithCredential: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))
-    ..registerLazySingleton(() => UpdateUser(sl()))
+    ..registerLazySingleton(() => SignInWithCredential(sl()))
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(

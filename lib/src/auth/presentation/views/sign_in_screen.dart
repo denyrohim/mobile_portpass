@@ -23,7 +23,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
@@ -34,7 +34,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void dispose() {
-    usernameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -65,7 +65,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const SizedBox(height: 20),
                     SignInForm(
-                      usernameController: usernameController,
+                      emailController: emailController,
                       passwordController: passwordController,
                       formKey: formKey,
                     ),
@@ -82,7 +82,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           if (formKey.currentState!.validate()) {
                             context.read<AuthBloc>().add(
                                   SignInEvent(
-                                    username: usernameController.text.trim(),
+                                    email: emailController.text.trim(),
                                     password: passwordController.text.trim(),
                                   ),
                                 );

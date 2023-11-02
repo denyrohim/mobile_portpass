@@ -6,13 +6,13 @@ import 'package:port_pass_app/core/utils/core_utils.dart';
 
 class SignInForm extends StatefulWidget {
   const SignInForm({
-    required this.usernameController,
+    required this.emailController,
     required this.passwordController,
     required this.formKey,
     super.key,
   });
 
-  final TextEditingController usernameController;
+  final TextEditingController emailController;
   final TextEditingController passwordController;
   final GlobalKey<FormState> formKey;
 
@@ -39,7 +39,7 @@ class _SignInFormState extends State<SignInForm> {
             ),
             const SizedBox(height: 10),
             IFields(
-              controller: widget.usernameController,
+              controller: widget.emailController,
               hintText: 'Email',
               keyboardType: TextInputType.emailAddress,
               overrideValidator: true,

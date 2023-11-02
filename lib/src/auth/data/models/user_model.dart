@@ -5,14 +5,12 @@ class LocalUserModel extends LocalUser {
   const LocalUserModel({
     required String id,
     required String email,
-    required String username,
     required String name,
     required String role,
     String? profilePic,
   }) : super(
           id: id,
           email: email,
-          username: username,
           name: name,
           role: role,
           profilePic: profilePic,
@@ -22,7 +20,6 @@ class LocalUserModel extends LocalUser {
       : this(
           id: '',
           email: '',
-          username: '',
           name: '',
           role: '',
           profilePic: '',
@@ -31,7 +28,6 @@ class LocalUserModel extends LocalUser {
   LocalUserModel copyWith({
     String? id,
     String? email,
-    String? username,
     String? name,
     String? role,
     String? profilePic,
@@ -39,7 +35,6 @@ class LocalUserModel extends LocalUser {
     return LocalUserModel(
       id: id ?? this.id,
       email: email ?? this.email,
-      username: username ?? this.username,
       name: name ?? this.name,
       role: role ?? this.role,
       profilePic: profilePic ?? this.profilePic,
@@ -50,7 +45,6 @@ class LocalUserModel extends LocalUser {
       : super(
           id: map['id'] as String,
           email: map['email'] as String,
-          username: map['username'] as String,
           name: map['name'] as String,
           role: map['role'] as String,
           profilePic: map['profilePic'] as String?,
@@ -60,7 +54,6 @@ class LocalUserModel extends LocalUser {
     return {
       'id': id,
       'email': email,
-      'username': username,
       'name': name,
       'role': role,
       'profilePic': profilePic,

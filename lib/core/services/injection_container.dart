@@ -2,7 +2,7 @@ import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.
 import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
-import 'package:port_pass_app/src/auth/domain/usecases/update_user.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

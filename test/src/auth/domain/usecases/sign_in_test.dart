@@ -11,7 +11,7 @@ void main() {
   late AuthRepository repository;
   late SignIn usecase;
 
-  const tUsername = 'username';
+  const tEmail = 'email';
   const tPassword = 'password';
 
   setUp(() {
@@ -26,7 +26,7 @@ void main() {
     () async {
       when(
         () => repository.signIn(
-          username: any(named: 'username'),
+          email: any(named: 'email'),
           password: any(named: 'password'),
         ),
       ).thenAnswer(
@@ -35,14 +35,14 @@ void main() {
 
       final result = await usecase(
         const SignInParams(
-          username: tUsername,
+          email: tEmail,
           password: tPassword,
         ),
       );
 
       expect(result, equals(const Right<dynamic, LocalUser>(tUser)));
 
-      verify(() => repository.signIn(username: tUsername, password: tPassword))
+      verify(() => repository.signIn(email: tEmail, password: tPassword))
           .called(1);
       verifyNoMoreInteractions(repository);
     },

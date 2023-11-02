@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,16 +10,21 @@ import 'package:mocktail/mocktail.dart';
 
 class MockSignIn extends Mock implements SignIn {}
 
+class MockSignInWithCredential extends Mock implements SignInWithCredential {}
+
 void main() {
   late MockSignIn signIn;
+  late MockSignInWithCredential signInWithCredential;
   late AuthBloc authBloc;
 
   const tSignInParams = SignInParams.empty();
 
   setUp(() {
     signIn = MockSignIn();
+    signInWithCredential = MockSignInWithCredential();
     authBloc = AuthBloc(
       signIn: signIn,
+      signInWithCredential: signInWithCredential,
     );
   });
 
@@ -50,7 +56,7 @@ void main() {
       act: (bloc) {
         bloc.add(
           SignInEvent(
-            username: tSignInParams.username,
+            email: tSignInParams.email,
             password: tSignInParams.password,
           ),
         );
@@ -75,7 +81,7 @@ void main() {
       act: (bloc) {
         bloc.add(
           SignInEvent(
-            username: tSignInParams.username,
+            email: tSignInParams.email,
             password: tSignInParams.password,
           ),
         );

@@ -1,4 +1,3 @@
-import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
@@ -14,12 +13,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   ResultFuture<LocalUser> signIn({
-    required String username,
+    required String email,
     required String password,
   }) async {
     try {
       final result = await _remoteDataSource.signIn(
-        username: username,
+        email: email,
         password: password,
       );
       return Right(result);
@@ -29,18 +28,32 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  ResultFuture<void> updateUser({
-    required UpdateUserAction action,
-    required userData,
+  ResultFuture<LocalUser> signInWithCredential({
+    required String token,
   }) async {
     try {
-      await _remoteDataSource.updateUser(
-        action: action,
-        userData: userData,
+      final result = await _remoteDataSource.signInWithCredential(
+        token: token,
       );
-      return const Right(null);
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }
   }
+
+  // @override
+  // ResultFuture<void> updateUser({
+  //   required UpdateUserAction action,
+  //   required userData,
+  // }) async {
+  //   try {
+  //     await _remoteDataSource.updateUser(
+  //       action: action,
+  //       userData: userData,
+  //     );
+  //     return const Right(null);
+  //   } on ServerException catch (e) {
+  //     return Left(ServerFailure.fromException(e));
+  //   }
+  // }
 }

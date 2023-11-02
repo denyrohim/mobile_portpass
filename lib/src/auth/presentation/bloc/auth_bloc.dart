@@ -7,6 +7,7 @@ import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:equatable/equatable.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 
 import '../../data/models/user_model.dart';
 
@@ -16,7 +17,9 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({
     required SignIn signIn,
+    required SignInWithCredential signInWithCredential,
   })  : _signIn = signIn,
+        _signInWithCredential = signInWithCredential,
         super(const AuthInitial()) {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
@@ -25,6 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInEvent>(_signInHandler);
   }
   final SignIn _signIn;
+  final SignInWithCredential _signInWithCredential;
 
   Future<void> _signInWithCredentialHandler(
     SignInWithCredentialEvent event,

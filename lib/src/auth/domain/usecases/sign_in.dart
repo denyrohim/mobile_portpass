@@ -11,24 +11,24 @@ class SignIn implements UsecaseWithParams<LocalUser, SignInParams> {
 
   @override
   ResultFuture<LocalUser> call(SignInParams params) => _repository.signIn(
-        username: params.username,
+        email: params.email,
         password: params.password,
       );
 }
 
 class SignInParams extends Equatable {
   const SignInParams({
-    required this.username,
+    required this.email,
     required this.password,
   });
 
   const SignInParams.empty()
-      : username = '',
+      : email = '',
         password = '';
 
-  final String username;
+  final String email;
   final String password;
 
   @override
-  List<Object?> get props => [username, password];
+  List<Object?> get props => [email, password];
 }

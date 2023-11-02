@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
@@ -14,14 +10,17 @@ abstract class AuthRemoteDataSource {
   const AuthRemoteDataSource();
 
   Future<LocalUserModel> signIn({
-    required String username,
+    required String email,
     required String password,
   });
-
-  Future<void> updateUser({
-    required UpdateUserAction action,
-    dynamic userData,
+  Future<LocalUserModel> signInWithCredential({
+    required String token,
   });
+
+  // Future<void> updateUser({
+  //   required UpdateUserAction action,
+  //   dynamic userData,
+  // });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -39,14 +38,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<LocalUserModel> signIn({
-    required String username,
+    required String email,
     required String password,
   }) async {
     try {
-      debugPrint('username: $username');
-      debugPrint('password: $password');
       final result = await _authClient.signInWithEmailAndPassword(
-        email: username,
+        email: email,
         password: password,
       );
       debugPrint('result: $result');
@@ -61,7 +58,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         return LocalUserModel.fromMap(userData.data()!);
       }
 
-      await _setUserData(user, username);
+      await _setUserData(user, email);
 
       userData = await _getUserData(user.uid);
 
@@ -78,62 +75,68 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<void> updateUser({
-    required UpdateUserAction action,
-    userData,
-  }) async {
-    try {
-      switch (action) {
-        case UpdateUserAction.email:
-          await _authClient.currentUser?.updateEmail(userData as String);
-          await _updateUserDate({'email': userData});
-          await _updateUserDate({'username': userData});
-          break;
-        case UpdateUserAction.name:
-          await _authClient.currentUser?.updateDisplayName(userData as String);
-          await _updateUserDate({'name': userData});
-          break;
-        case UpdateUserAction.profilePic:
-          final ref = _dbClient
-              .ref()
-              .child('profile_pics/${_authClient.currentUser?.uid}');
-          await ref.putFile(userData as File);
-          final url = await ref.getDownloadURL();
-          await _authClient.currentUser?.updatePhotoURL(url);
-          await _updateUserDate({'profilePic': url});
-          break;
-        case UpdateUserAction.password:
-          if (_authClient.currentUser?.email == null) {
-            throw const ServerException(
-              message: "User doesn't exist",
-              statusCode: 403,
-            );
-          }
-          final newData = jsonDecode(userData as String) as DataMap;
-          await _authClient.currentUser?.reauthenticateWithCredential(
-            EmailAuthProvider.credential(
-              email: _authClient.currentUser!.email!,
-              password: newData['oldPassword'] as String,
-            ),
-          );
-          await _authClient.currentUser?.updatePassword(
-            newData['newPassword'] as String,
-          );
-          break;
-        case UpdateUserAction.username:
-          await _authClient.currentUser?.updateEmail(userData as String);
-          await _updateUserDate({'email': userData});
-          await _updateUserDate({'username': userData});
-          break;
-      }
-    } on FirebaseException catch (e) {
-      throw ServerException(
-          message: e.message ?? "Error Occurred", statusCode: e.code);
-    } catch (e, s) {
-      debugPrintStack(stackTrace: s);
-      throw ServerException(message: e.toString(), statusCode: 505);
-    }
+  Future<LocalUserModel> signInWithCredential({required String token}) {
+    // TODO: implement signInWithCredential
+    throw UnimplementedError();
   }
+
+  // @override
+  // Future<void> updateUser({
+  //   required UpdateUserAction action,
+  //   userData,
+  // }) async {
+  //   try {
+  //     switch (action) {
+  //       case UpdateUserAction.email:
+  //         await _authClient.currentUser?.updateEmail(userData as String);
+  //         await _updateUserDate({'email': userData});
+  //         await _updateUserDate({'username': userData});
+  //         break;
+  //       case UpdateUserAction.name:
+  //         await _authClient.currentUser?.updateDisplayName(userData as String);
+  //         await _updateUserDate({'name': userData});
+  //         break;
+  //       case UpdateUserAction.profilePic:
+  //         final ref = _dbClient
+  //             .ref()
+  //             .child('profile_pics/${_authClient.currentUser?.uid}');
+  //         await ref.putFile(userData as File);
+  //         final url = await ref.getDownloadURL();
+  //         await _authClient.currentUser?.updatePhotoURL(url);
+  //         await _updateUserDate({'profilePic': url});
+  //         break;
+  //       case UpdateUserAction.password:
+  //         if (_authClient.currentUser?.email == null) {
+  //           throw const ServerException(
+  //             message: "User doesn't exist",
+  //             statusCode: 403,
+  //           );
+  //         }
+  //         final newData = jsonDecode(userData as String) as DataMap;
+  //         await _authClient.currentUser?.reauthenticateWithCredential(
+  //           EmailAuthProvider.credential(
+  //             email: _authClient.currentUser!.email!,
+  //             password: newData['oldPassword'] as String,
+  //           ),
+  //         );
+  //         await _authClient.currentUser?.updatePassword(
+  //           newData['newPassword'] as String,
+  //         );
+  //         break;
+  //       case UpdateUserAction.username:
+  //         await _authClient.currentUser?.updateEmail(userData as String);
+  //         await _updateUserDate({'email': userData});
+  //         await _updateUserDate({'username': userData});
+  //         break;
+  //     }
+  //   } on FirebaseException catch (e) {
+  //     throw ServerException(
+  //         message: e.message ?? "Error Occurred", statusCode: e.code);
+  //   } catch (e, s) {
+  //     debugPrintStack(stackTrace: s);
+  //     throw ServerException(message: e.toString(), statusCode: 505);
+  //   }
+  // }
 
   Future<DocumentSnapshot<DataMap>> _getUserData(String id) async {
     return _cloudStoreClient.collection('users').doc(id).get();
@@ -146,16 +149,15 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         .set(LocalUserModel(
           id: user.uid,
           email: user.email ?? '',
-          username: user.displayName ?? displayName,
           name: user.displayName ?? displayName,
           role: 'user',
         ).toMap());
   }
 
-  Future<void> _updateUserDate(DataMap data) async {
-    await _cloudStoreClient
-        .collection('users')
-        .doc(_authClient.currentUser?.uid)
-        .update(data);
-  }
+  // Future<void> _updateUserDate(DataMap data) async {
+  //   await _cloudStoreClient
+  //       .collection('users')
+  //       .doc(_authClient.currentUser?.uid)
+  //       .update(data);
+  // }
 }

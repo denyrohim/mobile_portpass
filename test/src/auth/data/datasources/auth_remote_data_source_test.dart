@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
@@ -77,9 +73,7 @@ void main() {
   });
 
   const tPassword = 'password';
-  const tUsername = 'username';
   const tEmail = 'email';
-  const tName = 'name';
 
   final tFirebaseAuthException = FirebaseAuthException(
     code: '404',
@@ -100,7 +94,7 @@ void main() {
         ).thenAnswer((_) async => userCredential);
 
         final result = await dataSource.signIn(
-          username: tUsername,
+          email: tEmail,
           password: tPassword,
         );
 
@@ -108,7 +102,7 @@ void main() {
 
         verify(
           () => authClient.signInWithEmailAndPassword(
-            email: tUsername,
+            email: tEmail,
             password: tPassword,
           ),
         ).called(1);
@@ -129,13 +123,13 @@ void main() {
 
           final call = dataSource.signIn;
           expect(
-            () => call(username: tUsername, password: tPassword),
+            () => call(email: tEmail, password: tPassword),
             throwsA(isA<ServerException>()),
           );
 
           verify(
             () => authClient.signInWithEmailAndPassword(
-              email: tUsername,
+              email: tEmail,
               password: tPassword,
             ),
           ).called(1);
@@ -155,13 +149,13 @@ void main() {
 
         final call = dataSource.signIn;
         expect(
-          () => call(username: tUsername, password: tPassword),
+          () => call(email: tEmail, password: tPassword),
           throwsA(isA<ServerException>()),
         );
 
         verify(
           () => authClient.signInWithEmailAndPassword(
-            email: tUsername,
+            email: tEmail,
             password: tPassword,
           ),
         ).called(1);
@@ -170,138 +164,138 @@ void main() {
     },
   );
 
-  group('updateUser', () {
-    setUp(() {
-      registerFallbackValue(MockAuthCredential());
-    });
-    test(
-      'should update user displayName successfully when no [Exception] is thrown',
-      () async {
-        when(
-          () => mockUser.updateDisplayName(any()),
-        ).thenAnswer(
-          (_) async => Future.value(),
-        );
+  // group('updateUser', () {
+  //   setUp(() {
+  //     registerFallbackValue(MockAuthCredential());
+  //   });
+  //   test(
+  //     'should update user displayName successfully when no [Exception] is thrown',
+  //     () async {
+  //       when(
+  //         () => mockUser.updateDisplayName(any()),
+  //       ).thenAnswer(
+  //         (_) async => Future.value(),
+  //       );
 
-        await dataSource.updateUser(
-          action: UpdateUserAction.name,
-          userData: tName,
-        );
+  //       await dataSource.updateUser(
+  //         action: UpdateUserAction.name,
+  //         userData: tName,
+  //       );
 
-        verify(
-          () => mockUser.updateDisplayName(tName),
-        ).called(1);
+  //       verify(
+  //         () => mockUser.updateDisplayName(tName),
+  //       ).called(1);
 
-        verifyNever(() => mockUser.updateEmail(any()));
-        verifyNever(() => mockUser.updatePhotoURL(any()));
-        verifyNever(() => mockUser.updatePassword(any()));
+  //       verifyNever(() => mockUser.updateEmail(any()));
+  //       verifyNever(() => mockUser.updatePhotoURL(any()));
+  //       verifyNever(() => mockUser.updatePassword(any()));
 
-        final userData =
-            await cloudStoreClient.collection('users').doc(mockUser.uid).get();
+  //       final userData =
+  //           await cloudStoreClient.collection('users').doc(mockUser.uid).get();
 
-        expect(userData.data()!['name'], tName);
-      },
-    );
+  //       expect(userData.data()!['name'], tName);
+  //     },
+  //   );
 
-    test(
-      'should update user email successfully when no [Exception] is thrown',
-      () async {
-        when(
-          () => mockUser.updateEmail(any()),
-        ).thenAnswer(
-          (_) async => Future.value(),
-        );
+  //   test(
+  //     'should update user email successfully when no [Exception] is thrown',
+  //     () async {
+  //       when(
+  //         () => mockUser.updateEmail(any()),
+  //       ).thenAnswer(
+  //         (_) async => Future.value(),
+  //       );
 
-        await dataSource.updateUser(
-          action: UpdateUserAction.email,
-          userData: tEmail,
-        );
+  //       await dataSource.updateUser(
+  //         action: UpdateUserAction.email,
+  //         userData: tEmail,
+  //       );
 
-        verify(
-          () => mockUser.updateEmail(tEmail),
-        ).called(1);
+  //       verify(
+  //         () => mockUser.updateEmail(tEmail),
+  //       ).called(1);
 
-        verifyNever(() => mockUser.updateDisplayName(any()));
-        verifyNever(() => mockUser.updatePhotoURL(any()));
-        verifyNever(() => mockUser.updatePassword(any()));
+  //       verifyNever(() => mockUser.updateDisplayName(any()));
+  //       verifyNever(() => mockUser.updatePhotoURL(any()));
+  //       verifyNever(() => mockUser.updatePassword(any()));
 
-        final userData =
-            await cloudStoreClient.collection('users').doc(mockUser.uid).get();
+  //       final userData =
+  //           await cloudStoreClient.collection('users').doc(mockUser.uid).get();
 
-        expect(userData.data()!['email'], tEmail);
-      },
-    );
+  //       expect(userData.data()!['email'], tEmail);
+  //     },
+  //   );
 
-    test(
-      'should update user profilePic successfully when no [Exception] is thrown',
-      () async {
-        final newProfilePic = File('assets/images/backround.png');
+  //   test(
+  //     'should update user profilePic successfully when no [Exception] is thrown',
+  //     () async {
+  //       final newProfilePic = File('assets/images/backround.png');
 
-        when(
-          () => mockUser.updatePhotoURL(any()),
-        ).thenAnswer(
-          (_) async => Future.value(),
-        );
+  //       when(
+  //         () => mockUser.updatePhotoURL(any()),
+  //       ).thenAnswer(
+  //         (_) async => Future.value(),
+  //       );
 
-        await dataSource.updateUser(
-          action: UpdateUserAction.profilePic,
-          userData: newProfilePic,
-        );
+  //       await dataSource.updateUser(
+  //         action: UpdateUserAction.profilePic,
+  //         userData: newProfilePic,
+  //       );
 
-        verify(
-          () => mockUser.updatePhotoURL(any()),
-        ).called(1);
+  //       verify(
+  //         () => mockUser.updatePhotoURL(any()),
+  //       ).called(1);
 
-        verifyNever(() => mockUser.updateDisplayName(any()));
-        verifyNever(() => mockUser.updatePassword(any()));
-        verifyNever(() => mockUser.updateEmail(any()));
+  //       verifyNever(() => mockUser.updateDisplayName(any()));
+  //       verifyNever(() => mockUser.updatePassword(any()));
+  //       verifyNever(() => mockUser.updateEmail(any()));
 
-        expect(dbClient.storedFilesMap.isNotEmpty, isTrue);
-      },
-    );
+  //       expect(dbClient.storedFilesMap.isNotEmpty, isTrue);
+  //     },
+  //   );
 
-    test(
-      'should update user password successfully when no [Exception] is thrown',
-      () async {
-        when(
-          () => mockUser.updatePassword(any()),
-        ).thenAnswer(
-          (_) async => Future.value(),
-        );
+  //   test(
+  //     'should update user password successfully when no [Exception] is thrown',
+  //     () async {
+  //       when(
+  //         () => mockUser.updatePassword(any()),
+  //       ).thenAnswer(
+  //         (_) async => Future.value(),
+  //       );
 
-        when(
-          () => mockUser.reauthenticateWithCredential(any()),
-        ).thenAnswer((_) async => userCredential);
+  //       when(
+  //         () => mockUser.reauthenticateWithCredential(any()),
+  //       ).thenAnswer((_) async => userCredential);
 
-        when(
-          () => mockUser.email,
-        ).thenReturn(tEmail);
+  //       when(
+  //         () => mockUser.email,
+  //       ).thenReturn(tEmail);
 
-        await dataSource.updateUser(
-          action: UpdateUserAction.password,
-          userData: jsonEncode(
-            {
-              'oldPassword': 'oldPassword',
-              'newPassword': tPassword,
-            },
-          ),
-        );
+  //       await dataSource.updateUser(
+  //         action: UpdateUserAction.password,
+  //         userData: jsonEncode(
+  //           {
+  //             'oldPassword': 'oldPassword',
+  //             'newPassword': tPassword,
+  //           },
+  //         ),
+  //       );
 
-        verify(
-          () => mockUser.updatePassword(tPassword),
-        ).called(1);
+  //       verify(
+  //         () => mockUser.updatePassword(tPassword),
+  //       ).called(1);
 
-        verifyNever(() => mockUser.updateDisplayName(any()));
-        verifyNever(() => mockUser.updatePhotoURL(any()));
-        verifyNever(() => mockUser.updateEmail(any()));
+  //       verifyNever(() => mockUser.updateDisplayName(any()));
+  //       verifyNever(() => mockUser.updatePhotoURL(any()));
+  //       verifyNever(() => mockUser.updateEmail(any()));
 
-        final userData = await cloudStoreClient
-            .collection('users')
-            .doc(documentReference.id)
-            .get();
+  //       final userData = await cloudStoreClient
+  //           .collection('users')
+  //           .doc(documentReference.id)
+  //           .get();
 
-        expect(userData.data()!['password'], null);
-      },
-    );
-  });
+  //       expect(userData.data()!['password'], null);
+  //     },
+  //   );
+  // });
 }

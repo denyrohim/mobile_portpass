@@ -13,15 +13,15 @@ class SignInWithCredentialEvent extends AuthEvent {
 
 class SignInEvent extends AuthEvent {
   const SignInEvent({
-    required this.username,
+    required this.email,
     required this.password,
   });
 
-  final String username;
+  final String email;
   final String password;
 
   @override
-  List<Object> get props => [username, password];
+  List<Object> get props => [email, password];
 }
 
 // class UpdateUserEvent extends AuthEvent {

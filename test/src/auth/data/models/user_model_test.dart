@@ -41,7 +41,7 @@ void main() {
     test('should return a valid [LocalDataModel] with updated value', () {
       final result = tLocalUserModel.copyWith(
         email: 'email',
-        username: 'username',
+        name: 'name',
       );
 
       expect(
@@ -49,8 +49,8 @@ void main() {
         equals('email'),
       );
       expect(
-        result.username,
-        equals('username'),
+        result.name,
+        equals('name'),
       );
     });
   });

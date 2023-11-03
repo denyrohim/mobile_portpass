@@ -26,7 +26,7 @@ void main() {
 
       const call = LocalUserModel.fromMap;
 
-      expect(() => call(map), throwsA(isA<Error>()));
+      expect(() => call(map), throwsA(null));
     });
   });
   group('toMap', () {

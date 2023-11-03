@@ -1,15 +1,9 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
-import 'package:port_pass_app/core/errors/failure.dart';
 
 import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:equatable/equatable.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
-
-import '../../data/models/user_model.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -34,9 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignInWithCredentialEvent event,
     Emitter<AuthState> emit,
   ) async {
-    const result = Left(
-      ServerFailure(message: 'Never SignIn', statusCode: HttpStatus.badRequest),
-    );
+    final result = await _signInWithCredential();
     result.fold(
       (_) => emit(const NotSignedIn()),
       (user) => emit(SignedIn(user)),
@@ -52,9 +44,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     //   password: event.password,
     // ));
 
-    const result = Right(
-      LocalUserModel.empty(),
-    );
+    final result = await _signIn(SignInParams(
+      email: event.email,
+      password: event.password,
+    ));
     result.fold(
       (failure) => emit(AuthError(failure.errorMessage)),
       (user) => emit(SignedIn(user)),

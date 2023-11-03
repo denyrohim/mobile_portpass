@@ -9,9 +9,7 @@ abstract class AuthRepository {
     required String password,
   });
 
-  ResultFuture<LocalUser> signInWithCredential({
-    required String token,
-  });
+  ResultFuture<LocalUser> signInWithCredential();
 
   // ResultFuture<void> updateUser({
   //   required UpdateUserAction action,

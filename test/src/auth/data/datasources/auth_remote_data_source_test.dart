@@ -1,84 +1,56 @@
+import 'package:dio/dio.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
-import 'package:port_pass_app/core/utils/typedef.dart';
+
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage_mocks/firebase_storage_mocks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+class MockSharedPreferences extends Mock implements SharedPreferences {}
 
-class MockUser extends Mock implements User {
-  String _uid = 'Test uid';
-
-  @override
-  String get uid => _uid;
-
-  set uid(String value) {
-    if (_uid != value) {
-      _uid = value;
-    }
-  }
-}
-
-class MockUserCredential extends Mock implements UserCredential {
-  MockUserCredential([User? user]) : _user = user;
-
-  User? _user;
-
-  @override
-  User? get user => _user;
-
-  set user(User? value) {
-    if (_user != value) {
-      _user = value;
-    }
-  }
-}
-
-class MockAuthCredential extends Mock implements AuthCredential {}
+class MockDio extends Mock implements Dio {}
 
 void main() {
-  late FirebaseAuth authClient;
-  late FirebaseFirestore cloudStoreClient;
-  late MockFirebaseStorage dbClient;
-  late AuthRemoteDataSource dataSource;
-  late UserCredential userCredential;
-  late DocumentReference<DataMap> documentReference;
-  late MockUser mockUser;
+  late SharedPreferences sharedPreferences;
+  late Dio dio;
+  late AuthRemoteDataSourceImpl dataSource;
   const tUser = LocalUserModel.empty();
 
-  setUpAll(() async {
-    authClient = MockFirebaseAuth();
-    cloudStoreClient = FakeFirebaseFirestore();
-    documentReference = cloudStoreClient.collection('users').doc();
-    await documentReference.set(
-      tUser.copyWith(id: documentReference.id).toMap(),
-    );
-    dbClient = MockFirebaseStorage();
-    mockUser = MockUser()..uid = documentReference.id;
-    userCredential = MockUserCredential(mockUser);
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+    dio = MockDio();
     dataSource = AuthRemoteDataSourceImpl(
-      authClient: authClient,
-      cloudStoreClient: cloudStoreClient,
-      dbClient: dbClient,
+      sharedPreferences: sharedPreferences,
+      dio: dio,
     );
-
-    when(
-      () => authClient.currentUser,
-    ).thenReturn(mockUser);
   });
 
   const tPassword = 'password';
   const tEmail = 'email';
 
-  final tFirebaseAuthException = FirebaseAuthException(
-    code: '404',
-    message:
-        'There is no user record corresponding to this identifier. The user may have been deleted.',
+  final tResponseFailed = Response(
+    data: {
+      'message': 'ServerException',
+      'user': null,
+    },
+    statusCode: 500,
+    requestOptions: RequestOptions(path: ''),
+  );
+
+  final tResponseSuccess = Response(
+    data: {
+      'message': 'ServerException',
+      'token': 'token',
+      'user': tUser.toMap(),
+    },
+    statusCode: 200,
+    requestOptions: RequestOptions(path: ''),
+  );
+
+  const tServerException = ServerException(
+    message: 'ServerException',
+    statusCode: 500,
   );
 
   group(
@@ -87,39 +59,43 @@ void main() {
       test('should complete successfully when no [Exception] is thrown',
           () async {
         when(
-          () => authClient.signInWithEmailAndPassword(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
           ),
-        ).thenAnswer((_) async => userCredential);
+        ).thenAnswer((_) async => tResponseSuccess);
+
+        when(() => sharedPreferences.setString(any(), any()))
+            .thenAnswer((_) async => true);
 
         final result = await dataSource.signIn(
           email: tEmail,
           password: tPassword,
         );
 
-        expect(result.id, userCredential.user!.uid);
+        expect(result, equals(tUser));
 
         verify(
-          () => authClient.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
           ),
         ).called(1);
-        verifyNoMoreInteractions(authClient);
+        verifyNoMoreInteractions(dio);
+
+        verify(() => sharedPreferences.setString(kToken, 'token')).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
       });
 
       test(
         'should throw [ServerException] when user is null after signining in',
         () async {
-          final emptyUserCredential = MockUserCredential();
-
           when(
-            () => authClient.signInWithEmailAndPassword(
-              email: any(named: 'email'),
-              password: any(named: 'password'),
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
             ),
-          ).thenAnswer((_) async => emptyUserCredential);
+          ).thenAnswer((_) async => tResponseFailed);
 
           final call = dataSource.signIn;
           expect(
@@ -128,24 +104,23 @@ void main() {
           );
 
           verify(
-            () => authClient.signInWithEmailAndPassword(
-              email: tEmail,
-              password: tPassword,
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
             ),
           ).called(1);
-          verifyNoMoreInteractions(authClient);
+          verifyNoMoreInteractions(dio);
         },
       );
 
-      test(
-          'should throw [ServerException] when [FirebaseAuthException] is thrown',
+      test('should throw [ServerException] when endpoint is not found',
           () async {
         when(
-          () => authClient.signInWithEmailAndPassword(
-            email: any(named: 'email'),
-            password: any(named: 'password'),
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
           ),
-        ).thenThrow(tFirebaseAuthException);
+        ).thenThrow(tServerException);
 
         final call = dataSource.signIn;
         expect(
@@ -154,12 +129,104 @@ void main() {
         );
 
         verify(
-          () => authClient.signInWithEmailAndPassword(
-            email: tEmail,
-            password: tPassword,
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
           ),
         ).called(1);
-        verifyNoMoreInteractions(authClient);
+        verifyNoMoreInteractions(dio);
+      });
+    },
+  );
+
+  group(
+    'signInWithCredential',
+    () {
+      test('should complete successfully when no [Exception] is thrown',
+          () async {
+        when(
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
+          ),
+        ).thenAnswer((_) async => tResponseSuccess);
+
+        when(() => sharedPreferences.getString(any())).thenReturn(kToken);
+
+        final result = await dataSource.signInWithCredential();
+
+        expect(result, equals(tUser));
+
+        verify(
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(dio);
+
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
+      });
+
+      test(
+        'should throw [ServerException] when user is null after signining in',
+        () async {
+          when(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+            ),
+          ).thenAnswer((_) async => tResponseFailed);
+
+          when(() => sharedPreferences.getString(any())).thenReturn(kToken);
+
+          final call = dataSource.signInWithCredential;
+          expect(
+            () => call(),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+
+          verify(() => sharedPreferences.getString(any())).called(1);
+          verifyNoMoreInteractions(sharedPreferences);
+        },
+      );
+
+      test('should throw [ServerException] when endpoint is not found',
+          () async {
+        when(
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
+          ),
+        ).thenThrow(tServerException);
+
+        when(() => sharedPreferences.getString(any())).thenReturn(kToken);
+
+        final call = dataSource.signInWithCredential;
+        expect(
+          () => call(),
+          throwsA(isA<ServerException>()),
+        );
+
+        verify(
+          () => dio.post(
+            any(),
+            data: any(named: 'data'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(dio);
+
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
       });
     },
   );

@@ -1,10 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthRemoteDataSource {
   const AuthRemoteDataSource();
@@ -13,9 +14,7 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
-  Future<LocalUserModel> signInWithCredential({
-    required String token,
-  });
+  Future<LocalUserModel> signInWithCredential();
 
   // Future<void> updateUser({
   //   required UpdateUserAction action,
@@ -23,18 +22,17 @@ abstract class AuthRemoteDataSource {
   // });
 }
 
+const kToken = 'token';
+
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl({
-    required FirebaseAuth authClient,
-    required FirebaseFirestore cloudStoreClient,
-    required FirebaseStorage dbClient,
-  })  : _authClient = authClient,
-        _cloudStoreClient = cloudStoreClient,
-        _dbClient = dbClient;
+    required SharedPreferences sharedPreferences,
+    required Dio dio,
+  })  : _dio = dio,
+        _sharedPreferences = sharedPreferences;
 
-  final FirebaseAuth _authClient;
-  final FirebaseFirestore _cloudStoreClient;
-  final FirebaseStorage _dbClient;
+  final SharedPreferences _sharedPreferences;
+  final Dio _dio;
 
   @override
   Future<LocalUserModel> signIn({
@@ -42,30 +40,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     required String password,
   }) async {
     try {
-      final result = await _authClient.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+      final result = await _dio.post(
+        API.signIn,
+        data: {'email': email, 'password': password},
       );
-      debugPrint('result: $result');
-      final user = result.user;
+      final user = result.data['user'] as DataMap?;
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
-      var userData = await _getUserData(user.uid);
+      await _sharedPreferences.setString(
+        kToken,
+        result.data['token'] as String,
+      );
 
-      if (userData.exists) {
-        return LocalUserModel.fromMap(userData.data()!);
-      }
-
-      await _setUserData(user, email);
-
-      userData = await _getUserData(user.uid);
-
-      return LocalUserModel.fromMap(userData.data()!);
-    } on FirebaseAuthException catch (e) {
-      throw ServerException(
-          message: e.message ?? "Error Occurred", statusCode: e.code);
+      return LocalUserModel.fromMap(user);
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -75,9 +64,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }
 
   @override
-  Future<LocalUserModel> signInWithCredential({required String token}) {
-    // TODO: implement signInWithCredential
-    throw UnimplementedError();
+  Future<LocalUserModel> signInWithCredential() async {
+    try {
+      final token = _sharedPreferences.getString(kToken);
+
+      if (token == null) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
+      final result = await _dio.post(
+        API.signInWithCredential,
+        data: {'token': token},
+      );
+
+      if (result.statusCode != 200) {
+        throw ServerException(
+          message: result.data['message'] as String? ?? "Error Occurred",
+          statusCode: result.statusCode,
+        );
+      }
+
+      return LocalUserModel.fromMap(result.data['user'] as DataMap);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
   }
 
   // @override
@@ -138,21 +150,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   //   }
   // }
 
-  Future<DocumentSnapshot<DataMap>> _getUserData(String id) async {
-    return _cloudStoreClient.collection('users').doc(id).get();
-  }
+  // Future<DocumentSnapshot<DataMap>> _getUserData(String id) async {
+  //   return _cloudStoreClient.collection('users').doc(id).get();
+  // }
 
-  Future<void> _setUserData(User user, String displayName) async {
-    await _cloudStoreClient
-        .collection('users')
-        .doc(user.uid)
-        .set(LocalUserModel(
-          id: user.uid,
-          email: user.email ?? '',
-          name: user.displayName ?? displayName,
-          role: 'user',
-        ).toMap());
-  }
+  // Future<void> _setUserData(User user, String displayName) async {
+  //   await _cloudStoreClient
+  //       .collection('users')
+  //       .doc(user.uid)
+  //       .set(LocalUserModel(
+  //         id: user.uid,
+  //         email: user.email ?? '',
+  //         name: user.displayName ?? displayName,
+  //         role: 'user',
+  //       ).toMap());
+  // }
 
   // Future<void> _updateUserDate(DataMap data) async {
   //   await _cloudStoreClient

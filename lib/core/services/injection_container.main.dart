@@ -20,9 +20,8 @@ Future<void> _initAuth() async {
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
-        authClient: sl(),
-        cloudStoreClient: sl(),
-        dbClient: sl(),
+        sharedPreferences: sl(),
+        dio: sl(),
       ),
     )
     ..registerLazySingleton(() => FirebaseAuth.instance)

@@ -153,6 +153,8 @@ void main() {
     blocTest<AuthBloc, AuthState>(
       "should emit [AuthLoading, SignedIn] when [SignInWithCredentialEvent] is added",
       build: () {
+        when(() => signInWithCredential())
+            .thenAnswer((_) async => const Right(LocalUserModel.empty()));
         return authBloc;
       },
       act: (bloc) async {
@@ -166,12 +168,17 @@ void main() {
           LocalUserModel.empty(),
         ),
       ],
-      verify: (_) {},
+      verify: (_) {
+        verify(() => signInWithCredential()).called(1);
+        verifyNoMoreInteractions(signInWithCredential);
+      },
     );
 
     blocTest<AuthBloc, AuthState>(
       "should emit [AuthLoading, NotSignedIn] when [signInWithCredentialEvent] fails",
       build: () {
+        when(() => signInWithCredential())
+            .thenAnswer((_) async => const Left(tServerFailure));
         return authBloc;
       },
       act: (bloc) {
@@ -183,7 +190,10 @@ void main() {
         const AuthLoading(),
         const NotSignedIn(),
       ],
-      verify: (_) {},
+      verify: (_) {
+        verify(() => signInWithCredential()).called(1);
+        verifyNoMoreInteractions(signInWithCredential);
+      },
     );
   });
 }

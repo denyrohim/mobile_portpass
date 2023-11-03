@@ -28,13 +28,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  ResultFuture<LocalUser> signInWithCredential({
-    required String token,
-  }) async {
+  ResultFuture<LocalUser> signInWithCredential() async {
     try {
-      final result = await _remoteDataSource.signInWithCredential(
-        token: token,
-      );
+      final result = await _remoteDataSource.signInWithCredential();
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

@@ -21,7 +21,7 @@ void main() {
       expect(result, equals(tLocalUserModel));
     });
 
-    test('should throw an [Error] when the map is invalid ', () {
+    test('should throw an Error when the map is invalid ', () {
       final map = DataMap.from(tMap)..remove('id');
 
       const call = LocalUserModel.fromMap;

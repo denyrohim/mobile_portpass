@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
-import 'package:test/test.dart';
 
 import 'auth_repository.mock.dart';
 

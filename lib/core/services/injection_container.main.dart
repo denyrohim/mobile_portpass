@@ -24,9 +24,8 @@ Future<void> _initAuth() async {
         dio: sl(),
       ),
     )
-    ..registerLazySingleton(() => FirebaseAuth.instance)
-    ..registerLazySingleton(() => FirebaseFirestore.instance)
-    ..registerLazySingleton(() => FirebaseStorage.instance);
+    // ..registerLazySingleton(() => Dio())
+    ..registerLazySingleton(() => SharedPreferences.getInstance());
 }
 
 Future<void> _initOnBoarding() async {

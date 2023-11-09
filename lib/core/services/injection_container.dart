@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';

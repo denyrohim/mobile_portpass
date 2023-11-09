@@ -11,23 +11,23 @@ Route<dynamic> generateRoute(RouteSettings settings) {
             name: 'name',
             role: 'role',
           );
-          // context.userProvider.initUser(localUser);
-          // return const Dashboard();
-          return BlocProvider(
-            create: (_) => sl<AuthBloc>(),
-            child: const Dashboard(),
-          );
+          context.userProvider.initUser(localUser);
+          return const Dashboard();
+          // return BlocProvider(
+          //   create: (_) => sl<AuthBloc>(),
+          //   child: const Dashboard(),
+          // );
         },
         settings: settings,
       );
-    case SplashScreen.routeName:
-      return _pageBuilder(
-        (_) => BlocProvider(
-          create: (_) => sl<AuthBloc>(),
-          child: const SplashScreen(),
-        ),
-        settings: settings,
-      );
+    // case SplashScreen.routeName:
+    //   return _pageBuilder(
+    //     (_) => BlocProvider(
+    //       create: (_) => sl<AuthBloc>(),
+    //       child: const SplashScreen(),
+    //     ),
+    //     settings: settings,
+    //   );
     case SignInScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(

@@ -1,13 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import '../../src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
 import '../../src/on_boarding/data/repositories/on_boarding_repository_impl.dart';

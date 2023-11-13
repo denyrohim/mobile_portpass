@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:iconly/iconly.dart';
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/res/colours.dart';
@@ -44,6 +43,7 @@ class _DashboardState extends State<Dashboard> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: controller.currentIndex,
               showSelectedLabels: false,
+              showUnselectedLabels: false,
               backgroundColor: Colors.white,
               elevation: 8,
               onTap: controller.changeIndex,
@@ -51,11 +51,12 @@ class _DashboardState extends State<Dashboard> {
                 BottomNavigationBarItem(
                   icon: Icon(
                     controller.currentIndex == 0
-                        ? IconlyBold.home
-                        : IconlyLight.home,
+                        ? Icons.home
+                        : Icons.home_outlined,
                     color: controller.currentIndex == 0
                         ? Colours.primaryColour
                         : Colors.grey,
+                    size: 32,
                   ),
                   label: 'Home',
                   backgroundColor: Colors.white,
@@ -63,11 +64,12 @@ class _DashboardState extends State<Dashboard> {
                 BottomNavigationBarItem(
                   icon: Icon(
                     controller.currentIndex == 1
-                        ? IconlyBold.add_user
-                        : IconlyLight.add_user,
+                        ? Icons.add_circle
+                        : Icons.add_circle_outline,
                     color: controller.currentIndex == 1
                         ? Colours.primaryColour
                         : Colors.grey,
+                    size: 32,
                   ),
                   label: 'Add Employee',
                   backgroundColor: Colors.white,
@@ -75,11 +77,12 @@ class _DashboardState extends State<Dashboard> {
                 BottomNavigationBarItem(
                   icon: Icon(
                     controller.currentIndex == 2
-                        ? IconlyBold.profile
-                        : IconlyLight.profile,
+                        ? Icons.person_pin_rounded
+                        : Icons.person_pin_outlined,
                     color: controller.currentIndex == 2
                         ? Colours.primaryColour
                         : Colors.grey,
+                    size: 32,
                   ),
                   label: 'Profile',
                   backgroundColor: Colors.white,

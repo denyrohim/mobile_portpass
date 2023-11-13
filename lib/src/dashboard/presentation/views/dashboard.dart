@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -52,38 +53,59 @@ class _DashboardState extends State<Dashboard> {
           onTap: controller.changeIndex,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(
-                controller.currentIndex == 0 ? Icons.home : Icons.home_outlined,
+              icon: Image.asset(
+                controller.currentIndex == 0
+                    ? MediaRes.homeBold
+                    : MediaRes.homeLight,
+                height: 32,
+                width: 32,
                 color: controller.currentIndex == 0
                     ? Colours.primaryColour
                     : Colors.grey,
-                size: 32,
               ),
               label: 'Home',
               backgroundColor: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                controller.currentIndex == 1
-                    ? Icons.add_circle
-                    : Icons.add_circle_outline,
-                color: controller.currentIndex == 1
-                    ? Colours.primaryColour
-                    : Colors.grey,
-                size: 32,
+            if (context.currentUser!.role == 'security')
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  controller.currentIndex == 1
+                      ? MediaRes.scanBold
+                      : MediaRes.scanLight,
+                  height: 32,
+                  width: 32,
+                  color: controller.currentIndex == 1
+                      ? Colours.primaryColour
+                      : Colors.grey,
+                ),
+                label: 'Scan',
+                backgroundColor: Colors.white,
+              )
+            else
+              BottomNavigationBarItem(
+                icon: Image.asset(
+                  controller.currentIndex == 1
+                      ? MediaRes.addBold
+                      : MediaRes.addLight,
+                  height: 32,
+                  width: 32,
+                  color: controller.currentIndex == 1
+                      ? Colours.primaryColour
+                      : Colors.grey,
+                ),
+                label: 'Add',
+                backgroundColor: Colors.white,
               ),
-              label: 'Add Employee',
-              backgroundColor: Colors.white,
-            ),
             BottomNavigationBarItem(
-              icon: Icon(
+              icon: Image.asset(
                 controller.currentIndex == 2
-                    ? Icons.person_pin_rounded
-                    : Icons.person_pin_outlined,
+                    ? MediaRes.profileBold
+                    : MediaRes.profileLight,
+                height: 32,
+                width: 32,
                 color: controller.currentIndex == 2
                     ? Colours.primaryColour
                     : Colors.grey,
-                size: 32,
               ),
               label: 'Profile',
               backgroundColor: Colors.white,

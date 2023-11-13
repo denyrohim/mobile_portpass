@@ -41,7 +41,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       final result = await _dio.post(
-        API.signIn,
+        API().auth.signIn,
         data: {'email': email, 'password': password},
       );
       final user = result.data['user'] as DataMap?;
@@ -72,7 +72,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
       final result = await _dio.post(
-        API.signInWithCredential,
+        API().auth.signInWithCredential,
         data: {'token': token},
       );
 

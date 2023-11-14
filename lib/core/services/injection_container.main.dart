@@ -22,9 +22,11 @@ Future<void> _initAuth() async {
       () => AuthRemoteDataSourceImpl(
         sharedPreferences: sl(),
         dio: sl(),
+        api: sl(),
       ),
     )
-    // ..registerLazySingleton(() => Dio())
+    ..registerLazySingleton(() => Dio())
+    ..registerLazySingleton(() => API())
     ..registerLazySingleton(() => SharedPreferences.getInstance());
 }
 

@@ -19,7 +19,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    context.read<DashboardController>().getScreens(context.currentUser!.role);
+    // context.read<DashboardController>().getScreens(context.currentUser!.role);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

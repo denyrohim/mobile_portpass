@@ -3,51 +3,51 @@ import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 
 class LocalUserModel extends LocalUser {
   const LocalUserModel({
-    required String id,
+    required int id,
     required String email,
     required String name,
     required String role,
-    String? profilePic,
+    String? profileImg,
   }) : super(
           id: id,
           email: email,
           name: name,
           role: role,
-          profilePic: profilePic,
+          profileImg: profileImg,
         );
 
   const LocalUserModel.empty()
       : this(
-          id: '',
+          id: -99,
           email: '',
           name: '',
           role: '',
-          profilePic: '',
+          profileImg: '',
         );
 
   LocalUserModel copyWith({
-    String? id,
+    int? id,
     String? email,
     String? name,
     String? role,
-    String? profilePic,
+    String? profileImg,
   }) {
     return LocalUserModel(
       id: id ?? this.id,
       email: email ?? this.email,
       name: name ?? this.name,
       role: role ?? this.role,
-      profilePic: profilePic ?? this.profilePic,
+      profileImg: profileImg ?? this.profileImg,
     );
   }
 
   LocalUserModel.fromMap(DataMap map)
       : super(
-          id: map['id'] as String,
+          id: map['id'] as int,
           email: map['email'] as String,
           name: map['name'] as String,
           role: map['role'] as String,
-          profilePic: map['profilePic'] as String?,
+          profileImg: map['profile_img'] as String?,
         );
 
   DataMap toMap() {
@@ -56,7 +56,7 @@ class LocalUserModel extends LocalUser {
       'email': email,
       'name': name,
       'role': role,
-      'profilePic': profilePic,
+      'profile_img': profileImg,
     };
   }
 }

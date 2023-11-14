@@ -6,21 +6,21 @@ class LocalUser extends Equatable {
     required this.email,
     required this.name,
     required this.role,
-    this.profilePic,
+    this.profileImg,
   });
 
   const LocalUser.empty()
-      : id = '',
+      : id = -99,
         email = '',
         name = '',
         role = '',
-        profilePic = '';
+        profileImg = '';
 
-  final String id;
+  final int id;
   final String email;
   final String name;
   final String role;
-  final String? profilePic;
+  final String? profileImg;
 
   @override
   List<Object?> get props => [id, email];
@@ -28,6 +28,7 @@ class LocalUser extends Equatable {
   @override
   String toString() {
     return 'LocalUser{id: $id, email: $email,'
-        ' role: $role, name: $name, profilePic: $profilePic}';
+        ' role: $role,'
+        ' name: $name, profileImg: $profileImg}';
   }
 }

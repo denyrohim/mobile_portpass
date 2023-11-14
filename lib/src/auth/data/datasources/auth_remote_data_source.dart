@@ -28,11 +28,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl({
     required SharedPreferences sharedPreferences,
     required Dio dio,
+    required API api,
   })  : _dio = dio,
+        _api = api,
         _sharedPreferences = sharedPreferences;
 
   final SharedPreferences _sharedPreferences;
   final Dio _dio;
+  final API _api;
 
   @override
   Future<LocalUserModel> signIn({
@@ -41,17 +44,17 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     try {
       final result = await _dio.post(
-        API().auth.signIn,
+        _api.auth.signIn,
         data: {'email': email, 'password': password},
       );
-      final user = result.data['user'] as DataMap?;
+      final user = result.data['data']['user'] as DataMap?;
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
       await _sharedPreferences.setString(
         kToken,
-        result.data['token'] as String,
+        result.data['data']['token'] as String,
       );
 
       return LocalUserModel.fromMap(user);
@@ -72,7 +75,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
       final result = await _dio.post(
-        API().auth.signInWithCredential,
+        _api.auth.signInWithCredential,
         data: {'token': token},
       );
 
@@ -83,7 +86,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
-      return LocalUserModel.fromMap(result.data['user'] as DataMap);
+      final user = result.data['data']['user'] as DataMap?;
+
+      if (user == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+
+      return LocalUserModel.fromMap(user);
     } on ServerException {
       rethrow;
     } catch (e, s) {

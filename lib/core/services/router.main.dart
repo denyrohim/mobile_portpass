@@ -2,32 +2,32 @@ part of 'router.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
-    case '/':
-      return _pageBuilder(
-        (context) {
-          const localUser = LocalUserModel(
-            id: 'id',
-            email: 'email',
-            name: 'name',
-            role: 'role',
-          );
-          context.userProvider.initUser(localUser);
-          return const Dashboard();
-          // return BlocProvider(
-          //   create: (_) => sl<AuthBloc>(),
-          //   child: const Dashboard(),
-          // );
-        },
-        settings: settings,
-      );
-    // case SplashScreen.routeName:
+    // case '/':
     //   return _pageBuilder(
-    //     (_) => BlocProvider(
-    //       create: (_) => sl<AuthBloc>(),
-    //       child: const SplashScreen(),
-    //     ),
+    // (context) {
+    //   const localUser = LocalUserModel(
+    //     id: 'id',
+    //     email: 'email',
+    //     name: 'name',
+    //     role: 'role',
+    //   );
+    //   context.userProvider.initUser(localUser);
+    //   return const Dashboard();
+    //       // return BlocProvider(
+    //       //   create: (_) => sl<AuthBloc>(),
+    //       //   child: const Dashboard(),
+    //       // );
+    //     },
     //     settings: settings,
     //   );
+    case SplashScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<AuthBloc>(),
+          child: const SplashScreen(),
+        ),
+        settings: settings,
+      );
     case SignInScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(

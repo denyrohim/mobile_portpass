@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/services/api.dart';
 
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
@@ -14,20 +15,24 @@ class MockDio extends Mock implements Dio {}
 void main() {
   late SharedPreferences sharedPreferences;
   late Dio dio;
+  late API api;
   late AuthRemoteDataSourceImpl dataSource;
   const tUser = LocalUserModel.empty();
 
   setUp(() {
     sharedPreferences = MockSharedPreferences();
     dio = MockDio();
+    api = API();
     dataSource = AuthRemoteDataSourceImpl(
       sharedPreferences: sharedPreferences,
       dio: dio,
+      api: api,
     );
   });
 
   const tPassword = 'password';
-  const tEmail = 'email';
+  const tEmail = 'email@admin.com';
+  const tToken = 'token';
 
   final tResponseFailed = Response(
     data: {
@@ -38,11 +43,13 @@ void main() {
     requestOptions: RequestOptions(path: ''),
   );
 
-  final tResponseSuccess = Response(
+  final tResponseSuccess = Response<dynamic>(
     data: {
-      'message': 'ServerException',
-      'token': 'token',
-      'user': tUser.toMap(),
+      'message': 'Success',
+      'data': {
+        'user': tUser.toMap(),
+        'token': 'token',
+      },
     },
     statusCode: 200,
     requestOptions: RequestOptions(path: ''),
@@ -151,7 +158,7 @@ void main() {
           ),
         ).thenAnswer((_) async => tResponseSuccess);
 
-        when(() => sharedPreferences.getString(any())).thenReturn(kToken);
+        when(() => sharedPreferences.getString(any())).thenReturn(tToken);
 
         final result = await dataSource.signInWithCredential();
 

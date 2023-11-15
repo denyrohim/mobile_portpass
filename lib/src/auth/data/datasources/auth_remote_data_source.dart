@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
+import 'package:port_pass_app/core/utils/headers.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 
@@ -46,6 +47,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final result = await _dio.post(
         _api.auth.signIn,
         data: {'email': email, 'password': password},
+        options: Options(
+          headers: ApiHeaders.getHeaders().headers,
+        ),
       );
       final user = result.data['data']['user'] as DataMap?;
       if (user == null) {
@@ -74,10 +78,14 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
+      debugPrint('${ApiHeaders.getHeaders(token: token)}');
       final result = await _dio.post(
         _api.auth.signInWithCredential,
-        data: {'token': token},
+        options: Options(
+          headers: ApiHeaders.getHeaders(token: token).headers,
+        ),
       );
+      debugPrint('result: $result');
 
       if (result.statusCode != 200) {
         throw ServerException(

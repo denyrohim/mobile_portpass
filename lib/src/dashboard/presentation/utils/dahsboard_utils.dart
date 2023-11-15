@@ -6,11 +6,11 @@ class DashboardUtils {
   // from Rest API
   static Stream<LocalUserModel> get userDataStream => Stream.value(
         const LocalUserModel(
-          id: 'id',
+          id: -99,
           email: 'email',
           name: 'name',
           role: 'role',
-          profilePic: 'profilePic',
+          profileImg: 'profile_img',
         ),
       );
 }

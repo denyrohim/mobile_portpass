@@ -1,4 +1,7 @@
-const kBaseUrl = 'https://652a78fc4791d884f1fcf828.mockapi.io/';
+const kAppName = "PortPass-Mobile";
 
 const kDefaultAvatar =
     'https://images.freeimages.com/fic/images/icons/573/must_have/256/user.png';
+
+const kHost = "https://portpass.iwandp.my.id/api";
+// const kHost = "portpass.iwandp.my.id/api";

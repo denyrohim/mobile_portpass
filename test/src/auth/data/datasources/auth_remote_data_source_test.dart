@@ -80,7 +80,6 @@ void main() {
           email: tEmail,
           password: tPassword,
         );
-        print('result: $result');
 
         expect(result, equals(tUser));
 

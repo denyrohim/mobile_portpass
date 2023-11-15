@@ -1,6 +1,7 @@
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/common/widgets/rounded_button.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
@@ -58,6 +59,17 @@ class _SignInScreenState extends State<SignInScreen> {
             child: SafeArea(
               child: Center(
                 child: ContainerCard(
+                  header: Container(
+                    width: 72,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Colours.primaryColour,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      shape: BoxShape.rectangle,
+                    ),
+                  ),
                   children: [
                     Image.asset(
                       MediaRes.logoPortPassColor,

@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:port_pass_app/core/res/colours.dart';
 
 class ContainerCard extends StatefulWidget {
-  const ContainerCard(
-      {super.key, this.backgroundColor = Colors.white, required this.children});
+  const ContainerCard({
+    super.key,
+    this.backgroundColor = Colors.white,
+    required this.children,
+    this.header,
+    this.mediaHeight,
+  });
 
   final Color backgroundColor;
   final List<Widget> children;
+  final Widget? header;
+  final double? mediaHeight;
 
   @override
   State<ContainerCard> createState() => _ContainerCardState();
@@ -25,23 +31,14 @@ class _ContainerCardState extends State<ContainerCard> {
           ),
         ),
         padding: const EdgeInsets.all(10),
-        height: MediaQuery.of(context).size.height * 0.8,
+        height:
+            MediaQuery.of(context).size.height * (widget.mediaHeight ?? 0.8),
         child: Stack(
           children: [
             Positioned(
               child: Align(
                 alignment: Alignment.topCenter,
-                child: Container(
-                  width: 72,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Colours.primaryColour,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    shape: BoxShape.rectangle,
-                  ),
-                ),
+                child: widget.header,
               ),
             ),
             Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
-import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   void initState() {
     super.initState();
-    // context.read<DashboardController>().getScreens(context.currentUser!.role);
+    context.read<DashboardController>().getScreens(context.currentUser!.role);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -53,59 +53,47 @@ class _DashboardState extends State<Dashboard> {
           onTap: controller.changeIndex,
           items: [
             BottomNavigationBarItem(
-              icon: Image.asset(
+              icon: SvgPicture.asset(
                 controller.currentIndex == 0
                     ? MediaRes.homeBold
                     : MediaRes.homeLight,
                 height: 32,
                 width: 32,
-                color: controller.currentIndex == 0
-                    ? Colours.primaryColour
-                    : Colors.grey,
               ),
               label: 'Home',
               backgroundColor: Colors.white,
             ),
             if (context.currentUser!.role == 'security')
               BottomNavigationBarItem(
-                icon: Image.asset(
+                icon: SvgPicture.asset(
                   controller.currentIndex == 1
                       ? MediaRes.scanBold
                       : MediaRes.scanLight,
                   height: 32,
                   width: 32,
-                  color: controller.currentIndex == 1
-                      ? Colours.primaryColour
-                      : Colors.grey,
                 ),
                 label: 'Scan',
                 backgroundColor: Colors.white,
               )
             else
               BottomNavigationBarItem(
-                icon: Image.asset(
+                icon: SvgPicture.asset(
                   controller.currentIndex == 1
                       ? MediaRes.addBold
                       : MediaRes.addLight,
                   height: 32,
                   width: 32,
-                  color: controller.currentIndex == 1
-                      ? Colours.primaryColour
-                      : Colors.grey,
                 ),
                 label: 'Add',
                 backgroundColor: Colors.white,
               ),
             BottomNavigationBarItem(
-              icon: Image.asset(
+              icon: SvgPicture.asset(
                 controller.currentIndex == 2
                     ? MediaRes.profileBold
                     : MediaRes.profileLight,
                 height: 32,
                 width: 32,
-                color: controller.currentIndex == 2
-                    ? Colours.primaryColour
-                    : Colors.grey,
               ),
               label: 'Profile',
               backgroundColor: Colors.white,

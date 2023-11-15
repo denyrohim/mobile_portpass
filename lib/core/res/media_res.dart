@@ -8,14 +8,14 @@ class MediaRes {
 
   // Icons
   static const flutterIcons = '$_baseIcons/flutter.png';
-  static const homeBold = '$_baseIcons/home_bold.png';
-  static const homeLight = '$_baseIcons/home_light.png';
-  static const addBold = '$_baseIcons/add_bold.png';
-  static const addLight = '$_baseIcons/add_light.png';
-  static const profileBold = '$_baseIcons/profile_bold.png';
-  static const profileLight = '$_baseIcons/profile_light.png';
-  static const scanBold = '$_baseIcons/scan_bold.png';
-  static const scanLight = '$_baseIcons/scan_light.png';
+  static const homeBold = '$_baseIcons/home_bold.svg';
+  static const homeLight = '$_baseIcons/home_light.svg';
+  static const addBold = '$_baseIcons/add_bold.svg';
+  static const addLight = '$_baseIcons/add_light.svg';
+  static const profileBold = '$_baseIcons/profile_bold.svg';
+  static const profileLight = '$_baseIcons/profile_light.svg';
+  static const scanBold = '$_baseIcons/scan_bold.svg';
+  static const scanLight = '$_baseIcons/scan_light.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

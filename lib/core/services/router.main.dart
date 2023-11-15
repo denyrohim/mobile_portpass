@@ -4,15 +4,15 @@ Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     // case '/':
     //   return _pageBuilder(
-    // (context) {
-    //   const localUser = LocalUserModel(
-    //     id: 'id',
-    //     email: 'email',
-    //     name: 'name',
-    //     role: 'role',
-    //   );
-    //   context.userProvider.initUser(localUser);
-    //   return const Dashboard();
+    //     (context) {
+    //       const localUser = LocalUserModel(
+    //         id: -99,
+    //         email: 'email',
+    //         name: 'name',
+    //         role: 'agent',
+    //       );
+    //       context.userProvider.initUser(localUser);
+    //       return const Dashboard();
     //       // return BlocProvider(
     //       //   create: (_) => sl<AuthBloc>(),
     //       //   child: const Dashboard(),

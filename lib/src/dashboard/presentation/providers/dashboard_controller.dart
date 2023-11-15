@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/views/persistent_view.dart';
@@ -17,7 +18,6 @@ class DashboardController extends ChangeNotifier {
   int get currentIndex => _currentIndex;
 
   void getScreens(String role) {
-    role = 'security';
     if (role == 'employer') {
       _screens = [
         ChangeNotifierProvider(
@@ -82,14 +82,7 @@ class DashboardController extends ChangeNotifier {
         ChangeNotifierProvider(
             create: (_) => TabNavigator(
                   TabItem(
-                    child: const Center(
-                      child: Column(
-                        children: [
-                          Text('Agent'),
-                          Text('2'),
-                        ],
-                      ),
-                    ),
+                    child: const AddActivity(),
                   ),
                 ),
             child: const PersistentView()),

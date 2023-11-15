@@ -69,6 +69,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).thenAnswer((_) async => tResponseSuccess);
 
@@ -79,6 +80,7 @@ void main() {
           email: tEmail,
           password: tPassword,
         );
+        print('result: $result');
 
         expect(result, equals(tUser));
 
@@ -86,6 +88,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).called(1);
         verifyNoMoreInteractions(dio);
@@ -101,6 +104,7 @@ void main() {
             () => dio.post(
               any(),
               data: any(named: 'data'),
+              options: any(named: 'options'),
             ),
           ).thenAnswer((_) async => tResponseFailed);
 
@@ -114,6 +118,7 @@ void main() {
             () => dio.post(
               any(),
               data: any(named: 'data'),
+              options: any(named: 'options'),
             ),
           ).called(1);
           verifyNoMoreInteractions(dio);
@@ -126,6 +131,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).thenThrow(tServerException);
 
@@ -139,6 +145,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).called(1);
         verifyNoMoreInteractions(dio);
@@ -155,6 +162,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).thenAnswer((_) async => tResponseSuccess);
 
@@ -168,6 +176,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).called(1);
         verifyNoMoreInteractions(dio);
@@ -183,6 +192,7 @@ void main() {
             () => dio.post(
               any(),
               data: any(named: 'data'),
+              options: any(named: 'options'),
             ),
           ).thenAnswer((_) async => tResponseFailed);
 
@@ -198,6 +208,7 @@ void main() {
             () => dio.post(
               any(),
               data: any(named: 'data'),
+              options: any(named: 'options'),
             ),
           ).called(1);
           verifyNoMoreInteractions(dio);
@@ -213,6 +224,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).thenThrow(tServerException);
 
@@ -228,6 +240,7 @@ void main() {
           () => dio.post(
             any(),
             data: any(named: 'data'),
+            options: any(named: 'options'),
           ),
         ).called(1);
         verifyNoMoreInteractions(dio);

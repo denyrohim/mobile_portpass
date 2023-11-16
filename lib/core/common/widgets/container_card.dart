@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 
 class ContainerCard extends StatefulWidget {
   const ContainerCard({
     super.key,
-    this.backgroundColor = Colors.white,
+    this.backgroundColor = Colours.secondaryColour,
     required this.children,
     this.header,
     this.mediaHeight,

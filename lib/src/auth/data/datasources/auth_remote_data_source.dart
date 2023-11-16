@@ -51,11 +51,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           headers: ApiHeaders.getHeaders().headers,
         ),
       );
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data']['user'] as DataMap?;
+      // ignore: unnecessary_null_comparison
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+      user = const LocalUserModel.empty().toMap();
       await _sharedPreferences.setString(
         kToken,
         result.data['data']['token'] as String,

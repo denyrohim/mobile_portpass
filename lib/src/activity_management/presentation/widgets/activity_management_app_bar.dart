@@ -12,7 +12,7 @@ class ActivityManagementAppBar extends StatelessWidget
     return AppBar(
       centerTitle: true,
       backgroundColor: Colours.primaryColour,
-      foregroundColor: Colors.white,
+      foregroundColor: Colours.secondaryColour,
       elevation: 0,
       leadingWidth: double.infinity,
       leading: Container(
@@ -24,7 +24,7 @@ class ActivityManagementAppBar extends StatelessWidget
               icon: const Icon(
                 Icons.arrow_back,
                 size: 30,
-                color: Colors.white,
+                color: Colours.secondaryColour,
               ),
               onPressed: () => Navigator.pop(context),
               color: Colors.red,
@@ -34,7 +34,7 @@ class ActivityManagementAppBar extends StatelessWidget
               child: Text(
                 title,
                 style: const TextStyle(
-                  color: Colors.white,
+                  color: Colours.secondaryColour,
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
                 ),

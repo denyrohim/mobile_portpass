@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:provider/provider.dart';
@@ -44,61 +45,131 @@ class _DashboardState extends State<Dashboard> {
           index: controller.currentIndex,
           children: controller.screens,
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: controller.currentIndex,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          backgroundColor: Colors.white,
-          elevation: 8,
-          onTap: controller.changeIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                controller.currentIndex == 0
-                    ? MediaRes.homeBold
-                    : MediaRes.homeLight,
-                height: 32,
-                width: 32,
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            color: Colours.secondaryColour,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(1),
+                spreadRadius: 0,
+                blurRadius: 10,
+                offset: const Offset(0, 3), // changes position of shadow
               ),
-              label: 'Home',
-              backgroundColor: Colors.white,
-            ),
-            if (context.currentUser!.role == 'security')
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  controller.currentIndex == 1
-                      ? MediaRes.scanBold
-                      : MediaRes.scanLight,
-                  height: 32,
-                  width: 32,
+            ],
+          ),
+          child: SafeArea(
+            child: BottomNavigationBar(
+              currentIndex: controller.currentIndex,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              onTap: controller.changeIndex,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: controller.currentIndex == 0
+                              ? Colours.primaryColour
+                              : Colors.transparent,
+                          width: 5.0,
+                        ),
+                      ),
+                    ),
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: SvgPicture.asset(
+                      controller.currentIndex == 0
+                          ? MediaRes.homeBold
+                          : MediaRes.homeLight,
+                      height: 32,
+                      width: 32,
+                    ),
+                  ),
+                  label: 'Home',
                 ),
-                label: 'Scan',
-                backgroundColor: Colors.white,
-              )
-            else
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  controller.currentIndex == 1
-                      ? MediaRes.addBold
-                      : MediaRes.addLight,
-                  height: 32,
-                  width: 32,
+                if (context.currentUser!.role == 'security')
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: controller.currentIndex == 1
+                                ? Colours.primaryColour
+                                : Colors.transparent,
+                            width: 5.0,
+                          ),
+                        ),
+                      ),
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: SvgPicture.asset(
+                        controller.currentIndex == 1
+                            ? MediaRes.scanBold
+                            : MediaRes.scanLight,
+                        height: 32,
+                        width: 32,
+                      ),
+                    ),
+                    label: 'Scan',
+                    backgroundColor: Colors.white,
+                  )
+                else
+                  BottomNavigationBarItem(
+                    icon: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            color: controller.currentIndex == 1
+                                ? Colours.primaryColour
+                                : Colors.transparent,
+                            width: 5.0,
+                          ),
+                        ),
+                      ),
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 20, right: 20),
+                      child: SvgPicture.asset(
+                        controller.currentIndex == 1
+                            ? MediaRes.addBold
+                            : MediaRes.addLight,
+                        height: 32,
+                        width: 32,
+                      ),
+                    ),
+                    label: 'Add',
+                    backgroundColor: Colors.white,
+                  ),
+                BottomNavigationBarItem(
+                  icon: Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: controller.currentIndex == 2
+                              ? Colours.primaryColour
+                              : Colors.transparent,
+                          width: 5.0,
+                        ),
+                      ),
+                    ),
+                    padding:
+                        const EdgeInsets.only(top: 10, left: 20, right: 20),
+                    child: SvgPicture.asset(
+                      controller.currentIndex == 2
+                          ? MediaRes.profileBold
+                          : MediaRes.profileLight,
+                      height: 32,
+                      width: 32,
+                    ),
+                  ),
+                  label: 'Profile',
+                  backgroundColor: Colors.white,
                 ),
-                label: 'Add',
-                backgroundColor: Colors.white,
-              ),
-            BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                controller.currentIndex == 2
-                    ? MediaRes.profileBold
-                    : MediaRes.profileLight,
-                height: 32,
-                width: 32,
-              ),
-              label: 'Profile',
-              backgroundColor: Colors.white,
+              ],
             ),
-          ],
+          ),
         ),
       );
     });

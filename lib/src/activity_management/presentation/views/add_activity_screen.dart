@@ -21,19 +21,17 @@ class _AddActivityState extends State<AddActivity> {
         backgroundColor: Colors.white,
         body: GradientBackground(
           image: MediaRes.colorBackground,
-          child: SafeArea(
-            child: Center(
-              child: ContainerCard(
-                mediaHeight: 0.87,
-                children: [
-                  Image.asset(
-                    MediaRes.logoPortPassColor,
-                    height: 172,
-                  ),
-                  const SizedBox(height: 20),
-                  const SizedBox(height: 30),
-                ],
-              ),
+          child: Center(
+            child: ContainerCard(
+              mediaHeight: 0.75,
+              children: [
+                Image.asset(
+                  MediaRes.logoPortPassColor,
+                  height: 172,
+                ),
+                const SizedBox(height: 20),
+                const SizedBox(height: 30),
+              ],
             ),
           ),
         ));

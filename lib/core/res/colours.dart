@@ -11,6 +11,8 @@ class Colours {
 
   static const Color primaryColour = Color(0xFF315784);
 
+  static const Color secondaryColour = Color(0xFFF4F6F8);
+
   static const Color neutralTextColour = Color(0xFF757C8E);
 
   static const Color physicsTileColour = Color(0xFFD3D5FE);

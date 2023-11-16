@@ -28,9 +28,7 @@ class GradientBackground extends StatelessWidget {
             ),
           ),
         ),
-        SafeArea(
-          child: child,
-        ),
+        child,
       ],
     );
   }

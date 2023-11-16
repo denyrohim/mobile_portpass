@@ -56,55 +56,53 @@ class _SignInScreenState extends State<SignInScreen> {
         builder: (context, state) {
           return GradientBackground(
             image: MediaRes.defaultBackground,
-            child: SafeArea(
-              child: Center(
-                child: ContainerCard(
-                  header: Container(
-                    width: 72,
-                    height: 8,
-                    decoration: const BoxDecoration(
-                      color: Colours.primaryColour,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                      shape: BoxShape.rectangle,
+            child: Center(
+              child: ContainerCard(
+                header: Container(
+                  width: 72,
+                  height: 8,
+                  decoration: const BoxDecoration(
+                    color: Colours.primaryColour,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(20),
                     ),
+                    shape: BoxShape.rectangle,
                   ),
-                  children: [
-                    Image.asset(
-                      MediaRes.logoPortPassColor,
-                      height: 172,
-                    ),
-                    const SizedBox(height: 20),
-                    SignInForm(
-                      emailController: emailController,
-                      passwordController: passwordController,
-                      formKey: formKey,
-                    ),
-                    const SizedBox(height: 30),
-                    if (state is AuthLoading)
-                      const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    else
-                      RoundedButton(
-                        onPressed: () {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          FirebaseAuth.instance.currentUser?.reload();
-                          if (formKey.currentState!.validate()) {
-                            context.read<AuthBloc>().add(
-                                  SignInEvent(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                  ),
-                                );
-                          }
-                        },
-                        text: 'Masuk',
-                      ),
-                    const SizedBox(height: 30),
-                  ],
                 ),
+                children: [
+                  Image.asset(
+                    MediaRes.logoPortPassColor,
+                    height: 172,
+                  ),
+                  const SizedBox(height: 20),
+                  SignInForm(
+                    emailController: emailController,
+                    passwordController: passwordController,
+                    formKey: formKey,
+                  ),
+                  const SizedBox(height: 30),
+                  if (state is AuthLoading)
+                    const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  else
+                    RoundedButton(
+                      onPressed: () {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                        FirebaseAuth.instance.currentUser?.reload();
+                        if (formKey.currentState!.validate()) {
+                          context.read<AuthBloc>().add(
+                                SignInEvent(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                ),
+                              );
+                        }
+                      },
+                      text: 'Masuk',
+                    ),
+                  const SizedBox(height: 30),
+                ],
               ),
             ),
           );

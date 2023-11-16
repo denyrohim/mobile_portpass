@@ -18,10 +18,10 @@ class LocalUserModel extends LocalUser {
 
   const LocalUserModel.empty()
       : this(
-          id: -99,
-          email: '',
-          name: '',
-          role: '',
+          id: 1,
+          email: 'testing@admin.com',
+          name: 'testing',
+          role: 'agent',
           profileImg: '',
         );
 

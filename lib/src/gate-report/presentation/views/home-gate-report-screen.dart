@@ -87,7 +87,7 @@ class HomeGateReportScreen extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 115),
-                        child: SvgPicture.asset(MediaRes.scanIcon),
+                        child: SvgPicture.asset(MediaRes.scanBold),
                       )
                     ],
                   ),

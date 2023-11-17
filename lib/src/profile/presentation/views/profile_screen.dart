@@ -81,7 +81,7 @@ class ProfileScreen extends StatelessWidget {
                               child: Transform.scale(
                                 scale: 0.5,
                                 child: SvgPicture.asset(
-                                  'assets/icons/icon_edit.svg',
+                                  'assets/icons/edit.svg',
                                 ),
                               )),
                           const SizedBox(width: 20),
@@ -126,7 +126,7 @@ class ProfileScreen extends StatelessWidget {
                               child: Transform.scale(
                                 scale: 0.5,
                                 child: SvgPicture.asset(
-                                  'assets/icons/keluar_icon.svg',
+                                  'assets/icons/exit.svg',
                                 ),
                               )),
                           const SizedBox(width: 20),

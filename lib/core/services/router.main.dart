@@ -20,6 +20,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     },
     //     settings: settings,
     //   );
+
     case SplashScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -39,6 +40,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case Dashboard.routeName:
       return _pageBuilder(
         (_) => const Dashboard(),
+        settings: settings,
+      );
+    case HomeGateReportScreen.routeName:
+      return _pageBuilder(
+        (_) => const HomeGateReportScreen(),
         settings: settings,
       );
     default:

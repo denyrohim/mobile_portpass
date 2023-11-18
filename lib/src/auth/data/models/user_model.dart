@@ -3,18 +3,12 @@ import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 
 class LocalUserModel extends LocalUser {
   const LocalUserModel({
-    required int id,
-    required String email,
-    required String name,
-    required String role,
-    String? profileImg,
-  }) : super(
-          id: id,
-          email: email,
-          name: name,
-          role: role,
-          profileImg: profileImg,
-        );
+    required super.id,
+    required super.email,
+    required super.name,
+    required super.role,
+    super.profileImg,
+  });
 
   const LocalUserModel.empty()
       : this(

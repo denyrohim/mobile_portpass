@@ -8,7 +8,6 @@ import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/widgets/sign_in_form.dart';
 import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -89,7 +88,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     RoundedButton(
                       onPressed: () {
                         FocusManager.instance.primaryFocus?.unfocus();
-                        FirebaseAuth.instance.currentUser?.reload();
                         if (formKey.currentState!.validate()) {
                           context.read<AuthBloc>().add(
                                 SignInEvent(

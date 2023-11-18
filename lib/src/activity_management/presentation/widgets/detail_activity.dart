@@ -76,24 +76,22 @@ class DetailActivity extends StatelessWidget {
                               color: Colors.white)),
                     ],
                   ),
-                  Container(
-                    child: const Row(
-                      children: [
-                        Text("Tanggal Dibuat",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white)),
-                        SizedBox(
-                          width: 27,
-                        ),
-                        Text(": 18/10/23",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white)),
-                      ],
-                    ),
+                  const Row(
+                    children: [
+                      Text("Tanggal Dibuat",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white)),
+                      SizedBox(
+                        width: 27,
+                      ),
+                      Text(": 18/10/23",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white)),
+                    ],
                   ),
                   Row(
                     children: [

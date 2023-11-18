@@ -80,14 +80,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      debugPrint('${ApiHeaders.getHeaders(token: token)}');
       final result = await _dio.post(
         _api.auth.signInWithCredential,
         options: Options(
           headers: ApiHeaders.getHeaders(token: token).headers,
         ),
       );
-      debugPrint('result: $result');
 
       if (result.statusCode != 200) {
         throw ServerException(

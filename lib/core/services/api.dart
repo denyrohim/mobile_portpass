@@ -2,14 +2,14 @@ import '../utils/constanst.dart';
 
 class API {
   final APIAuth auth;
-  final APIEmployees employees;
+  final APIEmployee employee;
   final APIAgent agent;
   final APIActivity activity;
   final APIItems items;
 
   API({String? id})
       : auth = APIAuth(id: id),
-        employees = APIEmployees(id: id),
+        employee = APIEmployee(id: id),
         agent = APIAgent(id: id),
         activity = APIActivity(id: id),
         items = APIItems(id: id);
@@ -25,8 +25,8 @@ class APIAuth {
   String get profile => "$kHost/profile";
 }
 
-class APIEmployees {
-  const APIEmployees({this.id});
+class APIEmployee {
+  const APIEmployee({this.id});
   final String? id;
 
   String get employees => "$kHost/employees";

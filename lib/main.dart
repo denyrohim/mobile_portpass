@@ -1,6 +1,4 @@
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
-import 'package:port_pass_app/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +11,6 @@ import 'core/services/router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   await init();
   runApp(const MyApp());
 }

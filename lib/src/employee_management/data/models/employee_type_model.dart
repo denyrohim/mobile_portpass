@@ -3,9 +3,9 @@ import 'package:port_pass_app/src/employee_management/domain/entities/employee_t
 
 class EmployeeTypeModel extends EmployeeType {
   const EmployeeTypeModel({
-    required int id,
-    required String name,
-  }) : super(id: id, name: name);
+    required super.id,
+    required super.name,
+  });
 
   const EmployeeTypeModel.empty()
       : this(

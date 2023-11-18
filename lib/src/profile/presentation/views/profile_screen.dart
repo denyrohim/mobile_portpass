@@ -7,7 +7,7 @@ import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   static const routeName = '/profile';
 

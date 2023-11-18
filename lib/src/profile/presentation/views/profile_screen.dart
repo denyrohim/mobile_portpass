@@ -21,6 +21,7 @@ class ProfileScreen extends StatelessWidget {
       body: GradientBackground(
         image: MediaRes.colorBackground,
         child: ContainerCard(
+          mediaHeight: 0.6,
           headerHeight: 52,
           header: ClipRRect(
             borderRadius: BorderRadius.circular(100),

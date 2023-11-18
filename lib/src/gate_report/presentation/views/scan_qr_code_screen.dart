@@ -23,7 +23,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Stack(
           children: [

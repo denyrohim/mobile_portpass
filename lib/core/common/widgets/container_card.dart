@@ -8,11 +8,13 @@ class ContainerCard extends StatefulWidget {
     required this.children,
     this.header,
     this.mediaHeight,
+    this.headerHeight,
   });
 
   final Color backgroundColor;
   final List<Widget> children;
   final Widget? header;
+  final double? headerHeight;
   final double? mediaHeight;
 
   @override
@@ -24,25 +26,22 @@ class _ContainerCardState extends State<ContainerCard> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Container(
-        decoration: BoxDecoration(
-          color: widget.backgroundColor,
-          borderRadius: const BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        padding: const EdgeInsets.all(10),
-        height:
-            MediaQuery.of(context).size.height * (widget.mediaHeight ?? 0.8),
-        child: Stack(
-          children: [
-            Positioned(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: widget.header,
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: widget.backgroundColor,
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
               ),
             ),
-            Container(
+            padding: const EdgeInsets.all(10),
+            margin: widget.headerHeight != null
+                ? EdgeInsets.only(top: widget.headerHeight!)
+                : null,
+            height: MediaQuery.of(context).size.height *
+                (widget.mediaHeight ?? 0.8),
+            child: Container(
               margin: const EdgeInsets.only(top: 20),
               child: ListView(
                 shrinkWrap: true,
@@ -50,8 +49,12 @@ class _ContainerCardState extends State<ContainerCard> {
                 children: widget.children,
               ),
             ),
-          ],
-        ),
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: widget.header,
+          ),
+        ],
       ),
     );
   }

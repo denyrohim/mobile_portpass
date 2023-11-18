@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
+import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/views/persistent_view.dart';
@@ -48,20 +49,6 @@ class DashboardController extends ChangeNotifier {
                   ),
                 ),
             child: const PersistentView()),
-        ChangeNotifierProvider(
-            create: (_) => TabNavigator(
-                  TabItem(
-                    child: const Center(
-                      child: Column(
-                        children: [
-                          Text('Employer'),
-                          Text('3'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-            child: const PersistentView()),
       ];
     } else if (role == 'agent') {
       _screens = [
@@ -83,20 +70,6 @@ class DashboardController extends ChangeNotifier {
             create: (_) => TabNavigator(
                   TabItem(
                     child: const AddActivity(),
-                  ),
-                ),
-            child: const PersistentView()),
-        ChangeNotifierProvider(
-            create: (_) => TabNavigator(
-                  TabItem(
-                    child: const Center(
-                      child: Column(
-                        children: [
-                          Text('Agent'),
-                          Text('3'),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
             child: const PersistentView()),
@@ -131,22 +104,18 @@ class DashboardController extends ChangeNotifier {
                   ),
                 ),
             child: const PersistentView()),
-        ChangeNotifierProvider(
-            create: (_) => TabNavigator(
-                  TabItem(
-                    child: const Center(
-                      child: Column(
-                        children: [
-                          Text('Security'),
-                          Text('3'),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-            child: const PersistentView()),
       ];
     }
+
+    screens.add(
+      ChangeNotifierProvider(
+          create: (_) => TabNavigator(
+                TabItem(
+                  child: const ProfileScreen(),
+                ),
+              ),
+          child: const PersistentView()),
+    );
   }
 
   void changeIndex(int index) {

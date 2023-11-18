@@ -47,6 +47,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => const HomeGateReportScreen(),
         settings: settings,
       );
+    case DetailActivityScreen.routeName:
+      return _pageBuilder(
+        (_) => const DetailActivityScreen(),
+        settings: settings,
+      );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),

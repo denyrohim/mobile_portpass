@@ -3,6 +3,8 @@ import 'package:port_pass_app/src/activity_management/presentation/views/detail_
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
+import 'package:port_pass_app/src/gate-report/presentation/views/home_gate_report_screen.dart';
+import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/src/gate-report/presentation/views/home_gate_report_screen.dart';

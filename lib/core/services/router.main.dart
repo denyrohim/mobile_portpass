@@ -42,6 +42,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => const Dashboard(),
         settings: settings,
       );
+    case ProfilePage.routeName:
+      return _pageBuilder(
+        (_) => const ProfilePage(),
+        settings: settings,
+      );
     case HomeGateReportScreen.routeName:
       return _pageBuilder(
         (_) => const HomeGateReportScreen(),

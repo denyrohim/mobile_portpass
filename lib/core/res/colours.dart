@@ -48,4 +48,8 @@ class Colours {
   static const Color otherUserChatBubbleColourDarker = Color(0xFFE0E0E0);
 
   static const Color errorColour = Color(0xFFD32F2F);
+
+  static const Color itemCardColour = Color(0xFFF4F6F8);
+
+  static const Color itemCardBorderColour = Color(0xFFD9D9D9);
 }

@@ -52,12 +52,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         ),
       );
       var user = result.data['data']['user'] as DataMap?;
-      // ignore: unnecessary_null_comparison
+      final role = result.data['data']['role'] as String?;
+      user?.addEntries([MapEntry('role', role)]);
+
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
-      user = const LocalUserModel.empty().toMap();
       await _sharedPreferences.setString(
         kToken,
         result.data['data']['token'] as String,
@@ -94,12 +95,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data']['user'] as DataMap?;
+      final role = result.data['data']['role'] as String?;
+      user?.addEntries([MapEntry('role', role)]);
 
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+
+      await _sharedPreferences.remove(
+        kToken,
+      );
 
       return LocalUserModel.fromMap(user);
     } on ServerException {

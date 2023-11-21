@@ -14,12 +14,6 @@ import 'package:port_pass_app/src/employee_management/domain/usecases/add_employ
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_employee.dart';
-import '../../src/on_boarding/data/datasources/on_boarding_local_data_source.dart';
-import '../../src/on_boarding/data/repositories/on_boarding_repository_impl.dart';
-import '../../src/on_boarding/domain/repositories/on_boarding_repository.dart';
-import '../../src/on_boarding/domain/usecases/cache_first_timer.dart';
-import '../../src/on_boarding/domain/usecases/check_if_user_is_first_timer.dart';
-import '../../src/on_boarding/presentation/cubit/on_boarding_cubit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'injection_container.main.dart';

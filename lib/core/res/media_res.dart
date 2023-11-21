@@ -18,6 +18,7 @@ class MediaRes {
   static const scanLight = '$_baseIcons/scan_light.svg';
   static const arrowsDown = '$_baseIcons/arrows_down.svg';
   static const signalIcon = '$_baseIcons/signal_icon.svg';
+  static const signalIcon2 = '$_baseIcons/signal_icon2.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

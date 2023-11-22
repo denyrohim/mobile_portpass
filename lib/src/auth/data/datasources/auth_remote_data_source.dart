@@ -104,9 +104,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             message: "Please try again later", statusCode: 505);
       }
 
-      await _sharedPreferences.remove(
-        kToken,
-      );
+      // await _sharedPreferences.remove(
+      //   kToken,
+      // );
 
       return LocalUserModel.fromMap(user);
     } on ServerException {

@@ -48,6 +48,7 @@ void main() {
       'message': 'Success',
       'data': {
         'user': tUser.toMap(),
+        'role': 'agent',
         'token': 'token',
       },
     },

@@ -79,7 +79,7 @@ class DashboardController extends ChangeNotifier {
         ChangeNotifierProvider(
             create: (_) => TabNavigator(
                   TabItem(
-                    child: const AddActivity(),
+                    child: const AddActivityScreen(),
                   ),
                 ),
             child: const PersistentView()),

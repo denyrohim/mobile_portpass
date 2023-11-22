@@ -8,8 +8,9 @@ Future<void> init() async {
   final api = API();
 
   await _initCore(prefs: prefs, dio: dio, api: api);
-  await _initEmployeeManagement();
   await _initAuth();
+  await _initEmployeeManagement();
+  await _initActivityManagement();
 }
 
 Future<void> _initCore({
@@ -66,32 +67,28 @@ Future<void> _initEmployeeManagement() async {
     );
 }
 
-Future<void> _initOnBoarding() async {
-  final prefs = await SharedPreferences.getInstance();
+Future<void> _initActivityManagement() async {
   sl
-    // ON BOARDING
-    // App Logic
-    ..registerFactory(
-      () => OnBoardingCubit(
-        cacheFirstTimer: sl(),
-        checkIfUserIsFirstTimer: sl(),
+    // ..registerFactory(
+    //   () => AuthBloc(
+    //     signIn: sl(),
+    //     signInWithCredential: sl(),
+    //   ),
+    // )
+    ..registerLazySingleton(() => AddActivity(sl()))
+    ..registerLazySingleton(() => AddItem(sl()))
+    ..registerLazySingleton(() => DeleteActivities(sl()))
+    ..registerLazySingleton(() => DeleteItems(sl()))
+    ..registerLazySingleton(() => GetActivities(sl()))
+    ..registerLazySingleton(() => UpdateActivity(sl()))
+    ..registerLazySingleton(() => UpdateItem(sl()))
+    ..registerLazySingleton<ActivityManagementRepository>(
+        () => ActivityManagementRepositoryImpl(sl()))
+    ..registerLazySingleton<ActivityManagementRemoteDataSource>(
+      () => ActivityManagementRemoteDataSourceImpl(
+        sharedPreferences: sl(),
+        dio: sl(),
+        api: sl(),
       ),
-    )
-
-    // Use cases
-    ..registerLazySingleton(() => CacheFirstTimer(sl()))
-    ..registerLazySingleton(() => CheckIfUserIsFirstTimer(sl()))
-
-    // Repository
-    ..registerLazySingleton<OnBoardingRepository>(
-      () => OnBoardingRepositoryImpl(sl()),
-    )
-
-    // Data sources
-    ..registerLazySingleton<OnBoardingLocalDataSource>(
-      () => OnBoardingLocalDataSourceImpl(sl()),
-    )
-
-    // EXTERNAL DEPENDENCIES
-    ..registerLazySingleton(() => prefs);
+    );
 }

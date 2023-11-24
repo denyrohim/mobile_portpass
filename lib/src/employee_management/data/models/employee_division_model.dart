@@ -3,9 +3,9 @@ import 'package:port_pass_app/src/employee_management/domain/entities/employee_d
 
 class EmployeeDivisionModel extends EmployeeDivision {
   const EmployeeDivisionModel({
-    required int id,
-    required String name,
-  }) : super(id: id, name: name);
+    required super.id,
+    required super.name,
+  });
 
   const EmployeeDivisionModel.empty()
       : this(

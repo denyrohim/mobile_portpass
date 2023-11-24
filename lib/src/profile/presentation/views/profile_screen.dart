@@ -6,33 +6,36 @@ import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
 
   static const routeName = '/profile';
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: ProfileScreen(),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GradientBackground(
-      image: MediaRes.colorBackground,
-      child: Stack(
-        children: [
-          ContainerCard(children: [
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colours.primaryColour,
+      ),
+      backgroundColor: Colors.transparent,
+      body: GradientBackground(
+        image: MediaRes.colorBackground,
+        child: ContainerCard(
+          mediaHeight: 0.6,
+          headerHeight: 52,
+          header: ClipRRect(
+            borderRadius: BorderRadius.circular(100),
+            child: Image.network(
+              'https://placekitten.com/104/104',
+              width: 104,
+              height: 104,
+              fit: BoxFit.cover,
+            ),
+          ),
+          children: [
             Column(
               children: [
-                const SizedBox(height: 70),
+                const SizedBox(height: 40),
                 const Text(
                   "Abdul",
                   style: TextStyle(
@@ -54,7 +57,9 @@ class ProfileScreen extends StatelessWidget {
                     fontFamily: Fonts.inter,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(
+                  height: 20,
+                ),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -141,44 +146,8 @@ class ProfileScreen extends StatelessWidget {
                 )
               ],
             ),
-          ]),
-          const Scaffold(
-            backgroundColor: Colors.transparent,
-            body: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 35),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.white),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Center(
-            heightFactor: 3,
-            child: Container(
-              width: 104,
-              height: 104,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Image.network(
-                  'https://placekitten.com/104/104',
-                  width: 104,
-                  height: 104,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

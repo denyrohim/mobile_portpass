@@ -20,7 +20,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     },
     //     settings: settings,
     //   );
-
     case SplashScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -42,9 +41,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => const Dashboard(),
         settings: settings,
       );
-    case ProfilePage.routeName:
+    case ProfileScreen.routeName:
       return _pageBuilder(
-        (_) => const ProfilePage(),
+        (_) => const ProfileScreen(),
         settings: settings,
       );
     case HomeGateReportScreen.routeName:
@@ -55,6 +54,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case DetailActivityScreen.routeName:
       return _pageBuilder(
         (_) => const DetailActivityScreen(),
+        settings: settings,
+      );
+    case ScanQRCodeScreen.routeName:
+      return _pageBuilder(
+        (_) => const ScanQRCodeScreen(),
         settings: settings,
       );
     default:

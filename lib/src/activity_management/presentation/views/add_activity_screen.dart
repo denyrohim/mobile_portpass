@@ -4,14 +4,14 @@ import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 
-class AddActivity extends StatefulWidget {
-  const AddActivity({super.key});
+class AddActivityScreen extends StatefulWidget {
+  const AddActivityScreen({super.key});
 
   @override
-  State<AddActivity> createState() => _AddActivityState();
+  State<AddActivityScreen> createState() => _AddActivityState();
 }
 
-class _AddActivityState extends State<AddActivity> {
+class _AddActivityState extends State<AddActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

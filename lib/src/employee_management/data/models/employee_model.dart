@@ -3,32 +3,19 @@ import 'package:port_pass_app/src/employee_management/domain/entities/employee.d
 
 class EmployeeModel extends Employee {
   const EmployeeModel({
-    required int id,
-    required String name,
-    required String email,
-    required String phone,
-    required String dateOfBirth,
-    required int employeeDivisionId,
-    required String employeeType,
-    required String nik,
-    required String cardStart,
-    String? cardStop,
-    required String cardNumber,
-    String? photo,
-  }) : super(
-          id: id,
-          name: name,
-          email: email,
-          phone: phone,
-          dateOfBirth: dateOfBirth,
-          employeeDivisionId: employeeDivisionId,
-          employeeType: employeeType,
-          nik: nik,
-          cardStart: cardStart,
-          cardStop: cardStop,
-          cardNumber: cardNumber,
-          photo: photo,
-        );
+    required super.id,
+    required super.name,
+    required super.email,
+    required super.phone,
+    required super.dateOfBirth,
+    required super.employeeDivisionId,
+    required super.employeeType,
+    required super.nik,
+    required super.cardStart,
+    super.cardStop,
+    required super.cardNumber,
+    super.photo,
+  });
 
   const EmployeeModel.empty()
       : this(

@@ -22,6 +22,7 @@ class MediaRes {
   static const buttonDeleteIcons = '$_baseIcons/icon_delete.svg';
   static const moreIcons = '$_baseIcons/more.svg';
   static const checkIcon = '$_baseIcons/check_icon.svg';
+  static const signalIcon2 = '$_baseIcons/signal_icon2.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

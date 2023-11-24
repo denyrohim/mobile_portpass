@@ -3,7 +3,7 @@ import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:dartz/dartz.dart';
-import 'package:port_pass_app/src/employee_management/data/datasources/employee_management_data_source.dart';
+import 'package:port_pass_app/src/employee_management/data/datasources/employee_management_remote_data_source.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/repositories/employee_management_repository.dart';
 

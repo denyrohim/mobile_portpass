@@ -39,11 +39,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignInEvent event,
     Emitter<AuthState> emit,
   ) async {
-    // final result = await _signIn(SignInParams(
-    //   username: event.username,
-    //   password: event.password,
-    // ));
-
     final result = await _signIn(SignInParams(
       email: event.email,
       password: event.password,

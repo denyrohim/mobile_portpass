@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:port_pass_app/core/common/views/loading_view.dart';
-import 'package:port_pass_app/core/common/widgets/container_card.dart';
+import 'package:port_pass_app/core/common/widgets/rounded_button.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/constanst.dart';
+import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
 
 import '../widgets/employee_item.dart';
 import '../widgets/menu_item_list.dart';
@@ -21,70 +22,171 @@ class ListEmployeeScreen extends StatefulWidget {
 
 class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
 
-  List<Widget> employeeDummy = [];
-  List<Widget> displayedItems = [];
+  List<Employee> dataDummy = [];
+
   int count = 0;
+  int countCheck = 0;
+
   bool isLoading = true;
+  bool isShowCheckBox = false;
+  bool isAllChecked = false;
+
   String searchQuery = '';
 
-  List<String> menuItems = [
-    'Pilih',
-    'Pilih Semua'
-  ];
+  Future showCustomBottomSheet(BuildContext context){
+    return showModalBottomSheet(
+        isDismissible: false,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20)
+            )
+        ),
+        context: context,
+        builder: (context){
+          return Padding(
+            padding: const EdgeInsets.only(top: 10, left: 27, right: 27, bottom: 56),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 72,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                        color: Colours.primaryColour,
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Yakin Hapus',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colours.primaryColour
+                        ),
+                      ),
+                      Text(
+                        '$countCheck Daftar?',
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Colours.primaryColour
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 25),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                          child: RoundedButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                              setState(() {
+                                isShowCheckBox = false;
+                                countCheck = 0;
+                              });
+                            },
+                            text: 'Batal',
+                            backgroundColor: Colours.primaryColour,
+                          )
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                          child: RoundedButton(
+                            onPressed: (){
+                              debugPrint('Hapus');
+                            },
+                            text: 'Hapus',
+                            backgroundColor: Colours.errorColour,
+                          )
+                      ),
+                    ],
+                  ),
+                ]
+            ),
+          );
+        }
+    );
+  }
 
-  void generateDummy(){
+  List<Employee> generate(){
+    List<Employee> dataDummy = [];
+
     for(int i = 0; i < 10; i++){
-      employeeDummy.add(
-          EmployeeItem(
-              name: 'Maisan Auliya $i',
-              position: 'Tester $i',
-              imageUrl: kDefaultAvatar
-          )
+      Employee data = Employee(
+          id: i+1,
+          name: 'Maisan Auliya $i',
+          email: 'maisanaulia02@gmail.com',
+          phone: '08123456789',
+          dateOfBirth: '1010',
+          employeeDivisionId: i,
+          employeeType: 'Tester $i',
+          nik: '1234567890',
+          cardStart: '101001010',
+          cardNumber: '1279719797917',
+          photo: kDefaultAvatar
       );
+
+      dataDummy.add(data);
     }
-    displayedItems.addAll(employeeDummy);
+
+    return dataDummy;
+  }
+
+  _ListEmployeeScreenState(){
+    dataDummy = generate();
   }
 
   void _onSelectedItem(int value){
     if(value == 1){
-      debugPrint('ini pilih');
+      setState(() {
+        isShowCheckBox = true;
+        isAllChecked = false;
+      });
     } else if(value == 2){
-      debugPrint('ini pilih semua');
+      setState(() {
+        isShowCheckBox = true;
+        isAllChecked = true;
+        countCheck = dataDummy.length;
+      });
     }
   }
 
   void _onSearch(String query){
     setState(() {
       searchQuery = query.toLowerCase();
-      displayedItems = employeeDummy.where((element) {
-        final employeeName = (element as EmployeeItem).name.toLowerCase();
-        return employeeName.contains(searchQuery);
-      }).toList();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    generateDummy();
     Future.delayed(const Duration(seconds: 2), (){
       setState(() {
         isLoading = false;
       });
     });
 
-    count = employeeDummy.length;
+    count = dataDummy.length;
   }
+
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: isLoading
           ? const LoadingView()
           : Container(
-        color: Colours.primaryColour,
-        child: Column(
+          color: Colours.primaryColour,
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -104,7 +206,45 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                             fontWeight: FontWeight.w700
                         ),
                       ),
-                      Row(
+                      isShowCheckBox
+                      ? Row(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(right: 8),
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              '$countCheck Terpilih',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white
+                              ),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => showCustomBottomSheet(context),
+                            child: Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                Container(
+                                  width: 28,
+                                  height: 28,
+                                  decoration: BoxDecoration(
+                                      color: Colours.errorColour,
+                                      borderRadius: BorderRadius.circular(5)
+                                  ),
+                                ),
+                                SvgPicture.asset(
+                                  MediaRes.buttonDeleteIcons,
+                                  width: 20,
+                                  height: 20,
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                      : Row(
                         children: [
                           Container(
                             margin: const EdgeInsets.only(right: 12),
@@ -123,8 +263,8 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                                   borderRadius: BorderRadius.all(Radius.circular(10))
                               ),
                               itemBuilder: (context) => [
-                                buildPopMenuItem(menuItems[0], 1),
-                                buildPopMenuItem(menuItems[1], 2)
+                                buildPopMenuItem('Pilih', 1),
+                                buildPopMenuItem('Pilih Semua', 2)
                               ],
                               offset: const Offset(0.0, 18),
                               onSelected: (value){
@@ -133,7 +273,7 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                               child: SvgPicture.asset(MediaRes.moreIcons)
                           )
                         ],
-                      )
+                      ),
                     ],
                   ),
                   Container(
@@ -145,11 +285,48 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
             ),
             const SizedBox(height: 18),
             Expanded(
-              child: ContainerCard(
-                  mediaHeight: MediaQuery.of(context).size.height * 0.7,
-                  children: displayedItems
-              ),
-            ),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colours.secondaryColour,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: Stack(
+                    children: [
+                      ListView.builder(
+                        itemCount: dataDummy.length,
+                        itemBuilder: (context, index){
+                          final employee = dataDummy[index];
+
+                          if(employee.name.toLowerCase().contains(searchQuery)) {
+                            return EmployeeItem(
+                              employee: employee,
+                              isShowCheckBox: isShowCheckBox,
+                              isCheck: isAllChecked,
+                              onChanged: (isChecked){
+                                if(isChecked){
+                                  setState(() {
+                                    countCheck += 1;
+                                  });
+                                } else if(!isChecked){
+                                  setState(() {
+                                    countCheck -= 1;
+                                  });
+                                }
+                              }
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        }
+                      )
+                    ],
+                  ),
+                )
+            )
           ],
         ),
       ),

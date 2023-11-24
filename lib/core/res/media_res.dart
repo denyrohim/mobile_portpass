@@ -18,9 +18,10 @@ class MediaRes {
   static const scanLight = '$_baseIcons/scan_light.svg';
   static const arrowsDown = '$_baseIcons/arrows_down.svg';
   static const signalIcon = '$_baseIcons/signal_icon.svg';
-  static const buttonEditIcons = '$_baseIcons/button_edit.svg';
-  static const buttonDeleteIcons = '$_baseIcons/button_delete.svg';
+  static const buttonEditIcons = '$_baseIcons/edit.svg';
+  static const buttonDeleteIcons = '$_baseIcons/icon_delete.svg';
   static const moreIcons = '$_baseIcons/more.svg';
+  static const checkIcon = '$_baseIcons/check_icon.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

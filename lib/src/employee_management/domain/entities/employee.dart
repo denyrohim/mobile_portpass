@@ -13,6 +13,7 @@ class Employee extends Equatable {
   final String? cardStop;
   final String cardNumber;
   final String? photo;
+  final bool isChecked;
 
   const Employee({
     required this.id,
@@ -27,21 +28,23 @@ class Employee extends Equatable {
     this.cardStop,
     required this.cardNumber,
     this.photo,
+    this.isChecked = false,
   });
 
   const Employee.empty()
       : id = 0,
-        name = '',
+        name = 'Testing',
         email = '',
         phone = '',
         dateOfBirth = '',
         employeeDivisionId = 0,
-        employeeType = '',
+        employeeType = 'Testing',
         nik = '',
         cardStart = '',
         cardStop = '',
         cardNumber = '',
-        photo = '';
+        photo = null,
+        isChecked = false;
 
   @override
   List<Object?> get props => [
@@ -60,6 +63,6 @@ class Employee extends Equatable {
         ' employeeType: $employeeType, nik: $nik,'
         ' cardStart: $cardStart,'
         ' cardStop: $cardStop,'
-        ' cardNumber: $cardNumber, photo: $photo}';
+        ' cardNumber: $cardNumber, photo: $photo, isChecked: $isChecked}';
   }
 }

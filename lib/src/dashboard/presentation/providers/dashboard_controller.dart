@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
-import 'package:port_pass_app/src/employee_management/presentation/views/list_employee_page.dart';
+import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
+import 'package:port_pass_app/src/employee_management/presentation/views/list_employee_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +32,10 @@ class DashboardController extends ChangeNotifier {
         ChangeNotifierProvider(
             create: (_) => TabNavigator(
                   TabItem(
-                    child: const ListEmployeeScreen()
+                    child: BlocProvider(
+                      create: (_) => sl<EmployeeManagementBloc>(),
+                      child: const ListEmployeeScreen(),
+                    ),
                   ),
                 ),
             child: const PersistentView()),

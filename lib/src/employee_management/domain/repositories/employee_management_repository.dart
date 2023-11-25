@@ -19,4 +19,17 @@ abstract class EmployeeManagementRepository {
     required UpdateEmployeeAction action,
     required dynamic employeeData,
   });
+
+  ResultFuture<List<Employee>> updateCheckBoxEmployee({
+    required int employeeId,
+    required List<Employee> employees,
+  });
+
+  ResultFuture<List<Employee>> cancelCheckBoxEmployees({
+    required List<Employee> employees,
+  });
+
+  ResultFuture<List<Employee>> selectAllEmployees({
+    required List<Employee> employees,
+  });
 }

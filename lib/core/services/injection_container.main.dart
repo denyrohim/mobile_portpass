@@ -46,16 +46,24 @@ Future<void> _initAuth() async {
 
 Future<void> _initEmployeeManagement() async {
   sl
-    // ..registerFactory(
-    //   () => AuthBloc(
-    //     signIn: sl(),
-    //     signInWithCredential: sl(),
-    //   ),
-    // )
+    ..registerFactory(
+      () => EmployeeManagementBloc(
+        addEmployee: sl(),
+        deleteEmployees: sl(),
+        updateEmployee: sl(),
+        getEmployees: sl(),
+        updateCheckBoxEmployee: sl(),
+        cancelCheckBoxEmployees: sl(),
+        selectAllEmployees: sl(),
+      ),
+    )
     ..registerLazySingleton(() => AddEmployee(sl()))
     ..registerLazySingleton(() => DeleteEmployees(sl()))
     ..registerLazySingleton(() => GetEmployees(sl()))
     ..registerLazySingleton(() => UpdateEmployee(sl()))
+    ..registerLazySingleton(() => UpdateCheckBoxEmployee(sl()))
+    ..registerLazySingleton(() => CancelCheckBoxEmployees(sl()))
+    ..registerLazySingleton(() => SelectAllEmployees(sl()))
     ..registerLazySingleton<EmployeeManagementRepository>(
         () => EmployeeManagementRepositoryImpl(sl()))
     ..registerLazySingleton<EmploymentManagementRemoteDataSource>(

@@ -49,6 +49,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         data: {'email': email, 'password': password},
         options: Options(
           headers: ApiHeaders.getHeaders().headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       var user = result.data['data']['user'] as DataMap?;

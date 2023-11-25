@@ -15,22 +15,24 @@ class EmployeeModel extends Employee {
     super.cardStop,
     required super.cardNumber,
     super.photo,
+    required super.isChecked,
   });
 
   const EmployeeModel.empty()
       : this(
           id: 0,
-          name: '',
+          name: 'Testing',
           email: '',
           phone: '',
           dateOfBirth: '',
           employeeDivisionId: 0,
-          employeeType: '',
+          employeeType: 'Testing',
           nik: '',
           cardStart: '',
           cardStop: '',
           cardNumber: '',
-          photo: '',
+          photo: null,
+          isChecked: false,
         );
 
   EmployeeModel copyWith({
@@ -46,6 +48,7 @@ class EmployeeModel extends Employee {
     String? cardStop,
     String? cardNumber,
     String? photo,
+    bool? isChecked,
   }) {
     return EmployeeModel(
       id: id ?? this.id,
@@ -60,6 +63,7 @@ class EmployeeModel extends Employee {
       cardStop: cardStop ?? this.cardStop,
       cardNumber: cardNumber ?? this.cardNumber,
       photo: photo ?? this.photo,
+      isChecked: isChecked ?? this.isChecked,
     );
   }
 
@@ -77,6 +81,7 @@ class EmployeeModel extends Employee {
           cardStop: map['card_stop'] as String?,
           cardNumber: map['card_number'] as String,
           photo: map['photo'] as String?,
+          isChecked: map['isChecked'] as bool? ?? false,
         );
 
   DataMap toMap() {
@@ -93,6 +98,7 @@ class EmployeeModel extends Employee {
       'card_stop': cardStop,
       'card_number': cardNumber,
       'photo': photo,
+      'isChecked': isChecked,
     };
   }
 }

@@ -50,4 +50,8 @@ class Colours {
   static const Color errorColour = Color(0xFFD32F2F);
 
   static const Color itemCardBorderColour = Color(0xFFD9D9D9);
+
+  static const Color primaryColourDisabled = Color(0x80315784);
+
+  static const Color errorColourDisabled = Color(0x80D32F2F);
 }

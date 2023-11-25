@@ -1,3 +1,4 @@
+import 'package:port_pass_app/core/common/app/providers/employees_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => EmployeesProvider()),
         ChangeNotifierProvider(create: (_) => DashboardController())
       ],
       child: MaterialApp(

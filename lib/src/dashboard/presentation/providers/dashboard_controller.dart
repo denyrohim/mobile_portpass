@@ -4,6 +4,7 @@ import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
+import 'package:port_pass_app/src/employee_management/presentation/views/list_employee_page.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -28,16 +29,7 @@ class DashboardController extends ChangeNotifier {
         ChangeNotifierProvider(
             create: (_) => TabNavigator(
                   TabItem(
-                    child: Scaffold(
-                      appBar: AppBar(
-                        backgroundColor: Colours.primaryColour,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      body: const GradientBackground(
-                        image: MediaRes.colorBackground,
-                        child: Placeholder(),
-                      ),
-                    ),
+                    child: const ListEmployeeScreen()
                   ),
                 ),
             child: const PersistentView()),

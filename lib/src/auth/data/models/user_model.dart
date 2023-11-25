@@ -15,7 +15,7 @@ class LocalUserModel extends LocalUser {
           id: 1,
           email: 'testing@admin.com',
           name: 'testing',
-          role: 'agent',
+          role: 'employee',
           profileImg: '',
         );
 

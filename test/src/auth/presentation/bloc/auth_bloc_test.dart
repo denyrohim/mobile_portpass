@@ -3,6 +3,7 @@ import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/update_user.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,9 +13,12 @@ class MockSignIn extends Mock implements SignIn {}
 
 class MockSignInWithCredential extends Mock implements SignInWithCredential {}
 
+class MockUpdateUser extends Mock implements UpdateUser {}
+
 void main() {
   late MockSignIn signIn;
   late MockSignInWithCredential signInWithCredential;
+  late MockUpdateUser updateUser;
   late AuthBloc authBloc;
 
   const tSignInParams = SignInParams.empty();
@@ -22,9 +26,11 @@ void main() {
   setUp(() {
     signIn = MockSignIn();
     signInWithCredential = MockSignInWithCredential();
+    updateUser = MockUpdateUser();
     authBloc = AuthBloc(
       signIn: signIn,
       signInWithCredential: signInWithCredential,
+      updateUser: updateUser,
     );
   });
 

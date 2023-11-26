@@ -43,3 +43,14 @@ class NotSignedIn extends AuthState {
   @override
   List<Object> get props => [];
 }
+
+class UserUpdated extends AuthState {
+  const UserUpdated(
+    this.user,
+  );
+
+  final LocalUser user;
+
+  @override
+  List<Object> get props => [user];
+}

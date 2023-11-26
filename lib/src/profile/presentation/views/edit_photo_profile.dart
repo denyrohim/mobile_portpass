@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
-import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:port_pass_app/core/services/injection_container.dart';
-import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
-import 'package:port_pass_app/src/profile/presentation/views/edit_profile_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class EditPhotoProfile extends StatefulWidget {
+  const EditPhotoProfile({super.key});
 
-  static const routeName = '/profile';
+  static const routeName = '/edit_photo_profile';
 
+  @override
+  State<EditPhotoProfile> createState() => _EditPhotoProfileState();
+}
+
+class _EditPhotoProfileState extends State<EditPhotoProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +26,7 @@ class ProfileScreen extends StatelessWidget {
       body: GradientBackground(
         image: MediaRes.colorBackground,
         child: ContainerCard(
-          mediaHeight: 0.7,
-          headerHeight: 52,
+          headerHeight: 60,
           header: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Image.network(
@@ -42,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 const SizedBox(height: 40),
                 const Text(
-                  "Abdul",
+                  "Edit Foto Profil",
                   style: TextStyle(
                     color: Colours.primaryColour,
                     fontSize: 16,
@@ -51,27 +50,9 @@ class ProfileScreen extends StatelessWidget {
                     fontFamily: Fonts.inter,
                   ),
                 ),
-                const SizedBox(height: 5),
-                const Text(
-                  "Laborumi",
-                  style: TextStyle(
-                    color: Colours.primaryColour,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    decoration: TextDecoration.none,
-                    fontFamily: Fonts.inter,
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    context.push(BlocProvider(
-                      create: (_) => sl<AuthBloc>(),
-                      child: const EditProfileScreen(),
-                    ));
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colours.primaryColour,
                     shape: RoundedRectangleBorder(
@@ -96,12 +77,12 @@ class ProfileScreen extends StatelessWidget {
                               child: Transform.scale(
                                 scale: 0.5,
                                 child: SvgPicture.asset(
-                                  MediaRes.editIcon,
+                                  MediaRes.cameraIcon,
                                 ),
                               )),
                           const SizedBox(width: 20),
                           const Text(
-                            'Edit Profile',
+                            'Kamera',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -141,12 +122,52 @@ class ProfileScreen extends StatelessWidget {
                               child: Transform.scale(
                                 scale: 0.5,
                                 child: SvgPicture.asset(
-                                  MediaRes.exitIcon,
+                                  MediaRes.galleryIcon,
                                 ),
                               )),
                           const SizedBox(width: 20),
                           const Text(
-                            'Keluar',
+                            'Galeri',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colours.primaryColour,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: SizedBox(
+                    width: 200,
+                    height: 96,
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                              width: 64,
+                              height: 64,
+                              margin: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                color: Colors.white,
+                              ),
+                              child: Transform.scale(
+                                scale: 0.5,
+                                child: SvgPicture.asset(
+                                  MediaRes.profileIcon,
+                                ),
+                              )),
+                          const SizedBox(width: 20),
+                          const Text(
+                            'Tanpa Foto',
                             style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ],

@@ -119,29 +119,29 @@ class EmploymentManagementRemoteDataSourceImpl
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      // final result = await _dio.get(
-      //   _api.employee.employees,
-      //   options: Options(
-      //     headers: ApiHeaders.getHeaders(
-      //       token: token,
-      //     ).headers,
-      //   ),
-      // );
-      // final listEmployees = result.data['data'] as List?;
-      // if (listEmployees == null) {
-      //   throw const ServerException(
-      //       message: "Please try again later", statusCode: 505);
-      // }
-      // final employees = listEmployees.map((e) => e as DataMap).toList();
-      final employees =
-          List.generate(20, (index) => const EmployeeModel.empty());
+      final result = await _dio.get(
+        _api.employee.employees,
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+        ),
+      );
+      final listEmployees = result.data['data'] as List?;
+      if (listEmployees == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+      final employees = listEmployees.map((e) => e as DataMap).toList();
+      // final employees =
+      //     List.generate(20, (index) => const EmployeeModel.empty());
 
-      // return List<EmployeeModel>.from(
-      //   employees.map(
-      //     (e) => EmployeeModel.fromMap(e),
-      //   ),
-      // );
-      return employees;
+      return List<EmployeeModel>.from(
+        employees.map(
+          (e) => EmployeeModel.fromMap(e),
+        ),
+      );
+      // return employees;
     } on ServerException {
       rethrow;
     } catch (e, s) {

@@ -15,7 +15,7 @@ import 'package:port_pass_app/src/employee_management/presentation/widgets/emplo
 import 'package:provider/provider.dart';
 
 // import '../widgets/menu_item_list.dart';
-import '../widgets/search_bar.dart';
+import '../widgets/employee_search_bar.dart';
 
 class ListEmployeeScreen extends StatefulWidget {
   const ListEmployeeScreen({super.key});
@@ -27,6 +27,8 @@ class ListEmployeeScreen extends StatefulWidget {
 }
 
 class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   List<Employee> dataDummy = [];
 
   int count = 0;
@@ -35,8 +37,6 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
   bool isLoading = true;
   bool isShowCheckBox = false;
   bool isAllChecked = false;
-
-  String searchQuery = '';
 
   Future showCustomBottomSheet(BuildContext context) {
     return showModalBottomSheet(
@@ -153,12 +153,6 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
   //   }
   // }
 
-  void _onSearch(String query) {
-    setState(() {
-      searchQuery = query.toLowerCase();
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -201,7 +195,7 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
       builder: (context, state) {
         return Consumer<EmployeesProvider>(
           builder: (_, employeesProvider, __) {
-            final employees = employeesProvider.employees ?? [];
+            final employees = employeesProvider.filteredEmployees;
             return Scaffold(
               resizeToAvoidBottomInset: true,
               backgroundColor: Colours.secondaryColour,
@@ -307,10 +301,9 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                           //   ],
                           // ),
                           Container(
-                              margin: const EdgeInsets.only(top: 12),
-                              child: CustomSearchBar(
-                                onSearch: _onSearch,
-                              ))
+                            margin: const EdgeInsets.only(top: 12),
+                            child: const CustomSearchBar(),
+                          )
                         ],
                       ),
                     ),
@@ -335,13 +328,27 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                                 ListView.builder(
                                   itemCount: employees.length,
                                   itemBuilder: (context, index) {
-                                    return EmployeeItem(
-                                      context,
-                                      isShowCheckBox:
-                                          employeesProvider.isShowChecked,
-                                      employeeId: index,
-                                      employees: employees,
-                                    );
+                                    if (employees[index]
+                                        .name
+                                        .toLowerCase()
+                                        .contains(_searchController.text)) {
+                                      return EmployeeItem(
+                                        context,
+                                        isShowCheckBox:
+                                            employeesProvider.isShowChecked,
+                                        employeeId: index,
+                                        employees: employees,
+                                      );
+                                    } else {
+                                      return const SizedBox.shrink();
+                                    }
+                                    // return EmployeeItem(
+                                    //   context,
+                                    //   isShowCheckBox:
+                                    //       employeesProvider.isShowChecked,
+                                    //   employeeId: index,
+                                    //   employees: employees,
+                                    // );
                                     // return CheckboxListTile(
                                     //     title: EmployeeDetail(
                                     //       employee: employees[index],

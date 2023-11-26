@@ -23,6 +23,8 @@ class MediaRes {
   static const moreIcons = '$_baseIcons/more.svg';
   static const checkIcon = '$_baseIcons/check_icon.svg';
   static const signalIcon2 = '$_baseIcons/signal_icon2.svg';
+  static const exitIcon = '$_baseIcons/exit.svg';
+  static const profileIcon = '$_baseIcons/icon_profile.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

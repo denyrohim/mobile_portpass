@@ -35,4 +35,22 @@ class EmployeesProvider extends ChangeNotifier {
     }
     return count;
   }
+
+  String searchText = '';
+
+  void setSearchText(String text) {
+    searchText = text;
+    notifyListeners();
+  }
+
+  List<Employee> get filteredEmployees {
+    if (searchText.isEmpty) {
+      return _employees ?? [];
+    } else {
+      return _employees!
+          .where((element) =>
+              element.name.toLowerCase().contains(searchText.toLowerCase()))
+          .toList();
+    }
+  }
 }

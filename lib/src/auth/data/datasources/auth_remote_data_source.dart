@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/headers.dart';
@@ -17,10 +18,10 @@ abstract class AuthRemoteDataSource {
   });
   Future<LocalUserModel> signInWithCredential();
 
-  // Future<void> updateUser({
-  //   required UpdateUserAction action,
-  //   dynamic userData,
-  // });
+  Future<LocalUserModel> updateUser({
+    required UpdateUserAction action,
+    required LocalUserModel userData,
+  });
 }
 
 const kToken = 'token';
@@ -120,84 +121,53 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     }
   }
 
-  // @override
-  // Future<void> updateUser({
-  //   required UpdateUserAction action,
-  //   userData,
-  // }) async {
-  //   try {
-  //     switch (action) {
-  //       case UpdateUserAction.email:
-  //         await _authClient.currentUser?.updateEmail(userData as String);
-  //         await _updateUserDate({'email': userData});
-  //         await _updateUserDate({'username': userData});
-  //         break;
-  //       case UpdateUserAction.name:
-  //         await _authClient.currentUser?.updateDisplayName(userData as String);
-  //         await _updateUserDate({'name': userData});
-  //         break;
-  //       case UpdateUserAction.profilePic:
-  //         final ref = _dbClient
-  //             .ref()
-  //             .child('profile_pics/${_authClient.currentUser?.uid}');
-  //         await ref.putFile(userData as File);
-  //         final url = await ref.getDownloadURL();
-  //         await _authClient.currentUser?.updatePhotoURL(url);
-  //         await _updateUserDate({'profilePic': url});
-  //         break;
-  //       case UpdateUserAction.password:
-  //         if (_authClient.currentUser?.email == null) {
-  //           throw const ServerException(
-  //             message: "User doesn't exist",
-  //             statusCode: 403,
-  //           );
-  //         }
-  //         final newData = jsonDecode(userData as String) as DataMap;
-  //         await _authClient.currentUser?.reauthenticateWithCredential(
-  //           EmailAuthProvider.credential(
-  //             email: _authClient.currentUser!.email!,
-  //             password: newData['oldPassword'] as String,
-  //           ),
-  //         );
-  //         await _authClient.currentUser?.updatePassword(
-  //           newData['newPassword'] as String,
-  //         );
-  //         break;
-  //       case UpdateUserAction.username:
-  //         await _authClient.currentUser?.updateEmail(userData as String);
-  //         await _updateUserDate({'email': userData});
-  //         await _updateUserDate({'username': userData});
-  //         break;
-  //     }
-  //   } on FirebaseException catch (e) {
-  //     throw ServerException(
-  //         message: e.message ?? "Error Occurred", statusCode: e.code);
-  //   } catch (e, s) {
-  //     debugPrintStack(stackTrace: s);
-  //     throw ServerException(message: e.toString(), statusCode: 505);
-  //   }
-  // }
+  @override
+  Future<LocalUserModel> updateUser({
+    required UpdateUserAction action,
+    required LocalUserModel userData,
+  }) async {
+    try {
+      final token = _sharedPreferences.getString(kToken);
 
-  // Future<DocumentSnapshot<DataMap>> _getUserData(String id) async {
-  //   return _cloudStoreClient.collection('users').doc(id).get();
-  // }
+      if (token == null) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
 
-  // Future<void> _setUserData(User user, String displayName) async {
-  //   await _cloudStoreClient
-  //       .collection('users')
-  //       .doc(user.uid)
-  //       .set(LocalUserModel(
-  //         id: user.uid,
-  //         email: user.email ?? '',
-  //         name: user.displayName ?? displayName,
-  //         role: 'user',
-  //       ).toMap());
-  // }
+      final data = <String, dynamic>{};
+      switch (action) {
+        case UpdateUserAction.name:
+          data["name"] = userData.name;
+          break;
+        case UpdateUserAction.email:
+          data["email"] = userData.email;
+          break;
+        case UpdateUserAction.profileImg:
+          data["profile_pic"] = MultipartFile.fromFile(userData.profileImg!,
+              filename: userData.profileImg!.split('/').last);
+          break;
+      }
+      final result = await _dio.put(
+        _api.auth.profile,
+        data: data,
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+            isImageRequest: true,
+          ).headers,
+        ),
+      );
+      final user = result.data['data']['user'] as DataMap?;
+      if (user == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
 
-  // Future<void> _updateUserDate(DataMap data) async {
-  //   await _cloudStoreClient
-  //       .collection('users')
-  //       .doc(_authClient.currentUser?.uid)
-  //       .update(data);
-  // }
+      return LocalUserModel.fromMap(user);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
 }

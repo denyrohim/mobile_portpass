@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  final Function(String) onSearch;
-  const CustomSearchBar({super.key, required this.onSearch});
+  const CustomSearchBar({super.key});
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();
@@ -20,7 +20,6 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
 
     return Container(
@@ -28,19 +27,19 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
       height: 42,
       decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.all(
-              Radius.circular(10)
-          )
-      ),
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: TextField(
           controller: controller,
-          onChanged: (query){
-            widget.onSearch(query);
+          onChanged: (query) {
+            context.employeesProvider.setSearchText(query);
           },
-          style: const TextStyle(fontSize: 12),
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colours.primaryColour,
+            fontWeight: FontWeight.w500,
+          ),
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.symmetric(
-                horizontal: width * 0.04, vertical: height * 0.021),
+            contentPadding: EdgeInsets.symmetric(horizontal: width * 0.04),
             floatingLabelBehavior: FloatingLabelBehavior.never,
             labelStyle: const TextStyle(fontSize: 12),
             label: const Row(
@@ -51,8 +50,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   style: TextStyle(
                       fontSize: 16,
                       color: Colours.primaryColour,
-                      fontWeight: FontWeight.w500
-                  ),
+                      fontWeight: FontWeight.w500),
                 ),
                 Icon(
                   Icons.search,
@@ -69,8 +67,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                 Radius.circular(10),
               ),
             ),
-          )
-      ),
+          )),
     );
   }
 }

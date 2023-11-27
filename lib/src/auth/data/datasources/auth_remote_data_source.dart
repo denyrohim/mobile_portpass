@@ -22,6 +22,8 @@ abstract class AuthRemoteDataSource {
     required UpdateUserAction action,
     required LocalUserModel userData,
   });
+
+  Future<void> signOut();
 }
 
 const kToken = 'token';
@@ -163,6 +165,37 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       return LocalUserModel.fromMap(user);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      final token = _sharedPreferences.getString(kToken);
+
+      if (token == null) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
+
+      await _dio.get(
+        _api.auth.logout,
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+            isImageRequest: true,
+          ).headers,
+        ),
+      );
+
+      final tokenRemoved = await _sharedPreferences.remove(kToken);
+      if (!tokenRemoved) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {

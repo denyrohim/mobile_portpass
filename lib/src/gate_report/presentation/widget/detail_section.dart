@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-
 class DetailSection extends StatelessWidget {
   const DetailSection({
     super.key,
@@ -23,9 +22,8 @@ class DetailSection extends StatelessWidget {
             RotationTransition(
               turns: const AlwaysStoppedAnimation(45 / 360),
               child: IconButton(
-                onPressed: (){
-                  print("test");
-                  
+                onPressed: () {
+                  debugPrint("test");
                 },
                 icon: SvgPicture.asset(
                   'assets/icons/ulangi_icon.svg',
@@ -35,71 +33,68 @@ class DetailSection extends StatelessWidget {
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all(EdgeInsets.zero),
                   backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => Color(0xff315784)),
+                      (states) => const Color(0xff315784)),
                 ),
               ),
             ),
-           
           ],
         ),
-         const Column(
+        const Column(
+          children: [
+            Row(
               children: [
-                Row(
-                    children: [
-                      Text("Latitude",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff315784))),
-                      SizedBox(
-                        width: 60,
-                      ),
-                      Text(": Activity",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff315784)))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Longitude",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff315784))),
-                      SizedBox(
-                        width: 45,
-                      ),
-                      Text(": Activity",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff315784)))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Lokasi",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff315784))),
-                      SizedBox(
-                        width: 74,
-                      ),
-                      Text(": Activity",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Color(0xff315784)))
-                    ],
-                  ),
+                Text("Latitude",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff315784))),
+                SizedBox(
+                  width: 60,
+                ),
+                Text(": Activity",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff315784)))
               ],
             ),
+            Row(
+              children: [
+                Text("Longitude",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff315784))),
+                SizedBox(
+                  width: 45,
+                ),
+                Text(": Activity",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff315784)))
+              ],
+            ),
+            Row(
+              children: [
+                Text("Lokasi",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff315784))),
+                SizedBox(
+                  width: 74,
+                ),
+                Text(": Activity",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Color(0xff315784)))
+              ],
+            ),
+          ],
+        ),
       ],
-      
     );
   }
 }
-

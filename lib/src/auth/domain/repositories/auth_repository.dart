@@ -16,4 +16,6 @@ abstract class AuthRepository {
     required UpdateUserAction action,
     required LocalUser userData,
   });
+
+  ResultFuture<void> signOut();
 }

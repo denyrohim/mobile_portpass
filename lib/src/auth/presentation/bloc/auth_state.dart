@@ -54,3 +54,10 @@ class UserUpdated extends AuthState {
   @override
   List<Object> get props => [user];
 }
+
+class SignedOut extends AuthState {
+  const SignedOut();
+
+  @override
+  List<Object> get props => [];
+}

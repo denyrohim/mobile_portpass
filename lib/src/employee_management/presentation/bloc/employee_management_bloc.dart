@@ -82,8 +82,6 @@ class EmployeeManagementBloc
     Emitter<EmployeeManagementState> emit,
   ) async {
     final result = await _getEmployees();
-    // wait 5 seconds to show loading
-    await Future.delayed(const Duration(seconds: 5));
     result.fold(
       (failure) => emit(EmployeeManagementError(failure.errorMessage)),
       (employees) => emit(DataLoaded(employees)),
@@ -95,12 +93,12 @@ class EmployeeManagementBloc
     Emitter<EmployeeManagementState> emit,
   ) async {
     final result = await _updateEmployee(UpdateEmployeeParams(
-      action: event.action,
-      employeeData: event.employeeData,
+      actions: event.actions,
+      employee: event.employee,
     ));
     result.fold(
       (failure) => emit(EmployeeManagementError(failure.errorMessage)),
-      (_) => emit(const DataUpdated()),
+      (employee) => emit(DataUpdated(employee)),
     );
   }
 

@@ -15,6 +15,8 @@ import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.da
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/sign_out.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/update_user.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:port_pass_app/src/employee_management/data/datasources/employee_management_remote_data_source.dart';

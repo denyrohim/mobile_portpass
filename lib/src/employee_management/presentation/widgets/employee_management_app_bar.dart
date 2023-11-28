@@ -52,7 +52,7 @@ class EmployeeManagementAppBar extends StatelessWidget
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 20),
+                    padding: const EdgeInsets.only(right: 4),
                     child: GestureDetector(
                       onTap: () {
                         debugPrint('delete di klik');
@@ -76,6 +76,34 @@ class EmployeeManagementAppBar extends StatelessWidget
                             width: 20,
                             height: 20,
                           )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: GestureDetector(
+                      onTap: () {
+                        context.read<EmployeeManagementBloc>().add(
+                            CancelCheckBoxEmployeeEvent(
+                                employees: employeesProvider.employees!));
+                        employeesProvider.setShowChecked(false);
+                      },
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                                color: Colours.primaryColour,
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          const Icon(
+                            Icons.close_rounded,
+                            color: Colours.secondaryColour,
+                            size: 32,
+                          ),
                         ],
                       ),
                     ),

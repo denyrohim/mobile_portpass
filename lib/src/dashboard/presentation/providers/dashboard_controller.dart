@@ -6,6 +6,7 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
+import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/list_employee_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
@@ -114,7 +115,10 @@ class DashboardController extends ChangeNotifier {
       ChangeNotifierProvider(
           create: (_) => TabNavigator(
                 TabItem(
-                  child: const ProfileScreen(),
+                  child: BlocProvider(
+                    create: (_) => sl<AuthBloc>(),
+                    child: const ProfileScreen(),
+                  ),
                 ),
               ),
           child: const PersistentView()),

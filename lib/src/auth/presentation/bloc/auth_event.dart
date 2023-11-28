@@ -24,16 +24,19 @@ class SignInEvent extends AuthEvent {
   List<Object> get props => [email, password];
 }
 
-// class UpdateUserEvent extends AuthEvent {
-//   UpdateUserEvent({required this.action, required this.userData})
-//       : assert(
-//           userData is String || userData is File,
-//           'userData must be a String or a File, but was ${userData.runtimeType}',
-//         );
+class UpdateUserEvent extends AuthEvent {
+  const UpdateUserEvent({required this.action, required this.userData});
 
-//   final UpdateUserAction action;
-//   final dynamic userData;
+  final UpdateUserAction action;
+  final LocalUser userData;
 
-//   @override
-//   List<Object> get props => [action, userData];
-// }
+  @override
+  List<Object> get props => [action, userData];
+}
+
+class SignOutEvent extends AuthEvent {
+  const SignOutEvent();
+
+  @override
+  List<Object> get props => [];
+}

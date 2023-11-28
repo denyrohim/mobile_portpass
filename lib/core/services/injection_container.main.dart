@@ -30,10 +30,14 @@ Future<void> _initAuth() async {
       () => AuthBloc(
         signIn: sl(),
         signInWithCredential: sl(),
+        updateUser: sl(),
+        signOut: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))
     ..registerLazySingleton(() => SignInWithCredential(sl()))
+    ..registerLazySingleton(() => UpdateUser(sl()))
+    ..registerLazySingleton(() => SignOut(sl()))
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(

@@ -24,6 +24,12 @@ class MediaRes {
   static const checkIcon = '$_baseIcons/check_icon.svg';
   static const signalIcon2 = '$_baseIcons/signal_icon2.svg';
   static const scanSmall = '$_baseIcons/scan_small.svg';
+  static const exitIcon = '$_baseIcons/exit.svg';
+  static const profileIcon = '$_baseIcons/icon_profile.svg';
+  static const editIcon = '$_baseIcons/edit.svg';
+  static const changePhotoProfileIcon = '$_baseIcons/change_photo_profile.svg';
+  static const cameraIcon = '$_baseIcons/camera.svg';
+  static const galleryIcon = '$_baseIcons/gallery.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

@@ -49,11 +49,29 @@ class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
 
   @override
   ResultFuture<Employee> updateEmployee(
-      {required UpdateEmployeeAction action, required employeeData}) async {
+      {required List<UpdateEmployeeAction> actions,
+      required Employee employee}) async {
     try {
+      // final EmployeeModel employeeModel = employee as EmployeeModel;
+
+      final employeeModel = EmployeeModel(
+        id: employee.id,
+        name: employee.name,
+        email: employee.email,
+        phone: employee.phone,
+        dateOfBirth: employee.dateOfBirth,
+        employeeDivisionId: employee.employeeDivisionId,
+        employeeType: employee.employeeType,
+        nik: employee.nik,
+        cardStart: employee.cardStart,
+        cardStop: employee.cardStop,
+        cardNumber: employee.cardNumber,
+        photo: employee.photo,
+        isChecked: employee.isChecked,
+      );
       final result = await _remoteDataSource.updateEmployee(
-        action: action,
-        employeeData: employeeData,
+        actions: actions,
+        employee: employeeModel,
       );
       return Right(result);
     } on ServerException catch (e) {

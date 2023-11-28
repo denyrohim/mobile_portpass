@@ -84,5 +84,10 @@ class DataDeleted extends EmployeeManagementState {
 }
 
 class DataUpdated extends EmployeeManagementState {
-  const DataUpdated();
+  const DataUpdated(this.employee);
+
+  final Employee employee;
+
+  @override
+  List<Object> get props => [employee];
 }

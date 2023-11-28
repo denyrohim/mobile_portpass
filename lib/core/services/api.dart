@@ -22,6 +22,7 @@ class APIAuth {
 
   String get signIn => "$kHost/login";
   String get signInWithCredential => "$kHost/login-with-credential";
+  String get logout => "$kHost/logout";
   String get profile => "$kHost/profile";
 }
 

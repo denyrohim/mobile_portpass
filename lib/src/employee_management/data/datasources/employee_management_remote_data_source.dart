@@ -19,8 +19,8 @@ abstract class EmploymentManagementRemoteDataSource {
   });
   Future<List<EmployeeModel>> getEmployees();
   Future<EmployeeModel> updateEmployee({
-    required UpdateEmployeeAction action,
-    required EmployeeModel employeeData,
+    required List<UpdateEmployeeAction> actions,
+    required EmployeeModel employee,
   });
 }
 
@@ -119,29 +119,29 @@ class EmploymentManagementRemoteDataSourceImpl
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      // final result = await _dio.get(
-      //   _api.employee.employees,
-      //   options: Options(
-      //     headers: ApiHeaders.getHeaders(
-      //       token: token,
-      //     ).headers,
-      //   ),
-      // );
-      // final listEmployees = result.data['data'] as List?;
-      // if (listEmployees == null) {
-      //   throw const ServerException(
-      //       message: "Please try again later", statusCode: 505);
-      // }
-      // final employees = listEmployees.map((e) => e as DataMap).toList();
-      final employees =
-          List.generate(20, (index) => const EmployeeModel.empty());
+      final result = await _dio.get(
+        _api.employee.employees,
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+        ),
+      );
+      final listEmployees = result.data['data'] as List?;
+      if (listEmployees == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+      final employees = listEmployees.map((e) => e as DataMap).toList();
+      // final employees =
+      //     List.generate(20, (index) => const EmployeeModel.empty());
 
-      // return List<EmployeeModel>.from(
-      //   employees.map(
-      //     (e) => EmployeeModel.fromMap(e),
-      //   ),
-      // );
-      return employees;
+      return List<EmployeeModel>.from(
+        employees.map(
+          (e) => EmployeeModel.fromMap(e),
+        ),
+      );
+      // return employees;
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -152,8 +152,8 @@ class EmploymentManagementRemoteDataSourceImpl
 
   @override
   Future<EmployeeModel> updateEmployee(
-      {required UpdateEmployeeAction action,
-      required EmployeeModel employeeData}) async {
+      {required List<UpdateEmployeeAction> actions,
+      required EmployeeModel employee}) async {
     try {
       final token = _sharedPreferences.getString(kToken);
 
@@ -162,43 +162,48 @@ class EmploymentManagementRemoteDataSourceImpl
       }
 
       final data = <String, dynamic>{};
-      switch (action) {
-        case UpdateEmployeeAction.name:
-          data["name"] = employeeData.name;
-          break;
-        case UpdateEmployeeAction.nik:
-          data["nik"] = employeeData.nik;
-          break;
-        case UpdateEmployeeAction.phone:
-          data["phone"] = employeeData.phone;
-          break;
-        case UpdateEmployeeAction.email:
-          data["email"] = employeeData.email;
-          break;
-        case UpdateEmployeeAction.employeeType:
-          data["jenis_karyawan"] = employeeData.employeeType;
-          break;
-        case UpdateEmployeeAction.employeeDivisionId:
-          data["bagian_id"] = employeeData.employeeDivisionId;
-          break;
-        case UpdateEmployeeAction.cardNumber:
-          data["card_number"] = employeeData.cardNumber;
-          break;
-        case UpdateEmployeeAction.cardStart:
-          data["card_start"] = employeeData.cardStart;
-          break;
-        case UpdateEmployeeAction.cardStop:
-          data["card_stop"] = employeeData.cardStop;
-          break;
-        case UpdateEmployeeAction.dateOfBirth:
-          data["date_of_birth"] = employeeData.dateOfBirth;
-          break;
-        case UpdateEmployeeAction.photo:
-          data["photo"] = employeeData.photo;
-          break;
+      for (final action in actions) {
+        switch (action) {
+          case UpdateEmployeeAction.name:
+            data["name"] = employee.name;
+            break;
+          case UpdateEmployeeAction.nik:
+            data["nik"] = employee.nik;
+            break;
+          case UpdateEmployeeAction.phone:
+            data["phone"] = employee.phone;
+            break;
+          case UpdateEmployeeAction.email:
+            data["email"] = employee.email;
+            break;
+          case UpdateEmployeeAction.employeeType:
+            data["jenis_karyawan"] = employee.employeeType;
+            break;
+          case UpdateEmployeeAction.employeeDivisionId:
+            data["bagian_id"] = employee.employeeDivisionId;
+            break;
+          case UpdateEmployeeAction.cardNumber:
+            data["card_number"] = employee.cardNumber;
+            break;
+          case UpdateEmployeeAction.cardStart:
+            data["card_start"] = employee.cardStart;
+            break;
+          case UpdateEmployeeAction.cardStop:
+            data["card_stop"] = employee.cardStop;
+            break;
+          case UpdateEmployeeAction.dateOfBirth:
+            data["date_of_birth"] = employee.dateOfBirth;
+            break;
+          case UpdateEmployeeAction.photo:
+            data["photo"] = employee.photo;
+            break;
+        }
       }
+      debugPrint("data: $data");
+      debugPrint('employeeId: ${employee.id}');
+
       final result = await _dio.put(
-        _api.employee.employees,
+        "${_api.employee.employees}/${employee.id}",
         data: data,
         options: Options(
           headers: ApiHeaders.getHeaders(
@@ -206,13 +211,13 @@ class EmploymentManagementRemoteDataSourceImpl
           ).headers,
         ),
       );
-      final employee = result.data['data']['employee'] as DataMap?;
-      if (employee == null) {
+      final employeeData = result.data['data'] as DataMap?;
+      if (employeeData == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
 
-      return EmployeeModel.fromMap(employee);
+      return EmployeeModel.fromMap(employee.toMap());
     } on ServerException {
       rethrow;
     } catch (e, s) {

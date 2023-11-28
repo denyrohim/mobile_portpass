@@ -21,12 +21,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     settings: settings,
     //   );
 
-    case '/':
-      return _pageBuilder(
-        (_) => const AddEmployeeScreen(),
-        settings: settings,
-      );
-
     case SplashScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(

@@ -1,6 +1,9 @@
+import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/widgets/i_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/res/fonts.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 
 class EditEmployeeForm extends StatefulWidget {
@@ -50,6 +53,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
@@ -63,6 +67,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
@@ -81,6 +86,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
@@ -96,13 +102,18 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
             IFields(
               controller: widget.dateOfBirthController,
-              hintText: 'Tanggal Lahir',
+              hintText: 'DD/MM/YYYY',
               keyboardType: TextInputType.datetime,
+              suffixIcon: const Icon(
+                Icons.calendar_today,
+                color: Colours.primaryColour,
+              ),
               overrideValidator: false,
               readOnly: true,
             ),
@@ -112,13 +123,19 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
             IFields(
               controller: widget.employeeDivisionIdController,
-              hintText: 'Bagian',
+              hintText: 'Pilih',
               keyboardType: TextInputType.number,
+              suffixIcon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colours.primaryColour,
+                size: 50,
+              ),
               overrideValidator: false,
             ),
             const SizedBox(height: 12),
@@ -127,14 +144,17 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
             IFields(
               controller: widget.employeeTypeController,
-              hintText: 'Jenis Karyawan',
+              hintText: 'Pilih',
               keyboardType: TextInputType.text,
               overrideValidator: false,
+              suffixIcon: const Icon(Icons.arrow_drop_down,
+                  color: Colours.primaryColour, size: 50),
             ),
             const SizedBox(height: 12),
             const Text(
@@ -142,6 +162,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
@@ -157,14 +178,19 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
             IFields(
               controller: widget.cardStartController,
-              hintText: 'Mulai Bekerja',
+              hintText: 'DD/MM/YYYY',
               keyboardType: TextInputType.datetime,
               overrideValidator: false,
+              suffixIcon: const Icon(
+                Icons.calendar_today,
+                color: Colours.primaryColour,
+              ),
             ),
             const SizedBox(height: 12),
             const Text(
@@ -172,14 +198,42 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
             IFields(
               controller: widget.cardStopController,
-              hintText: 'Akhir Bekerja',
+              hintText: 'DD/MM/YYYY',
               keyboardType: TextInputType.datetime,
               overrideValidator: false,
+              suffixIcon: const Icon(
+                Icons.calendar_today,
+                color: Colours.primaryColour,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colours.primaryColour,
+                  ),
+                  width: 28,
+                  height: 28,
+                ),
+                SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+                const Text(
+                  'Masih Bekerja Sampai Saat Ini',
+                  style: TextStyle(
+                    color: Colours.primaryColour,
+                    fontFamily: Fonts.inter,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ],
             ),
             const SizedBox(height: 12),
             const Text(
@@ -187,14 +241,18 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  fontFamily: Fonts.inter,
                   color: Colours.primaryColour),
             ),
             const SizedBox(height: 10),
             IFields(
               controller: widget.cardNumberController,
-              hintText: 'Kartu Akses (NFC)',
+              hintText: 'ID Kartu (NFC)',
               keyboardType: TextInputType.number,
               overrideValidator: false,
+              suffixIcon: SvgPicture.asset(
+                MediaRes.scanSmall,
+              ),
             ),
           ],
         ));

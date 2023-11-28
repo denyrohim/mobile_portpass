@@ -57,7 +57,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               controller: widget.nameController,
               hintText: 'Nama',
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
               'Email',
               style: TextStyle(
@@ -75,9 +75,9 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
                 return CoreUtils.emailValidator(value);
               },
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'Telepon',
+              'No. HP',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -86,11 +86,11 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.phoneController,
-              hintText: 'Telepon',
+              hintText: 'No. HP',
               keyboardType: TextInputType.phone,
               overrideValidator: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
               'Tanggal Lahir',
               style: TextStyle(
@@ -106,9 +106,9 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               overrideValidator: false,
               readOnly: true,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'Divisi',
+              'Bagian',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -117,13 +117,13 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.employeeDivisionIdController,
-              hintText: 'Divisi',
+              hintText: 'Bagian',
               keyboardType: TextInputType.number,
               overrideValidator: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'Jenis',
+              'Jenis Karyawan',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -132,13 +132,13 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.employeeTypeController,
-              hintText: 'Jenis',
+              hintText: 'Jenis Karyawan',
               keyboardType: TextInputType.text,
               overrideValidator: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'NIK',
+              'NIK / No. Batch',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -147,13 +147,13 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.nikController,
-              hintText: 'NIK',
+              hintText: 'NIK / No. Batch',
               keyboardType: TextInputType.number,
               overrideValidator: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'Tanggal Mulai Kerja',
+              'Mulai Bekerja',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -162,13 +162,13 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.cardStartController,
-              hintText: 'Tanggal Mulai Kerja',
+              hintText: 'Mulai Bekerja',
               keyboardType: TextInputType.datetime,
               overrideValidator: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'Tanggal Berhenti Kerja',
+              'Akhir Bekerja',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -177,13 +177,13 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.cardStopController,
-              hintText: 'Tanggal Berhenti Kerja',
+              hintText: 'Akhir Bekerja',
               keyboardType: TextInputType.datetime,
               overrideValidator: false,
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 12),
             const Text(
-              'Card Number',
+              'Kartu Akses (NFC)',
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -192,7 +192,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             const SizedBox(height: 10),
             IFields(
               controller: widget.cardNumberController,
-              hintText: 'Card Number',
+              hintText: 'Kartu Akses (NFC)',
               keyboardType: TextInputType.number,
               overrideValidator: false,
             ),

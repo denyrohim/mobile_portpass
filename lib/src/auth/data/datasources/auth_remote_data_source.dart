@@ -57,9 +57,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           },
         ),
       );
-      var user = result.data['data']['user'] as DataMap?;
-      final role = result.data['data']['role'] as String?;
-      user?.addEntries([MapEntry('role', role)]);
+      final user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {
         throw const ServerException(
@@ -101,9 +99,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
-      var user = result.data['data']['user'] as DataMap?;
-      final role = result.data['data']['role'] as String?;
-      user?.addEntries([MapEntry('role', role)]);
+      final user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {
         throw const ServerException(

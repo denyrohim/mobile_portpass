@@ -119,19 +119,6 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     initController;
   }
 
-  void debugprint() {
-    debugPrint("nameChanged: $nameChanged");
-    debugPrint("emailChanged: $emailChanged");
-    debugPrint("phoneChanged: $phoneChanged");
-    debugPrint("dateOfBirthChanged: $dateOfBirthChanged");
-    debugPrint("employeeDivisionIdChanged: $employeeDivisionIdChanged");
-    debugPrint("employeeTypeChanged: $employeeTypeChanged");
-    debugPrint("nikChanged: $nikChanged");
-    debugPrint("cardStartChanged: $cardStartChanged");
-    debugPrint("cardStopChanged: $cardStopChanged");
-    debugPrint("cardNumberChanged: $cardNumberChanged");
-  }
-
   @override
   void dispose() {
     nameController.dispose();
@@ -183,12 +170,30 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
-                      'https://placekitten.com/104/104',
-                      width: 104,
-                      height: 104,
-                      fit: BoxFit.cover,
-                    ),
+                    child: employee.photo != null
+                        ? Image.network(
+                            employee.photo!,
+                            width: 104,
+                            height: 104,
+                            fit: BoxFit.cover,
+                          )
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: Container(
+                              width: 104,
+                              height: 104,
+                              padding: const EdgeInsets.only(
+                                left: 10,
+                                top: 20,
+                                right: 10,
+                              ),
+                              color: Colours.secondaryColour,
+                              child: SvgPicture.asset(
+                                MediaRes.profileIcon,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
                   ),
                   Positioned(
                     bottom: 15,

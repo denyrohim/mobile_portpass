@@ -89,7 +89,7 @@ class EmployeeItem extends StatelessWidget {
                                     Colors.white.withOpacity(0.5),
                                     BlendMode.srcATop)
                                 : null,
-                            fit: BoxFit.fill)
+                            fit: BoxFit.cover)
                         : null,
                   ),
                   child: employees[employeeId].photo ==
@@ -103,6 +103,7 @@ class EmployeeItem extends StatelessWidget {
                               : null,
                           width: 34,
                           height: 34,
+                          fit: BoxFit.cover,
                         ))
                       : null,
                 ),

@@ -35,15 +35,15 @@ class GetEmployeesEvent extends EmployeeManagementEvent {
 
 class UpdateEmployeeEvent extends EmployeeManagementEvent {
   const UpdateEmployeeEvent({
-    required this.action,
-    required this.employeeData,
+    required this.actions,
+    required this.employee,
   });
 
-  final UpdateEmployeeAction action;
-  final Employee employeeData;
+  final List<UpdateEmployeeAction> actions;
+  final Employee employee;
 
   @override
-  List<Object> get props => [action, employeeData];
+  List<Object> get props => [actions, employee];
 }
 
 class UpdateCheckBoxEmployeeEvent extends EmployeeManagementEvent {

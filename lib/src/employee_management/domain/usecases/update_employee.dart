@@ -14,24 +14,24 @@ class UpdateEmployee
   @override
   ResultFuture<Employee> call(UpdateEmployeeParams params) =>
       _repository.updateEmployee(
-        action: params.action,
-        employeeData: params.employeeData,
+        actions: params.actions,
+        employee: params.employee,
       );
 }
 
 class UpdateEmployeeParams extends Equatable {
   const UpdateEmployeeParams({
-    required this.action,
-    required this.employeeData,
+    required this.actions,
+    required this.employee,
   });
 
-  const UpdateEmployeeParams.empty()
-      : action = UpdateEmployeeAction.name,
-        employeeData = '';
+  UpdateEmployeeParams.empty()
+      : actions = [UpdateEmployeeAction.name],
+        employee = const Employee.empty();
 
-  final dynamic employeeData;
-  final UpdateEmployeeAction action;
+  final List<UpdateEmployeeAction> actions;
+  final Employee employee;
 
   @override
-  List<Object?> get props => [action, employeeData];
+  List<Object?> get props => [actions, employee];
 }

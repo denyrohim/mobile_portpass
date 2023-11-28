@@ -154,7 +154,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         options: Options(
           headers: ApiHeaders.getHeaders(
             token: token,
-            isImageRequest: true,
           ).headers,
         ),
       );
@@ -187,7 +186,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         options: Options(
           headers: ApiHeaders.getHeaders(
             token: token,
-            isImageRequest: true,
           ).headers,
         ),
       );

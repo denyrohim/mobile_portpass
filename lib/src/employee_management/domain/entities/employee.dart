@@ -53,6 +53,14 @@ class Employee extends Equatable {
         email,
         nik,
         cardNumber,
+        phone,
+        dateOfBirth,
+        employeeDivisionId,
+        employeeType,
+        cardStart,
+        cardStop,
+        photo,
+        isChecked,
       ];
 
   @override

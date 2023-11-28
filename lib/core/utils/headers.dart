@@ -6,10 +6,9 @@ class ApiHeaders {
   static Options getHeaders({
     String? token,
     Map<String, String>? additionalHeaders,
-    bool isImageRequest = false,
   }) {
     Map<String, String> headers = {
-      "Content-Type": isImageRequest ? "image/*" : "application/json",
+      "Content-Type": "application/json",
     };
 
     if (token != null) {

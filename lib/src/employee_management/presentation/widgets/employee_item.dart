@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
+import 'package:port_pass_app/src/employee_management/presentation/views/edit_employee_screen.dart';
 
 class EmployeeItem extends StatelessWidget {
   const EmployeeItem(
@@ -140,7 +143,12 @@ class EmployeeItem extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           debugPrint('Masuk ke edit');
-                          debugPrint('photo ${employees[employeeId].photo!}');
+                          context.push(BlocProvider(
+                            create: (_) => sl<EmployeeManagementBloc>(),
+                            child: EditEmployeeScreen(
+                              employee: employees[employeeId],
+                            ),
+                          ));
                         },
                         child: Stack(
                           alignment: Alignment.center,

@@ -16,8 +16,8 @@ abstract class EmployeeManagementRepository {
   ResultFuture<List<Employee>> getEmployees();
 
   ResultFuture<Employee> updateEmployee({
-    required UpdateEmployeeAction action,
-    required dynamic employeeData,
+    required List<UpdateEmployeeAction> actions,
+    required Employee employee,
   });
 
   ResultFuture<List<Employee>> updateCheckBoxEmployee({

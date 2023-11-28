@@ -93,12 +93,12 @@ class EmployeeManagementBloc
     Emitter<EmployeeManagementState> emit,
   ) async {
     final result = await _updateEmployee(UpdateEmployeeParams(
-      action: event.action,
-      employeeData: event.employeeData,
+      actions: event.actions,
+      employee: event.employee,
     ));
     result.fold(
       (failure) => emit(EmployeeManagementError(failure.errorMessage)),
-      (_) => emit(const DataUpdated()),
+      (employee) => emit(DataUpdated(employee)),
     );
   }
 

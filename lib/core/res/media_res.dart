@@ -38,6 +38,7 @@ class MediaRes {
   // Logo
   static const logoPortPass = '$_baseImages/logo_port_pass.png';
   static const logoPortPassColor = '$_baseImages/logo_port_pass_color.png';
+  static const noProfilePicture = '$_baseImages/no_profile_picture.png';
 
   // Subjects
   static const flutterVectors = '$_baseVectors/flutter.png';

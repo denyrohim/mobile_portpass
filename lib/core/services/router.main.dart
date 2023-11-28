@@ -21,6 +21,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     //     settings: settings,
     //   );
 
+    case '/':
+      return _pageBuilder(
+        (_) => const AddEmployeeScreen(),
+        settings: settings,
+      );
+
     case SplashScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -65,6 +71,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case QRCodeActivityScreen.routeName:
       return _pageBuilder(
         (_) => const QRCodeActivityScreen(),
+        settings: settings,
+      );
+    case AddEmployeeScreen.routeName:
+      return _pageBuilder(
+        (_) => const AddEmployeeScreen(),
         settings: settings,
       );
     default:

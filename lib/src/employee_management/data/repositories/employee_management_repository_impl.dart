@@ -130,4 +130,14 @@ class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
       return Future.value(Left(ServerFailure.fromException(e)));
     }
   }
+
+  @override
+  ResultFuture<String> scanNFCEmployee() async {
+    try {
+      final result = await _remoteDataSource.scanNFCEmployee();
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
 }

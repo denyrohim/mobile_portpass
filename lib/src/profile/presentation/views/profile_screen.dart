@@ -13,6 +13,7 @@ import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/views/splash_screen.dart';
+import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:port_pass_app/src/profile/presentation/views/edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -135,6 +136,7 @@ class ProfileScreen extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () async {
                         context.read<AuthBloc>().add(const SignOutEvent());
+                        context.read<DashboardController>().resetIndex();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colours.primaryColour,

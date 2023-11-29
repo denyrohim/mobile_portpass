@@ -57,6 +57,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           },
         ),
       );
+      if (result.statusCode == 401) {
+        throw ServerException(
+          message: "Email or Password is incorrect",
+          statusCode: result.statusCode,
+        );
+      }
+      if (result.statusCode != 200) {
+        throw ServerException(
+          message: result.data['message'] as String? ?? "Error Occurred",
+          statusCode: result.statusCode,
+        );
+      }
       final user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {

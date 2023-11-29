@@ -26,6 +26,7 @@ import 'package:port_pass_app/src/employee_management/domain/usecases/add_employ
 import 'package:port_pass_app/src/employee_management/domain/usecases/cancel_check_box_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employees.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/scan_nfc_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/select_all_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_check_box_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_employee.dart';

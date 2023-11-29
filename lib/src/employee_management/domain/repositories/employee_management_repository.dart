@@ -32,4 +32,6 @@ abstract class EmployeeManagementRepository {
   ResultFuture<List<Employee>> selectAllEmployees({
     required List<Employee> employees,
   });
+
+  ResultFuture<String> scanNFCEmployee();
 }

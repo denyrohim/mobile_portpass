@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:port_pass_app/core/enums/update_employee_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
@@ -22,6 +23,7 @@ abstract class EmploymentManagementRemoteDataSource {
     required List<UpdateEmployeeAction> actions,
     required EmployeeModel employee,
   });
+  Future<String> scanNFCEmployee();
 }
 
 const kToken = 'token';
@@ -218,6 +220,44 @@ class EmploymentManagementRemoteDataSourceImpl
       }
 
       return EmployeeModel.fromMap(employee.toMap());
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<String> scanNFCEmployee() async {
+    try {
+      var availability = await FlutterNfcKit.nfcAvailability;
+      if (availability != NFCAvailability.available) {
+        throw const ServerException(
+            message: "Doesn't support NFC", statusCode: 400);
+      }
+      var tag = await FlutterNfcKit.poll(
+          timeout: const Duration(seconds: 20),
+          iosMultipleTagMessage: "Multiple tags found!",
+          iosAlertMessage: "Scan your tag");
+
+      late final String result;
+      if (tag.type == NFCTagType.iso7816) {
+        result = await FlutterNfcKit.transceive(
+          "00B0950000",
+          timeout: const Duration(seconds: 5),
+        ); // timeout is still Android-only, persist until next change
+      }
+      // iOS only: set alert message on-the-fly
+      // this will persist until finish()
+      // await FlutterNfcKit.setIosAlertMessage("Proses Scan!");
+
+      // Call finish() only once
+      await FlutterNfcKit.finish();
+      // iOS only: show alert/error message on finish
+      await FlutterNfcKit.finish(iosAlertMessage: "Success");
+      await FlutterNfcKit.finish(iosErrorMessage: "Failed");
+      return Future.value(result);
     } on ServerException {
       rethrow;
     } catch (e, s) {

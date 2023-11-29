@@ -38,6 +38,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   final cardStartController = TextEditingController();
   final cardStopController = TextEditingController();
   final cardNumberController = TextEditingController();
+  final stillWorkingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -75,6 +76,13 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       employee.cardStop?.trim() != cardStopController.text.trim();
   bool get cardNumberChanged =>
       employee.cardNumber.trim() != cardNumberController.text.trim();
+  bool get photoChanged => pickedImage != null;
+  bool get stillWorkingChanged {
+    if (employee.cardStop == null) {
+      return stillWorkingController.text.trim() != "true";
+    }
+    return stillWorkingController.text.trim() != "false";
+  }
 
   bool get nothingChanged =>
       !nameChanged &&
@@ -86,7 +94,9 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       !nikChanged &&
       !cardStartChanged &&
       !cardStopChanged &&
-      !cardNumberChanged;
+      !cardNumberChanged &&
+      !photoChanged &&
+      !stillWorkingChanged;
 
   void get initController {
     nameController.text = employee.name.trim();
@@ -99,6 +109,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     cardStartController.text = employee.cardStart.trim();
     cardStopController.text = employee.cardStop?.trim() ?? "";
     cardNumberController.text = employee.cardNumber.trim();
+    stillWorkingController.text = employee.cardStop == null ? "true" : "false";
 
     nameController.addListener(() => setState(() {}));
     emailController.addListener(() => setState(() {}));
@@ -110,6 +121,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     cardStartController.addListener(() => setState(() {}));
     cardStopController.addListener(() => setState(() {}));
     cardNumberController.addListener(() => setState(() {}));
+    stillWorkingController.addListener(() => setState(() {}));
   }
 
   @override
@@ -131,6 +143,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     cardStartController.dispose();
     cardStopController.dispose();
     cardNumberController.dispose();
+    stillWorkingController.dispose();
     super.dispose();
   }
 
@@ -140,15 +153,18 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
       listener: (context, state) {
         if (state is EmployeeManagementError) {
           CoreUtils.showSnackBar(context, state.message);
-        }
-        if (state is DataUpdated) {
+        } else if (state is DataUpdated) {
           employee = state.employee;
           CoreUtils.showSnackBar(context, "Data berhasil diubah");
+        } else if (state is NFCScanSuccess) {
+          CoreUtils.showSnackBar(
+              context, "NFC berhasil discan: ${state.nfcNumber}");
         }
       },
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
+            scrolledUnderElevation: 0,
             backgroundColor: Colours.primaryColour,
             leading: const NestedBackButton(),
             title: const Text(
@@ -244,6 +260,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                   cardStartController: cardStartController,
                   cardStopController: cardStopController,
                   cardNumberController: cardNumberController,
+                  stillWorkingController: stillWorkingController,
                   formKey: formKey,
                 ),
                 const SizedBox(height: 30),

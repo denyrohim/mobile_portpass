@@ -14,7 +14,7 @@ import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
-import 'package:port_pass_app/src/employee_management/presentation/widgets/edit_employee_form.dart';
+import 'package:port_pass_app/src/employee_management/presentation/widgets/employee_form.dart';
 
 class EditEmployeeScreen extends StatefulWidget {
   const EditEmployeeScreen({super.key, required this.employee});
@@ -249,7 +249,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
               ),
               children: [
                 const SizedBox(height: 40),
-                EditEmployeeForm(
+                EmployeeForm(
                   nameController: nameController,
                   emailController: emailController,
                   phoneController: phoneController,

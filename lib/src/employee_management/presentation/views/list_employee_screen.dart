@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:port_pass_app/core/common/app/providers/employee_division_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/employees_provider.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:port_pass_app/core/common/views/loading_view.dart';
@@ -157,6 +158,9 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
   void initState() {
     super.initState();
     context.read<EmployeeManagementBloc>().add(const GetEmployeesEvent());
+    context
+        .read<EmployeeManagementBloc>()
+        .add(const GetEmployeeDivisionEvent());
   }
 
   @override
@@ -183,6 +187,11 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
         } else if (state is SelectedAll) {
           debugPrint('Select All');
           context.read<EmployeesProvider>().initEmployees(state.employees);
+        }
+        if (state is EmployeeDivisionLoaded) {
+          context
+              .read<EmployeeDivisionProvider>()
+              .initEmployeeDivision(state.employeeDivisions);
         }
       },
       builder: (context, state) {

@@ -32,6 +32,7 @@ class APIEmployee {
 
   String get employees => "$kHost/employees";
   String get employeeDetail => "$employees/$id";
+  String get employeeDivision => "$kHost/bagian";
 }
 
 class APIAgent {

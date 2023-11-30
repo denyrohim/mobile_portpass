@@ -10,10 +10,10 @@ class LocalUser extends Equatable {
   });
 
   const LocalUser.empty()
-      : id = -99,
-        email = '',
-        name = '',
-        role = '',
+      : id = 1,
+        email = 'testing@admin.com',
+        name = 'testing',
+        role = 'employee',
         profileImg = '';
 
   final int id;

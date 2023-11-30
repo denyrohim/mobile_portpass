@@ -60,6 +60,8 @@ Future<void> _initEmployeeManagement() async {
         cancelCheckBoxEmployees: sl(),
         selectAllEmployees: sl(),
         scanNFCEmployee: sl(),
+        addPhoto: sl(),
+        getEmployeeDivision: sl(),
       ),
     )
     ..registerLazySingleton(() => AddEmployee(sl()))
@@ -70,6 +72,8 @@ Future<void> _initEmployeeManagement() async {
     ..registerLazySingleton(() => CancelCheckBoxEmployees(sl()))
     ..registerLazySingleton(() => SelectAllEmployees(sl()))
     ..registerLazySingleton(() => ScanNFCEmployee(sl()))
+    ..registerLazySingleton(() => AddPhoto(sl()))
+    ..registerLazySingleton(() => GetEmployeeDivision(sl()))
     ..registerLazySingleton<EmployeeManagementRepository>(
         () => EmployeeManagementRepositoryImpl(sl()))
     ..registerLazySingleton<EmploymentManagementRemoteDataSource>(

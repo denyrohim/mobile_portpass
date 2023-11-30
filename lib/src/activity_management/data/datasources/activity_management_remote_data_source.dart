@@ -83,6 +83,9 @@ class ActivityManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final activityResult = result.data['data']['activity'] as DataMap?;
@@ -119,6 +122,9 @@ class ActivityManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
     } on ServerException {
@@ -149,6 +155,9 @@ class ActivityManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final activityResult = result.data['data']['activity'] as DataMap?;
@@ -183,6 +192,9 @@ class ActivityManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final activityResult = result.data['data']['activity'] as List<DataMap?>?;
@@ -234,6 +246,9 @@ class ActivityManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final activityResult = result.data['data']['activity'] as DataMap?;
@@ -274,6 +289,9 @@ class ActivityManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final activityResult = result.data['data']['activity'] as DataMap?;

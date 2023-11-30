@@ -79,8 +79,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         kToken,
         result.data['data']['token'] as String,
       );
+      // const user = LocalUserModel.empty();
 
       return LocalUserModel.fromMap(user);
+      // return user;
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -101,6 +103,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         _api.auth.signInWithCredential,
         options: Options(
           headers: ApiHeaders.getHeaders(token: token).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
 
@@ -118,11 +123,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             message: "Please try again later", statusCode: 505);
       }
 
-      // await _sharedPreferences.remove(
-      //   kToken,
-      // );
-
       return LocalUserModel.fromMap(user);
+      // const user = LocalUserModel.empty();
+      // return user;
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -163,6 +166,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final user = result.data['data']['user'] as DataMap?;
@@ -185,23 +191,21 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final token = _sharedPreferences.getString(kToken);
 
-      if (token == null) {
-        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      if (token != null) {
+        await _dio.get(
+          _api.auth.logout,
+          options: Options(
+            headers: ApiHeaders.getHeaders(
+              token: token,
+            ).headers,
+            validateStatus: (status) {
+              return status! < 500;
+            },
+          ),
+        );
       }
 
-      await _dio.get(
-        _api.auth.logout,
-        options: Options(
-          headers: ApiHeaders.getHeaders(
-            token: token,
-          ).headers,
-        ),
-      );
-
-      final tokenRemoved = await _sharedPreferences.remove(kToken);
-      if (!tokenRemoved) {
-        throw const ServerException(message: "Not SignedIn", statusCode: 400);
-      }
+      await _sharedPreferences.remove(kToken);
     } on ServerException {
       rethrow;
     } catch (e, s) {

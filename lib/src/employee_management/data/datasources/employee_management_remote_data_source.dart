@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/enums/update_employee_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/headers.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/employee_management/data/models/employee_division_model.dart';
 import 'package:port_pass_app/src/employee_management/data/models/employee_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +28,11 @@ abstract class EmploymentManagementRemoteDataSource {
     required EmployeeModel employee,
   });
   Future<String> scanNFCEmployee();
+  Future<dynamic> addPhoto({
+    required String type,
+  });
+
+  Future<List<EmployeeDivisionModel>> getEmployeeDivision();
 }
 
 const kToken = 'token';
@@ -74,6 +83,9 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
     } on ServerException {
@@ -102,6 +114,9 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
     } on ServerException {
@@ -127,6 +142,9 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final listEmployees = result.data['data'] as List?;
@@ -211,6 +229,9 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final employeeData = result.data['data'] as DataMap?;
@@ -258,6 +279,80 @@ class EmploymentManagementRemoteDataSourceImpl
       await FlutterNfcKit.finish(iosAlertMessage: "Success");
       await FlutterNfcKit.finish(iosErrorMessage: "Failed");
       return Future.value(result);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<dynamic> addPhoto({required String type}) async {
+    try {
+      if (type != "remove") {
+        final result = await ImagePicker().pickImage(
+          source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50,
+          maxWidth: 150,
+        );
+
+        if (result == null) {
+          throw ServerException(
+              message: "$type can't be accessed", statusCode: 505);
+        }
+        final image = File(result.path);
+        // debugPrint("imagePath: $imagePath");
+        // final List<int> bytes = await result.readAsBytes();
+        // final String base64 = base64Encode(bytes);
+        return image;
+      } else {
+        return null;
+      }
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<List<EmployeeDivisionModel>> getEmployeeDivision() async {
+    try {
+      final token = _sharedPreferences.getString(kToken);
+
+      if (token == null) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
+
+      final result = await _dio.get(
+        _api.employee.employeeDivision,
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+      final listEmployeeDivision = result.data['data'] as List?;
+      if (listEmployeeDivision == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+      final employeeDivision =
+          listEmployeeDivision.map((e) => e as DataMap).toList();
+      // final employees =
+      //     List.generate(20, (index) => const EmployeeModel.empty());
+
+      return List<EmployeeDivisionModel>.from(
+        employeeDivision.map(
+          (e) => EmployeeDivisionModel.fromMap(e),
+        ),
+      );
+      // return employees;
     } on ServerException {
       rethrow;
     } catch (e, s) {

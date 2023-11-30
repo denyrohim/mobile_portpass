@@ -85,3 +85,21 @@ class ScanNFCEmployeeEvent extends EmployeeManagementEvent {
   @override
   List<Object> get props => [];
 }
+
+class AddPhotoEvent extends EmployeeManagementEvent {
+  const AddPhotoEvent({
+    required this.type,
+  });
+
+  final String type;
+
+  @override
+  List<Object> get props => [type];
+}
+
+class GetEmployeeDivisionEvent extends EmployeeManagementEvent {
+  const GetEmployeeDivisionEvent();
+
+  @override
+  List<Object> get props => [];
+}

@@ -1,10 +1,15 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/widgets/i_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
+import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
+import 'package:port_pass_app/src/employee_management/presentation/widgets/calendar_widget.dart';
+import 'package:port_pass_app/src/employee_management/presentation/widgets/scan_nfc_employee_widget.dart';
 
 class EmployeeForm extends StatefulWidget {
   const EmployeeForm({
@@ -18,6 +23,7 @@ class EmployeeForm extends StatefulWidget {
     required this.cardStartController,
     required this.cardStopController,
     required this.cardNumberController,
+    required this.stillWorkingController,
     required this.formKey,
     super.key,
   });
@@ -32,6 +38,7 @@ class EmployeeForm extends StatefulWidget {
   final TextEditingController cardStartController;
   final TextEditingController cardStopController;
   final TextEditingController cardNumberController;
+  final TextEditingController stillWorkingController;
   final GlobalKey<FormState> formKey;
 
   @override
@@ -43,6 +50,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
 
   @override
   Widget build(BuildContext context) {
+    widget.stillWorkingController.addListener(() => setState(() {}));
     return Form(
         key: widget.formKey,
         child: Column(
@@ -116,6 +124,17 @@ class _EmployeeFormState extends State<EmployeeForm> {
               ),
               overrideValidator: false,
               readOnly: true,
+              onTap: () {
+                showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CalendarWidget(
+                      dateController: widget.dateOfBirthController,
+                    );
+                  },
+                );
+              },
             ),
             const SizedBox(height: 12),
             const Text(
@@ -156,6 +175,66 @@ class _EmployeeFormState extends State<EmployeeForm> {
               suffixIcon: const Icon(Icons.arrow_drop_down,
                   color: Colours.primaryColour, size: 50),
             ),
+            // IDropdown(
+            //   controller: widget.employeeTypeController,
+            //   hintText: 'Pilih',
+            //   fillColor: Colours.secondaryColour,
+            //   items: const [
+            //     DropdownMenuItem(
+            //       value: "Pilih",
+            //       enabled: false,
+            //       child: Column(
+            //         crossAxisAlignment: CrossAxisAlignment.start,
+            //         children: [
+            //           Text(
+            //             'Pilih',
+            //             style: TextStyle(
+            //               color: Colours.primaryColour,
+            //               fontFamily: Fonts.inter,
+            //               fontSize: 16,
+            //               fontWeight: FontWeight.w400,
+            //             ),
+            //           ),
+            //           SizedBox(height: 18),
+            //           Divider(
+            //             color: Colours.primaryColour,
+            //             height: 2,
+            //             thickness: 1,
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     DropdownMenuItem(
+            //       value: "Non Organik",
+            //       child: Text(
+            //         'Non Organik',
+            //         style: TextStyle(
+            //           color: Colours.primaryColour,
+            //           fontFamily: Fonts.inter,
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w400,
+            //         ),
+            //       ),
+            //     ),
+            //     DropdownMenuItem(
+            //       value: "Organik",
+            //       child: Text(
+            //         'Organik',
+            //         style: TextStyle(
+            //           fontSize: 16,
+            //           fontWeight: FontWeight.w400,
+            //           fontFamily: Fonts.inter,
+            //           color: Colours.primaryColour,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            //   suffixIcon: const Icon(
+            //     Icons.arrow_drop_down,
+            //     color: Colours.primaryColour,
+            //     size: 50,
+            //   ),
+            // ),
             const SizedBox(height: 12),
             const Text(
               'NIK / No. Batch',
@@ -170,6 +249,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
               controller: widget.nikController,
               hintText: 'NIK / No. Batch',
               keyboardType: TextInputType.number,
+              fillColor: Colours.primaryColour,
               overrideValidator: false,
             ),
             const SizedBox(height: 12),
@@ -191,37 +271,83 @@ class _EmployeeFormState extends State<EmployeeForm> {
                 Icons.calendar_today,
                 color: Colours.primaryColour,
               ),
+              readOnly: true,
+              onTap: () {
+                showModalBottomSheet<void>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return CalendarWidget(
+                      dateController: widget.cardStartController,
+                    );
+                  },
+                );
+              },
             ),
-            const SizedBox(height: 12),
-            const Text(
-              'Akhir Bekerja',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: Fonts.inter,
-                  color: Colours.primaryColour),
-            ),
-            const SizedBox(height: 10),
-            IFields(
-              controller: widget.cardStopController,
-              hintText: 'DD/MM/YYYY',
-              keyboardType: TextInputType.datetime,
-              overrideValidator: false,
-              suffixIcon: const Icon(
-                Icons.calendar_today,
-                color: Colours.primaryColour,
+            if (widget.stillWorkingController.text == "false") ...[
+              const SizedBox(height: 12),
+              const Text(
+                'Akhir Bekerja',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: Fonts.inter,
+                    color: Colours.primaryColour),
               ),
-            ),
+              const SizedBox(height: 10),
+              IFields(
+                controller: widget.cardStopController,
+                hintText: 'DD/MM/YYYY',
+                keyboardType: TextInputType.datetime,
+                overrideValidator: false,
+                suffixIcon: const Icon(
+                  Icons.calendar_today,
+                  color: Colours.primaryColour,
+                ),
+                readOnly: true,
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CalendarWidget(
+                        dateController: widget.cardStopController,
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
             const SizedBox(height: 12),
             Row(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colours.primaryColour,
-                  ),
-                  width: 28,
-                  height: 28,
+                GestureDetector(
+                  onTap: () {
+                    widget.stillWorkingController.text == "true"
+                        ? widget.stillWorkingController.text = "false"
+                        : widget.stillWorkingController.text = "true";
+                  },
+                  child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colours.primaryColour,
+                      ),
+                      width: 28,
+                      height: 28,
+                      child: widget.stillWorkingController.text == "true"
+                          ? Container(
+                              margin: const EdgeInsets.all(3),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colours.secondaryColour,
+                              ),
+                              child: const Icon(
+                                Icons.check,
+                                color: Colours.primaryColour,
+                                size: 20,
+                              ),
+                            )
+                          : null),
                 ),
                 SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                 const Text(
@@ -246,6 +372,20 @@ class _EmployeeFormState extends State<EmployeeForm> {
             ),
             const SizedBox(height: 10),
             IFields(
+              readOnly: true,
+              onTap: () {
+                showModalBottomSheet<void>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return BlocProvider(
+                      create: (_) => sl<EmployeeManagementBloc>(),
+                      child: ScanNFCEmployeeWidget(
+                        cardNumberController: widget.cardNumberController,
+                      ),
+                    );
+                  },
+                );
+              },
               controller: widget.cardNumberController,
               hintText: 'ID Kartu (NFC)',
               keyboardType: TextInputType.number,

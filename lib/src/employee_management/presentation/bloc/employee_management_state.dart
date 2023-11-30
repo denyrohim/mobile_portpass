@@ -91,3 +91,39 @@ class DataUpdated extends EmployeeManagementState {
   @override
   List<Object> get props => [employee];
 }
+
+class NFCScanSuccess extends EmployeeManagementState {
+  const NFCScanSuccess(this.nfcNumber);
+
+  final String nfcNumber;
+
+  @override
+  List<Object> get props => [nfcNumber];
+}
+
+class NFCScanFailed extends EmployeeManagementState {
+  const NFCScanFailed(this.failureMessage);
+
+  final String failureMessage;
+
+  @override
+  List<Object> get props => [failureMessage];
+}
+
+class PhotoAdded extends EmployeeManagementState {
+  const PhotoAdded(this.photo);
+
+  final dynamic photo;
+
+  @override
+  List<Object> get props => [photo];
+}
+
+class EmployeeDivisionLoaded extends EmployeeManagementState {
+  const EmployeeDivisionLoaded(this.employeeDivisions);
+
+  final List<EmployeeDivision> employeeDivisions;
+
+  @override
+  List<Object> get props => [employeeDivisions];
+}

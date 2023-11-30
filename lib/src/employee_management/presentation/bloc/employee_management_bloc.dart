@@ -3,10 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'package:port_pass_app/core/enums/update_employee_action.dart';
 
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
+import 'package:port_pass_app/src/employee_management/domain/entities/employee_division.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/add_employee.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/cancel_check_box_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/get_employee_division.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employees.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/scan_nfc_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/select_all_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_check_box_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_employee.dart';
@@ -24,6 +28,9 @@ class EmployeeManagementBloc
     required UpdateCheckBoxEmployee updateCheckBoxEmployee,
     required CancelCheckBoxEmployees cancelCheckBoxEmployees,
     required SelectAllEmployees selectAllEmployees,
+    required ScanNFCEmployee scanNFCEmployee,
+    required AddPhoto addPhoto,
+    required GetEmployeeDivision getEmployeeDivision,
   })  : _addEmployee = addEmployee,
         _deleteEmployees = deleteEmployees,
         _updateEmployee = updateEmployee,
@@ -31,6 +38,9 @@ class EmployeeManagementBloc
         _updateCheckBoxEmployee = updateCheckBoxEmployee,
         _cancelCheckBoxEmployees = cancelCheckBoxEmployees,
         _selectAllEmployees = selectAllEmployees,
+        _scanNFCEmployee = scanNFCEmployee,
+        _addPhoto = addPhoto,
+        _getEmployeeDivision = getEmployeeDivision,
         super(const EmployeeManagementInitial()) {
     on<EmployeeManagementEvent>((event, emit) {
       emit(const EmployeeManagementLoading());
@@ -42,6 +52,9 @@ class EmployeeManagementBloc
     on<UpdateCheckBoxEmployeeEvent>(_updateCheckBoxEmployeeHandler);
     on<CancelCheckBoxEmployeeEvent>(_cancelCheckBoxEmployeeHandler);
     on<SelectAllEmployeesEvent>(_selectAllEmployeesHandler);
+    on<ScanNFCEmployeeEvent>(_scanNFCEmployeeHandler);
+    on<AddPhotoEvent>(_addPhotoHandler);
+    on<GetEmployeeDivisionEvent>(getEmployeeDivisionHandler);
   }
   final AddEmployee _addEmployee;
   final DeleteEmployees _deleteEmployees;
@@ -50,6 +63,9 @@ class EmployeeManagementBloc
   final UpdateCheckBoxEmployee _updateCheckBoxEmployee;
   final CancelCheckBoxEmployees _cancelCheckBoxEmployees;
   final SelectAllEmployees _selectAllEmployees;
+  final ScanNFCEmployee _scanNFCEmployee;
+  final AddPhoto _addPhoto;
+  final GetEmployeeDivision _getEmployeeDivision;
 
   Future<void> _addEmployeeHandler(
     AddEmployeeEvent event,
@@ -157,6 +173,39 @@ class EmployeeManagementBloc
         emit(SelectedAll(employees));
         return employees;
       },
+    );
+  }
+
+  Future<void> _scanNFCEmployeeHandler(
+    ScanNFCEmployeeEvent event,
+    Emitter<EmployeeManagementState> emit,
+  ) async {
+    final result = await _scanNFCEmployee();
+    return result.fold(
+      (failure) => emit(NFCScanFailed(failure.errorMessage)),
+      (nfcNumber) => emit(NFCScanSuccess(nfcNumber)),
+    );
+  }
+
+  Future<void> _addPhotoHandler(
+    AddPhotoEvent event,
+    Emitter<EmployeeManagementState> emit,
+  ) async {
+    final result = await _addPhoto(event.type);
+    return result.fold(
+      (failure) => emit(EmployeeManagementError(failure.errorMessage)),
+      (photo) => emit(PhotoAdded(photo)),
+    );
+  }
+
+  Future<void> getEmployeeDivisionHandler(
+    GetEmployeeDivisionEvent event,
+    Emitter<EmployeeManagementState> emit,
+  ) async {
+    final result = await _getEmployeeDivision();
+    return result.fold(
+      (failure) => emit(EmployeeManagementError(failure.errorMessage)),
+      (employeeDivisions) => emit(EmployeeDivisionLoaded(employeeDivisions)),
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:port_pass_app/core/common/widgets/rounded_button.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
-import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/widgets/sign_in_form.dart';
 import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
@@ -43,65 +42,73 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (_, state) {
           if (state is AuthError) {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedIn) {
-            context.read<UserProvider>().initUser(state.user as LocalUserModel);
+            context.read<UserProvider>().initUser(state.user);
             Navigator.pushReplacementNamed(context, Dashboard.routeName);
           }
         },
         builder: (context, state) {
           return GradientBackground(
             image: MediaRes.defaultBackground,
-            child: Center(
-              child: ContainerCard(
-                header: Container(
-                  width: 72,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Colours.primaryColour,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    shape: BoxShape.rectangle,
-                  ),
-                ),
+            child: ContainerCard(
+              backgroundColor: Colours.secondaryColour,
+              header: Stack(
                 children: [
-                  Image.asset(
-                    MediaRes.logoPortPassColor,
-                    height: 172,
-                  ),
-                  const SizedBox(height: 20),
-                  SignInForm(
-                    emailController: emailController,
-                    passwordController: passwordController,
-                    formKey: formKey,
-                  ),
-                  const SizedBox(height: 30),
-                  if (state is AuthLoading)
-                    const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  else
-                    RoundedButton(
-                      onPressed: () {
-                        FocusManager.instance.primaryFocus?.unfocus();
-                        if (formKey.currentState!.validate()) {
-                          context.read<AuthBloc>().add(
-                                SignInEvent(
-                                  email: emailController.text.trim(),
-                                  password: passwordController.text.trim(),
-                                ),
-                              );
-                        }
-                      },
-                      text: 'Masuk',
+                  Container(
+                    width: 72,
+                    height: 8,
+                    decoration: const BoxDecoration(
+                      color: Colours.primaryColour,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(20),
+                      ),
+                      shape: BoxShape.rectangle,
                     ),
-                  const SizedBox(height: 30),
+                  ),
                 ],
               ),
+              mediaHeight: 0.86,
+              children: [
+                const SizedBox(
+                  height: 20,
+                ),
+                Image.asset(
+                  MediaRes.logoPortPassColor,
+                  height: 172,
+                ),
+                const SizedBox(height: 20),
+                SignInForm(
+                  emailController: emailController,
+                  passwordController: passwordController,
+                  formKey: formKey,
+                ),
+                const SizedBox(height: 30),
+                if (state is AuthLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                else
+                  RoundedButton(
+                    onPressed: () {
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      if (formKey.currentState!.validate()) {
+                        context.read<AuthBloc>().add(
+                              SignInEvent(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim(),
+                              ),
+                            );
+                      }
+                    },
+                    text: 'Masuk',
+                  ),
+                const SizedBox(height: 30),
+              ],
             ),
           );
         },

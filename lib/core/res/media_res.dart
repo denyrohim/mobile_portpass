@@ -30,6 +30,10 @@ class MediaRes {
   static const changePhotoProfileIcon = '$_baseIcons/change_photo_profile.svg';
   static const cameraIcon = '$_baseIcons/camera.svg';
   static const galleryIcon = '$_baseIcons/gallery.svg';
+  static const scanNFCIcon = '$_baseIcons/scan_nfc_icon.svg';
+  static const loadingNFCIcon = '$_baseIcons/loading_nfc_icon.svg';
+  static const successNFCIcon = '$_baseIcons/success_nfc_icon.svg';
+  static const failedNFCIcon = '$_baseIcons/failed_nfc_icon.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

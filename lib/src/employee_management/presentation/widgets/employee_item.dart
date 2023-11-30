@@ -81,7 +81,8 @@ class EmployeeItem extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: Colours.profileBackgroundColour,
                     image: employees[employeeId].photo !=
-                            'http://localhost/images/ex-photo.png'
+                                'http://localhost/images/ex-photo.png' &&
+                            employees[employeeId].photo != null
                         ? DecorationImage(
                             image: NetworkImage(employees[employeeId].photo!),
                             colorFilter: isShowCheckBox

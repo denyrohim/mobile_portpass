@@ -22,6 +22,7 @@ class EmployeeItem extends StatefulWidget {
     this.isCheck = false,
     required this.onChanged
   });
+  
 
   @override
   State<EmployeeItem> createState() => _EmployeeItemState();

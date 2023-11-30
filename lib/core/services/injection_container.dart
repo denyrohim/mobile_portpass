@@ -23,9 +23,12 @@ import 'package:port_pass_app/src/employee_management/data/datasources/employee_
 import 'package:port_pass_app/src/employee_management/data/repositories/employee_management_repository_impl.dart';
 import 'package:port_pass_app/src/employee_management/domain/repositories/employee_management_repository.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/add_employee.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/cancel_check_box_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/get_employee_division.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employees.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/scan_nfc_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/select_all_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_check_box_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/update_employee.dart';

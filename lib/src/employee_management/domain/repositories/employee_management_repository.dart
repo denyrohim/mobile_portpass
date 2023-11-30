@@ -1,6 +1,7 @@
 import 'package:port_pass_app/core/enums/update_employee_action.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
+import 'package:port_pass_app/src/employee_management/domain/entities/employee_division.dart';
 
 abstract class EmployeeManagementRepository {
   const EmployeeManagementRepository();
@@ -32,4 +33,12 @@ abstract class EmployeeManagementRepository {
   ResultFuture<List<Employee>> selectAllEmployees({
     required List<Employee> employees,
   });
+
+  ResultFuture<String> scanNFCEmployee();
+
+  ResultFuture<dynamic> addPhoto({
+    required String type,
+  });
+
+  ResultFuture<List<EmployeeDivision>> getEmployeeDivision();
 }

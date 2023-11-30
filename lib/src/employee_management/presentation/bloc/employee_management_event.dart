@@ -66,7 +66,7 @@ class CancelCheckBoxEmployeeEvent extends EmployeeManagementEvent {
 
   final List<Employee> employees;
   @override
-  List<Object> get props => [];
+  List<Object> get props => [employees];
 }
 
 class SelectAllEmployeesEvent extends EmployeeManagementEvent {
@@ -75,6 +75,31 @@ class SelectAllEmployeesEvent extends EmployeeManagementEvent {
   });
 
   final List<Employee> employees;
+  @override
+  List<Object> get props => [employees];
+}
+
+class ScanNFCEmployeeEvent extends EmployeeManagementEvent {
+  const ScanNFCEmployeeEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AddPhotoEvent extends EmployeeManagementEvent {
+  const AddPhotoEvent({
+    required this.type,
+  });
+
+  final String type;
+
+  @override
+  List<Object> get props => [type];
+}
+
+class GetEmployeeDivisionEvent extends EmployeeManagementEvent {
+  const GetEmployeeDivisionEvent();
+
   @override
   List<Object> get props => [];
 }

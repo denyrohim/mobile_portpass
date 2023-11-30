@@ -2,62 +2,52 @@ import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 
-class IFields extends StatelessWidget {
-  const IFields({
+class IDropdown extends StatelessWidget {
+  const IDropdown({
     super.key,
-    this.validator,
     required this.controller,
     this.filled = false,
     this.fillColor,
-    this.obscureText = false,
-    this.readOnly = false,
     this.suffixIcon,
     this.hintText,
-    this.keyboardType,
-    this.overrideValidator = false,
     this.hintStyle,
-    this.onTap,
+    required this.items,
   });
 
-  final String? Function(String?)? validator;
   final TextEditingController controller;
   final bool filled;
   final Color? fillColor;
-  final bool obscureText;
-  final bool readOnly;
   final Widget? suffixIcon;
   final String? hintText;
-  final TextInputType? keyboardType;
-  final bool overrideValidator;
   final TextStyle? hintStyle;
-  final void Function()? onTap;
+  final List<DropdownMenuItem<String>>? items;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      enableInteractiveSelection: onTap == null,
-      controller: controller,
-      validator: overrideValidator
-          ? validator
-          : (value) {
-              if (value == null || value.isEmpty) {
-                return '**Field tidak boleh kosong';
-              }
-              return validator?.call(value);
-            },
-      onTapOutside: (_) {
-        FocusScope.of(context).unfocus();
+    return DropdownButtonFormField(
+      iconSize: 50,
+      icon: suffixIcon,
+      value: controller.text,
+      onChanged: (value) {
+        controller.text = value.toString();
       },
-      onTap: onTap,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
+      hint: hintText != null
+          ? Text(
+              hintText!,
+              style: hintStyle ??
+                  const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+            )
+          : null,
+      items: items ?? [],
+      dropdownColor: fillColor,
       style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w400,
-        color: Colours.primaryColour,
-        fontFamily: Fonts.inter,
-      ),
-      readOnly: readOnly,
+          fontSize: 36,
+          fontWeight: FontWeight.bold,
+          fontFamily: Fonts.inter,
+          color: Colours.primaryColour),
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -70,13 +60,15 @@ class IFields extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide(color: Theme.of(context).primaryColor),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+        contentPadding: const EdgeInsets.only(left: 20),
         filled: filled,
         fillColor: fillColor,
-        suffixIcon: suffixIcon,
+        // suffixIcon: suffixIcon,
         hintText: hintText,
         hintStyle: hintStyle ??
             const TextStyle(
+              color: Colours.primaryColour,
+              fontFamily: Fonts.inter,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),

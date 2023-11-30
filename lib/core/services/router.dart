@@ -4,6 +4,7 @@ import 'package:port_pass_app/src/activity_management/presentation/views/qr_code
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
+// ignore: unused_import
 import 'package:port_pass_app/src/employee_management/presentation/views/add_employee_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';

@@ -25,13 +25,13 @@ class SignInEvent extends AuthEvent {
 }
 
 class UpdateUserEvent extends AuthEvent {
-  const UpdateUserEvent({required this.action, required this.userData});
+  const UpdateUserEvent({required this.actions, required this.userData});
 
-  final UpdateUserAction action;
+  final List<UpdateUserAction> actions;
   final LocalUser userData;
 
   @override
-  List<Object> get props => [action, userData];
+  List<Object> get props => [actions, userData];
 }
 
 class SignOutEvent extends AuthEvent {
@@ -39,4 +39,15 @@ class SignOutEvent extends AuthEvent {
 
   @override
   List<Object> get props => [];
+}
+
+class AddPhotoEvent extends AuthEvent {
+  const AddPhotoEvent({
+    required this.type,
+  });
+
+  final String type;
+
+  @override
+  List<Object> get props => [type];
 }

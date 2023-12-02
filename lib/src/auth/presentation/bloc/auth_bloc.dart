@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:port_pass_app/core/enums/update_user_action.dart';
 
 import 'package:port_pass_app/src/auth/domain/entities/user.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:equatable/equatable.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
@@ -17,10 +18,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required SignInWithCredential signInWithCredential,
     required UpdateUser updateUser,
     required SignOut signOut,
+    required AddPhoto addPhoto,
   })  : _signIn = signIn,
         _signInWithCredential = signInWithCredential,
         _updateUser = updateUser,
         _signOut = signOut,
+        _addPhoto = addPhoto,
         super(const AuthInitial()) {
     on<AuthEvent>((event, emit) {
       emit(const AuthLoading());
@@ -29,11 +32,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInEvent>(_signInHandler);
     on<UpdateUserEvent>(_updateUserHandler);
     on<SignOutEvent>(signOutHandler);
+    on<AddPhotoEvent>(_addPhotoHandler);
   }
   final SignIn _signIn;
   final SignInWithCredential _signInWithCredential;
   final UpdateUser _updateUser;
   final SignOut _signOut;
+  final AddPhoto _addPhoto;
 
   Future<void> _signInWithCredentialHandler(
     SignInWithCredentialEvent event,
@@ -65,7 +70,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     final result = await _updateUser(UpdateUserParams(
-      action: event.action,
+      actions: event.actions,
       userData: event.userData,
     ));
     result.fold(
@@ -82,6 +87,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     result.fold(
       (failure) => emit(AuthError(failure.errorMessage)),
       (_) => emit(const NotSignedIn()),
+    );
+  }
+
+  Future<void> _addPhotoHandler(
+    AddPhotoEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    final result = await _addPhoto(event.type);
+    return result.fold(
+      (failure) => emit(EditUserError(failure.errorMessage)),
+      (photo) => emit(PhotoProfileAdded(photo)),
     );
   }
 }

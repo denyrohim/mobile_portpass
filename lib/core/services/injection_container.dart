@@ -13,6 +13,7 @@ import 'package:port_pass_app/src/activity_management/domain/usecase/update_item
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_out.dart';
@@ -23,7 +24,7 @@ import 'package:port_pass_app/src/employee_management/data/datasources/employee_
 import 'package:port_pass_app/src/employee_management/data/repositories/employee_management_repository_impl.dart';
 import 'package:port_pass_app/src/employee_management/domain/repositories/employee_management_repository.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/add_employee.dart';
-import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/cancel_check_box_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employee_division.dart';

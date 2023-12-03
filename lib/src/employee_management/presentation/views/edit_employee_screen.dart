@@ -100,7 +100,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
     cardNumberController.text = employee.cardNumber.trim();
     stillWorkingController.text = employee.cardStop == null ? "true" : "false";
     photoController.text = employee.photo ?? "";
-    context.read<FileProvider>().initFilePathEditEmployee(employee.photo!);
+    context.read<FileProvider>().initFilePathEditEmployee(employee.photo);
 
     nameController.addListener(() => setState(() {}));
     emailController.addListener(() => setState(() {}));

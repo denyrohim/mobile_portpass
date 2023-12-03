@@ -59,8 +59,8 @@ class EmploymentManagementRemoteDataSourceImpl
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-
-      await _dio.post(
+      debugPrint("employeeDataPhoto: ${employeeData.photo}");
+      final result = await _dio.post(
         _api.employee.employees,
         data: {
           "bagian_id": employeeData.employeeDivisionId,
@@ -83,11 +83,18 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          // receiveDataWhenStatusError: true,
           validateStatus: (status) {
-            return status! < 500;
+            return true;
           },
         ),
       );
+
+      if (result.statusCode != 200) {
+        throw ServerException(
+            message: result.data['message'] ?? "Data tidak terkirim",
+            statusCode: result.statusCode ?? 505);
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -104,9 +111,10 @@ class EmploymentManagementRemoteDataSourceImpl
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
+      debugPrint("ids: $ids");
 
-      await _dio.delete(
-        _api.employee.employees,
+      final result = await _dio.post(
+        "${_api.employee.employees}/delete-list",
         data: {
           "ids": ids,
         },
@@ -114,11 +122,17 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
-          validateStatus: (status) {
-            return status! < 500;
-          },
+          receiveDataWhenStatusError: true,
+          // validateStatus: (status) {
+          //   return status! < 500;
+          // },
         ),
       );
+      if (result.statusCode != 200) {
+        throw ServerException(
+            message: result.data['message'] ?? "Data tidak terkirim",
+            statusCode: result.statusCode ?? 505);
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -152,7 +166,23 @@ class EmploymentManagementRemoteDataSourceImpl
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
-      final employees = listEmployees.map((e) => e as DataMap).toList();
+      var employees = listEmployees.map((e) => e as DataMap).toList();
+      // change photo path
+      employees = employees.map((e) {
+        final photo = e['photo'] as String?;
+        if (photo != null) {
+          if (photo.split('/').first == "https:") {
+            e['photo'] = null;
+          } else {
+            final photoPath = photo.split('/').last;
+            debugPrint("${_api.baseUrl}/images/employee/$photoPath");
+
+            e['photo'] = "${_api.baseUrl}/images/employee/$photoPath";
+          }
+        }
+        return e;
+      }).toList();
+
       // final employees =
       //     List.generate(20, (index) => const EmployeeModel.empty());
 
@@ -234,11 +264,14 @@ class EmploymentManagementRemoteDataSourceImpl
           },
         ),
       );
-      final employeeData = result.data['data'] as DataMap?;
+      var employeeData = result.data['data'] as DataMap?;
       if (employeeData == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+      // change photo path
+      // final photoPath = employeeData['photo'].split('/').last;
+      // employeeData['photo'] = "${_api.baseUrl}/images/employee/$photoPath}";
 
       return EmployeeModel.fromMap(employee.toMap());
     } on ServerException {
@@ -262,13 +295,13 @@ class EmploymentManagementRemoteDataSourceImpl
           iosMultipleTagMessage: "Multiple tags found!",
           iosAlertMessage: "Scan your tag");
 
-      late final String result;
-      if (tag.type == NFCTagType.iso7816) {
-        result = await FlutterNfcKit.transceive(
-          "00B0950000",
-          timeout: const Duration(seconds: 5),
-        ); // timeout is still Android-only, persist until next change
-      }
+      // late final String result;
+      // if (tag.type == NFCTagType.iso7816) {
+      //   result = await FlutterNfcKit.transceive(
+      //     "00B0950000",
+      //     timeout: const Duration(seconds: 5),
+      //   ); // timeout is still Android-only, persist until next change
+      // }
       // iOS only: set alert message on-the-fly
       // this will persist until finish()
       // await FlutterNfcKit.setIosAlertMessage("Proses Scan!");
@@ -278,7 +311,7 @@ class EmploymentManagementRemoteDataSourceImpl
       // iOS only: show alert/error message on finish
       await FlutterNfcKit.finish(iosAlertMessage: "Success");
       await FlutterNfcKit.finish(iosErrorMessage: "Failed");
-      return Future.value(result);
+      return Future.value(tag.applicationData);
     } on ServerException {
       rethrow;
     } catch (e, s) {

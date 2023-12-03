@@ -13,6 +13,8 @@ class API {
         agent = APIAgent(id: id),
         activity = APIActivity(id: id),
         items = APIItems(id: id);
+
+  String get baseUrl => kBaseUrl;
 }
 
 class APIAuth {

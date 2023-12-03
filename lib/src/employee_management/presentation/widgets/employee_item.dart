@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/src/employee_management/presentation/widgets/employee_confirmation_button.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
@@ -80,9 +81,29 @@ class EmployeeItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colours.profileBackgroundColour,
-                    image: employees[employeeId].photo !=
-                                'http://localhost/images/ex-photo.png' &&
-                            employees[employeeId].photo != null
+                    // photoController.text != ""
+                    //                 ? Image.network(
+                    //                     photoController.text,
+                    //                     width: 104,
+                    //                     height: 104,
+                    //                     fit: BoxFit.cover,
+                    //                   )
+                    // : Container(
+                    //     width: 104,
+                    //     height: 104,
+                    //     padding: const EdgeInsets.only(
+                    //       left: 24,
+                    //       top: 24,
+                    //       right: 24,
+                    //       bottom: 24,
+                    //     ),
+                    //     color: Colours.profileBackgroundColour,
+                    //     child: SvgPicture.asset(
+                    //       MediaRes.profileIcon,
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    image: employees[employeeId].photo != null
                         ? DecorationImage(
                             image: NetworkImage(employees[employeeId].photo!),
                             colorFilter: isShowCheckBox
@@ -93,8 +114,7 @@ class EmployeeItem extends StatelessWidget {
                             fit: BoxFit.cover)
                         : null,
                   ),
-                  child: employees[employeeId].photo ==
-                          'http://localhost/images/ex-photo.png'
+                  child: employees[employeeId].photo == null
                       ? Center(
                           child: SvgPicture.asset(
                           MediaRes.profileIcon,
@@ -178,6 +198,29 @@ class EmployeeItem extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           debugPrint('Masuk ke delete');
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BlocProvider(
+                                create: (_) => sl<EmployeeManagementBloc>(),
+                                child: EmployeeConfirmationButton(
+                                  text: 'Yakin hapus?',
+                                  textStyle: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colours.primaryColour,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  textButtonNegative: 'Batal',
+                                  textButtonPositive: 'Hapus',
+                                  colorTextButtonNegative:
+                                      Colours.primaryColour,
+                                  colorTextButtonPositive: Colours.errorColour,
+                                  employeesIds: [employeeId],
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: Stack(
                           alignment: Alignment.center,

@@ -17,8 +17,23 @@ class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
   @override
   ResultFuture<void> addEmployee({required employeeData}) async {
     try {
+      final employeeModel = EmployeeModel(
+        id: employeeData.id,
+        name: employeeData.name,
+        email: employeeData.email,
+        phone: employeeData.phone,
+        dateOfBirth: employeeData.dateOfBirth,
+        employeeDivisionId: employeeData.employeeDivisionId,
+        employeeType: employeeData.employeeType,
+        nik: employeeData.nik,
+        cardStart: employeeData.cardStart,
+        cardStop: employeeData.cardStop,
+        cardNumber: employeeData.cardNumber,
+        photo: employeeData.photo,
+        isChecked: employeeData.isChecked,
+      );
       final result = await _remoteDataSource.addEmployee(
-        employeeData: employeeData,
+        employeeData: employeeModel,
       );
       return Right(result);
     } on ServerException catch (e) {

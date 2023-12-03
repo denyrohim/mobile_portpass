@@ -152,7 +152,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataAdded) {
           initController;
-          CoreUtils.showSnackBar(context, "Data berhasil diubah");
+          context.read<FileProvider>().resetAddEmployee();
+          CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
         } else if (state is NFCScanSuccess) {
           CoreUtils.showSnackBar(
               context, "NFC berhasil discan: ${state.nfcNumber}");
@@ -193,238 +194,246 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           ),
           resizeToAvoidBottomInset: true,
           body: GradientBackground(
-              image: MediaRes.colorBackground,
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: ContainerCard(
-                    mediaHeight: 0.8,
-                    headerHeight: 52,
-                    header: Consumer<FileProvider>(
-                      builder: (_, fileProvider, __) {
-                        return Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: fileProvider.fileAddEmployee != null
-                                  ? Image.file(
-                                      fileProvider.fileAddEmployee!,
-                                      width: 104,
-                                      height: 104,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : photoController.text != ""
-                                      ? Image.network(
-                                          photoController.text,
-                                          width: 104,
-                                          height: 104,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Container(
-                                          width: 104,
-                                          height: 104,
-                                          padding: const EdgeInsets.only(
-                                            left: 24,
-                                            top: 24,
-                                            right: 24,
-                                            bottom: 24,
-                                          ),
-                                          color:
-                                              Colours.profileBackgroundColour,
-                                          child: SvgPicture.asset(
-                                            MediaRes.profileIcon,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                            ),
-                            Positioned(
-                              bottom: 15,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AddEmployeePhotoScreen.routeName,
-                                      arguments: photoController);
-                                },
-                                child: Container(
-                                  width: 30.15,
-                                  height: 30.15,
-                                  margin: const EdgeInsets.only(left: 10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(100),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                      width: 1,
-                                      color: Colours.primaryColour,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 1,
-                                        blurRadius: 2,
-                                        offset: const Offset(0, 5),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Transform.scale(
-                                    scale: 0.5,
-                                    child: SvgPicture.asset(
-                                      MediaRes.changePhotoProfileIcon,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                    children: [
-                      const SizedBox(height: 40),
-                      EmployeeForm(
-                        nameController: nameController,
-                        emailController: emailController,
-                        phoneController: phoneController,
-                        dateOfBirthController: dateOfBirthController,
-                        employeeDivisionIdController:
-                            employeeDivisionIdController,
-                        employeeTypeController: employeeTypeController,
-                        nikController: nikController,
-                        cardStartController: cardStartController,
-                        cardStopController: cardStopController,
-                        cardNumberController: cardNumberController,
-                        stillWorkingController: stillWorkingController,
-                        formKey: formKey,
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            image: MediaRes.colorBackground,
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Consumer<FileProvider>(
+                  builder: (_, fileProvider, __) {
+                    return ContainerCard(
+                      mediaHeight: 0.8,
+                      headerHeight: 52,
+                      header: Stack(
                         children: [
-                          SizedBox(
-                            width: 160,
-                            height: 40,
-                            child: IgnorePointer(
-                              ignoring: nothingChanged ||
-                                  state is EmployeeManagementLoading,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  initController;
-                                  context
-                                      .read<FileProvider>()
-                                      .resetAddEmployee();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: nothingChanged
-                                      ? Colours.primaryColourDisabled
-                                      : Colours.primaryColour,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: fileProvider.fileAddEmployee != null
+                                ? Image.file(
+                                    fileProvider.fileAddEmployee!,
+                                    width: 104,
+                                    height: 104,
+                                    fit: BoxFit.cover,
+                                  )
+                                : photoController.text != ""
+                                    ? Image.network(
+                                        photoController.text,
+                                        width: 104,
+                                        height: 104,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        width: 104,
+                                        height: 104,
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                          top: 24,
+                                          right: 24,
+                                          bottom: 24,
+                                        ),
+                                        color: Colours.profileBackgroundColour,
+                                        child: SvgPicture.asset(
+                                          MediaRes.profileIcon,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                          ),
+                          Positioned(
+                            bottom: 15,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AddEmployeePhotoScreen.routeName,
+                                    arguments: photoController);
+                              },
+                              child: Container(
+                                width: 30.15,
+                                height: 30.15,
+                                margin: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colours.primaryColour,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 2,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: Transform.scale(
+                                  scale: 0.5,
+                                  child: SvgPicture.asset(
+                                    MediaRes.changePhotoProfileIcon,
                                   ),
                                 ),
-                                child: state is EmployeeManagementLoading
-                                    ? const Center(
-                                        child: CircularProgressIndicator())
-                                    : const Text(
-                                        "Batal",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: Fonts.inter,
-                                            color: Colours.secondaryColour),
-                                      ),
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 160,
-                            height: 40,
-                            child: StatefulBuilder(
-                                key: key,
-                                builder: (_, refresh) {
-                                  return IgnorePointer(
-                                    ignoring: nothingChanged ||
-                                        state is EmployeeManagementLoading,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        if (formKey.currentState!.validate()) {
-                                          context
-                                              .read<EmployeeManagementBloc>()
-                                              .add(
-                                                AddEmployeeEvent(
-                                                  employeeData: Employee(
-                                                    id: 0,
-                                                    name: nameController.text
-                                                        .trim(),
-                                                    email: emailController.text
-                                                        .trim(),
-                                                    phone: phoneController.text
-                                                        .trim(),
-                                                    dateOfBirth:
-                                                        dateOfBirthController
-                                                            .text
-                                                            .trim(),
-                                                    employeeDivisionId: int.parse(
-                                                        employeeDivisionIdController
-                                                            .text
-                                                            .trim()),
-                                                    employeeType:
-                                                        employeeTypeController
-                                                            .text
-                                                            .trim(),
-                                                    nik: nikController.text
-                                                        .trim(),
-                                                    cardStart:
-                                                        cardStartController.text
-                                                            .trim(),
-                                                    cardStop: cardStopController
-                                                        .text
-                                                        .trim(),
-                                                    cardNumber:
-                                                        cardNumberController
-                                                            .text
-                                                            .trim(),
-                                                  ),
-                                                ),
-                                              );
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: nothingChanged
-                                            ? Colours.primaryColourDisabled
-                                            : Colours.primaryColour,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                      child: state is EmployeeManagementLoading
-                                          ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
-                                          : const Text(
-                                              "Simpan",
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: Fonts.inter,
-                                                  color:
-                                                      Colours.secondaryColour),
-                                            ),
-                                    ),
-                                  );
-                                }),
-                          )
                         ],
                       ),
-                      const SizedBox(
-                        height: 212,
-                      ),
-                    ],
-                  ),
+                      children: [
+                        const SizedBox(height: 40),
+                        EmployeeForm(
+                          nameController: nameController,
+                          emailController: emailController,
+                          phoneController: phoneController,
+                          dateOfBirthController: dateOfBirthController,
+                          employeeDivisionIdController:
+                              employeeDivisionIdController,
+                          employeeTypeController: employeeTypeController,
+                          nikController: nikController,
+                          cardStartController: cardStartController,
+                          cardStopController: cardStopController,
+                          cardNumberController: cardNumberController,
+                          stillWorkingController: stillWorkingController,
+                          formKey: formKey,
+                        ),
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: IgnorePointer(
+                                ignoring: nothingChanged ||
+                                    state is EmployeeManagementLoading,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    initController;
+                                    context
+                                        .read<FileProvider>()
+                                        .resetAddEmployee();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: nothingChanged
+                                        ? Colours.primaryColourDisabled
+                                        : Colours.primaryColour,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: state is EmployeeManagementLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : const Text(
+                                          "Batal",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: Fonts.inter,
+                                              color: Colours.secondaryColour),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: StatefulBuilder(
+                                  key: key,
+                                  builder: (_, refresh) {
+                                    return IgnorePointer(
+                                      ignoring: nothingChanged ||
+                                          state is EmployeeManagementLoading,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            context
+                                                .read<EmployeeManagementBloc>()
+                                                .add(
+                                                  AddEmployeeEvent(
+                                                    employeeData: Employee(
+                                                      id: 0,
+                                                      name: nameController.text
+                                                          .trim(),
+                                                      email: emailController
+                                                          .text
+                                                          .trim(),
+                                                      phone: phoneController
+                                                          .text
+                                                          .trim(),
+                                                      dateOfBirth:
+                                                          dateOfBirthController
+                                                              .text
+                                                              .trim(),
+                                                      employeeDivisionId: int.parse(
+                                                          employeeDivisionIdController
+                                                              .text
+                                                              .trim()),
+                                                      employeeType:
+                                                          employeeTypeController
+                                                              .text
+                                                              .trim(),
+                                                      nik: nikController.text
+                                                          .trim(),
+                                                      cardStart:
+                                                          cardStartController
+                                                              .text
+                                                              .trim(),
+                                                      cardStop:
+                                                          cardStopController
+                                                              .text
+                                                              .trim(),
+                                                      cardNumber:
+                                                          cardNumberController
+                                                              .text
+                                                              .trim(),
+                                                      photo: fileProvider
+                                                          .uriAddEmployee,
+                                                    ),
+                                                  ),
+                                                );
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: nothingChanged
+                                              ? Colours.primaryColourDisabled
+                                              : Colours.primaryColour,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        child: state
+                                                is EmployeeManagementLoading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : const Text(
+                                                "Simpan",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: Fonts.inter,
+                                                    color: Colours
+                                                        .secondaryColour),
+                                              ),
+                                      ),
+                                    );
+                                  }),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 212,
+                        ),
+                      ],
+                    );
+                  },
                 ),
-              )),
+              ),
+            ),
+          ),
         );
       },
     );

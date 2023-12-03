@@ -53,4 +53,14 @@ class EmployeesProvider extends ChangeNotifier {
           .toList();
     }
   }
+
+  List<int> get idCheckedEmployees {
+    List<int> idCheckedEmployees = [];
+    for (var i = 0; i < _employees!.length; i++) {
+      if (_employees![i].isChecked) {
+        idCheckedEmployees.add(_employees![i].id);
+      }
+    }
+    return idCheckedEmployees;
+  }
 }

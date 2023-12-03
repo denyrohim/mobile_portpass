@@ -59,7 +59,7 @@ class CalendarWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: CalendarDatePicker(
                 initialDate: DateTime.now(),
-                firstDate: DateTime(2023),
+                firstDate: DateTime(1945),
                 lastDate: DateTime(2024),
                 onDateChanged: (date) {
                   dateController.text = date.toString().split(" ")[0];

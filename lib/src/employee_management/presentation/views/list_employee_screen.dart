@@ -176,6 +176,19 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
           debugPrint('Data Added');
         } else if (state is DataDeleted) {
           debugPrint('Data Deleted');
+          // alert dialog
+          AlertDialog(
+            title: const Text('Hapus Data'),
+            content: const Text('Data berhasil dihapus'),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'))
+            ],
+          );
+          context.read<EmployeeManagementBloc>().add(const GetEmployeesEvent());
         } else if (state is DataUpdated) {
           debugPrint('Data Updated');
         } else if (state is UpdateChecked) {

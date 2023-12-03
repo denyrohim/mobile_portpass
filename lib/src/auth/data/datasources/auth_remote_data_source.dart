@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
@@ -19,11 +22,15 @@ abstract class AuthRemoteDataSource {
   Future<LocalUserModel> signInWithCredential();
 
   Future<LocalUserModel> updateUser({
-    required UpdateUserAction action,
+    required List<UpdateUserAction> actions,
     required LocalUserModel userData,
   });
 
   Future<void> signOut();
+
+  Future<dynamic> addPhoto({
+    required String type,
+  });
 }
 
 const kToken = 'token';
@@ -136,7 +143,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<LocalUserModel> updateUser({
-    required UpdateUserAction action,
+    required List<UpdateUserAction> actions,
     required LocalUserModel userData,
   }) async {
     try {
@@ -147,17 +154,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       final data = <String, dynamic>{};
-      switch (action) {
-        case UpdateUserAction.name:
-          data["name"] = userData.name;
-          break;
-        case UpdateUserAction.email:
-          data["email"] = userData.email;
-          break;
-        case UpdateUserAction.profileImg:
-          data["profile_pic"] = MultipartFile.fromFile(userData.profileImg!,
-              filename: userData.profileImg!.split('/').last);
-          break;
+      for(final action in actions){
+        switch (action) {
+          case UpdateUserAction.name:
+            data["name"] = userData.name;
+            break;
+          case UpdateUserAction.email:
+            data["email"] = userData.email;
+            break;
+          case UpdateUserAction.profileImg:
+            data["profile_pic"] = MultipartFile.fromFile(userData.profileImg!,
+                filename: userData.profileImg!.split('/').last);
+            break;
+        }
       }
       final result = await _dio.put(
         _api.auth.profile,
@@ -206,6 +215,35 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       await _sharedPreferences.remove(kToken);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+  @override
+  Future<dynamic> addPhoto({required String type}) async {
+    try {
+      if (type != "remove") {
+        final result = await ImagePicker().pickImage(
+          source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50,
+          maxWidth: 150,
+        );
+
+        if (result == null) {
+          throw ServerException(
+              message: "$type can't be accessed", statusCode: 505);
+        }
+        final image = File(result.path);
+        // debugPrint("imagePath: $imagePath");
+        // final List<int> bytes = await result.readAsBytes();
+        // final String base64 = base64Encode(bytes);
+        return image;
+      } else {
+        return null;
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {

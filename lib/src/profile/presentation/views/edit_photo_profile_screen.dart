@@ -7,31 +7,31 @@ import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
-import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
+import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:provider/provider.dart';
 
-class EditEmployeePhotoScreen extends StatefulWidget {
-  const EditEmployeePhotoScreen({
+class EditPhotoProfileScreen extends StatefulWidget {
+  const EditPhotoProfileScreen({
     super.key,
     required this.photoController,
   });
 
   final TextEditingController photoController;
 
-  static const routeName = '/edit-employee-photo';
+  static const routeName = '/edit-user-photo';
 
   @override
-  State<EditEmployeePhotoScreen> createState() =>
-      EditEmployeePhotoScreenState();
+  State<EditPhotoProfileScreen> createState() =>
+      EditPhotoProfileScreenState();
 }
 
-class EditEmployeePhotoScreenState extends State<EditEmployeePhotoScreen> {
+class EditPhotoProfileScreenState extends State<EditPhotoProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<EmployeeManagementBloc, EmployeeManagementState>(
+    return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         // debugPrint("state: $state");
-        if (state is PhotoAdded) {
+        if (state is PhotoProfileAdded) {
           if (state.photo != null) {
             context.read<FileProvider>().initFileEditEmployee(state.photo);
             context
@@ -136,7 +136,7 @@ class EditEmployeePhotoScreenState extends State<EditEmployeePhotoScreen> {
                 GestureDetector(
                   onTap: () {
                     debugPrint("Camera Clicked");
-                    context.read<EmployeeManagementBloc>().add(
+                    context.read<AuthBloc>().add(
                           const AddPhotoEvent(type: 'camera'),
                         );
                   },
@@ -179,7 +179,7 @@ class EditEmployeePhotoScreenState extends State<EditEmployeePhotoScreen> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    context.read<EmployeeManagementBloc>().add(
+                    context.read<AuthBloc>().add(
                           const AddPhotoEvent(type: 'galery'),
                         );
                   },
@@ -222,7 +222,7 @@ class EditEmployeePhotoScreenState extends State<EditEmployeePhotoScreen> {
                 const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () {
-                    context.read<EmployeeManagementBloc>().add(
+                    context.read<AuthBloc>().add(
                           const AddPhotoEvent(type: 'remove'),
                         );
                   },

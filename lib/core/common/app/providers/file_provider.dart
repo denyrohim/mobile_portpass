@@ -71,4 +71,28 @@ class FileProvider extends ChangeNotifier {
     _base64AddEmployee = null;
     _uriAddEmployee = null;
   }
+
+  File? _fileEditUser;
+  String? _filePathEditUser;
+
+  File? get fileEditUser => _fileEditUser;
+  String? get filePathEditUser => _filePathEditUser;
+
+  void initFileEditUser(File fileEditUser) {
+    if (_fileEditUser != fileEditUser) {
+      _fileEditUser = fileEditUser;
+      _filePathEditUser = fileEditUser.path;
+    }
+  }
+
+  void initFilePathEditUser(String filePathEditUser) {
+    if (_filePathEditUser != filePathEditUser) {
+      _filePathEditUser = filePathEditUser;
+    }
+  }
+
+  void resetEditUser() {
+    _fileEditUser = null;
+    _filePathEditUser = null;
+  }
 }

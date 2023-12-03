@@ -12,24 +12,24 @@ class UpdateUser implements UsecaseWithParams<LocalUser, UpdateUserParams> {
 
   @override
   ResultFuture<LocalUser> call(UpdateUserParams params) => _repository.updateUser(
-        action: params.action,
+        actions: params.actions,
         userData: params.userData,
       );
 }
 
 class UpdateUserParams extends Equatable {
   const UpdateUserParams({
-    required this.action,
+    required this.actions,
     required this.userData,
   });
 
-  const UpdateUserParams.empty()
-      : action = UpdateUserAction.email,
+  UpdateUserParams.empty()
+      : actions = [UpdateUserAction.email],
         userData = const LocalUser.empty();
 
-  final UpdateUserAction action;
+  final List<UpdateUserAction> actions;
   final LocalUser userData;
   
   @override
-  List<Object?> get props => [action, userData];
+  List<Object?> get props => [actions, userData];
 }

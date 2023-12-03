@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_out.dart';
@@ -18,12 +19,15 @@ class MockUpdateUser extends Mock implements UpdateUser {}
 
 class MockSignOut extends Mock implements SignOut {}
 
+class MockAddPhoto extends Mock implements AddPhoto{}
+
 void main() {
   late MockSignIn signIn;
   late MockSignInWithCredential signInWithCredential;
   late MockUpdateUser updateUser;
   late MockSignOut signOut;
   late AuthBloc authBloc;
+  late MockAddPhoto addPhoto;
 
   const tSignInParams = SignInParams.empty();
 
@@ -32,11 +36,13 @@ void main() {
     signInWithCredential = MockSignInWithCredential();
     updateUser = MockUpdateUser();
     signOut = MockSignOut();
+    addPhoto = MockAddPhoto();
     authBloc = AuthBloc(
       signIn: signIn,
       signInWithCredential: signInWithCredential,
       updateUser: updateUser,
       signOut: signOut,
+      addPhoto: addPhoto,
     );
   });
 

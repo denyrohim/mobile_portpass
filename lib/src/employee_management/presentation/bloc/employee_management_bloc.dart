@@ -5,7 +5,7 @@ import 'package:port_pass_app/core/enums/update_employee_action.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee_division.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/add_employee.dart';
-import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/cancel_check_box_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employee_division.dart';
@@ -29,7 +29,7 @@ class EmployeeManagementBloc
     required CancelCheckBoxEmployees cancelCheckBoxEmployees,
     required SelectAllEmployees selectAllEmployees,
     required ScanNFCEmployee scanNFCEmployee,
-    required AddPhoto addPhoto,
+    required AddPhotoEmployee addPhoto,
     required GetEmployeeDivision getEmployeeDivision,
   })  : _addEmployee = addEmployee,
         _deleteEmployees = deleteEmployees,
@@ -64,7 +64,7 @@ class EmployeeManagementBloc
   final CancelCheckBoxEmployees _cancelCheckBoxEmployees;
   final SelectAllEmployees _selectAllEmployees;
   final ScanNFCEmployee _scanNFCEmployee;
-  final AddPhoto _addPhoto;
+  final AddPhotoEmployee _addPhoto;
   final GetEmployeeDivision _getEmployeeDivision;
 
   Future<void> _addEmployeeHandler(

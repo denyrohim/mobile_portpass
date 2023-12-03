@@ -32,12 +32,14 @@ Future<void> _initAuth() async {
         signInWithCredential: sl(),
         updateUser: sl(),
         signOut: sl(),
+        addPhoto: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))
     ..registerLazySingleton(() => SignInWithCredential(sl()))
     ..registerLazySingleton(() => UpdateUser(sl()))
     ..registerLazySingleton(() => SignOut(sl()))
+    ..registerLazySingleton(() => AddPhoto(sl()))
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
@@ -72,7 +74,7 @@ Future<void> _initEmployeeManagement() async {
     ..registerLazySingleton(() => CancelCheckBoxEmployees(sl()))
     ..registerLazySingleton(() => SelectAllEmployees(sl()))
     ..registerLazySingleton(() => ScanNFCEmployee(sl()))
-    ..registerLazySingleton(() => AddPhoto(sl()))
+    ..registerLazySingleton(() => AddPhotoEmployee(sl()))
     ..registerLazySingleton(() => GetEmployeeDivision(sl()))
     ..registerLazySingleton<EmployeeManagementRepository>(
         () => EmployeeManagementRepositoryImpl(sl()))

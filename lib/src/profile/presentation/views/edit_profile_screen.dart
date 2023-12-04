@@ -53,7 +53,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   bool get emailChanged =>
       context.currentUser?.email.trim() != emailController.text.trim();
 
-  bool get photoChanged => pickedImage != null;
+  bool get photoChanged =>
+      context.currentUser?.profileImg != photoController.text.trim();
 
   bool get nothingChanged => !nameChanged && !emailChanged && !photoChanged;
 
@@ -96,7 +97,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           appBar: AppBar(
             scrolledUnderElevation: 0,
             backgroundColor: Colours.primaryColour,
-            leading: const NestedBackButton(),
+            leading: NestedBackButton(
+              onPressed: context.fileProvider.resetEditUser,
+            ),
             title: const Text(
               "Edit Profile",
               style: TextStyle(
@@ -107,7 +110,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
           ),
           resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           body: GradientBackground(
             image: MediaRes.colorBackground,
             child: SingleChildScrollView(
@@ -123,8 +126,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(100),
                           child: fileProvider.fileEditUser != null
-                              ? Image.file(fileProvider.fileEditUser!,
-                                  width: 104, height: 104, fit: BoxFit.cover)
+                              ? Image.file(
+                                  fileProvider.fileEditUser!,
+                                  width: 104,
+                                  height: 104,
+                                  fit: BoxFit.cover,
+                                )
                               : photoController.text != ""
                                   ? Image.network(
                                       photoController.text,
@@ -154,8 +161,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pushNamed(
-                                    context, EditPhotoProfileScreen.routeName,
-                                    arguments: photoController);
+                                  context, EditPhotoProfileScreen.routeName,
+                                  arguments: photoController);
                             },
                             child: Container(
                               width: 30.15,
@@ -204,14 +211,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           width: 160,
                           height: 40,
                           child: IgnorePointer(
-                            ignoring: nothingChanged ||
-                              state is AuthLoading,
+                            ignoring: nothingChanged || state is AuthLoading,
                             child: ElevatedButton(
-                              onPressed:() {
+                              onPressed: () {
                                 initController;
-                                context
-                                    .read<FileProvider>()
-                                    .resetEditUser();
+                                context.read<FileProvider>().resetEditUser();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: nothingChanged
@@ -223,17 +227,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                               child: state is AuthLoading
                                   ? const Center(
-                                    child: CircularProgressIndicator())
-                                  : const Text (
-                                    "Batal",
-                                    style: TextStyle(
+                                      child: CircularProgressIndicator())
+                                  : const Text(
+                                      "Batal",
+                                      style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w700,
                                           fontFamily: Fonts.inter,
                                           color: Colours.secondaryColour),
-                                  ),
-                              ),
+                                    ),
                             ),
+                          ),
                         ),
                         SizedBox(
                           width: 160,
@@ -242,60 +246,60 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             key: key,
                             builder: (_, refresh) {
                               return IgnorePointer(
-                                ignoring: nothingChanged ||
-                                    state is AuthLoading,
+                                ignoring:
+                                    nothingChanged || state is AuthLoading,
                                 child: ElevatedButton(
                                   onPressed: () {
                                     FocusManager.instance.primaryFocus
                                         ?.unfocus();
-                                    if(formKey.currentState!.validate()){
-                                      context
-                                        .read<AuthBloc>()
-                                        .add(
-                                          UpdateUserEvent(
-                                            actions: [
-                                              if(nameChanged)
-                                                UpdateUserAction.name,
-                                              if(emailChanged)
-                                                UpdateUserAction.email,
-                                            ],
-                                            userData: LocalUser(
-                                              id: user.id,
-                                              name: nameController.text.trim(),
-                                              role: user.role,
-                                              email: emailController.text.trim(),
+                                    if (formKey.currentState!.validate()) {
+                                      context.read<AuthBloc>().add(
+                                            UpdateUserEvent(
+                                              actions: [
+                                                if (nameChanged)
+                                                  UpdateUserAction.name,
+                                                if (emailChanged)
+                                                  UpdateUserAction.email,
+                                              ],
+                                              userData: LocalUser(
+                                                id: user.id,
+                                                name:
+                                                    nameController.text.trim(),
+                                                role: user.role,
+                                                email:
+                                                    emailController.text.trim(),
+                                              ),
                                             ),
-                                          ),
-                                        );
+                                          );
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: nothingChanged
-                                          ? Colours.primaryColourDisabled
-                                          : Colours.primaryColour,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
+                                    backgroundColor: nothingChanged
+                                        ? Colours.primaryColourDisabled
+                                        : Colours.primaryColour,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
+                                  ),
                                   child: state is AuthLoading
                                       ? const Center(
-                                        child: CircularProgressIndicator())
+                                          child: CircularProgressIndicator())
                                       : const Text(
-                                        "Simpan",
-                                        style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: Fonts.inter,
-                                                color: Colours.secondaryColour),
-                                          ),
-                                      ),
-                                );
-                              },
+                                          "Simpan",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: Fonts.inter,
+                                              color: Colours.secondaryColour),
+                                        ),
+                                ),
+                              );
+                            },
                           ),
                         )
                       ],
                     ),
-                    const SizedBox(height:30),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),

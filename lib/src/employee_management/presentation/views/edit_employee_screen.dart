@@ -182,7 +182,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
             ),
           ),
           resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           body: GradientBackground(
             image: MediaRes.colorBackground,
             child: SingleChildScrollView(

@@ -92,6 +92,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
+    case EditPhotoProfileScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<AuthBloc>(),
+          child: EditPhotoProfileScreen(
+            photoController: settings.arguments as TextEditingController,
+          ),
+        ),
+        settings: settings,
+      );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),

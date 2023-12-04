@@ -25,6 +25,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Colours.primaryColour,
       ),
       backgroundColor: Colors.transparent,
@@ -51,20 +52,36 @@ class ProfileScreen extends StatelessWidget {
                   headerHeight: 52,
                   header: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
-                    child: Image.network(
-                      'https://placekitten.com/104/104',
-                      width: 104,
-                      height: 104,
-                      fit: BoxFit.cover,
-                    ),
+                    child: (context.currentUser!.profileImg != null)
+                        ? Image.network(
+                            context.currentUser!.profileImg!,
+                            width: 104,
+                            height: 104,
+                            fit: BoxFit.cover,
+                          )
+                        : Container(
+                            width: 104,
+                            height: 104,
+                            padding: const EdgeInsets.only(
+                              left: 24,
+                              top: 24,
+                              right: 24,
+                              bottom: 24,
+                            ),
+                            color: Colours.profileBackgroundColour,
+                            child: SvgPicture.asset(
+                              MediaRes.profileIcon,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                   ),
                   children: [
                     Column(
                       children: [
                         const SizedBox(height: 82),
-                        const Text(
-                          "Abdul",
-                          style: TextStyle(
+                        Text(
+                          context.currentUser!.name,
+                          style: const TextStyle(
                             color: Colours.primaryColour,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -73,9 +90,9 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
-                          "Laborumi",
-                          style: TextStyle(
+                        Text(
+                          context.currentUser!.role,
+                          style: const TextStyle(
                             color: Colours.primaryColour,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,

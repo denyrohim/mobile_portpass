@@ -19,7 +19,7 @@ extension ContextExtensions on BuildContext {
 
   EmployeesProvider get employeesProvider => read<EmployeesProvider>();
 
-  FileProvider get imageProvider => read<FileProvider>();
+  FileProvider get fileProvider => read<FileProvider>();
 
   LocalUser? get currentUser => userProvider.user;
 

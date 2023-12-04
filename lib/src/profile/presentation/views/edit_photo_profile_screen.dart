@@ -21,8 +21,7 @@ class EditPhotoProfileScreen extends StatefulWidget {
   static const routeName = '/edit-user-photo';
 
   @override
-  State<EditPhotoProfileScreen> createState() =>
-      EditPhotoProfileScreenState();
+  State<EditPhotoProfileScreen> createState() => EditPhotoProfileScreenState();
 }
 
 class EditPhotoProfileScreenState extends State<EditPhotoProfileScreen> {
@@ -33,14 +32,12 @@ class EditPhotoProfileScreenState extends State<EditPhotoProfileScreen> {
         // debugPrint("state: $state");
         if (state is PhotoProfileAdded) {
           if (state.photo != null) {
-            context.read<FileProvider>().initFileEditEmployee(state.photo);
-            context
-                .read<FileProvider>()
-                .initFilePathEditEmployee(state.photo.path);
+            context.read<FileProvider>().initFileEditUser(state.photo);
+            context.read<FileProvider>().initFilePathEditUser(state.photo.path);
             widget.photoController.text = state.photo.path;
           } else {
             widget.photoController.text = "";
-            context.read<FileProvider>().resetEditEmployee();
+            context.read<FileProvider>().resetEditUser();
           }
           final navigator = Navigator.of(context);
           if (navigator.canPop()) {
@@ -81,9 +78,9 @@ class EditPhotoProfileScreenState extends State<EditPhotoProfileScreen> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child: fileProvider.fileEditEmployee != null
+                        child: fileProvider.fileEditUser != null
                             ? Image.file(
-                                fileProvider.fileEditEmployee!,
+                                fileProvider.fileEditUser!,
                                 width: 104,
                                 height: 104,
                                 fit: BoxFit.cover,

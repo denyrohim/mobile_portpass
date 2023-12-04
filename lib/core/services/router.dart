@@ -9,6 +9,7 @@ import 'package:port_pass_app/src/employee_management/presentation/views/add_emp
 import 'package:port_pass_app/src/employee_management/presentation/views/add_employee_screen.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/edit_employee_photo_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
+import 'package:port_pass_app/src/profile/presentation/views/edit_photo_profile_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

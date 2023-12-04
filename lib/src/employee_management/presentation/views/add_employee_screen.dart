@@ -173,6 +173,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             centerTitle: true,
             backgroundColor: Colours.primaryColour,
             foregroundColor: Colours.secondaryColour,
+            scrolledUnderElevation: 0,
             elevation: 0,
             leadingWidth: double.infinity,
             leading: Container(

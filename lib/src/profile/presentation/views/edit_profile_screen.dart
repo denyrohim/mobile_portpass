@@ -54,7 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       context.currentUser?.email.trim() != emailController.text.trim();
 
   bool get photoChanged =>
-      context.currentUser?.profileImg != photoController.text.trim();
+      (context.currentUser?.profileImg ?? "") != photoController.text.trim();
 
   bool get nothingChanged => !nameChanged && !emailChanged && !photoChanged;
 
@@ -70,6 +70,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
+    debugPrint(context.currentUser?.profileImg);
     initController;
     super.initState();
   }

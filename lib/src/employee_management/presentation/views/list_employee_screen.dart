@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/app/providers/employee_division_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/employees_provider.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:port_pass_app/core/common/views/loading_view.dart';
+import 'package:port_pass_app/core/common/widgets/dialog_confirmation.dart';
 // import 'package:port_pass_app/core/common/widgets/rounded_button.dart';
 import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/res/fonts.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 // import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/constanst.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
@@ -174,21 +178,6 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
           context.read<EmployeesProvider>().initEmployees(state.employees);
         } else if (state is DataAdded) {
           debugPrint('Data Added');
-        } else if (state is DataDeleted) {
-          debugPrint('Data Deleted');
-          // alert dialog
-          AlertDialog(
-            title: const Text('Hapus Data'),
-            content: const Text('Data berhasil dihapus'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'))
-            ],
-          );
-          context.read<EmployeeManagementBloc>().add(const GetEmployeesEvent());
         } else if (state is DataUpdated) {
           debugPrint('Data Updated');
         } else if (state is UpdateChecked) {
@@ -340,6 +329,16 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                             )
                           : Stack(
                               children: [
+                                if (employees.isEmpty)
+                                  const Center(
+                                    child: Text(
+                                      'Tidak ada data',
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colours.primaryColour),
+                                    ),
+                                  ),
                                 ListView.builder(
                                   itemCount: employees.length,
                                   itemBuilder: (context, index) {
@@ -351,7 +350,7 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                                         context,
                                         isShowCheckBox:
                                             employeesProvider.isShowChecked,
-                                        employeeId: index,
+                                        index: index,
                                         employees: employees,
                                       );
                                     } else {

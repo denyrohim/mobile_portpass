@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInWithCredentialEvent>(_signInWithCredentialHandler);
     on<SignInEvent>(_signInHandler);
     on<UpdateUserEvent>(_updateUserHandler);
-    on<SignOutEvent>(signOutHandler);
+    on<SignOutEvent>(_signOutHandler);
     on<AddPhotoEvent>(_addPhotoHandler);
   }
   final SignIn _signIn;
@@ -79,7 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
   }
 
-  Future<void> signOutHandler(
+  Future<void> _signOutHandler(
     SignOutEvent event,
     Emitter<AuthState> emit,
   ) async {

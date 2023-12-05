@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/app/providers/employees_provider.dart';
+import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/employee_management/presentation/widgets/employee_confirmation_button.dart';
 import 'package:port_pass_app/core/common/widgets/pop_up_item.dart';
 import 'package:port_pass_app/core/res/colours.dart';
@@ -61,19 +62,22 @@ class EmployeeManagementAppBar extends StatelessWidget
                           isScrollControlled: true,
                           context: context,
                           builder: (BuildContext context) {
-                            return EmployeeConfirmationButton(
-                              text: 'Yakin hapus semua daftar?',
-                              textStyle: const TextStyle(
-                                fontSize: 20,
-                                color: Colours.primaryColour,
-                                fontWeight: FontWeight.w700,
+                            return BlocProvider(
+                              create: (_) => sl<EmployeeManagementBloc>(),
+                              child: EmployeeConfirmationButton(
+                                text: 'Yakin hapus semua daftar?',
+                                textStyle: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colours.primaryColour,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                textButtonNegative: 'Batal',
+                                textButtonPositive: 'Hapus',
+                                colorTextButtonNegative: Colours.primaryColour,
+                                colorTextButtonPositive: Colours.errorColour,
+                                employeesIds:
+                                    employeesProvider.idCheckedEmployees,
                               ),
-                              textButtonNegative: 'Batal',
-                              textButtonPositive: 'Hapus',
-                              colorTextButtonNegative: Colours.primaryColour,
-                              colorTextButtonPositive: Colours.errorColour,
-                              employeesIds:
-                                  employeesProvider.idCheckedEmployees,
                             );
                           },
                         );

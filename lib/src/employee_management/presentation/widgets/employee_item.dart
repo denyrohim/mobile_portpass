@@ -15,12 +15,12 @@ class EmployeeItem extends StatelessWidget {
     BuildContext context, {
     super.key,
     required this.isShowCheckBox,
-    required this.employeeId,
+    required this.index,
     required this.employees,
   });
 
   final bool isShowCheckBox;
-  final int employeeId;
+  final int index;
   final List<Employee> employees;
 
   @override
@@ -33,7 +33,7 @@ class EmployeeItem extends StatelessWidget {
             onTap: () {
               context.read<EmployeeManagementBloc>().add(
                     UpdateCheckBoxEmployeeEvent(
-                        employeeId: employeeId, employees: employees),
+                        employeeId: index, employees: employees),
                   );
             },
             child: AnimatedContainer(
@@ -45,7 +45,7 @@ class EmployeeItem extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 10),
                 height: 28,
                 width: 28,
-                child: employees[employeeId].isChecked
+                child: employees[index].isChecked
                     ? Center(
                         child: SvgPicture.asset(MediaRes.checkIcon),
                       )
@@ -103,9 +103,9 @@ class EmployeeItem extends StatelessWidget {
                     //       fit: BoxFit.cover,
                     //     ),
                     //   ),
-                    image: employees[employeeId].photo != null
+                    image: employees[index].photo != null
                         ? DecorationImage(
-                            image: NetworkImage(employees[employeeId].photo!),
+                            image: NetworkImage(employees[index].photo!),
                             colorFilter: isShowCheckBox
                                 ? ColorFilter.mode(
                                     Colors.white.withOpacity(0.5),
@@ -114,7 +114,7 @@ class EmployeeItem extends StatelessWidget {
                             fit: BoxFit.cover)
                         : null,
                   ),
-                  child: employees[employeeId].photo == null
+                  child: employees[index].photo == null
                       ? Center(
                           child: SvgPicture.asset(
                           MediaRes.profileIcon,
@@ -135,7 +135,7 @@ class EmployeeItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        employees[employeeId].name,
+                        employees[index].name,
                         style: TextStyle(
                             fontSize: 16,
                             color: isShowCheckBox
@@ -146,7 +146,7 @@ class EmployeeItem extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        employees[employeeId].employeeType,
+                        employees[index].employeeType,
                         style: TextStyle(
                           fontSize: 12,
                           color: isShowCheckBox
@@ -168,7 +168,7 @@ class EmployeeItem extends StatelessWidget {
                           context.push(BlocProvider(
                             create: (_) => sl<EmployeeManagementBloc>(),
                             child: EditEmployeeScreen(
-                              employee: employees[employeeId],
+                              employee: employees[index],
                             ),
                           ));
                         },
@@ -216,7 +216,7 @@ class EmployeeItem extends StatelessWidget {
                                   colorTextButtonNegative:
                                       Colours.primaryColour,
                                   colorTextButtonPositive: Colours.errorColour,
-                                  employeesIds: [employeeId],
+                                  employeesIds: [employees[index].id],
                                 ),
                               );
                             },

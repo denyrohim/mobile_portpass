@@ -123,11 +123,12 @@ class EmploymentManagementRemoteDataSourceImpl
             token: token,
           ).headers,
           receiveDataWhenStatusError: true,
-          // validateStatus: (status) {
-          //   return status! < 500;
-          // },
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
+      debugPrint("result: ${result.data}");
       if (result.statusCode != 200) {
         throw ServerException(
             message: result.data['message'] ?? "Data tidak terkirim",
@@ -249,8 +250,6 @@ class EmploymentManagementRemoteDataSourceImpl
             break;
         }
       }
-      debugPrint("data: $data");
-      debugPrint('employeeId: ${employee.id}');
 
       final result = await _dio.put(
         "${_api.employee.employees}/${employee.id}",

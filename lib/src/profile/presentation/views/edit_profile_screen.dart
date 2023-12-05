@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
@@ -28,7 +28,6 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late LocalUser user;
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final photoController = TextEditingController();
@@ -36,22 +35,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   final key = GlobalKey();
 
-  XFile? pickedImage;
-
-  Future<void> pickImage() async {
-    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      setState(() {
-        pickedImage = XFile(image.path);
-      });
-    }
-  }
-
   bool get nameChanged =>
-      context.currentUser?.name.trim() != nameController.text.trim();
+      context.currentUser?.name != nameController.text.trim();
 
   bool get emailChanged =>
-      context.currentUser?.email.trim() != emailController.text.trim();
+      context.currentUser?.email != emailController.text.trim();
 
   bool get photoChanged =>
       (context.currentUser?.profileImg ?? "") != photoController.text.trim();
@@ -91,6 +79,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is PhotoProfileAdded) {
           CoreUtils.showSnackBar(context, "Foto berhasil diubah");
+        } else if (state is UserUpdated) {
+          debugPrint("state.user: ${state.user}");
+          context.read<FileProvider>().resetEditUser();
+          context.read<UserProvider>().initUser(state.user);
+          context.pop();
+          CoreUtils.showSnackBar(context, "Data berhasil diubah");
         }
       },
       builder: (context, state) {
@@ -117,162 +111,108 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: SingleChildScrollView(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
-                child: ContainerCard(
-                  mediaHeight: 0.8,
-                  headerHeight: 52,
-                  header:
-                      Consumer<FileProvider>(builder: (_, fileProvider, __) {
-                    return Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: fileProvider.fileEditUser != null
-                              ? Image.file(
-                                  fileProvider.fileEditUser!,
-                                  width: 104,
-                                  height: 104,
-                                  fit: BoxFit.cover,
-                                )
-                              : photoController.text != ""
-                                  ? Image.network(
-                                      photoController.text,
-                                      width: 104,
-                                      height: 104,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Container(
-                                      width: 104,
-                                      height: 104,
-                                      padding: const EdgeInsets.only(
-                                        left: 24,
-                                        top: 24,
-                                        right: 24,
-                                        bottom: 24,
-                                      ),
-                                      color: Colours.profileBackgroundColour,
-                                      child: SvgPicture.asset(
-                                        MediaRes.profileIcon,
+                child: Consumer<FileProvider>(
+                  builder: (_, fileProvider, __) {
+                    return ContainerCard(
+                      mediaHeight: 0.8,
+                      headerHeight: 52,
+                      header: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(100),
+                            child: fileProvider.fileEditUser != null
+                                ? Image.file(
+                                    fileProvider.fileEditUser!,
+                                    width: 104,
+                                    height: 104,
+                                    fit: BoxFit.cover,
+                                  )
+                                : photoController.text != ""
+                                    ? Image.network(
+                                        photoController.text,
+                                        width: 104,
+                                        height: 104,
                                         fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        width: 104,
+                                        height: 104,
+                                        padding: const EdgeInsets.only(
+                                          left: 24,
+                                          top: 24,
+                                          right: 24,
+                                          bottom: 24,
+                                        ),
+                                        color: Colours.profileBackgroundColour,
+                                        child: SvgPicture.asset(
+                                          MediaRes.profileIcon,
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                    ),
-                        ),
-                        Positioned(
-                          bottom: 15,
-                          right: 0,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, EditPhotoProfileScreen.routeName,
-                                  arguments: photoController);
-                            },
-                            child: Container(
-                              width: 30.15,
-                              height: 30.15,
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Colors.white,
-                                border: Border.all(
-                                  width: 1,
-                                  color: Colours.primaryColour,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 2,
-                                    offset: const Offset(0, 5),
-                                  ),
-                                ],
-                              ),
-                              child: Transform.scale(
-                                scale: 0.5,
-                                child: SvgPicture.asset(
-                                  MediaRes.changePhotoProfileIcon,
-                                ),
-                              ),
-                            ),
                           ),
-                        ),
-                      ],
-                    );
-                  }),
-                  children: [
-                    const SizedBox(height: 40),
-                    EditProfileForm(
-                      nameController: nameController,
-                      emailController: emailController,
-                      formKey: formKey,
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 160,
-                          height: 40,
-                          child: IgnorePointer(
-                            ignoring: nothingChanged || state is AuthLoading,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                initController;
-                                context.read<FileProvider>().resetEditUser();
+                          Positioned(
+                            bottom: 15,
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, EditPhotoProfileScreen.routeName,
+                                    arguments: photoController);
                               },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: nothingChanged
-                                    ? Colours.primaryColourDisabled
-                                    : Colours.primaryColour,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                width: 30.15,
+                                height: 30.15,
+                                margin: const EdgeInsets.only(left: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.white,
+                                  border: Border.all(
+                                    width: 1,
+                                    color: Colours.primaryColour,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 1,
+                                      blurRadius: 2,
+                                      offset: const Offset(0, 5),
+                                    ),
+                                  ],
+                                ),
+                                child: Transform.scale(
+                                  scale: 0.5,
+                                  child: SvgPicture.asset(
+                                    MediaRes.changePhotoProfileIcon,
+                                  ),
                                 ),
                               ),
-                              child: state is AuthLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : const Text(
-                                      "Batal",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: Fonts.inter,
-                                          color: Colours.secondaryColour),
-                                    ),
                             ),
                           ),
+                        ],
+                      ),
+                      children: [
+                        const SizedBox(height: 40),
+                        EditProfileForm(
+                          nameController: nameController,
+                          emailController: emailController,
+                          formKey: formKey,
                         ),
-                        SizedBox(
-                          width: 160,
-                          height: 40,
-                          child: StatefulBuilder(
-                            key: key,
-                            builder: (_, refresh) {
-                              return IgnorePointer(
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: IgnorePointer(
                                 ignoring:
                                     nothingChanged || state is AuthLoading,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    FocusManager.instance.primaryFocus
-                                        ?.unfocus();
-                                    if (formKey.currentState!.validate()) {
-                                      context.read<AuthBloc>().add(
-                                            UpdateUserEvent(
-                                              actions: [
-                                                if (nameChanged)
-                                                  UpdateUserAction.name,
-                                                if (emailChanged)
-                                                  UpdateUserAction.email,
-                                              ],
-                                              userData: LocalUser(
-                                                id: user.id,
-                                                name:
-                                                    nameController.text.trim(),
-                                                role: user.role,
-                                                email:
-                                                    emailController.text.trim(),
-                                              ),
-                                            ),
-                                          );
-                                    }
+                                    initController;
+                                    context
+                                        .read<FileProvider>()
+                                        .resetEditUser();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: nothingChanged
@@ -286,7 +226,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       ? const Center(
                                           child: CircularProgressIndicator())
                                       : const Text(
-                                          "Simpan",
+                                          "Batal",
                                           style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w700,
@@ -294,14 +234,81 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                               color: Colours.secondaryColour),
                                         ),
                                 ),
-                              );
-                            },
-                          ),
-                        )
+                              ),
+                            ),
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: StatefulBuilder(
+                                key: key,
+                                builder: (_, refresh) {
+                                  return IgnorePointer(
+                                    ignoring:
+                                        nothingChanged || state is AuthLoading,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                        if (formKey.currentState!.validate()) {
+                                          context.read<AuthBloc>().add(
+                                                UpdateUserEvent(
+                                                  actions: [
+                                                    if (nameChanged)
+                                                      UpdateUserAction.name,
+                                                    if (emailChanged)
+                                                      UpdateUserAction.email,
+                                                    if (photoChanged)
+                                                      UpdateUserAction
+                                                          .profileImg,
+                                                  ],
+                                                  userData: LocalUser(
+                                                    id: context.currentUser!.id,
+                                                    name: nameController.text
+                                                        .trim(),
+                                                    role: context
+                                                        .currentUser!.role,
+                                                    email: emailController.text
+                                                        .trim(),
+                                                    profileImg: fileProvider
+                                                        .uriEditUser,
+                                                  ),
+                                                ),
+                                              );
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: nothingChanged
+                                            ? Colours.primaryColourDisabled
+                                            : Colours.primaryColour,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      child: state is AuthLoading
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator())
+                                          : const Text(
+                                              "Simpan",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: Fonts.inter,
+                                                  color:
+                                                      Colours.secondaryColour),
+                                            ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 30),
                       ],
-                    ),
-                    const SizedBox(height: 30),
-                  ],
+                    );
+                  },
                 ),
               ),
             ),

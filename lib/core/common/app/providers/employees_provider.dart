@@ -7,7 +7,10 @@ class EmployeesProvider extends ChangeNotifier {
   List<Employee>? get employees => _employees;
 
   void initEmployees(List<Employee> employees) {
-    if (_employees != employees) _employees = employees;
+    if (_employees != employees) {
+      _employees = employees;
+    }
+    notifyListeners();
   }
 
   set user(List<Employee>? employees) {

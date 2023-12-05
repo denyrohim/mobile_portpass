@@ -76,12 +76,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           statusCode: result.statusCode,
         );
       }
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+      final photo = user['profile_img'] as String?;
+      if (photo != null) {
+        if (photo.split('/').first == "https:") {
+          user['profile_img'] = null;
+        } else {
+          final photoPath = photo.split('/').last;
+          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
+
+          user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
+        }
+      }
+
       await _sharedPreferences.setString(
         kToken,
         result.data['data']['token'] as String,
@@ -123,11 +135,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
+      }
+      final photo = user['profile_img'] as String?;
+      if (photo != null) {
+        if (photo.split('/').first == "https:") {
+          user['profile_img'] = null;
+        } else {
+          final photoPath = photo.split('/').last;
+          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
+
+          user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
+        }
       }
 
       return LocalUserModel.fromMap(user);
@@ -154,7 +177,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       final data = <String, dynamic>{};
-      for(final action in actions){
+      for (final action in actions) {
         switch (action) {
           case UpdateUserAction.name:
             data["name"] = userData.name;
@@ -163,11 +186,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             data["email"] = userData.email;
             break;
           case UpdateUserAction.profileImg:
-            data["profile_pic"] = MultipartFile.fromFile(userData.profileImg!,
-                filename: userData.profileImg!.split('/').last);
+            data["profile_img"] = userData.profileImg;
             break;
         }
       }
+
+      debugPrint("data: $data");
+      // debugPrint('employeeId: ${employee.id}');
       final result = await _dio.put(
         _api.auth.profile,
         data: data,
@@ -175,15 +200,29 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          receiveDataWhenStatusError: true,
           validateStatus: (status) {
             return status! < 500;
           },
         ),
       );
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data'] as DataMap?;
+
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
+      }
+      user['role'] = userData.role;
+      final photo = user['profile_img'] as String?;
+      if (photo != null) {
+        if (photo.split('/').first == "https:") {
+          user['profile_img'] = null;
+        } else {
+          final photoPath = photo.split('/').last;
+          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
+
+          user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
+        }
       }
 
       return LocalUserModel.fromMap(user);
@@ -222,6 +261,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       throw ServerException(message: e.toString(), statusCode: 505);
     }
   }
+
   @override
   Future<dynamic> addPhoto({required String type}) async {
     try {

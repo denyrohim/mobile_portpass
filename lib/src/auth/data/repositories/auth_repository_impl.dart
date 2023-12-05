@@ -45,7 +45,13 @@ class AuthRepositoryImpl implements AuthRepository {
     required LocalUser userData,
   }) async {
     try {
-      final LocalUserModel user = userData as LocalUserModel;
+      final LocalUserModel user = LocalUserModel(
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        role: userData.role,
+        profileImg: userData.profileImg,
+      );
       final result = await _remoteDataSource.updateUser(
         actions: actions,
         userData: user,

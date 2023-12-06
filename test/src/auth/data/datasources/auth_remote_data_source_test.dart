@@ -91,11 +91,6 @@ void main() {
     message: 'ServerException',
     statusCode: 500,
   );
-
-  // setUpAll(() {
-  //   registerFallbackValue(tUser);
-  // });
-
   group(
     'signIn',
     () {

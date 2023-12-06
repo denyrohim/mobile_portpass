@@ -43,13 +43,16 @@ class EmploymentManagementRemoteDataSourceImpl
     required SharedPreferences sharedPreferences,
     required Dio dio,
     required API api,
+    required ImagePicker imagePicker,
   })  : _dio = dio,
         _api = api,
-        _sharedPreferences = sharedPreferences;
+        _sharedPreferences = sharedPreferences,
+        _imagePicker = imagePicker;
 
   final SharedPreferences _sharedPreferences;
   final Dio _dio;
   final API _api;
+  final ImagePicker _imagePicker;
 
   @override
   Future<void> addEmployee({required EmployeeModel employeeData}) async {
@@ -59,7 +62,6 @@ class EmploymentManagementRemoteDataSourceImpl
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      debugPrint("employeeDataPhoto: ${employeeData.photo}");
       final result = await _dio.post(
         _api.employee.employees,
         data: {
@@ -111,7 +113,6 @@ class EmploymentManagementRemoteDataSourceImpl
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      debugPrint("ids: $ids");
 
       final result = await _dio.post(
         "${_api.employee.employees}/delete-list",
@@ -128,7 +129,6 @@ class EmploymentManagementRemoteDataSourceImpl
           },
         ),
       );
-      debugPrint("result: ${result.data}");
       if (result.statusCode != 200) {
         throw ServerException(
             message: result.data['message'] ?? "Data tidak terkirim",
@@ -176,7 +176,6 @@ class EmploymentManagementRemoteDataSourceImpl
             e['photo'] = null;
           } else {
             final photoPath = photo.split('/').last;
-            debugPrint("${_api.baseUrl}/images/employee/$photoPath");
 
             e['photo'] = "${_api.baseUrl}/images/employee/$photoPath";
           }
@@ -269,10 +268,10 @@ class EmploymentManagementRemoteDataSourceImpl
             message: "Please try again later", statusCode: 505);
       }
       // change photo path
-      // final photoPath = employeeData['photo'].split('/').last;
-      // employeeData['photo'] = "${_api.baseUrl}/images/employee/$photoPath}";
+      final photoPath = employeeData['photo'].split('/').last;
+      employeeData['photo'] = "${_api.baseUrl}/images/employee/$photoPath}";
 
-      return EmployeeModel.fromMap(employee.toMap());
+      return EmployeeModel.fromMap(employeeData);
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -294,17 +293,6 @@ class EmploymentManagementRemoteDataSourceImpl
           iosMultipleTagMessage: "Multiple tags found!",
           iosAlertMessage: "Scan your tag");
 
-      // late final String result;
-      // if (tag.type == NFCTagType.iso7816) {
-      //   result = await FlutterNfcKit.transceive(
-      //     "00B0950000",
-      //     timeout: const Duration(seconds: 5),
-      //   ); // timeout is still Android-only, persist until next change
-      // }
-      // iOS only: set alert message on-the-fly
-      // this will persist until finish()
-      // await FlutterNfcKit.setIosAlertMessage("Proses Scan!");
-
       // Call finish() only once
       await FlutterNfcKit.finish();
       // iOS only: show alert/error message on finish
@@ -323,7 +311,7 @@ class EmploymentManagementRemoteDataSourceImpl
   Future<dynamic> addPhoto({required String type}) async {
     try {
       if (type != "remove") {
-        final result = await ImagePicker().pickImage(
+        final result = await _imagePicker.pickImage(
           source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
           imageQuality: 50,
           maxWidth: 150,
@@ -334,9 +322,6 @@ class EmploymentManagementRemoteDataSourceImpl
               message: "$type can't be accessed", statusCode: 505);
         }
         final image = File(result.path);
-        // debugPrint("imagePath: $imagePath");
-        // final List<int> bytes = await result.readAsBytes();
-        // final String base64 = base64Encode(bytes);
         return image;
       } else {
         return null;

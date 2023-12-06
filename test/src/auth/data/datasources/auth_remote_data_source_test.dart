@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
-
+import 'package:port_pass_app/core/utils/constanst.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -42,15 +43,45 @@ void main() {
     statusCode: 500,
     requestOptions: RequestOptions(path: ''),
   );
+  const String tModifiedProfileImgUrl = '$kBaseUrl/images/profile/photo.jpg';
 
   final tResponseSuccess = Response<dynamic>(
     data: {
       'message': 'Success',
       'data': {
         'user': tUser.toMap(),
-        'role': 'agent',
+        'role': 'employee',
         'token': 'token',
       },
+    },
+    statusCode: 200,
+    requestOptions: RequestOptions(path: ''),
+  );
+
+  final tResponseUpdateSuccess = Response<dynamic>(
+    data: {
+      'data': tUser.toMap(),
+    },
+    statusCode: 200,
+    requestOptions: RequestOptions(path: ''),
+  );
+
+  final tResponseUpdateSuccessWithProfileImg = Response<dynamic>(
+    data: {
+      'data': {
+        'id': 0,
+        'name': 'John Doe',
+        'email': 'john@example.com',
+        'profile_img': 'photo.jpg',
+      },
+    },
+    statusCode: 200,
+    requestOptions: RequestOptions(path: ''),
+  );
+
+  final tResponseNoData = Response<dynamic>(
+    data: {
+      'data': null,
     },
     statusCode: 200,
     requestOptions: RequestOptions(path: ''),
@@ -60,6 +91,10 @@ void main() {
     message: 'ServerException',
     statusCode: 500,
   );
+
+  // setUpAll(() {
+  //   registerFallbackValue(tUser);
+  // });
 
   group(
     'signIn',
@@ -251,138 +286,162 @@ void main() {
     },
   );
 
-  // group('updateUser', () {
-  //   setUp(() {
-  //     registerFallbackValue(MockAuthCredential());
-  //   });
-  //   test(
-  //     'should update user displayName successfully when no [Exception] is thrown',
-  //     () async {
-  //       when(
-  //         () => mockUser.updateDisplayName(any()),
-  //       ).thenAnswer(
-  //         (_) async => Future.value(),
-  //       );
+  group(
+    'updateUser',
+    () {
+      test('should complete successfully when no [Exception] is thrown',
+          () async {
+        when(() => sharedPreferences.getString(any())).thenReturn("token");
+        when(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).thenAnswer((_) async => tResponseUpdateSuccess);
 
-  //       await dataSource.updateUser(
-  //         action: UpdateUserAction.name,
-  //         userData: tName,
-  //       );
+        final result = await dataSource.updateUser(
+          actions: [UpdateUserAction.name],
+          userData: tUser,
+        );
 
-  //       verify(
-  //         () => mockUser.updateDisplayName(tName),
-  //       ).called(1);
+        expect(result, equals(tUser));
 
-  //       verifyNever(() => mockUser.updateEmail(any()));
-  //       verifyNever(() => mockUser.updatePhotoURL(any()));
-  //       verifyNever(() => mockUser.updatePassword(any()));
+        verify(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(dio);
 
-  //       final userData =
-  //           await cloudStoreClient.collection('users').doc(mockUser.uid).get();
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
+      });
 
-  //       expect(userData.data()!['name'], tName);
-  //     },
-  //   );
+      // Test scenario for poin 2: Not Signed In
+      test('should throw ServerException when not signed in', () async {
+        // Arrange
+        when(() => sharedPreferences.getString(any())).thenReturn(null);
 
-  //   test(
-  //     'should update user email successfully when no [Exception] is thrown',
-  //     () async {
-  //       when(
-  //         () => mockUser.updateEmail(any()),
-  //       ).thenAnswer(
-  //         (_) async => Future.value(),
-  //       );
+        final call = dataSource.updateUser;
+        expect(
+          () => call(
+            actions: [UpdateUserAction.name],
+            userData: tUser,
+          ),
+          throwsA(isA<ServerException>()),
+        );
 
-  //       await dataSource.updateUser(
-  //         action: UpdateUserAction.email,
-  //         userData: tEmail,
-  //       );
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
+        verifyZeroInteractions(dio);
+      });
 
-  //       verify(
-  //         () => mockUser.updateEmail(tEmail),
-  //       ).called(1);
+// Test scenario for poin 3: Server Exception during Update
+      test('should throw ServerException on server error during update',
+          () async {
+        // Arrange
+        when(() => sharedPreferences.getString(any())).thenReturn("token");
+        when(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).thenThrow(tServerException);
 
-  //       verifyNever(() => mockUser.updateDisplayName(any()));
-  //       verifyNever(() => mockUser.updatePhotoURL(any()));
-  //       verifyNever(() => mockUser.updatePassword(any()));
+        // Act & Assert
+        expect(
+          () => dataSource.updateUser(
+            actions: [UpdateUserAction.name],
+            userData: tUser,
+          ),
+          throwsA(isA<ServerException>().having(
+            (e) => e.message,
+            'ServerException',
+            'ServerException',
+          )),
+        );
 
-  //       final userData =
-  //           await cloudStoreClient.collection('users').doc(mockUser.uid).get();
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verify(() => dio.put(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            )).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
+        verifyNoMoreInteractions(dio);
+      });
 
-  //       expect(userData.data()!['email'], tEmail);
-  //     },
-  //   );
+// Test scenario for poin 4: No User Data Returned
+      test('should throw ServerException when no user data is returned',
+          () async {
+        // Arrange
+        when(() => sharedPreferences.getString(any())).thenReturn("token");
+        when(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).thenAnswer((_) async => tResponseNoData);
 
-  //   test(
-  //     'should update user profilePic successfully when no [Exception] is thrown',
-  //     () async {
-  //       final newProfilePic = File('assets/images/backround.png');
+        // Act & Assert
+        expect(
+          () => dataSource.updateUser(
+            actions: [UpdateUserAction.name],
+            userData: tUser,
+          ),
+          throwsA(isA<ServerException>().having(
+            (e) => e.message,
+            'Please try again later',
+            'Please try again later',
+          )),
+        );
 
-  //       when(
-  //         () => mockUser.updatePhotoURL(any()),
-  //       ).thenAnswer(
-  //         (_) async => Future.value(),
-  //       );
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verify(() => dio.put(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            )).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
+        verifyNoMoreInteractions(dio);
+      });
 
-  //       await dataSource.updateUser(
-  //         action: UpdateUserAction.profilePic,
-  //         userData: newProfilePic,
-  //       );
+// Test scenario for poin 5: Profile Image Handling
+      test('should handle profile image URL during update', () async {
+        // Arrange
+        when(() => sharedPreferences.getString(any())).thenReturn("token");
+        when(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).thenAnswer((_) async => tResponseUpdateSuccessWithProfileImg);
 
-  //       verify(
-  //         () => mockUser.updatePhotoURL(any()),
-  //       ).called(1);
+        // Act
+        final result = await dataSource.updateUser(
+          actions: [UpdateUserAction.profileImg],
+          userData: tUser,
+        );
 
-  //       verifyNever(() => mockUser.updateDisplayName(any()));
-  //       verifyNever(() => mockUser.updatePassword(any()));
-  //       verifyNever(() => mockUser.updateEmail(any()));
+        // Assert
+        expect(result.profileImg, isNotNull);
+        expect(result.profileImg, tModifiedProfileImgUrl);
 
-  //       expect(dbClient.storedFilesMap.isNotEmpty, isTrue);
-  //     },
-  //   );
-
-  //   test(
-  //     'should update user password successfully when no [Exception] is thrown',
-  //     () async {
-  //       when(
-  //         () => mockUser.updatePassword(any()),
-  //       ).thenAnswer(
-  //         (_) async => Future.value(),
-  //       );
-
-  //       when(
-  //         () => mockUser.reauthenticateWithCredential(any()),
-  //       ).thenAnswer((_) async => userCredential);
-
-  //       when(
-  //         () => mockUser.email,
-  //       ).thenReturn(tEmail);
-
-  //       await dataSource.updateUser(
-  //         action: UpdateUserAction.password,
-  //         userData: jsonEncode(
-  //           {
-  //             'oldPassword': 'oldPassword',
-  //             'newPassword': tPassword,
-  //           },
-  //         ),
-  //       );
-
-  //       verify(
-  //         () => mockUser.updatePassword(tPassword),
-  //       ).called(1);
-
-  //       verifyNever(() => mockUser.updateDisplayName(any()));
-  //       verifyNever(() => mockUser.updatePhotoURL(any()));
-  //       verifyNever(() => mockUser.updateEmail(any()));
-
-  //       final userData = await cloudStoreClient
-  //           .collection('users')
-  //           .doc(documentReference.id)
-  //           .get();
-
-  //       expect(userData.data()!['password'], null);
-  //     },
-  //   );
-  // });
+        verify(() => sharedPreferences.getString(any())).called(1);
+        verify(() => dio.put(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            )).called(1);
+        verifyNoMoreInteractions(sharedPreferences);
+        verifyNoMoreInteractions(dio);
+      });
+    },
+  );
 }

@@ -190,9 +190,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             break;
         }
       }
-
-      debugPrint("data: $data");
-      // debugPrint('employeeId: ${employee.id}');
       final result = await _dio.put(
         _api.auth.profile,
         data: data,
@@ -207,7 +204,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         ),
       );
       var user = result.data['data'] as DataMap?;
-
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
@@ -219,7 +215,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           user['profile_img'] = null;
         } else {
           final photoPath = photo.split('/').last;
-          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
 
           user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
         }

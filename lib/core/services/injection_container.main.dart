@@ -51,6 +51,7 @@ Future<void> _initAuth() async {
 }
 
 Future<void> _initEmployeeManagement() async {
+  final imagePicker = ImagePicker();
   sl
     ..registerFactory(
       () => EmployeeManagementBloc(
@@ -78,11 +79,13 @@ Future<void> _initEmployeeManagement() async {
     ..registerLazySingleton(() => GetEmployeeDivision(sl()))
     ..registerLazySingleton<EmployeeManagementRepository>(
         () => EmployeeManagementRepositoryImpl(sl()))
+    ..registerLazySingleton(() => imagePicker)
     ..registerLazySingleton<EmploymentManagementRemoteDataSource>(
       () => EmploymentManagementRemoteDataSourceImpl(
         sharedPreferences: sl(),
         dio: sl(),
         api: sl(),
+        imagePicker: sl(),
       ),
     );
 }

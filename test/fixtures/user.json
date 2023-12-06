@@ -3,5 +3,5 @@
     "email": "testing@admin.com",
     "name": "testing",
     "role": "employee",
-    "profile_img": ""
+    "profile_img": null
 }

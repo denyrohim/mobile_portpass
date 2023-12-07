@@ -62,7 +62,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
   bool get cardStartChanged =>
       employee.cardStart.trim() != cardStartController.text.trim();
   bool get cardStopChanged =>
-      employee.cardStop?.trim() != cardStopController.text.trim();
+      (employee.cardStop?.trim() ?? "") != cardStopController.text.trim();
   bool get cardNumberChanged =>
       employee.cardNumber.trim() != cardNumberController.text.trim();
   bool get photoChanged => employee.photo != photoController.text.trim();
@@ -156,6 +156,9 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
         } else if (state is NFCScanSuccess) {
           CoreUtils.showSnackBar(
               context, "NFC berhasil discan: ${state.nfcNumber}");
+        } else if (state is NFCScanFailed) {
+          CoreUtils.showSnackBar(
+              context, "NFC gagal discan: ${state.failureMessage}");
         } else if (state is PhotoAdded) {
           CoreUtils.showSnackBar(context, "Foto berhasil diubah");
         } else if (state is EmployeeDivisionLoaded) {

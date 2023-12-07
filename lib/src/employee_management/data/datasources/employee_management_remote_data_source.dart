@@ -269,7 +269,7 @@ class EmploymentManagementRemoteDataSourceImpl
       }
       // change photo path
       final photoPath = employeeData['photo'].split('/').last;
-      employeeData['photo'] = "${_api.baseUrl}/images/employee/$photoPath}";
+      employeeData['photo'] = "${_api.baseUrl}/images/employee/$photoPath";
 
       return EmployeeModel.fromMap(employeeData);
     } on ServerException {
@@ -295,10 +295,11 @@ class EmploymentManagementRemoteDataSourceImpl
 
       // Call finish() only once
       await FlutterNfcKit.finish();
+      debugPrint(tag.toJson().toString());
       // iOS only: show alert/error message on finish
       await FlutterNfcKit.finish(iosAlertMessage: "Success");
       await FlutterNfcKit.finish(iosErrorMessage: "Failed");
-      return Future.value(tag.applicationData);
+      return Future.value(tag.id);
     } on ServerException {
       rethrow;
     } catch (e, s) {

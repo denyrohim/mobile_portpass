@@ -39,8 +39,6 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
         if (state is EmployeeManagementError) {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataLoaded) {
-          debugPrint('Data Loaded');
-          debugPrint("Data Loaded ${state.employees}");
           context.read<EmployeesProvider>().initEmployees(state.employees);
         } else if (state is DataAdded) {
           debugPrint('Data Added');

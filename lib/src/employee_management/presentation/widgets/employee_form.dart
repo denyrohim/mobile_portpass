@@ -381,6 +381,9 @@ class _EmployeeFormState extends State<EmployeeForm> {
                         widget.stillWorkingController.text == "true"
                             ? widget.stillWorkingController.text = "false"
                             : widget.stillWorkingController.text = "true";
+                        if (widget.stillWorkingController.text == "true") {
+                          widget.cardStopController.text = "";
+                        }
                       },
                       child: Container(
                           decoration: BoxDecoration(

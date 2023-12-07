@@ -164,7 +164,6 @@ class EmployeeItem extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          debugPrint('Masuk ke edit');
                           context.push(BlocProvider(
                             create: (_) => sl<EmployeeManagementBloc>(),
                             child: EditEmployeeScreen(
@@ -197,7 +196,6 @@ class EmployeeItem extends StatelessWidget {
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          debugPrint('Masuk ke delete');
                           showModalBottomSheet<void>(
                             isScrollControlled: true,
                             context: context,

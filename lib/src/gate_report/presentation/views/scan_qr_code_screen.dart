@@ -11,8 +11,6 @@ import '../../../../core/res/media_res.dart';
 class ScanQRCodeScreen extends StatefulWidget {
   const ScanQRCodeScreen({super.key});
 
-  static const routeName = '/scan-qr-code';
-
   @override
   State<ScanQRCodeScreen> createState() => _ScanQRCodeScreenState();
 }

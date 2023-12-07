@@ -13,9 +13,13 @@ abstract class AuthRepository {
   ResultFuture<LocalUser> signInWithCredential();
 
   ResultFuture<LocalUser> updateUser({
-    required UpdateUserAction action,
+    required List<UpdateUserAction> actions,
     required LocalUser userData,
   });
 
   ResultFuture<void> signOut();
+
+  ResultFuture<dynamic> addPhoto({
+    required String type,
+  });
 }

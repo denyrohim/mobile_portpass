@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/src/employee_management/presentation/widgets/employee_confirmation_button.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
@@ -14,12 +15,12 @@ class EmployeeItem extends StatelessWidget {
     BuildContext context, {
     super.key,
     required this.isShowCheckBox,
-    required this.employeeId,
+    required this.index,
     required this.employees,
   });
 
   final bool isShowCheckBox;
-  final int employeeId;
+  final int index;
   final List<Employee> employees;
 
   @override
@@ -32,7 +33,7 @@ class EmployeeItem extends StatelessWidget {
             onTap: () {
               context.read<EmployeeManagementBloc>().add(
                     UpdateCheckBoxEmployeeEvent(
-                        employeeId: employeeId, employees: employees),
+                        employeeId: index, employees: employees),
                   );
             },
             child: AnimatedContainer(
@@ -44,7 +45,7 @@ class EmployeeItem extends StatelessWidget {
                 margin: const EdgeInsets.only(right: 10),
                 height: 28,
                 width: 28,
-                child: employees[employeeId].isChecked
+                child: employees[index].isChecked
                     ? Center(
                         child: SvgPicture.asset(MediaRes.checkIcon),
                       )
@@ -80,10 +81,31 @@ class EmployeeItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colours.profileBackgroundColour,
-                    image: employees[employeeId].photo !=
-                            'http://localhost/images/ex-photo.png'
+                    // photoController.text != ""
+                    //                 ? Image.network(
+                    //                     photoController.text,
+                    //                     width: 104,
+                    //                     height: 104,
+                    //                     fit: BoxFit.cover,
+                    //                   )
+                    // : Container(
+                    //     width: 104,
+                    //     height: 104,
+                    //     padding: const EdgeInsets.only(
+                    //       left: 24,
+                    //       top: 24,
+                    //       right: 24,
+                    //       bottom: 24,
+                    //     ),
+                    //     color: Colours.profileBackgroundColour,
+                    //     child: SvgPicture.asset(
+                    //       MediaRes.profileIcon,
+                    //       fit: BoxFit.cover,
+                    //     ),
+                    //   ),
+                    image: employees[index].photo != null
                         ? DecorationImage(
-                            image: NetworkImage(employees[employeeId].photo!),
+                            image: NetworkImage(employees[index].photo!),
                             colorFilter: isShowCheckBox
                                 ? ColorFilter.mode(
                                     Colors.white.withOpacity(0.5),
@@ -92,8 +114,7 @@ class EmployeeItem extends StatelessWidget {
                             fit: BoxFit.cover)
                         : null,
                   ),
-                  child: employees[employeeId].photo ==
-                          'http://localhost/images/ex-photo.png'
+                  child: employees[index].photo == null
                       ? Center(
                           child: SvgPicture.asset(
                           MediaRes.profileIcon,
@@ -114,7 +135,7 @@ class EmployeeItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        employees[employeeId].name,
+                        employees[index].name,
                         style: TextStyle(
                             fontSize: 16,
                             color: isShowCheckBox
@@ -125,7 +146,7 @@ class EmployeeItem extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       Text(
-                        employees[employeeId].employeeType,
+                        employees[index].employeeType,
                         style: TextStyle(
                           fontSize: 12,
                           color: isShowCheckBox
@@ -143,11 +164,10 @@ class EmployeeItem extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          debugPrint('Masuk ke edit');
                           context.push(BlocProvider(
                             create: (_) => sl<EmployeeManagementBloc>(),
                             child: EditEmployeeScreen(
-                              employee: employees[employeeId],
+                              employee: employees[index],
                             ),
                           ));
                         },
@@ -176,7 +196,29 @@ class EmployeeItem extends StatelessWidget {
                       const SizedBox(width: 10),
                       GestureDetector(
                         onTap: () {
-                          debugPrint('Masuk ke delete');
+                          showModalBottomSheet<void>(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return BlocProvider(
+                                create: (_) => sl<EmployeeManagementBloc>(),
+                                child: EmployeeConfirmationButton(
+                                  text: 'Yakin hapus?',
+                                  textStyle: const TextStyle(
+                                    fontSize: 20,
+                                    color: Colours.primaryColour,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  textButtonNegative: 'Batal',
+                                  textButtonPositive: 'Hapus',
+                                  colorTextButtonNegative:
+                                      Colours.primaryColour,
+                                  colorTextButtonPositive: Colours.errorColour,
+                                  employeesIds: [employees[index].id],
+                                ),
+                              );
+                            },
+                          );
                         },
                         child: Stack(
                           alignment: Alignment.center,

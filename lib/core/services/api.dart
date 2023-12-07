@@ -13,6 +13,8 @@ class API {
         agent = APIAgent(id: id),
         activity = APIActivity(id: id),
         items = APIItems(id: id);
+
+  String get baseUrl => kBaseUrl;
 }
 
 class APIAuth {
@@ -32,6 +34,7 @@ class APIEmployee {
 
   String get employees => "$kHost/employees";
   String get employeeDetail => "$employees/$id";
+  String get employeeDivision => "$kHost/bagian";
 }
 
 class APIAgent {

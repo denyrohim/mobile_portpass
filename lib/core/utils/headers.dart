@@ -9,6 +9,7 @@ class ApiHeaders {
   }) {
     Map<String, String> headers = {
       "Content-Type": "application/json",
+      "Accept": "application/json",
     };
 
     if (token != null) {

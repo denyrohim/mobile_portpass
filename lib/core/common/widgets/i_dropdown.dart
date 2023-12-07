@@ -11,7 +11,7 @@ class IDropdown extends StatelessWidget {
     this.suffixIcon,
     this.hintText,
     this.hintStyle,
-    this.items,
+    required this.items,
   });
 
   final TextEditingController controller;
@@ -31,8 +31,17 @@ class IDropdown extends StatelessWidget {
       onChanged: (value) {
         controller.text = value.toString();
       },
-      // hint: suffixIcon,
-      items: items,
+      hint: hintText != null
+          ? Text(
+              hintText!,
+              style: hintStyle ??
+                  const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+            )
+          : null,
+      items: items ?? [],
       dropdownColor: fillColor,
       style: const TextStyle(
           fontSize: 36,
@@ -58,6 +67,8 @@ class IDropdown extends StatelessWidget {
         hintText: hintText,
         hintStyle: hintStyle ??
             const TextStyle(
+              color: Colours.primaryColour,
+              fontFamily: Fonts.inter,
               fontSize: 16,
               fontWeight: FontWeight.w400,
             ),

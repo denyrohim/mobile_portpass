@@ -5,18 +5,15 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 
 class CalendarWidget extends StatelessWidget {
-  const CalendarWidget({
-    super.key,
-    required this.dateController
-  });
+  const CalendarWidget({super.key, required this.dateController});
 
   final TextEditingController dateController;
 
   @override
   Widget build(BuildContext context) {
     return BottomSheetWidget(
-      height: 0.7,
-      buttonsBottomPosition: 10,
+      height: 520,
+      buttonsBottomPosition: 20,
       buttons: [
         RoundedButton(
           onPressed: () {
@@ -59,10 +56,10 @@ class CalendarWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: CalendarDatePicker(
                 initialDate: DateTime.now(),
-                firstDate: DateTime(2023),
+                firstDate: DateTime(1945),
                 lastDate: DateTime(2024),
                 onDateChanged: (date) {
                   dateController.text = date.toString().split(" ")[0];
@@ -70,7 +67,7 @@ class CalendarWidget extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 40,
+              height: 20,
             )
           ],
         ),

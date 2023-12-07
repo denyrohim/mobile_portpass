@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
-import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/detail_section.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/form_file.dart';
 
@@ -30,9 +29,6 @@ class _FormReportState extends State<FormReport> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ActivityManagementAppBar(
-        title: 'Formulir Laporan',
-      ),
       body: GradientBackground(
         image: MediaRes.colorBackground,
         child: SafeArea(
@@ -61,7 +57,14 @@ class _FormReportState extends State<FormReport> {
                         updateId(files);
                       },
                       title: "Unggah Dokumentasi",
-                      fileType: const ["jpg", "png", "jpeg","PNG","JPG","pdf"],
+                      fileType: const [
+                        "jpg",
+                        "png",
+                        "jpeg",
+                        "PNG",
+                        "JPG",
+                        "pdf"
+                      ],
                       detail:
                           "Lampirkan dokumentasi barang yang dibawa oleh Agen. Gunakan format PNG, JPG, JPEG, atau format gambar lainnya."),
                   ButtonBar(
@@ -71,7 +74,9 @@ class _FormReportState extends State<FormReport> {
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                             fixedSize: const Size(120, 30),
-                            backgroundColor: files.length == 2? const Color(0xff315784) : const Color(0xff315784).withOpacity(0.3),
+                            backgroundColor: files.length == 2
+                                ? const Color(0xff315784)
+                                : const Color(0xff315784).withOpacity(0.3),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
                         child: const Text(
@@ -86,7 +91,9 @@ class _FormReportState extends State<FormReport> {
                         onPressed: () {},
                         style: ElevatedButton.styleFrom(
                             fixedSize: const Size(120, 30),
-                           backgroundColor: files.length == 2 ? const Color(0xff315784) : const Color(0xff315784).withOpacity(0.3),
+                            backgroundColor: files.length == 2
+                                ? const Color(0xff315784)
+                                : const Color(0xff315784).withOpacity(0.3),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
                         child: const Text(
@@ -96,7 +103,8 @@ class _FormReportState extends State<FormReport> {
                               fontWeight: FontWeight.w700,
                               color: Colors.white),
                         ),
-                      )],
+                      )
+                    ],
                   )
                 ],
               )

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/src/activity_management/data/datasources/activity_management_remote_data_source.dart';
 import 'package:port_pass_app/src/activity_management/data/repositories/activity_management_repository_impl.dart';
@@ -10,9 +11,11 @@ import 'package:port_pass_app/src/activity_management/domain/usecase/delete_item
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
+import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_out.dart';
@@ -23,8 +26,10 @@ import 'package:port_pass_app/src/employee_management/data/datasources/employee_
 import 'package:port_pass_app/src/employee_management/data/repositories/employee_management_repository_impl.dart';
 import 'package:port_pass_app/src/employee_management/domain/repositories/employee_management_repository.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/add_employee.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/add_photo_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/cancel_check_box_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/delete_employees.dart';
+import 'package:port_pass_app/src/employee_management/domain/usecases/get_employee_division.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/get_employees.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/scan_nfc_employee.dart';
 import 'package:port_pass_app/src/employee_management/domain/usecases/select_all_employees.dart';

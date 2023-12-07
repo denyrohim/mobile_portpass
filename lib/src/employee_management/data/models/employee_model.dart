@@ -26,7 +26,7 @@ class EmployeeModel extends Employee {
           phone: '',
           dateOfBirth: '',
           employeeDivisionId: 0,
-          employeeType: 'Testing',
+          employeeType: 'Organik',
           nik: '',
           cardStart: '',
           cardStop: '',
@@ -81,7 +81,7 @@ class EmployeeModel extends Employee {
           cardStop: map['card_stop'] as String?,
           cardNumber: map['card_number'] as String,
           photo: map['photo'] as String?,
-          isChecked: map['isChecked'] as bool? ?? false,
+          isChecked: map['is_checked'] as bool? ?? false,
         );
 
   DataMap toMap() {
@@ -98,7 +98,7 @@ class EmployeeModel extends Employee {
       'card_stop': cardStop,
       'card_number': cardNumber,
       'photo': photo,
-      'isChecked': isChecked,
+      'is_checked': isChecked,
     };
   }
 }

@@ -13,12 +13,15 @@ class PopUpItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
-              color: Colours.primaryColour),
+        Container(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text(
+            title,
+            style: const TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+                color: Colours.primaryColour),
+          ),
         )
       ],
     );

@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 
 class BottomSheetWidget extends StatelessWidget {
-  const BottomSheetWidget({super.key, required this.child, this.buttons,this.buttonsBottomPosition, this.height,});
+  const BottomSheetWidget({
+    super.key,
+    required this.child,
+    this.buttons,
+    this.buttonsBottomPosition,
+    this.height,
+  });
 
   final Widget child;
   final List<Widget>? buttons;
@@ -19,7 +25,7 @@ class BottomSheetWidget extends StatelessWidget {
           top: Radius.circular(20),
         ),
       ),
-      height: MediaQuery.of(context).size.height * (height ?? 0.6),
+      height: height ?? MediaQuery.of(context).size.height * 0.5,
       child: Stack(
         children: [
           Positioned(
@@ -37,16 +43,21 @@ class BottomSheetWidget extends StatelessWidget {
               ),
             ),
           ),
-          child,
           Positioned(
             bottom: buttonsBottomPosition ?? 62,
             left: 0,
             right: 0,
             child: Align(
               alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: buttons ?? [],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  child,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: buttons ?? [],
+                  ),
+                ],
               ),
             ),
           ),

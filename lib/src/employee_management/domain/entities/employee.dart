@@ -38,7 +38,7 @@ class Employee extends Equatable {
         phone = '',
         dateOfBirth = '',
         employeeDivisionId = 0,
-        employeeType = 'Testing',
+        employeeType = 'Organik',
         nik = '',
         cardStart = '',
         cardStop = '',

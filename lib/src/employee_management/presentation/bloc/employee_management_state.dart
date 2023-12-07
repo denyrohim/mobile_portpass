@@ -109,3 +109,21 @@ class NFCScanFailed extends EmployeeManagementState {
   @override
   List<Object> get props => [failureMessage];
 }
+
+class PhotoAdded extends EmployeeManagementState {
+  const PhotoAdded(this.photo);
+
+  final dynamic photo;
+
+  @override
+  List<Object> get props => [photo];
+}
+
+class EmployeeDivisionLoaded extends EmployeeManagementState {
+  const EmployeeDivisionLoaded(this.employeeDivisions);
+
+  final List<EmployeeDivision> employeeDivisions;
+
+  @override
+  List<Object> get props => [employeeDivisions];
+}

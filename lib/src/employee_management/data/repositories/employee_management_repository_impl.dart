@@ -6,6 +6,7 @@ import 'package:dartz/dartz.dart';
 import 'package:port_pass_app/src/employee_management/data/datasources/employee_management_remote_data_source.dart';
 import 'package:port_pass_app/src/employee_management/data/models/employee_model.dart';
 import 'package:port_pass_app/src/employee_management/domain/entities/employee.dart';
+import 'package:port_pass_app/src/employee_management/domain/entities/employee_division.dart';
 import 'package:port_pass_app/src/employee_management/domain/repositories/employee_management_repository.dart';
 
 class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
@@ -16,8 +17,23 @@ class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
   @override
   ResultFuture<void> addEmployee({required employeeData}) async {
     try {
+      final employeeModel = EmployeeModel(
+        id: employeeData.id,
+        name: employeeData.name,
+        email: employeeData.email,
+        phone: employeeData.phone,
+        dateOfBirth: employeeData.dateOfBirth,
+        employeeDivisionId: employeeData.employeeDivisionId,
+        employeeType: employeeData.employeeType,
+        nik: employeeData.nik,
+        cardStart: employeeData.cardStart,
+        cardStop: employeeData.cardStop,
+        cardNumber: employeeData.cardNumber,
+        photo: employeeData.photo,
+        isChecked: employeeData.isChecked,
+      );
       final result = await _remoteDataSource.addEmployee(
-        employeeData: employeeData,
+        employeeData: employeeModel,
       );
       return Right(result);
     } on ServerException catch (e) {
@@ -135,6 +151,26 @@ class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
   ResultFuture<String> scanNFCEmployee() async {
     try {
       final result = await _remoteDataSource.scanNFCEmployee();
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<dynamic> addPhoto({required String type}) async {
+    try {
+      final result = await _remoteDataSource.addPhoto(type: type);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<List<EmployeeDivision>> getEmployeeDivision() async {
+    try {
+      final result = await _remoteDataSource.getEmployeeDivision();
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

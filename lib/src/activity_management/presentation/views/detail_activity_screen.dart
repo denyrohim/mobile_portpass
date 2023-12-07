@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/common/widgets/app_bar_core.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
-
-import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/detail_activity.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/detail_activity_list_container.dart';
 
@@ -16,9 +15,8 @@ class DetailActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: ActivityManagementAppBar(
+      appBar: AppBarCore(
         title: 'Tambah Aktivitas',
-        image: "assets/icons/track_icon.svg",
       ),
       body: GradientBackground(
           image: MediaRes.colorBackground,
@@ -55,7 +53,3 @@ class DetailActivityScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-

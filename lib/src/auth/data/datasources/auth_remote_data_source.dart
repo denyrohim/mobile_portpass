@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/enums/update_user_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
@@ -19,11 +22,15 @@ abstract class AuthRemoteDataSource {
   Future<LocalUserModel> signInWithCredential();
 
   Future<LocalUserModel> updateUser({
-    required UpdateUserAction action,
+    required List<UpdateUserAction> actions,
     required LocalUserModel userData,
   });
 
   Future<void> signOut();
+
+  Future<dynamic> addPhoto({
+    required String type,
+  });
 }
 
 const kToken = 'token';
@@ -69,18 +76,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           statusCode: result.statusCode,
         );
       }
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+      final photo = user['profile_img'] as String?;
+      if (photo != null) {
+        if (photo.split('/').first == "https:") {
+          user['profile_img'] = null;
+        } else {
+          final photoPath = photo.split('/').last;
+          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
+
+          user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
+        }
+      }
+
       await _sharedPreferences.setString(
         kToken,
         result.data['data']['token'] as String,
       );
+      // const user = LocalUserModel.empty();
 
       return LocalUserModel.fromMap(user);
+      // return user;
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -101,6 +122,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         _api.auth.signInWithCredential,
         options: Options(
           headers: ApiHeaders.getHeaders(token: token).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
 
@@ -111,18 +135,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         );
       }
 
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data']['user'] as DataMap?;
 
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+      final photo = user['profile_img'] as String?;
+      if (photo != null) {
+        if (photo.split('/').first == "https:") {
+          user['profile_img'] = null;
+        } else {
+          final photoPath = photo.split('/').last;
+          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
 
-      // await _sharedPreferences.remove(
-      //   kToken,
-      // );
+          user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
+        }
+      }
 
       return LocalUserModel.fromMap(user);
+      // const user = LocalUserModel.empty();
+      // return user;
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -133,7 +166,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
 
   @override
   Future<LocalUserModel> updateUser({
-    required UpdateUserAction action,
+    required List<UpdateUserAction> actions,
     required LocalUserModel userData,
   }) async {
     try {
@@ -144,17 +177,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       }
 
       final data = <String, dynamic>{};
-      switch (action) {
-        case UpdateUserAction.name:
-          data["name"] = userData.name;
-          break;
-        case UpdateUserAction.email:
-          data["email"] = userData.email;
-          break;
-        case UpdateUserAction.profileImg:
-          data["profile_pic"] = MultipartFile.fromFile(userData.profileImg!,
-              filename: userData.profileImg!.split('/').last);
-          break;
+      for (final action in actions) {
+        switch (action) {
+          case UpdateUserAction.name:
+            data["name"] = userData.name;
+            break;
+          case UpdateUserAction.email:
+            data["email"] = userData.email;
+            break;
+          case UpdateUserAction.profileImg:
+            data["profile_img"] = userData.profileImg;
+            break;
+        }
       }
       final result = await _dio.put(
         _api.auth.profile,
@@ -163,12 +197,27 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          receiveDataWhenStatusError: true,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
-      final user = result.data['data']['user'] as DataMap?;
+      var user = result.data['data'] as DataMap?;
       if (user == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
+      }
+      user['role'] = userData.role;
+      final photo = user['profile_img'] as String?;
+      if (photo != null) {
+        if (photo.split('/').first == "https:") {
+          user['profile_img'] = null;
+        } else {
+          final photoPath = photo.split('/').last;
+
+          user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
+        }
       }
 
       return LocalUserModel.fromMap(user);
@@ -185,22 +234,50 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final token = _sharedPreferences.getString(kToken);
 
-      if (token == null) {
-        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      if (token != null) {
+        await _dio.get(
+          _api.auth.logout,
+          options: Options(
+            headers: ApiHeaders.getHeaders(
+              token: token,
+            ).headers,
+            validateStatus: (status) {
+              return status! < 500;
+            },
+          ),
+        );
       }
 
-      await _dio.get(
-        _api.auth.logout,
-        options: Options(
-          headers: ApiHeaders.getHeaders(
-            token: token,
-          ).headers,
-        ),
-      );
+      await _sharedPreferences.remove(kToken);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
 
-      final tokenRemoved = await _sharedPreferences.remove(kToken);
-      if (!tokenRemoved) {
-        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+  @override
+  Future<dynamic> addPhoto({required String type}) async {
+    try {
+      if (type != "remove") {
+        final result = await ImagePicker().pickImage(
+          source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50,
+          maxWidth: 150,
+        );
+
+        if (result == null) {
+          throw ServerException(
+              message: "$type can't be accessed", statusCode: 505);
+        }
+        final image = File(result.path);
+        // debugPrint("imagePath: $imagePath");
+        // final List<int> bytes = await result.readAsBytes();
+        // final String base64 = base64Encode(bytes);
+        return image;
+      } else {
+        return null;
       }
     } on ServerException {
       rethrow;

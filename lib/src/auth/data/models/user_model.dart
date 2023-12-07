@@ -16,7 +16,7 @@ class LocalUserModel extends LocalUser {
           email: 'testing@admin.com',
           name: 'testing',
           role: 'employee',
-          profileImg: '',
+          profileImg: null,
         );
 
   LocalUserModel copyWith({

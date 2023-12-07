@@ -4,7 +4,6 @@ import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 
-import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/detail_activity.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/detail_activity_list_container.dart';
 
@@ -16,9 +15,6 @@ class GateDetailActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      appBar: ActivityManagementAppBar(
-        title: 'Detail Aktivitas',
-      ),
       body: GradientBackground(
           image: MediaRes.colorBackground,
           child: SafeArea(
@@ -54,7 +50,3 @@ class GateDetailActivityScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-

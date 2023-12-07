@@ -32,12 +32,14 @@ Future<void> _initAuth() async {
         signInWithCredential: sl(),
         updateUser: sl(),
         signOut: sl(),
+        addPhoto: sl(),
       ),
     )
     ..registerLazySingleton(() => SignIn(sl()))
     ..registerLazySingleton(() => SignInWithCredential(sl()))
     ..registerLazySingleton(() => UpdateUser(sl()))
     ..registerLazySingleton(() => SignOut(sl()))
+    ..registerLazySingleton(() => AddPhoto(sl()))
     ..registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()))
     ..registerLazySingleton<AuthRemoteDataSource>(
       () => AuthRemoteDataSourceImpl(
@@ -49,6 +51,7 @@ Future<void> _initAuth() async {
 }
 
 Future<void> _initEmployeeManagement() async {
+  final imagePicker = ImagePicker();
   sl
     ..registerFactory(
       () => EmployeeManagementBloc(
@@ -60,6 +63,8 @@ Future<void> _initEmployeeManagement() async {
         cancelCheckBoxEmployees: sl(),
         selectAllEmployees: sl(),
         scanNFCEmployee: sl(),
+        addPhoto: sl(),
+        getEmployeeDivision: sl(),
       ),
     )
     ..registerLazySingleton(() => AddEmployee(sl()))
@@ -70,25 +75,26 @@ Future<void> _initEmployeeManagement() async {
     ..registerLazySingleton(() => CancelCheckBoxEmployees(sl()))
     ..registerLazySingleton(() => SelectAllEmployees(sl()))
     ..registerLazySingleton(() => ScanNFCEmployee(sl()))
+    ..registerLazySingleton(() => AddPhotoEmployee(sl()))
+    ..registerLazySingleton(() => GetEmployeeDivision(sl()))
     ..registerLazySingleton<EmployeeManagementRepository>(
         () => EmployeeManagementRepositoryImpl(sl()))
+    ..registerLazySingleton(() => imagePicker)
     ..registerLazySingleton<EmploymentManagementRemoteDataSource>(
       () => EmploymentManagementRemoteDataSourceImpl(
         sharedPreferences: sl(),
         dio: sl(),
         api: sl(),
+        imagePicker: sl(),
       ),
     );
 }
 
 Future<void> _initActivityManagement() async {
   sl
-    // ..registerFactory(
-    //   () => AuthBloc(
-    //     signIn: sl(),
-    //     signInWithCredential: sl(),
-    //   ),
-    // )
+    ..registerFactory(
+      () => ActivityManagementBloc(),
+    )
     ..registerLazySingleton(() => AddActivity(sl()))
     ..registerLazySingleton(() => AddItem(sl()))
     ..registerLazySingleton(() => DeleteActivities(sl()))

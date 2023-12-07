@@ -3,7 +3,10 @@ import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 
 class NestedBackButton extends StatelessWidget {
-  const NestedBackButton({super.key});
+  const NestedBackButton({super.key, this.onPressed});
+
+  // onPressed
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +23,7 @@ class NestedBackButton extends StatelessWidget {
         ),
         onPressed: () {
           try {
+            onPressed?.call();
             context.pop();
           } catch (_) {
             Navigator.of(context).pop();

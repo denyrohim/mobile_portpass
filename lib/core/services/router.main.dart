@@ -64,6 +64,36 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
       );
 
+    case AddEmployeePhotoScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<EmployeeManagementBloc>(),
+          child: AddEmployeePhotoScreen(
+            photoController: settings.arguments as TextEditingController,
+          ),
+        ),
+        settings: settings,
+      );
+    case EditEmployeePhotoScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<EmployeeManagementBloc>(),
+          child: EditEmployeePhotoScreen(
+            photoController: settings.arguments as TextEditingController,
+          ),
+        ),
+        settings: settings,
+      );
+    case EditPhotoProfileScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (context) => sl<AuthBloc>(),
+          child: EditPhotoProfileScreen(
+            photoController: settings.arguments as TextEditingController,
+          ),
+        ),
+        settings: settings,
+      );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),

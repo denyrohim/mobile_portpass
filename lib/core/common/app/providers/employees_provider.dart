@@ -7,7 +7,10 @@ class EmployeesProvider extends ChangeNotifier {
   List<Employee>? get employees => _employees;
 
   void initEmployees(List<Employee> employees) {
-    if (_employees != employees) _employees = employees;
+    if (_employees != employees) {
+      _employees = employees;
+    }
+    notifyListeners();
   }
 
   set user(List<Employee>? employees) {
@@ -52,5 +55,15 @@ class EmployeesProvider extends ChangeNotifier {
               element.name.toLowerCase().contains(searchText.toLowerCase()))
           .toList();
     }
+  }
+
+  List<int> get idCheckedEmployees {
+    List<int> idCheckedEmployees = [];
+    for (var i = 0; i < _employees!.length; i++) {
+      if (_employees![i].isChecked) {
+        idCheckedEmployees.add(_employees![i].id);
+      }
+    }
+    return idCheckedEmployees;
   }
 }

@@ -41,13 +41,19 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   ResultFuture<LocalUser> updateUser({
-    required UpdateUserAction action,
+    required List<UpdateUserAction> actions,
     required LocalUser userData,
   }) async {
     try {
-      final LocalUserModel user = userData as LocalUserModel;
+      final LocalUserModel user = LocalUserModel(
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        role: userData.role,
+        profileImg: userData.profileImg,
+      );
       final result = await _remoteDataSource.updateUser(
-        action: action,
+        actions: actions,
         userData: user,
       );
       return Right(result);
@@ -61,6 +67,16 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       await _remoteDataSource.signOut();
       return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<dynamic> addPhoto({required String type}) async {
+    try {
+      final result = await _remoteDataSource.addPhoto(type: type);
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

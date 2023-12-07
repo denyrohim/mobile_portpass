@@ -6,12 +6,14 @@ class ActivityProgressModel extends ActivityProgress {
     required super.name,
     required super.date,
     required super.time,
+    required super.status,
   });
   const ActivityProgressModel.empty()
       : this(
           name: '',
           date: '',
           time: '',
+          status: '',
         );
 
   ActivityProgressModel copyWith({
@@ -23,6 +25,7 @@ class ActivityProgressModel extends ActivityProgress {
       name: name ?? this.name,
       date: date ?? this.date,
       time: time ?? this.time,
+      status: status,
     );
   }
 
@@ -31,6 +34,7 @@ class ActivityProgressModel extends ActivityProgress {
           name: map['name'] as String,
           date: map['date'] as String,
           time: map['time'] as String,
+          status: map['status'] as String,
         );
 
   DataMap toMap() {

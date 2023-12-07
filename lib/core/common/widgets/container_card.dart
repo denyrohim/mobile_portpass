@@ -9,6 +9,7 @@ class ContainerCard extends StatefulWidget {
     this.header,
     this.mediaHeight,
     this.headerHeight,
+    this.padding,
   });
 
   final Color backgroundColor;
@@ -16,6 +17,7 @@ class ContainerCard extends StatefulWidget {
   final Widget? header;
   final double? headerHeight;
   final double? mediaHeight;
+  final double? padding;
 
   @override
   State<ContainerCard> createState() => _ContainerCardState();
@@ -24,51 +26,47 @@ class ContainerCard extends StatefulWidget {
 class _ContainerCardState extends State<ContainerCard> {
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Stack(
-              children: [
-                Container(
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Stack(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height *
+                    (widget.mediaHeight ?? 0.8),
+                child: Container(
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: widget.backgroundColor,
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(20),
                     ),
                   ),
-                  padding: const EdgeInsets.all(10),
                   margin: widget.headerHeight != null
                       ? EdgeInsets.only(top: widget.headerHeight!)
                       : null,
-                  height: MediaQuery.of(context).size.height *
-                      (widget.mediaHeight ?? 0.8),
-                  child: Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    child: ListView(
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      children: widget.children,
-                    ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: widget.padding ?? 10),
+                    children: widget.children,
                   ),
                 ),
-                if (widget.header != null)
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: widget.header,
-                    ),
+              ),
+              if (widget.header != null)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    child: widget.header,
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

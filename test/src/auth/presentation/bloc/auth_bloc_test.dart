@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/src/auth/data/models/user_model.dart';
+import 'package:port_pass_app/src/auth/domain/usecases/add_photo.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_in_with_credential.dart';
 import 'package:port_pass_app/src/auth/domain/usecases/sign_out.dart';
@@ -18,30 +21,39 @@ class MockUpdateUser extends Mock implements UpdateUser {}
 
 class MockSignOut extends Mock implements SignOut {}
 
+class MockAddPhoto extends Mock implements AddPhoto {}
+
 void main() {
   late MockSignIn signIn;
   late MockSignInWithCredential signInWithCredential;
   late MockUpdateUser updateUser;
   late MockSignOut signOut;
   late AuthBloc authBloc;
+  late MockAddPhoto addPhoto;
 
   const tSignInParams = SignInParams.empty();
+  final tUpdateUserParams = UpdateUserParams.empty();
+  final tFile = File('test');
 
   setUp(() {
     signIn = MockSignIn();
     signInWithCredential = MockSignInWithCredential();
     updateUser = MockUpdateUser();
     signOut = MockSignOut();
+    addPhoto = MockAddPhoto();
     authBloc = AuthBloc(
       signIn: signIn,
       signInWithCredential: signInWithCredential,
       updateUser: updateUser,
       signOut: signOut,
+      addPhoto: addPhoto,
     );
   });
 
   setUpAll(() {
     registerFallbackValue(tSignInParams);
+    registerFallbackValue(tUpdateUserParams);
+    registerFallbackValue(tFile);
   });
 
   tearDown(() => authBloc.close());
@@ -109,57 +121,58 @@ void main() {
     );
   });
 
-  // group('updateUserEvent', () {
-  //   blocTest<AuthBloc, AuthState>(
-  //     "should emit [AuthLoading, UserUpdated] when [UserUpdatedEvent] is added and UserUpdated succeeds",
-  //     build: () {
-  //       when(() => updateUser(any()))
-  //           .thenAnswer((_) async => const Right(null));
-  //       return authBloc;
-  //     },
-  //     act: (bloc) {
-  //       bloc.add(
-  //         UpdateUserEvent(
-  //           action: tUpdateUserParams.action,
-  //           userData: tUpdateUserParams.userData,
-  //         ),
-  //       );
-  //     },
-  //     expect: () => [
-  //       const AuthLoading(),
-  //       const UserUpdated(),
-  //     ],
-  //     verify: (_) {
-  //       verify(() => updateUser(tUpdateUserParams)).called(1);
-  //       verifyNoMoreInteractions(updateUser);
-  //     },
-  //   );
+  group('updateUserEvent', () {
+    const tUser = LocalUserModel.empty();
+    blocTest<AuthBloc, AuthState>(
+      "should emit [AuthLoading, UserUpdated] when [UserUpdatedEvent] is added and UserUpdated succeeds",
+      build: () {
+        when(() => updateUser(any()))
+            .thenAnswer((_) async => const Right(tUser));
+        return authBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          UpdateUserEvent(
+            actions: tUpdateUserParams.actions,
+            userData: tUpdateUserParams.userData,
+          ),
+        );
+      },
+      expect: () => [
+        const AuthLoading(),
+        const UserUpdated(tUser),
+      ],
+      verify: (_) {
+        verify(() => updateUser(tUpdateUserParams)).called(1);
+        verifyNoMoreInteractions(updateUser);
+      },
+    );
 
-  //   blocTest<AuthBloc, AuthState>(
-  //     "should emit [AuthLoading, AuthError] when [UserUpdatedEvent] is added and UserUpdated fails",
-  //     build: () {
-  //       when(() => updateUser(any()))
-  //           .thenAnswer((_) async => const Left(tServerFailure));
-  //       return authBloc;
-  //     },
-  //     act: (bloc) {
-  //       bloc.add(
-  //         UpdateUserEvent(
-  //           action: tUpdateUserParams.action,
-  //           userData: tUpdateUserParams.userData,
-  //         ),
-  //       );
-  //     },
-  //     expect: () => [
-  //       const AuthLoading(),
-  //       AuthError(tServerFailure.errorMessage),
-  //     ],
-  //     verify: (_) {
-  //       verify(() => updateUser(tUpdateUserParams)).called(1);
-  //       verifyNoMoreInteractions(updateUser);
-  //     },
-  //   );
-  // });
+    blocTest<AuthBloc, AuthState>(
+      "should emit [AuthLoading, AuthError] when [UserUpdatedEvent] is added and UserUpdated fails",
+      build: () {
+        when(() => updateUser(any()))
+            .thenAnswer((_) async => const Left(tServerFailure));
+        return authBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          UpdateUserEvent(
+            actions: tUpdateUserParams.actions,
+            userData: tUpdateUserParams.userData,
+          ),
+        );
+      },
+      expect: () => [
+        const AuthLoading(),
+        AuthError(tServerFailure.errorMessage),
+      ],
+      verify: (_) {
+        verify(() => updateUser(tUpdateUserParams)).called(1);
+        verifyNoMoreInteractions(updateUser);
+      },
+    );
+  });
 
   group('SignInWithCredential', () {
     blocTest<AuthBloc, AuthState>(
@@ -205,6 +218,102 @@ void main() {
       verify: (_) {
         verify(() => signInWithCredential()).called(1);
         verifyNoMoreInteractions(signInWithCredential);
+      },
+    );
+  });
+
+  group('SignOutEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      "should emit [AuthLoading, NotSignedIn] when [SignOutEvent] is added",
+      build: () {
+        when(() => signOut()).thenAnswer((_) async => const Right(null));
+        return authBloc;
+      },
+      act: (bloc) async {
+        bloc.add(
+          const SignOutEvent(),
+        );
+      },
+      expect: () => [
+        const AuthLoading(),
+        const NotSignedIn(),
+      ],
+      verify: (_) {
+        verify(() => signOut()).called(1);
+        verifyNoMoreInteractions(signOut);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      "should emit [AuthLoading, AuthError] when [SignOutEvent] fails",
+      build: () {
+        when(() => signOut())
+            .thenAnswer((_) async => const Left(tServerFailure));
+        return authBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          const SignOutEvent(),
+        );
+      },
+      expect: () => [
+        const AuthLoading(),
+        AuthError(
+          tServerFailure.errorMessage,
+        ),
+      ],
+      verify: (_) {
+        verify(() => signOut()).called(1);
+        verifyNoMoreInteractions(signOut);
+      },
+    );
+  });
+
+  group('AddPhotoEvent', () {
+    blocTest<AuthBloc, AuthState>(
+      "should emit [AuthLoading, PhotoProfileAdded] when [AddPhotoEvent] is added",
+      build: () {
+        when(() => addPhoto(any())).thenAnswer((_) async => Right(tFile));
+        return authBloc;
+      },
+      act: (bloc) async {
+        bloc.add(
+          const AddPhotoEvent(type: "camera"),
+        );
+      },
+      expect: () => [
+        const AuthLoading(),
+        PhotoProfileAdded(
+          tFile,
+        ),
+      ],
+      verify: (_) {
+        verify(() => addPhoto(any())).called(1);
+        verifyNoMoreInteractions(addPhoto);
+      },
+    );
+
+    blocTest<AuthBloc, AuthState>(
+      "should emit [AuthLoading, EditUserError] when [AddPhotoEvent] fails",
+      build: () {
+        when(() => addPhoto(any()))
+            .thenAnswer((_) async => const Left(tServerFailure));
+        return authBloc;
+      },
+      act: (bloc) {
+        bloc.add(
+          const AddPhotoEvent(type: "camera"),
+        );
+      },
+      expect: () => [
+        const AuthLoading(),
+        EditUserError(
+          tServerFailure.errorMessage,
+        ),
+      ],
+      verify: (_) {
+        verify(() => addPhoto(any())).called(1);
+        verifyNoMoreInteractions(addPhoto);
       },
     );
   });

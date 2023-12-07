@@ -1,11 +1,11 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/common/widgets/app_bar_core.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
-import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/detail_activity.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -18,7 +18,7 @@ class QRCodeActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const ActivityManagementAppBar(
+      appBar: const AppBarCore(
         title: 'Tampilkan QR Code',
       ),
       body: GradientBackground(

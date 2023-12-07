@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/enums/update_employee_action.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/headers.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
+import 'package:port_pass_app/src/employee_management/data/models/employee_division_model.dart';
 import 'package:port_pass_app/src/employee_management/data/models/employee_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +28,11 @@ abstract class EmploymentManagementRemoteDataSource {
     required EmployeeModel employee,
   });
   Future<String> scanNFCEmployee();
+  Future<dynamic> addPhoto({
+    required String type,
+  });
+
+  Future<List<EmployeeDivisionModel>> getEmployeeDivision();
 }
 
 const kToken = 'token';
@@ -34,13 +43,16 @@ class EmploymentManagementRemoteDataSourceImpl
     required SharedPreferences sharedPreferences,
     required Dio dio,
     required API api,
+    required ImagePicker imagePicker,
   })  : _dio = dio,
         _api = api,
-        _sharedPreferences = sharedPreferences;
+        _sharedPreferences = sharedPreferences,
+        _imagePicker = imagePicker;
 
   final SharedPreferences _sharedPreferences;
   final Dio _dio;
   final API _api;
+  final ImagePicker _imagePicker;
 
   @override
   Future<void> addEmployee({required EmployeeModel employeeData}) async {
@@ -50,8 +62,7 @@ class EmploymentManagementRemoteDataSourceImpl
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-
-      await _dio.post(
+      final result = await _dio.post(
         _api.employee.employees,
         data: {
           "bagian_id": employeeData.employeeDivisionId,
@@ -74,8 +85,18 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          // receiveDataWhenStatusError: true,
+          validateStatus: (status) {
+            return true;
+          },
         ),
       );
+
+      if (result.statusCode != 200) {
+        throw ServerException(
+            message: result.data['message'] ?? "Data tidak terkirim",
+            statusCode: result.statusCode ?? 505);
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -93,8 +114,8 @@ class EmploymentManagementRemoteDataSourceImpl
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      await _dio.delete(
-        _api.employee.employees,
+      final result = await _dio.post(
+        "${_api.employee.employees}/delete-list",
         data: {
           "ids": ids,
         },
@@ -102,8 +123,17 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          receiveDataWhenStatusError: true,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
+      if (result.statusCode != 200) {
+        throw ServerException(
+            message: result.data['message'] ?? "Data tidak terkirim",
+            statusCode: result.statusCode ?? 505);
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -127,6 +157,9 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
       final listEmployees = result.data['data'] as List?;
@@ -134,7 +167,22 @@ class EmploymentManagementRemoteDataSourceImpl
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
-      final employees = listEmployees.map((e) => e as DataMap).toList();
+      var employees = listEmployees.map((e) => e as DataMap).toList();
+      // change photo path
+      employees = employees.map((e) {
+        final photo = e['photo'] as String?;
+        if (photo != null) {
+          if (photo.split('/').first == "https:") {
+            e['photo'] = null;
+          } else {
+            final photoPath = photo.split('/').last;
+
+            e['photo'] = "${_api.baseUrl}/images/employee/$photoPath";
+          }
+        }
+        return e;
+      }).toList();
+
       // final employees =
       //     List.generate(20, (index) => const EmployeeModel.empty());
 
@@ -201,8 +249,6 @@ class EmploymentManagementRemoteDataSourceImpl
             break;
         }
       }
-      debugPrint("data: $data");
-      debugPrint('employeeId: ${employee.id}');
 
       final result = await _dio.put(
         "${_api.employee.employees}/${employee.id}",
@@ -211,15 +257,21 @@ class EmploymentManagementRemoteDataSourceImpl
           headers: ApiHeaders.getHeaders(
             token: token,
           ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
         ),
       );
-      final employeeData = result.data['data'] as DataMap?;
+      var employeeData = result.data['data'] as DataMap?;
       if (employeeData == null) {
         throw const ServerException(
             message: "Please try again later", statusCode: 505);
       }
+      // change photo path
+      final photoPath = employeeData['photo'].split('/').last;
+      employeeData['photo'] = "${_api.baseUrl}/images/employee/$photoPath";
 
-      return EmployeeModel.fromMap(employee.toMap());
+      return EmployeeModel.fromMap(employeeData);
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -241,23 +293,84 @@ class EmploymentManagementRemoteDataSourceImpl
           iosMultipleTagMessage: "Multiple tags found!",
           iosAlertMessage: "Scan your tag");
 
-      late final String result;
-      if (tag.type == NFCTagType.iso7816) {
-        result = await FlutterNfcKit.transceive(
-          "00B0950000",
-          timeout: const Duration(seconds: 5),
-        ); // timeout is still Android-only, persist until next change
-      }
-      // iOS only: set alert message on-the-fly
-      // this will persist until finish()
-      // await FlutterNfcKit.setIosAlertMessage("Proses Scan!");
-
       // Call finish() only once
       await FlutterNfcKit.finish();
+      debugPrint(tag.toJson().toString());
       // iOS only: show alert/error message on finish
       await FlutterNfcKit.finish(iosAlertMessage: "Success");
       await FlutterNfcKit.finish(iosErrorMessage: "Failed");
-      return Future.value(result);
+      return Future.value(tag.id);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<dynamic> addPhoto({required String type}) async {
+    try {
+      if (type != "remove") {
+        final result = await _imagePicker.pickImage(
+          source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50,
+          maxWidth: 150,
+        );
+
+        if (result == null) {
+          throw ServerException(
+              message: "$type can't be accessed", statusCode: 505);
+        }
+        final image = File(result.path);
+        return image;
+      } else {
+        return null;
+      }
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<List<EmployeeDivisionModel>> getEmployeeDivision() async {
+    try {
+      final token = _sharedPreferences.getString(kToken);
+
+      if (token == null) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
+
+      final result = await _dio.get(
+        _api.employee.employeeDivision,
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+      final listEmployeeDivision = result.data['data'] as List?;
+      if (listEmployeeDivision == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+      final employeeDivision =
+          listEmployeeDivision.map((e) => e as DataMap).toList();
+      // final employees =
+      //     List.generate(20, (index) => const EmployeeModel.empty());
+
+      return List<EmployeeDivisionModel>.from(
+        employeeDivision.map(
+          (e) => EmployeeDivisionModel.fromMap(e),
+        ),
+      );
+      // return employees;
     } on ServerException {
       rethrow;
     } catch (e, s) {

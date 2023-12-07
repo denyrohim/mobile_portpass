@@ -7,6 +7,7 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/list_activity_screen.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
@@ -69,15 +70,9 @@ class DashboardController extends ChangeNotifier {
         ChangeNotifierProvider(
             create: (_) => TabNavigator(
                   TabItem(
-                    child: Scaffold(
-                      appBar: AppBar(
-                        backgroundColor: Colours.primaryColour,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      body: const GradientBackground(
-                        image: MediaRes.colorBackground,
-                        child: PageUnderConstruction(),
-                      ),
+                    child: BlocProvider(
+                      create: (_) => sl<ActivityManagementBloc>(),
+                      child: const AddActivityScreen(),
                     ),
                   ),
                 ),

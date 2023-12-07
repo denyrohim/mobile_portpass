@@ -45,11 +45,12 @@ class ProfileScreen extends StatelessWidget {
           return GradientBackground(
             image: MediaRes.colorBackground,
             child: SingleChildScrollView(
+              reverse: true,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: ContainerCard(
-                  mediaHeight: 0.8,
-                  headerHeight: 52,
+                  mediaHeight: 0.75,
+                  headerHeight: 62,
                   header: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: (context.currentUser!.profileImg != null)

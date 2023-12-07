@@ -95,7 +95,10 @@ class HomeGateReportScreen extends StatelessWidget {
                 const SizedBox(
                   height: 30,
                 ),
-                SvgPicture.asset(MediaRes.arrowsDown),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: SvgPicture.asset(MediaRes.arrowsDown),
+                ),
               ],
             ),
           ),

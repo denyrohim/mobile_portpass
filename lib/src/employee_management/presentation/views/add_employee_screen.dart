@@ -197,13 +197,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
           body: GradientBackground(
             image: MediaRes.colorBackground,
             child: SingleChildScrollView(
+              reverse: true,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
                 child: Consumer<FileProvider>(
                   builder: (_, fileProvider, __) {
                     return ContainerCard(
-                      mediaHeight: 0.8,
-                      headerHeight: 52,
+                      mediaHeight: 0.75,
+                      headerHeight: 62,
                       header: Stack(
                         children: [
                           ClipRRect(
@@ -426,7 +427,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height: 212,
+                          height: 112,
                         ),
                       ],
                     );

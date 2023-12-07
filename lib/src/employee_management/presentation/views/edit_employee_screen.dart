@@ -151,7 +151,7 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataUpdated) {
           employee = state.employee;
-          // context.read<FileProvider>().initFilePath(state.employee.photo!);
+          initController;
           CoreUtils.showSnackBar(context, "Data berhasil diubah");
         } else if (state is NFCScanSuccess) {
           CoreUtils.showSnackBar(
@@ -186,14 +186,15 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
           body: GradientBackground(
             image: MediaRes.colorBackground,
             child: SingleChildScrollView(
+              reverse: true,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
-                child: ContainerCard(
-                  mediaHeight: 0.8,
-                  headerHeight: 52,
-                  header: Consumer<FileProvider>(
-                    builder: (_, fileProvider, __) {
-                      return Stack(
+                child: Consumer<FileProvider>(
+                  builder: (_, fileProvider, __) {
+                    return ContainerCard(
+                      mediaHeight: 0.75,
+                      headerHeight: 62,
+                      header: Stack(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(100),
@@ -266,173 +267,195 @@ class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
                             ),
                           ),
                         ],
-                      );
-                    },
-                  ),
-                  children: [
-                    const SizedBox(height: 40),
-                    EmployeeForm(
-                      nameController: nameController,
-                      emailController: emailController,
-                      phoneController: phoneController,
-                      dateOfBirthController: dateOfBirthController,
-                      employeeDivisionIdController:
-                          employeeDivisionIdController,
-                      employeeTypeController: employeeTypeController,
-                      nikController: nikController,
-                      cardStartController: cardStartController,
-                      cardStopController: cardStopController,
-                      cardNumberController: cardNumberController,
-                      stillWorkingController: stillWorkingController,
-                      formKey: formKey,
-                    ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
                       children: [
-                        SizedBox(
-                          width: 160,
-                          height: 40,
-                          child: IgnorePointer(
-                            ignoring: nothingChanged ||
-                                state is EmployeeManagementLoading,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                initController;
-                                context
-                                    .read<FileProvider>()
-                                    .resetEditEmployee();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: nothingChanged
-                                    ? Colours.primaryColourDisabled
-                                    : Colours.primaryColour,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                        const SizedBox(height: 40),
+                        EmployeeForm(
+                          nameController: nameController,
+                          emailController: emailController,
+                          phoneController: phoneController,
+                          dateOfBirthController: dateOfBirthController,
+                          employeeDivisionIdController:
+                              employeeDivisionIdController,
+                          employeeTypeController: employeeTypeController,
+                          nikController: nikController,
+                          cardStartController: cardStartController,
+                          cardStopController: cardStopController,
+                          cardNumberController: cardNumberController,
+                          stillWorkingController: stillWorkingController,
+                          formKey: formKey,
+                        ),
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: IgnorePointer(
+                                ignoring: nothingChanged ||
+                                    state is EmployeeManagementLoading,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    initController;
+                                    context
+                                        .read<FileProvider>()
+                                        .resetEditEmployee();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: nothingChanged
+                                        ? Colours.primaryColourDisabled
+                                        : Colours.primaryColour,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: state is EmployeeManagementLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : const Text(
+                                          "Batal",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: Fonts.inter,
+                                              color: Colours.secondaryColour),
+                                        ),
                                 ),
                               ),
-                              child: state is EmployeeManagementLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : const Text(
-                                      "Batal",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: Fonts.inter,
-                                          color: Colours.secondaryColour),
-                                    ),
                             ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 160,
-                          height: 40,
-                          child: StatefulBuilder(
-                              key: key,
-                              builder: (_, refresh) {
-                                return IgnorePointer(
-                                  ignoring: nothingChanged ||
-                                      state is EmployeeManagementLoading,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      FocusManager.instance.primaryFocus
-                                          ?.unfocus();
-                                      if (formKey.currentState!.validate()) {
-                                        context
-                                            .read<EmployeeManagementBloc>()
-                                            .add(
-                                              UpdateEmployeeEvent(
-                                                actions: [
-                                                  if (nameChanged)
-                                                    UpdateEmployeeAction.name,
-                                                  if (emailChanged)
-                                                    UpdateEmployeeAction.email,
-                                                  if (phoneChanged)
-                                                    UpdateEmployeeAction.phone,
-                                                  if (dateOfBirthChanged)
-                                                    UpdateEmployeeAction
-                                                        .dateOfBirth,
-                                                  if (employeeDivisionIdChanged)
-                                                    UpdateEmployeeAction
-                                                        .employeeDivisionId,
-                                                  if (employeeTypeChanged)
-                                                    UpdateEmployeeAction
-                                                        .employeeType,
-                                                  if (nikChanged)
-                                                    UpdateEmployeeAction.nik,
-                                                  if (cardStartChanged)
-                                                    UpdateEmployeeAction
-                                                        .cardStart,
-                                                  if (cardStopChanged)
-                                                    UpdateEmployeeAction
-                                                        .cardStop,
-                                                  if (cardNumberChanged)
-                                                    UpdateEmployeeAction
-                                                        .cardNumber,
-                                                ],
-                                                employee: Employee(
-                                                  id: employee.id,
-                                                  name: nameController.text
-                                                      .trim(),
-                                                  email: emailController.text
-                                                      .trim(),
-                                                  phone: phoneController.text
-                                                      .trim(),
-                                                  dateOfBirth:
-                                                      dateOfBirthController.text
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: StatefulBuilder(
+                                  key: key,
+                                  builder: (_, refresh) {
+                                    return IgnorePointer(
+                                      ignoring: nothingChanged ||
+                                          state is EmployeeManagementLoading,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          FocusManager.instance.primaryFocus
+                                              ?.unfocus();
+                                          if (formKey.currentState!
+                                              .validate()) {
+                                            context
+                                                .read<EmployeeManagementBloc>()
+                                                .add(
+                                                  UpdateEmployeeEvent(
+                                                    actions: [
+                                                      if (nameChanged)
+                                                        UpdateEmployeeAction
+                                                            .name,
+                                                      if (emailChanged)
+                                                        UpdateEmployeeAction
+                                                            .email,
+                                                      if (phoneChanged)
+                                                        UpdateEmployeeAction
+                                                            .phone,
+                                                      if (dateOfBirthChanged)
+                                                        UpdateEmployeeAction
+                                                            .dateOfBirth,
+                                                      if (employeeDivisionIdChanged)
+                                                        UpdateEmployeeAction
+                                                            .employeeDivisionId,
+                                                      if (employeeTypeChanged)
+                                                        UpdateEmployeeAction
+                                                            .employeeType,
+                                                      if (nikChanged)
+                                                        UpdateEmployeeAction
+                                                            .nik,
+                                                      if (cardStartChanged)
+                                                        UpdateEmployeeAction
+                                                            .cardStart,
+                                                      if (cardStopChanged)
+                                                        UpdateEmployeeAction
+                                                            .cardStop,
+                                                      if (cardNumberChanged)
+                                                        UpdateEmployeeAction
+                                                            .cardNumber,
+                                                      if (photoChanged)
+                                                        UpdateEmployeeAction
+                                                            .photo,
+                                                    ],
+                                                    employee: Employee(
+                                                      id: employee.id,
+                                                      name: nameController.text
                                                           .trim(),
-                                                  employeeDivisionId: int.parse(
-                                                      employeeDivisionIdController
-                                                          .text
-                                                          .trim()),
-                                                  employeeType:
-                                                      employeeTypeController
+                                                      email: emailController
                                                           .text
                                                           .trim(),
-                                                  nik:
-                                                      nikController.text.trim(),
-                                                  cardStart: cardStartController
-                                                      .text
-                                                      .trim(),
-                                                  cardStop: cardStopController
-                                                      .text
-                                                      .trim(),
-                                                  cardNumber:
-                                                      cardNumberController.text
+                                                      phone: phoneController
+                                                          .text
                                                           .trim(),
-                                                ),
-                                              ),
-                                            );
-                                      }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: nothingChanged
-                                          ? Colours.primaryColourDisabled
-                                          : Colours.primaryColour,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: state is EmployeeManagementLoading
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : const Text(
-                                            "Simpan",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: Fonts.inter,
-                                                color: Colours.secondaryColour),
+                                                      dateOfBirth:
+                                                          dateOfBirthController
+                                                              .text
+                                                              .trim(),
+                                                      employeeDivisionId: int.parse(
+                                                          employeeDivisionIdController
+                                                              .text
+                                                              .trim()),
+                                                      employeeType:
+                                                          employeeTypeController
+                                                              .text
+                                                              .trim(),
+                                                      nik: nikController.text
+                                                          .trim(),
+                                                      cardStart:
+                                                          cardStartController
+                                                              .text
+                                                              .trim(),
+                                                      cardStop:
+                                                          cardStopController
+                                                              .text
+                                                              .trim(),
+                                                      cardNumber:
+                                                          cardNumberController
+                                                              .text
+                                                              .trim(),
+                                                      photo: fileProvider
+                                                          .uriEditEmployee,
+                                                    ),
+                                                  ),
+                                                );
+                                          }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: nothingChanged
+                                              ? Colours.primaryColourDisabled
+                                              : Colours.primaryColour,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
                                           ),
-                                  ),
-                                );
-                              }),
-                        )
+                                        ),
+                                        child: state
+                                                is EmployeeManagementLoading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : const Text(
+                                                "Simpan",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: Fonts.inter,
+                                                    color: Colours
+                                                        .secondaryColour),
+                                              ),
+                                      ),
+                                    );
+                                  }),
+                            )
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 112,
+                        ),
                       ],
-                    ),
-                    const SizedBox(height: 30),
-                  ],
+                    );
+                  },
                 ),
               ),
             ),

@@ -110,7 +110,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         },
                         text: 'Masuk',
                       ),
-                    const SizedBox(height: 300),
+                    const SizedBox(height: 500),
                   ],
                 ),
               ),

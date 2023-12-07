@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
+import 'package:port_pass_app/core/common/views/page_under_construction.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/injection_container.dart';
-import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/add_employee_screen.dart';
@@ -64,7 +64,7 @@ class DashboardController extends ChangeNotifier {
                       backgroundColor: Colors.transparent,
                       body: const GradientBackground(
                         image: MediaRes.colorBackground,
-                        child: Placeholder(),
+                        child: PageUnderConstruction(),
                       ),
                     ),
                   ),
@@ -73,7 +73,16 @@ class DashboardController extends ChangeNotifier {
         ChangeNotifierProvider(
             create: (_) => TabNavigator(
                   TabItem(
-                    child: const AddActivityScreen(),
+                    child: Scaffold(
+                      appBar: AppBar(
+                        backgroundColor: Colours.primaryColour,
+                      ),
+                      backgroundColor: Colors.transparent,
+                      body: const GradientBackground(
+                        image: MediaRes.colorBackground,
+                        child: PageUnderConstruction(),
+                      ),
+                    ),
                   ),
                 ),
             child: const PersistentView()),
@@ -97,7 +106,7 @@ class DashboardController extends ChangeNotifier {
                       backgroundColor: Colors.transparent,
                       body: const GradientBackground(
                         image: MediaRes.colorBackground,
-                        child: Placeholder(),
+                        child: PageUnderConstruction(),
                       ),
                     ),
                   ),

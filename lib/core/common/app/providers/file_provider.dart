@@ -103,4 +103,70 @@ class FileProvider extends ChangeNotifier {
     _base64EditUser = null;
     _uriEditUser = null;
   }
+
+  File? _fileAddActivity;
+  String? _filePathAddActivity;
+  String? _base64AddActivity;
+  String? _uriAddActivity;
+
+  File? get fileAddActivity => _fileAddActivity;
+  String? get filePathAddActivity => _filePathAddActivity;
+  String? get base64AddActivity => _base64AddActivity;
+  String? get uriAddActivity => _uriAddActivity;
+
+  void initFileAddActivity(File fileAddActivity) {
+    if (_fileAddActivity != fileAddActivity) {
+      _fileAddActivity = fileAddActivity;
+      _filePathAddActivity = fileAddActivity.path;
+      _base64AddActivity = base64Encode(fileAddActivity.readAsBytesSync());
+      _uriAddActivity =
+          "data:image/${fileAddActivity.path.split('/').last.split('.').last};base64,${base64Encode(fileAddActivity.readAsBytesSync())}";
+    }
+  }
+
+  void initFilePathAddActivity(String filePathAddActivity) {
+    if (_filePathAddActivity != filePathAddActivity) {
+      _filePathAddActivity = filePathAddActivity;
+    }
+  }
+
+  void resetAddActivity() {
+    _fileAddActivity = null;
+    _filePathAddActivity = null;
+    _base64AddActivity = null;
+    _uriAddActivity = null;
+  }
+
+  File? _fileEditActivity;
+  String? _filePathEditActivity;
+  String? _base64EditActivity;
+  String? _uriEditActivity;
+
+  File? get fileEditActivity => _fileEditActivity;
+  String? get filePathEditActivity => _filePathEditActivity;
+  String? get base64EditActivity => _base64EditActivity;
+  String? get uriEditActivity => _uriEditActivity;
+
+  void initFileEditActivity(File fileEditActivity) {
+    if (_fileEditActivity != fileEditActivity) {
+      _fileEditActivity = fileEditActivity;
+      _filePathEditActivity = fileEditActivity.path;
+      _base64EditActivity = base64Encode(fileEditActivity.readAsBytesSync());
+      _uriEditActivity =
+          "data:image/${fileEditActivity.path.split('/').last.split('.').last};base64,${base64Encode(fileEditActivity.readAsBytesSync())}";
+    }
+  }
+
+  void initFilePathEditActivity(String filePathEditActivity) {
+    if (_filePathEditActivity != filePathEditActivity) {
+      _filePathEditActivity = filePathEditActivity;
+    }
+  }
+
+  void resetEditActivity() {
+    _fileEditActivity = null;
+    _filePathEditActivity = null;
+    _base64EditActivity = null;
+    _uriEditActivity = null;
+  }
 }

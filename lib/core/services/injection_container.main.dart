@@ -92,12 +92,9 @@ Future<void> _initEmployeeManagement() async {
 
 Future<void> _initActivityManagement() async {
   sl
-    // ..registerFactory(
-    //   () => AuthBloc(
-    //     signIn: sl(),
-    //     signInWithCredential: sl(),
-    //   ),
-    // )
+    ..registerFactory(
+      () => ActivityManagementBloc(),
+    )
     ..registerLazySingleton(() => AddActivity(sl()))
     ..registerLazySingleton(() => AddItem(sl()))
     ..registerLazySingleton(() => DeleteActivities(sl()))

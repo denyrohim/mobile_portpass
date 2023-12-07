@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/common/widgets/app_bar_core.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity_progress.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_list.dart';
-import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 
 class TrackingActivityScreen extends StatelessWidget {
   TrackingActivityScreen({super.key});
@@ -51,7 +51,7 @@ class TrackingActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const ActivityManagementAppBar(
+      appBar: const AppBarCore(
         title: 'Lacak Aktivitas',
       ),
       body: GradientBackground(

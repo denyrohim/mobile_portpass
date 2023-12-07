@@ -53,6 +53,8 @@ class Colours {
 
   static const Color primaryColourDisabled = Color(0x80315784);
 
+  static const Color secondaryColourDisabled = Color(0xEEF4F6F8);
+
   static const Color errorColourDisabled = Color(0x80D32F2F);
 
   static const Color profileBackgroundColour = Color(0xFFD8D8D8);

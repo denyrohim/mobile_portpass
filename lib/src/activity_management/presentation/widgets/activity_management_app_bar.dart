@@ -1,86 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
+import 'package:port_pass_app/core/common/widgets/pop_up_item.dart';
 import 'package:port_pass_app/core/res/colours.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 
 class ActivityManagementAppBar extends StatelessWidget
     implements PreferredSizeWidget {
-  const ActivityManagementAppBar(
-      {super.key, required this.title, this.image, this.pressAction});
+  const ActivityManagementAppBar({
+    super.key,
+    required this.count,
+    required this.activityProvider,
+  });
 
-  final String title;
-  final String? image;
-  final VoidCallback? pressAction;
+  final int count;
+  final ActivityProvider activityProvider;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      actions: [
-        image != null
-            ? Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: InkWell(
-                    onTap: pressAction,
-                    child: Container(
-                      height: 35,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colours.secondaryColour,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          SvgPicture.asset(
-                            image!,
-                            height: 30,
-                            width: 30,
-                          ),
-                          const Text(
-                            'Lacak',
-                            style: TextStyle(
-                              color: Colours.primaryColour,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          )
-                        ],
-                      ),
-                    )),
-              )
-            : const SizedBox.shrink(),
-      ],
-      centerTitle: true,
+      elevation: 0,
       backgroundColor: Colours.primaryColour,
       foregroundColor: Colours.secondaryColour,
-      elevation: 0,
-      leadingWidth: double.infinity,
-      leading: Container(
-        margin: const EdgeInsets.only(left: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back,
-                size: 30,
-                color: Colours.secondaryColour,
-              ),
-              onPressed: () => Navigator.pop(context),
-              color: Colors.red,
+      title: const Padding(
+        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Daftar Aktivitas',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w700,
             ),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                title,
-                style: const TextStyle(
-                  color: Colours.secondaryColour,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+      actions: [
+        Row(
+          children: [
+            Text(
+              '$count Daftar',
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colours.secondaryColour),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+              child: PopupMenuButton(
+                color: Colours.secondaryColourDisabled,
+                offset: const Offset(0, 50),
+                icon: SvgPicture.asset(MediaRes.moreIcons),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
                 ),
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: 1,
+                    child: const PopUpItem(
+                      title: 'Disetujui',
+                    ),
+                    onTap: () {
+                      debugPrint('item pilih di klik');
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 2,
+                    child: const PopUpItem(
+                      title: 'Menunggu',
+                    ),
+                    onTap: () {
+                      debugPrint('item pilih semua di klik');
+                    },
+                  ),
+                  PopupMenuItem(
+                    value: 3,
+                    child: const PopUpItem(
+                      title: 'Ditolak',
+                    ),
+                    onTap: () {
+                      debugPrint('item pilih semua di klik');
+                    },
+                  ),
+                ],
               ),
             ),
           ],
         ),
-      ),
+      ],
     );
   }
 

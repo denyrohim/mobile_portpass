@@ -11,6 +11,7 @@ import 'package:port_pass_app/src/activity_management/domain/usecase/delete_item
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
+import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:port_pass_app/src/auth/data/repositories/auth_repository_impl.dart';
 import 'package:port_pass_app/src/auth/domain/repositories/auth_repository.dart';

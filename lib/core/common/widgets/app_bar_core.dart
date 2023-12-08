@@ -8,12 +8,14 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
     this.icon,
     this.child,
     this.size = 20,
+    this.isBackButton = false,
   });
 
   final Icon? icon;
   final String title;
   final Widget? child;
   final double? size;
+  final bool? isBackButton;
 
   @override
   Widget build(BuildContext context) {
@@ -36,12 +38,17 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            icon ??
-                IconButton(
-                  icon: icon!,
-                  onPressed: () => Navigator.pop(context),
-                  color: Colors.red,
-                ),
+            isBackButton == true
+                ? IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      size: 30,
+                      color: Colours.secondaryColour,
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    color: Colors.red,
+                  )
+                : const SizedBox.shrink(),
             Text(
               title,
               style: TextStyle(

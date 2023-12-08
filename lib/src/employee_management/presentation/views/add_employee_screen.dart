@@ -19,8 +19,6 @@ import 'package:provider/provider.dart';
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
 
-  static const routeName = '/add-employee';
-
   @override
   State<AddEmployeeScreen> createState() => _AddEmployeeScreenState();
 }

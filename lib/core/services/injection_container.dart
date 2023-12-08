@@ -40,10 +40,13 @@ import 'package:port_pass_app/src/employee_management/presentation/bloc/employee
 import 'package:port_pass_app/src/gate_report/data/datasources/gate_report_remote_data_source.dart';
 import 'package:port_pass_app/src/gate_report/data/repositories/gate_report_repository_impl.dart';
 import 'package:port_pass_app/src/gate_report/domain/repositories/gate_report_repository.dart';
+import 'package:port_pass_app/src/gate_report/domain/usecases/add_documentation.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/add_report.dart';
+import 'package:port_pass_app/src/gate_report/domain/usecases/add_urgent_letter.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/get_activity.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/get_location.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/scan_qr_activity.dart';
+import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'injection_container.main.dart';

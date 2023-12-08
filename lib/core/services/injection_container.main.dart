@@ -11,6 +11,7 @@ Future<void> init() async {
   await _initAuth();
   await _initEmployeeManagement();
   await _initActivityManagement();
+  await _initGateReport();
 }
 
 Future<void> _initCore({
@@ -116,13 +117,15 @@ Future<void> _initActivityManagement() async {
 Future<void> _initGateReport() async {
   const filePicker = FilePicker;
   sl
-    // ..registerFactory(
-    //   () => GateReportBloc(),
-    // )
+    ..registerFactory(
+      () => GateReportBloc(),
+    )
     ..registerLazySingleton(() => AddReport(sl()))
     ..registerLazySingleton(() => GetActivity(sl()))
     ..registerLazySingleton(() => GetLocation(sl()))
     ..registerLazySingleton(() => ScanQRActivity(sl()))
+    ..registerLazySingleton(() => AddUrgentLetter(sl()))
+    ..registerLazySingleton(() => AddDocumentation(sl()))
     ..registerLazySingleton<GateReportRepository>(
         () => GateReportRepositoryImpl(sl()))
     ..registerLazySingleton(() => filePicker)

@@ -57,21 +57,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => const DetailActivityScreen(),
         settings: settings,
       );
-    case ScanQRCodeScreen.routeName:
-      return _pageBuilder(
-        (_) => const ScanQRCodeScreen(),
-        settings: settings,
-      );
+
     case QRCodeActivityScreen.routeName:
       return _pageBuilder(
         (_) => const QRCodeActivityScreen(),
         settings: settings,
       );
-    case AddEmployeeScreen.routeName:
-      return _pageBuilder(
-        (_) => const AddEmployeeScreen(),
-        settings: settings,
-      );
+
     case AddEmployeePhotoScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(

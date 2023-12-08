@@ -6,13 +6,15 @@ class API {
   final APIAgent agent;
   final APIActivity activity;
   final APIItems items;
+  final APIReport report;
 
   API({String? id})
       : auth = APIAuth(id: id),
         employee = APIEmployee(id: id),
         agent = APIAgent(id: id),
         activity = APIActivity(id: id),
-        items = APIItems(id: id);
+        items = APIItems(id: id),
+        report = APIReport(id: id);
 
   String get baseUrl => kBaseUrl;
 }
@@ -60,4 +62,12 @@ class APIItems {
 
   String get items => "$kHost/goods";
   String get detailItem => "$items/$id";
+}
+
+class APIReport {
+  const APIReport({this.id});
+  final String? id;
+
+  String get report => "$kHost/report";
+  String get detailReport => "$report/$id";
 }

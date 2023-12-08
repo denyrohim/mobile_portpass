@@ -28,7 +28,7 @@ abstract class EmploymentManagementRemoteDataSource {
     required EmployeeModel employee,
   });
   Future<String> scanNFCEmployee();
-  Future<dynamic> addPhoto({
+  Future<dynamic> addPhotoEmployee({
     required String type,
   });
 
@@ -309,7 +309,7 @@ class EmploymentManagementRemoteDataSourceImpl
   }
 
   @override
-  Future<dynamic> addPhoto({required String type}) async {
+  Future<dynamic> addPhotoEmployee({required String type}) async {
     try {
       if (type != "remove") {
         final result = await _imagePicker.pickImage(

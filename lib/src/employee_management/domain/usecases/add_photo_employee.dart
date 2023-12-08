@@ -8,7 +8,7 @@ class AddPhotoEmployee implements UsecaseWithParams<dynamic, String> {
   final EmployeeManagementRepository _repository;
 
   @override
-  ResultFuture<dynamic> call(String type) => _repository.addPhoto(
+  ResultFuture<dynamic> call(String type) => _repository.addPhotoEmployee(
         type: type,
       );
 }

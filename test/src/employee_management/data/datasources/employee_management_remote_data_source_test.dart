@@ -556,7 +556,7 @@ void main() {
           )).thenAnswer((_) async => tXFile);
 
       // Act
-      final result = await dataSource.addPhoto(type: type);
+      final result = await dataSource.addPhotoEmployee(type: type);
 
       // Assert
       expect(result, isA<File>());
@@ -577,7 +577,7 @@ void main() {
       const type = 'remove';
 
       // Act
-      final result = await dataSource.addPhoto(type: type);
+      final result = await dataSource.addPhotoEmployee(type: type);
 
       // Assert
       expect(result, isNull);
@@ -596,7 +596,7 @@ void main() {
           )).thenAnswer((_) async => null);
 
       // Act
-      final call = dataSource.addPhoto(type: type);
+      final call = dataSource.addPhotoEmployee(type: type);
 
       // Assert
       await expectLater(
@@ -625,7 +625,7 @@ void main() {
           )).thenThrow(tServerException);
 
       // Act
-      final call = dataSource.addPhoto(type: type);
+      final call = dataSource.addPhotoEmployee(type: type);
 
       // Assert
       await expectLater(

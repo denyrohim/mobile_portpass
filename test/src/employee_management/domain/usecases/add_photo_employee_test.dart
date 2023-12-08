@@ -24,7 +24,7 @@ void main() {
     'should call the [EmployeeManagementRepo.addPhotoEmployee]',
     () async {
       when(
-        () => repository.addPhoto(
+        () => repository.addPhotoEmployee(
           type: tType,
         ),
       ).thenAnswer(
@@ -35,7 +35,7 @@ void main() {
 
       expect(result, equals(Right<dynamic, File>(tFile)));
 
-      verify(() => repository.addPhoto(type: tType)).called(1);
+      verify(() => repository.addPhotoEmployee(type: tType)).called(1);
       verifyNoMoreInteractions(repository);
     },
   );

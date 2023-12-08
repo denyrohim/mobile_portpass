@@ -112,3 +112,26 @@ Future<void> _initActivityManagement() async {
       ),
     );
 }
+
+Future<void> _initGateReport() async {
+  const filePicker = FilePicker;
+  sl
+    // ..registerFactory(
+    //   () => GateReportBloc(),
+    // )
+    ..registerLazySingleton(() => AddReport(sl()))
+    ..registerLazySingleton(() => GetActivity(sl()))
+    ..registerLazySingleton(() => GetLocation(sl()))
+    ..registerLazySingleton(() => ScanQRActivity(sl()))
+    ..registerLazySingleton<GateReportRepository>(
+        () => GateReportRepositoryImpl(sl()))
+    ..registerLazySingleton(() => filePicker)
+    ..registerLazySingleton<GateReportRemoteDataSource>(
+      () => GateReportRemoteDataSourceImpl(
+        sharedPreferences: sl(),
+        dio: sl(),
+        api: sl(),
+        filePicker: sl(),
+      ),
+    );
+}

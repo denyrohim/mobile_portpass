@@ -25,6 +25,19 @@ class Activity extends Equatable {
     required this.qrCode,
   });
 
+  Activity.empty()
+      : this(
+          name: '',
+          shipName: '',
+          type: '',
+          date: '',
+          time: '',
+          items: [],
+          status: '',
+          activityProgress: [],
+          qrCode: '',
+        );
+
   @override
   List<Object?> get props => [name, shipName, type, date, time];
 }

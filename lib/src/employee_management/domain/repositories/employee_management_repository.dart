@@ -36,7 +36,7 @@ abstract class EmployeeManagementRepository {
 
   ResultFuture<String> scanNFCEmployee();
 
-  ResultFuture<dynamic> addPhoto({
+  ResultFuture<dynamic> addPhotoEmployee({
     required String type,
   });
 

@@ -13,6 +13,14 @@ class ActivityProgress extends Equatable {
     required this.status,
   });
 
+  const ActivityProgress.empty()
+      : this(
+          name: '',
+          date: '',
+          time: '',
+          status: '',
+        );
+
   @override
   List<Object?> get props => [name, date, time, status];
 }

@@ -158,9 +158,9 @@ class EmployeeManagementRepositoryImpl implements EmployeeManagementRepository {
   }
 
   @override
-  ResultFuture<dynamic> addPhoto({required String type}) async {
+  ResultFuture<dynamic> addPhotoEmployee({required String type}) async {
     try {
-      final result = await _remoteDataSource.addPhoto(type: type);
+      final result = await _remoteDataSource.addPhotoEmployee(type: type);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

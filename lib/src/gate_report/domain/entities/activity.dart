@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:port_pass_app/src/gate_report/domain/entities/activity_progres.dart';
+import 'package:port_pass_app/src/gate_report/domain/entities/activity_progress.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/item.dart';
 
 class Activity extends Equatable {
@@ -24,6 +24,19 @@ class Activity extends Equatable {
     required this.activityProgress,
     required this.qrCode,
   });
+
+  Activity.empty()
+      : this(
+          name: '',
+          shipName: '',
+          type: '',
+          date: '',
+          time: '',
+          items: [],
+          status: '',
+          activityProgress: [],
+          qrCode: '',
+        );
 
   @override
   List<Object?> get props => [name, shipName, type, date, time];

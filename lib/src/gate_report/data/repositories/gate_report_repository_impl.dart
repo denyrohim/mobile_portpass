@@ -63,18 +63,14 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }
 
   @override
-  ResultFuture<int> scanQRActivity() async {
+  ResultFuture<String> scanQRActivity({required List<Barcode> barcodes}) async {
     try {
-      late dynamic result;
-      MobileScanner(
-        onDetect: (BarcodeCapture barcodes) {
-          result = barcodes.barcodes.first.displayValue;
-        },
-      );
+      dynamic result = barcodes.first.displayValue;
+
       if (result == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      result = int.parse(result);
+
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

@@ -50,8 +50,12 @@ class GetLocationEvent extends GateReportEvent {
 }
 
 class ScanQrActivityEvent extends GateReportEvent {
-  const ScanQrActivityEvent();
+  const ScanQrActivityEvent({
+    required this.barcodes,
+  });
+
+  final List<Barcode> barcodes;
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [barcodes];
 }

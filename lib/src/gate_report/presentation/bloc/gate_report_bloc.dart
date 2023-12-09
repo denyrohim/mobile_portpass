@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:latlng/latlng.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/add_documentation.dart';
@@ -61,7 +62,9 @@ class GateReportBloc extends Bloc<GateReportEvent, GateReportState> {
     ScanQrActivityEvent event,
     Emitter<GateReportState> emit,
   ) async {
-    final result = await _scanQRActivity();
+    final result = await _scanQRActivity(
+      event.barcodes,
+    );
     result.fold(
       (failure) => emit(ScanFailed(failure.errorMessage)),
       (result) => emit(ScanSuccess(result)),

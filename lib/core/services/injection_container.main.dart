@@ -115,10 +115,17 @@ Future<void> _initActivityManagement() async {
 }
 
 Future<void> _initGateReport() async {
-  const filePicker = FilePicker;
+  final filePicker = FilePicker.platform;
   sl
     ..registerFactory(
-      () => GateReportBloc(),
+      () => GateReportBloc(
+        addDocumentation: sl(),
+        scanQRActivity: sl(),
+        getLocation: sl(),
+        addReport: sl(),
+        addUrgentLetter: sl(),
+        getActivity: sl(),
+      ),
     )
     ..registerLazySingleton(() => AddReport(sl()))
     ..registerLazySingleton(() => GetActivity(sl()))

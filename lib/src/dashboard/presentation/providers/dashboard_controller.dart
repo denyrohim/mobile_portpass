@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
-import 'package:port_pass_app/core/common/views/page_under_construction.dart';
-import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
-import 'package:port_pass_app/core/res/colours.dart';
-import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';

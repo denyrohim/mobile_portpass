@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:port_pass_app/core/common/widgets/bottom_sheet_widget.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 
 import '../../../../core/res/colours.dart';
@@ -21,8 +21,8 @@ class ScanQRCodeScreen extends StatefulWidget {
 }
 
 class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
-  MobileScannerController scannerController = MobileScannerController();
   bool isScanCompleted = false;
+  bool isCanScan = false;
 
   void _scanBottomSheet() {
     setState(
@@ -161,18 +161,32 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
     );
   }
 
-  void _stopScan() {
-    setState(() {
-      scannerController.stop();
-    });
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<GateReportBloc, GateReportState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is GateReportError) {
+          CoreUtils.showSnackBar(context, state.message);
+        } else if (state is ScanSuccess) {
+          setState(() {
+            isCanScan = false;
+          });
+          _scanBottomSheet();
+        } else if (state is ScanFailed) {
+          setState(() {
+            isCanScan = false;
+          });
+          CoreUtils.showSnackBar(context, state.message);
+        }
+      },
       builder: (context, state) {
         return Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: AppBar(
             leading: BackButton(
               onPressed: () {
@@ -201,19 +215,14 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
               children: [
                 Expanded(
                   child: MobileScanner(
-                    controller: scannerController,
+                    controller: MobileScannerController(),
                     onDetect: (capture) {
-                      final List<Barcode> barcodes = capture.barcodes;
-                      for (final barcode in barcodes) {
-                        debugPrint('Barcode found! ${barcode.rawValue}');
-                      }
-
-                      if (barcodes.isNotEmpty && !isScanCompleted) {
-                        _scanBottomSheet();
-                        isScanCompleted = true;
-                        // _stopScan();
-                        // _stopScan();
-                        // scannerController.stop();
+                      if (isCanScan) {
+                        debugPrint('Ahhh Masuk');
+                        final List<Barcode> barcodes = capture.barcodes;
+                        context.read<GateReportBloc>().add(
+                              ScanQrActivityEvent(barcodes: barcodes),
+                            );
                       }
                     },
                   ),
@@ -261,7 +270,10 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    scannerController.start();
+                                    setState(() {
+                                      isCanScan = true;
+                                    });
+                                    debugPrint('Mulai ga Kontol: $isCanScan');
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,

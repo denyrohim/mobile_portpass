@@ -18,7 +18,8 @@ class HomeGateReportScreen extends StatelessWidget {
         image: MediaRes.colorBackground,
         child: SafeArea(
           child: Center(
-            child: Column(
+            child: Flex(
+              direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(

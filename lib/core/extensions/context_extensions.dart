@@ -5,6 +5,7 @@ import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 
 extension ContextExtensions on BuildContext {
   ThemeData get theme => Theme.of(this);
@@ -28,4 +29,6 @@ extension ContextExtensions on BuildContext {
   void pop() => tabNavigator.pop();
 
   void push(Widget page) => tabNavigator.push(TabItem(child: page));
+
+  DashboardController get dashboardController => read<DashboardController>();
 }

@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
-import 'package:port_pass_app/core/common/views/page_under_construction.dart';
-import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
-import 'package:port_pass_app/core/res/colours.dart';
-import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
@@ -13,7 +9,9 @@ import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/add_employee_screen.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/list_employee_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/scan_qr_code_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -88,17 +86,23 @@ class DashboardController extends ChangeNotifier {
                 ),
             child: const PersistentView()),
         ChangeNotifierProvider(
+            // create: (_) {
+            //   // final navigator = Navigator.of(context);
+            //   // navigator.push(ScanQRCodeScreen);
+            //   return TabNavigator(
+            //     TabItem(
+            //       child: BlocProvider(
+            //         create: (_) => sl<GateReportBloc>(),
+            //         child: const ScanQRCodeScreen(),
+            //       ),
+            //     ),
+            //   );
+            // },
             create: (_) => TabNavigator(
                   TabItem(
-                    child: Scaffold(
-                      appBar: AppBar(
-                        backgroundColor: Colours.primaryColour,
-                      ),
-                      backgroundColor: Colors.transparent,
-                      body: const GradientBackground(
-                        image: MediaRes.colorBackground,
-                        child: PageUnderConstruction(),
-                      ),
+                    child: BlocProvider(
+                      create: (_) => sl<GateReportBloc>(),
+                      child: const ScanQRCodeScreen(),
                     ),
                   ),
                 ),

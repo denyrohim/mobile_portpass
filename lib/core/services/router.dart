@@ -7,6 +7,7 @@ import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/add_employee_photo_screen.dart';
 import 'package:port_pass_app/src/employee_management/presentation/views/edit_employee_photo_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/detail_activity_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/edit_photo_profile_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';

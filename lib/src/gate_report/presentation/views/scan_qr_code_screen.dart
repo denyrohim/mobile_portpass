@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:port_pass_app/core/common/widgets/bottom_sheet_widget.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
+import 'package:port_pass_app/core/common/widgets/nested_back_button.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/detail_activity_screen.dart';
 
 import '../../../../core/res/colours.dart';
 import '../../../../core/res/fonts.dart';
@@ -21,141 +24,159 @@ class ScanQRCodeScreen extends StatefulWidget {
 }
 
 class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
+  MobileScannerController cameraController = MobileScannerController();
   bool isScanCompleted = false;
   bool isCanScan = false;
+  bool isButtonScanPressed = false;
+  late bool isSuccess;
+  List<Barcode> barcodes = [];
 
   void _scanBottomSheet() {
-    setState(
-      () {
-        showModalBottomSheet<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return Column(
+    showModalBottomSheet<void>(
+      context: context,
+      isDismissible: false,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return BottomSheetWidget(
+          height: 550,
+          buttons: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: const Icon(
+                Icons.replay_rounded,
+                size: 32,
+                color: Colours.primaryColour,
+              ),
+            ),
+            Stack(
+              alignment: Alignment.center,
               children: [
-                const SizedBox(height: 20),
                 Container(
-                  width: 72,
-                  height: 8,
-                  decoration: const BoxDecoration(
-                    color: Colours.primaryColour,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20),
-                    ),
-                    shape: BoxShape.rectangle,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Align(
-                  child: Text(
-                    'Scan QR Code',
-                    style: TextStyle(
-                      fontFamily: Fonts.inter,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xff315784),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.25),
-                            blurRadius: 4,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(100),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 4,
+                        offset: const Offset(0, 4),
                       ),
-                      height: 285,
-                      width: 256,
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 4,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          height: 156,
-                          width: 144,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: SvgPicture.asset(MediaRes.signalIcon),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Text(
-                          'Scan Berhasil',
-                          style: TextStyle(
-                            fontFamily: Fonts.inter,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xff315784),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
+                  height: 72,
+                  width: 72,
                 ),
-                const SizedBox(height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    const Icon(
-                      Icons.replay_rounded,
-                      size: 32,
-                      color: Color(0x31578480),
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 4,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          height: 72,
-                          width: 72,
-                        ),
-                        SvgPicture.asset(
-                          MediaRes.scanBold,
-                          height: 32,
-                          width: 32,
-                        )
-                      ],
-                    ),
-                    const Icon(
-                      Icons.done,
-                      size: 32,
-                      color: Color(0x31578480),
-                    )
-                  ],
-                ),
+                SvgPicture.asset(
+                  MediaRes.scanLight,
+                  height: 32,
+                  width: 32,
+                )
               ],
-            );
-          },
+            ),
+            IconButton(
+              onPressed: () {
+                final navigator = Navigator.of(context);
+                // Navigator.of(context).pop();
+
+                if (navigator.canPop()) {
+                  navigator.pop();
+                }
+
+                // Navigator.of(context).pushNamed(
+                //   GateDetailActivityScreen.routeName,
+                // );
+                // Navigator.pushNamed(
+                //     context, GateDetailActivityScreen.routeName);
+                navigator.pushNamed(
+                  GateDetailActivityScreen.routeName,
+                );
+              },
+              icon: const Icon(
+                Icons.done,
+                size: 32,
+                color: Colours.primaryColour,
+              ),
+            ),
+          ],
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              const Align(
+                child: Text(
+                  'Scan QR Code',
+                  style: TextStyle(
+                    fontFamily: Fonts.inter,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xff315784),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.25),
+                          blurRadius: 4,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    height: 285,
+                    width: 256,
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.25),
+                              blurRadius: 4,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        height: 156,
+                        width: 144,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: SvgPicture.asset(
+                            isSuccess
+                                ? MediaRes.signalIcon
+                                : MediaRes.signalIcon2,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        isSuccess ? 'Scan Berhasil' : 'Scan Gagal',
+                        style: const TextStyle(
+                          fontFamily: Fonts.inter,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xff315784),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30),
+            ],
+          ),
         );
       },
     );
@@ -163,6 +184,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
 
   @override
   void initState() {
+    cameraController.stop();
     super.initState();
   }
 
@@ -175,11 +197,15 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         } else if (state is ScanSuccess) {
           setState(() {
             isCanScan = false;
+            isSuccess = true;
+            isButtonScanPressed = false;
           });
           _scanBottomSheet();
         } else if (state is ScanFailed) {
           setState(() {
             isCanScan = false;
+            isSuccess = false;
+            isButtonScanPressed = false;
           });
           CoreUtils.showSnackBar(context, state.message);
         }
@@ -188,24 +214,19 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            leading: BackButton(
+            // scrolledUnderElevation: 0,
+            // backgroundColor: Colours.primaryColour,
+            leading: NestedBackButton(
               onPressed: () {
                 context.dashboardController.changeIndex(0);
               },
-              color: Colours.secondaryColour,
-              style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all(Colors.transparent),
-                iconSize: MaterialStateProperty.all(44),
-              ),
             ),
-            backgroundColor: Colors.transparent,
             title: const Text(
-              'Scan',
+              "Scan",
               style: TextStyle(
-                fontFamily: Fonts.inter,
-                fontSize: 20,
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                fontSize: 20,
+                color: Colours.secondaryColour,
               ),
             ),
           ),
@@ -213,22 +234,20 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             width: double.infinity,
             child: Stack(
               children: [
-                Expanded(
-                  child: MobileScanner(
-                    controller: MobileScannerController(),
-                    onDetect: (capture) {
-                      if (isCanScan) {
-                        debugPrint('Ahhh Masuk');
-                        final List<Barcode> barcodes = capture.barcodes;
-                        context.read<GateReportBloc>().add(
-                              ScanQrActivityEvent(barcodes: barcodes),
-                            );
-                      }
-                    },
-                  ),
+                MobileScanner(
+                  controller: MobileScannerController(),
+                  onDetect: (capture) {
+                    if (isCanScan) {
+                      debugPrint('Ahhh Masuk');
+                      barcodes = capture.barcodes;
+                      context.read<GateReportBloc>().add(
+                            ScanQrActivityEvent(barcodes: barcodes),
+                          );
+                    }
+                  },
                 ),
                 ContainerCard(
-                  mediaHeight: 0.2,
+                  mediaHeight: 0.27,
                   header: Container(
                     width: 72,
                     height: 8,
@@ -241,8 +260,8 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                     ),
                   ),
                   children: [
+                    const SizedBox(height: 20),
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const SizedBox(height: 20),
                         const Align(
@@ -272,6 +291,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                   onPressed: () {
                                     setState(() {
                                       isCanScan = true;
+                                      isButtonScanPressed = true;
                                     });
                                     debugPrint('Mulai ga Kontol: $isCanScan');
                                   },
@@ -281,36 +301,35 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                     elevation: 2,
                                     padding: const EdgeInsets.all(0),
                                   ),
-                                  child: SvgPicture.asset(
-                                    MediaRes.scanBold,
-                                    height: 32,
-                                    width: 32,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          color: Colors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black
+                                                  .withOpacity(0.25),
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        height: 72,
+                                        width: 72,
+                                      ),
+                                      SvgPicture.asset(
+                                        isButtonScanPressed
+                                            ? MediaRes.scanLight
+                                            : MediaRes.scanBold,
+                                        height: 32,
+                                        width: 32,
+                                      ),
+                                    ],
                                   ),
-                                  // child: Stack(
-                                  //   alignment: Alignment.center,
-                                  //   children: [
-                                  //     Container(
-                                  //       decoration: BoxDecoration(
-                                  //         borderRadius: BorderRadius.circular(100),
-                                  //         color: Colors.white,
-                                  //         boxShadow: [
-                                  //           BoxShadow(
-                                  //             color: Colors.black.withOpacity(0.25),
-                                  //             blurRadius: 4,
-                                  //             offset: const Offset(0, 4),
-                                  //           ),
-                                  //         ],
-                                  //       ),
-                                  //       height: 72,
-                                  //       width: 72,
-                                  //     ),
-                                  //     SvgPicture.asset(
-                                  //       MediaRes.scanBold,
-                                  //       height: 32,
-                                  //       width: 32,
-                                  //     ),
-                                  //   ],
-                                  // ),
                                 ),
                               ],
                             ),

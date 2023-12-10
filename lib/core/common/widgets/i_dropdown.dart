@@ -27,7 +27,7 @@ class IDropdown extends StatelessWidget {
     return DropdownButtonFormField(
       iconSize: 50,
       icon: suffixIcon,
-      value: controller.text,
+      value: controller.text == '' ? null : controller.text,
       onChanged: (value) {
         controller.text = value.toString();
       },

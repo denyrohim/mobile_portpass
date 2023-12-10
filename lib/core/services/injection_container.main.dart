@@ -94,7 +94,15 @@ Future<void> _initEmployeeManagement() async {
 Future<void> _initActivityManagement() async {
   sl
     ..registerFactory(
-      () => ActivityManagementBloc(),
+      () => ActivityManagementBloc(
+        addActivity: sl(),
+        addItem: sl(),
+        deleteActivities: sl(),
+        deleteItems: sl(),
+        getActivities: sl(),
+        updateActivity: sl(),
+        updateItem: sl(),
+      ),
     )
     ..registerLazySingleton(() => AddActivity(sl()))
     ..registerLazySingleton(() => AddItem(sl()))

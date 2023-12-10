@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_form.dart';
 import 'package:provider/provider.dart';
 
 class AddActivityScreen extends StatefulWidget {
@@ -19,16 +23,23 @@ class AddActivityScreen extends StatefulWidget {
 }
 
 class _AddActivityScreenState extends State<AddActivityScreen> {
+  // final nameController = TextEditingController();
+  // final emailController = TextEditingController();
+  // final phoneController = TextEditingController();
+  // final dateOfBirthController = TextEditingController();
+  // final nikController = TextEditingController();
+  // final cardStartController = TextEditingController();
+  // final cardStopController = TextEditingController();
+  // final cardNumberController = TextEditingController();
+  // final stillWorkingController = TextEditingController();
+  // final photoController = TextEditingController();
+  // final formKey = GlobalKey<FormState>();
+
   final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-  final dateOfBirthController = TextEditingController();
-  final nikController = TextEditingController();
-  final cardStartController = TextEditingController();
-  final cardStopController = TextEditingController();
-  final cardNumberController = TextEditingController();
-  final stillWorkingController = TextEditingController();
-  final photoController = TextEditingController();
+  final shipNameController = TextEditingController();
+  final activityTypeController = TextEditingController();
+  final activityDateController = TextEditingController();
+  final activityHourController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -50,79 +61,45 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   // }
 
   bool get nameChanged => nameController.text.trim() != "";
-  bool get emailChanged => emailController.text.trim() != "";
-  bool get phoneChanged => phoneController.text.trim() != "";
-  bool get dateOfBirthChanged => dateOfBirthController.text.trim() != "";
-  bool get nikChanged => nikController.text.trim() != "";
-  bool get cardStartChanged => cardStartController.text.trim() != "";
-  bool get cardStopChanged => cardStopController.text.trim() != "";
-  bool get cardNumberChanged => cardNumberController.text.trim() != "";
-  bool get photoChanged => photoController.text.trim() != "";
-  bool get stillWorkingChanged {
-    if (cardNumberController.text == "") {
-      return stillWorkingController.text.trim() != "true";
-    }
-    return stillWorkingController.text.trim() != "false";
-  }
+  bool get shipNameChanged => shipNameController.text.trim() != "";
+  bool get activityTypeChanged => activityTypeController.text.trim() != "";
+  bool get activityDateChanged => activityDateController.text.trim() != "";
+  bool get activityHourChanged => activityHourController.text.trim() != "";
 
   bool get nothingChanged =>
       !nameChanged &&
-      !emailChanged &&
-      !phoneChanged &&
-      !dateOfBirthChanged &&
-      !nikChanged &&
-      !cardStartChanged &&
-      !cardStopChanged &&
-      !cardNumberChanged &&
-      !photoChanged &&
-      !stillWorkingChanged;
+      !shipNameChanged &&
+      !activityTypeChanged &&
+      !activityDateChanged &&
+      !activityHourChanged;
 
   void get initController {
     nameController.text = "";
-    emailController.text = "";
-    phoneController.text = "";
-    dateOfBirthController.text = "";
-
-    nikController.text = "";
-    cardStartController.text = "";
-    cardStopController.text = "";
-    cardNumberController.text = "";
-    stillWorkingController.text = "false";
-    photoController.text = "";
+    shipNameController.text = "";
+    activityTypeController.text = "";
+    activityDateController.text = "";
+    activityHourController.text = "";
 
     nameController.addListener(() => setState(() {}));
-    emailController.addListener(() => setState(() {}));
-    phoneController.addListener(() => setState(() {}));
-    dateOfBirthController.addListener(() => setState(() {}));
-    nikController.addListener(() => setState(() {}));
-    cardStartController.addListener(() => setState(() {}));
-    cardStopController.addListener(() => setState(() {}));
-    cardNumberController.addListener(() => setState(() {}));
-    stillWorkingController.addListener(() => setState(() {}));
-    photoController.addListener(() => setState(() {}));
+    shipNameController.addListener(() => setState(() {}));
+    activityTypeController.addListener(() => setState(() {}));
+    activityDateController.addListener(() => setState(() {}));
+    activityHourController.addListener(() => setState(() {}));
   }
 
   @override
   void initState() {
     super.initState();
     initController;
-    // context
-    //     .read<ActivityManagementBloc>()
-    //     .add(const GetActivityDivisionEvent());
   }
 
   @override
   void dispose() {
     nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    dateOfBirthController.dispose();
-    nikController.dispose();
-    cardStartController.dispose();
-    cardStopController.dispose();
-    cardNumberController.dispose();
-    stillWorkingController.dispose();
-    photoController.dispose();
+    shipNameController.dispose();
+    activityTypeController.dispose();
+    activityDateController.dispose();
+    activityHourController.dispose();
     super.dispose();
   }
 
@@ -130,23 +107,13 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   Widget build(BuildContext context) {
     return BlocConsumer<ActivityManagementBloc, ActivityManagementState>(
       listener: (context, state) {
-        // if (state is ActivityManagementError) {
-        //   CoreUtils.showSnackBar(context, state.message);
-        // } else if (state is DataAdded) {
-        //   initController;
-        //   context.read<FileProvider>().resetAddActivity();
-        //   CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
-        // } else if (state is NFCScanSuccess) {
-        //   CoreUtils.showSnackBar(
-        //       context, "NFC berhasil discan: ${state.nfcNumber}");
-        // } else if (state is PhotoAdded) {
-        //   // context.read<FileProvider>().initFile(state.photo);
-        //   CoreUtils.showSnackBar(context, "Foto berhasil diubah");
-        // } else if (state is ActivityDivisionLoaded) {
-        //   context
-        //       .read<ActivityDivisionProvider>()
-        //       .initActivityDivision(state.employeeDivisions);
-        // }
+        if (state is ActivityManagementError) {
+          CoreUtils.showSnackBar(context, state.message);
+        } else if (state is DataAdded) {
+          initController;
+          context.read<FileProvider>().resetAddActivity();
+          CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
+        }
       },
       builder: (context, state) {
         return Scaffold(
@@ -182,26 +149,88 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
               reverse: true,
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
-                child: Consumer<FileProvider>(
-                  builder: (_, fileProvider, __) {
+                child: Consumer<ActivityProvider>(
+                  builder: (_, activityProvider, __) {
                     return ContainerCard(
-                      mediaHeight: 0.8,
+                      mediaHeight: 0.85,
                       headerHeight: 62,
                       children: [
-                        const SizedBox(height: 40),
-                        // ActivityForm(
-                        //   nameController: nameController,
-                        //   emailController: emailController,
-                        //   phoneController: phoneController,
-                        //   dateOfBirthController: dateOfBirthController,
-                        //   nikController: nikController,
-                        //   cardStartController: cardStartController,
-                        //   cardStopController: cardStopController,
-                        //   cardNumberController: cardNumberController,
-                        //   stillWorkingController: stillWorkingController,
-                        //   formKey: formKey,
-                        // ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 10),
+                        ActivityForm(
+                          nameController: nameController,
+                          shipNameController: shipNameController,
+                          activityTypeController: activityTypeController,
+                          activityDateController: activityDateController,
+                          activityHourController: activityHourController,
+                          formKey: formKey,
+                        ),
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            width: 194,
+                            height: 28,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colours.primaryColour,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    MediaRes.addWhiteIcon,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    "Tambah Barang",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: Fonts.inter,
+                                        color: Colours.secondaryColour),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Daftar Barang',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour),
+                            ),
+                            Text(
+                              '0 Daftar',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 150,
+                          child: Center(
+                            child: Text(
+                              '0 Daftar',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontFamily: Fonts.inter,
+                                color: Colours.primaryColour.withOpacity(0.5),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -209,16 +238,14 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               width: 160,
                               height: 40,
                               child: IgnorePointer(
-                                ignoring: nothingChanged
-                                // ||
-                                //     state is ActivityManagementLoading
-                                ,
+                                ignoring: nothingChanged ||
+                                    state is ActivityManagementLoading,
                                 child: ElevatedButton(
                                   onPressed: () {
                                     initController;
-                                    context
-                                        .read<FileProvider>()
-                                        .resetAddActivity();
+                                    // context
+                                    //     .read<ActivityProvider>()
+                                    //     .resetAddActivity();
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: nothingChanged
@@ -228,19 +255,17 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
-                                  child:
-                                      // state is ActivityManagementLoading
-                                      //     ? const Center(
-                                      //         child: CircularProgressIndicator())
-                                      //     :
-                                      const Text(
-                                    "Batal",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: Fonts.inter,
-                                        color: Colours.secondaryColour),
-                                  ),
+                                  child: state is ActivityManagementLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : const Text(
+                                          "Batal",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: Fonts.inter,
+                                              color: Colours.secondaryColour),
+                                        ),
                                 ),
                               ),
                             ),
@@ -251,10 +276,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                   key: key,
                                   builder: (_, refresh) {
                                     return IgnorePointer(
-                                      ignoring: nothingChanged
-                                      // ||
-                                      //     state is ActivityManagementLoading
-                                      ,
+                                      ignoring: nothingChanged ||
+                                          state is ActivityManagementLoading,
                                       child: ElevatedButton(
                                         onPressed: () {
                                           // FocusManager.instance.primaryFocus
@@ -266,35 +289,22 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                           //       .add(
                                           //         AddActivityEvent(
                                           //           activityData: Activity(
-                                          //             id: 0,
                                           //             name: nameController.text
                                           //                 .trim(),
-                                          //             email: emailController
+                                          //             shipName: shipNameController
                                           //                 .text
                                           //                 .trim(),
-                                          //             phone: phoneController
-                                          //                 .text
+                                          //             type:
+                                          //                 activityTypeController
+                                          //                     .text
+                                          //                     .trim(),
+                                          //             date: activityDateController.text
                                           //                 .trim(),
-                                          //             dateOfBirth:
-                                          //                 dateOfBirthController
+                                          //             time:
+                                          //                 activityHourController
                                           //                     .text
                                           //                     .trim(),
-                                          //             nik: nikController.text
-                                          //                 .trim(),
-                                          //             cardStart:
-                                          //                 cardStartController
-                                          //                     .text
-                                          //                     .trim(),
-                                          //             cardStop:
-                                          //                 cardStopController
-                                          //                     .text
-                                          //                     .trim(),
-                                          //             cardNumber:
-                                          //                 cardNumberController
-                                          //                     .text
-                                          //                     .trim(),
-                                          //             photo: fileProvider
-                                          //                 .uriAddActivity,
+
                                           //           ),
                                           //         ),
                                           //       );
@@ -309,29 +319,34 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                                 BorderRadius.circular(10),
                                           ),
                                         ),
-                                        child:
-                                            // state
-                                            //         is ActivityManagementLoading
-                                            //     ? const Center(
-                                            //         child:
-                                            //             CircularProgressIndicator())
-                                            //     :
-                                            const Text(
-                                          "Simpan",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.secondaryColour),
-                                        ),
+                                        child: state
+                                                is ActivityManagementLoading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : const Text(
+                                                "Simpan",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: Fonts.inter,
+                                                    color: Colours
+                                                        .secondaryColour),
+                                              ),
                                       ),
                                     );
                                   }),
-                            )
+                            ),
+                            // ElevatedButton(
+                            //   onPressed: (){},
+                            //   child: const Row(
+                            //     children: [
+                            //       Icon(Icons.add),
+                            //       Text("Tambah Barang")
+                            //     ],
+                            //   ),
+                            // ),
                           ],
-                        ),
-                        const SizedBox(
-                          height: 112,
                         ),
                       ],
                     );

@@ -94,6 +94,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
+    case GateDetailActivityScreen.routeName:
+      return _pageBuilder(
+        (_) => const GateDetailActivityScreen(),
+        settings: settings,
+      );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),

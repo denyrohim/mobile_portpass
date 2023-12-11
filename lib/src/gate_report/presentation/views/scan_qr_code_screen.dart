@@ -9,6 +9,7 @@ import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/detail_activity_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/widget/qr_scanner_overlay.dart';
 
 import '../../../../core/res/colours.dart';
 import '../../../../core/res/fonts.dart';
@@ -245,6 +246,9 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                           );
                     }
                   },
+                ),
+                QRScannerOverlay(
+                  overlayColour: Colors.black.withOpacity(0.5),
                 ),
                 ContainerCard(
                   mediaHeight: 0.27,

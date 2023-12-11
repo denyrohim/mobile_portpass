@@ -8,7 +8,7 @@ class QRScannerOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double scanTop = MediaQuery.of(context).size.height * 0.20;
-    // // Changing the size of scanner cutout dependent on the device size.
+    // Changing the size of scanner cutout dependent on the device size.
     double scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 200.0

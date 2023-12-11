@@ -51,6 +51,7 @@ class ProfileScreen extends StatelessWidget {
                 child: ContainerCard(
                   mediaHeight: 0.75,
                   headerHeight: 62,
+                  padding: MediaQuery.of(context).size.width * 0.2,
                   header: ClipRRect(
                     borderRadius: BorderRadius.circular(100),
                     child: (context.currentUser!.profileImg != null)
@@ -127,7 +128,6 @@ class ProfileScreen extends StatelessWidget {
                                   Container(
                                       width: 64,
                                       height: 64,
-                                      margin: const EdgeInsets.only(left: 10),
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(100),
@@ -176,7 +176,6 @@ class ProfileScreen extends StatelessWidget {
                                   Container(
                                       width: 64,
                                       height: 64,
-                                      margin: const EdgeInsets.only(left: 10),
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(100),

@@ -22,8 +22,11 @@ class HomeGateReportScreen extends StatelessWidget {
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Image.asset(
                     MediaRes.logoPortPass,
                     height: 202,
@@ -31,7 +34,7 @@ class HomeGateReportScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 30),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
@@ -94,13 +97,13 @@ class HomeGateReportScreen extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 115),
                           child: SvgPicture.asset(MediaRes.scanBold),
-                        )
+                        ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 12,
                 ),
                 Expanded(
                   flex: 1,
@@ -109,6 +112,9 @@ class HomeGateReportScreen extends StatelessWidget {
                     child: SvgPicture.asset(MediaRes.arrowsDown),
                   ),
                 ),
+                const SizedBox(
+                  height: 5,
+                )
               ],
             ),
           ),

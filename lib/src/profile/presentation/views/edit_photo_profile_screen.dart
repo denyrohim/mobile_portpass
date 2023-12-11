@@ -112,7 +112,7 @@ class EditPhotoProfileScreenState extends State<EditPhotoProfileScreen> {
                   );
                 },
               ),
-              padding: 80,
+              padding: MediaQuery.of(context).size.width * 0.2,
               children: [
                 const SizedBox(
                   height: 60,

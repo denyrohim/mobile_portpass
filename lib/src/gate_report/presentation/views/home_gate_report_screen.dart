@@ -22,84 +22,99 @@ class HomeGateReportScreen extends StatelessWidget {
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  MediaRes.logoPortPass,
-                  height: 202,
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.1,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Image.asset(
+                    MediaRes.logoPortPass,
+                    height: 202,
+                  ),
                 ),
                 const SizedBox(height: 30),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
-                  ),
-                  height: 270,
-                  width: 300,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 35),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 4,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          height: 155,
-                          width: 242,
-                          child: const Padding(
-                            padding: EdgeInsets.only(top: 70),
-                            child: Text(
-                              'Ingin Scan Activity?\nKlik Disini.',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: Fonts.inter,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xff315784),
-                                fontSize: 20,
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                    ),
+                    height: 270,
+                    width: 300,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 35),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            height: 155,
+                            width: 242,
+                            child: const Padding(
+                              padding: EdgeInsets.only(top: 70),
+                              child: Text(
+                                'Ingin Scan Activity?\nKlik Disini.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: Fonts.inter,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff315784),
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 115),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.25),
-                                blurRadius: 4,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 115),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.25),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            height: 104,
+                            width: 104,
                           ),
-                          height: 104,
-                          width: 104,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 115),
-                        child: SvgPicture.asset(MediaRes.scanBold),
-                      )
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 115),
+                          child: SvgPicture.asset(MediaRes.scanBold),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 12,
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: SvgPicture.asset(MediaRes.arrowsDown),
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: SvgPicture.asset(MediaRes.arrowsDown),
+                  ),
                 ),
+                const SizedBox(
+                  height: 5,
+                )
               ],
             ),
           ),

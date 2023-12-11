@@ -7,58 +7,69 @@ class QRScannerOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double scanTop = MediaQuery.of(context).size.height * 0.20;
     // // Changing the size of scanner cutout dependent on the device size.
     double scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
         ? 200.0
-        : 330.0;
-    return Stack(children: [
-      ColorFiltered(
-        colorFilter: ColorFilter.mode(
-            overlayColour, BlendMode.srcOut), // This one will create the magic
-        child: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  color: Colors.red,
-                  backgroundBlendMode: BlendMode
-                      .dstOut), // This one will handle background + difference out
-            ),
-            Column(
+        : 280.0;
+    return Stack(
+      children: [
+        Positioned(
+          child: ColorFiltered(
+            colorFilter: ColorFilter.mode(overlayColour,
+                BlendMode.srcOut), // This one will create the magic
+            child: Stack(
               children: [
-                const SizedBox(height: 230),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    height: scanArea,
-                    width: scanArea,
-                    decoration: BoxDecoration(
+                Container(
+                  decoration: const BoxDecoration(
                       color: Colors.red,
-                      borderRadius: BorderRadius.circular(20),
+                      backgroundBlendMode: BlendMode
+                          .dstOut), // This one will handle background + difference out
+                ),
+                Positioned(
+                  top: scanTop,
+                  left: 0,
+                  right: 0,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      height: scanArea,
+                      width: scanArea,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: scanTop - 12,
+                  left: 0,
+                  right: 0,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: CustomPaint(
+                      foregroundPainter: BorderPainter(),
+                      child: SizedBox(
+                        width: scanArea + 25,
+                        height: scanArea + 25,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-      Column(
-        children: [
-          const SizedBox(height: 217),
-          Align(
-            alignment: Alignment.center,
-            child: CustomPaint(
-              foregroundPainter: BorderPainter(),
-              child: SizedBox(
-                width: scanArea + 25,
-                height: scanArea + 25,
-              ),
-            ),
           ),
-        ],
-      ),
-    ]);
+        ),
+        // Positioned(
+        //   top: 105,
+        //   left: 0,
+        //   right: 0,
+        //   child:
+        // ),
+      ],
+    );
   }
 }
 

@@ -5,25 +5,29 @@ class ItemModel extends Item {
   const ItemModel({
     required super.image,
     required super.name,
-    required super.weight,
+    required super.amount,
+    required super.unit
   });
 
   const ItemModel.empty()
       : this(
           image: '',
           name: '',
-          weight: '',
+          amount: 0,
+          unit: ''
         );
 
   ItemModel copyWith({
     String? image,
     String? name,
-    String? weight,
+    int? amount,
+    String? unit
   }) {
     return ItemModel(
       image: image ?? this.image,
       name: name ?? this.name,
-      weight: weight ?? this.weight,
+      amount: amount ?? this.amount,
+      unit: unit ?? this.unit
     );
   }
 
@@ -31,14 +35,16 @@ class ItemModel extends Item {
       : super(
           image: map['image'] as String,
           name: map['name'] as String,
-          weight: map['weight'] as String,
+          amount: map['weight'] as int,
+          unit: map['unit'] as String
         );
 
   DataMap toMap() {
     return {
       'image': image,
       'name': name,
-      'weight': weight,
+      'amount': amount,
+      'unit': unit
     };
   }
 }

@@ -10,7 +10,6 @@ class ItemCard extends StatelessWidget {
   final Item item;
   @override
   Widget build(BuildContext context) {
-    final split = item.weight.split(' ');
     return Container(
       padding: const EdgeInsets.all(10),
       height: 112,
@@ -29,7 +28,7 @@ class ItemCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image.asset(item.image),
+              Image.asset(item.image.toString()),
               const SizedBox(
                 width: 10,
               ),
@@ -50,14 +49,14 @@ class ItemCard extends StatelessWidget {
                     color: Color(0xFF315784)),
               ),
               Text(
-                split[0],
+                item.amount.toString(),
                 style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                     color: Color(0xFF315784)),
               ),
               Text(
-                split[1],
+                item.unit,
                 style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,

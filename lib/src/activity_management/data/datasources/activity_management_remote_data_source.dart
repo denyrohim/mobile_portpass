@@ -283,7 +283,7 @@ class ActivityManagementRemoteDataSourceImpl
           'activity_id': activityId,
           'name': item.name,
           'image': item.image,
-          'weight': item.weight,
+          'weight': item.amount,
         },
         options: Options(
           headers: ApiHeaders.getHeaders(

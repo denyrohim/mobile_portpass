@@ -35,7 +35,7 @@ class ItemModel extends Item {
       : super(
           image: map['image'] as String,
           name: map['name'] as String,
-          amount: map['weight'] as int,
+          amount: map['amount'] as int,
           unit: map['unit'] as String
         );
 

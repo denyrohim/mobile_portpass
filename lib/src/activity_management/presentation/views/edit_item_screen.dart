@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
@@ -7,14 +7,24 @@ import 'package:port_pass_app/core/common/widgets/nested_back_button.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
+import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/item_form.dart';
 import 'package:provider/provider.dart';
 
 class EditItemScreen extends StatefulWidget {
-  const EditItemScreen({super.key, required this.item});
+  const EditItemScreen(
+      {super.key,
+      required this.item,
+      required this.index,
+      required this.activityId});
 
   final Item item;
+  final int activityId;
+  final int index;
+
+  static const routeName = '/edit-item';
 
   @override
   State<EditItemScreen> createState() => _EditItemScreenState();
@@ -22,9 +32,10 @@ class EditItemScreen extends StatefulWidget {
 
 class _EditItemScreenState extends State<EditItemScreen> {
   late Item item;
+  late int index, activityId;
 
   final nameController = TextEditingController();
-  final weightController = TextEditingController();
+  final amountController = TextEditingController();
   final photoController = TextEditingController();
   final unitController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -34,170 +45,157 @@ class _EditItemScreenState extends State<EditItemScreen> {
   bool get nameChanged => item.name.trim() != nameController.text.trim();
 
   bool get weightChanged =>
-      item.amount.toString() != weightController.text.trim();
+      item.amount.toString() != amountController.text.trim();
 
   bool get photoChanged => item.image != photoController.text.trim();
 
   bool get unitChanged => item.unit.trim() != unitController.text.trim();
 
   bool get nothingChanged =>
-      !nameChanged &&
-      !weightChanged &&
-      !photoChanged &&
-      !unitChanged;
+      !nameChanged && !weightChanged && !photoChanged && !unitChanged;
 
   void get initController {
     nameController.text = item.name.trim();
-    weightController.text = item.amount.toString();
+    amountController.text = item.amount.toString();
     unitController.text = item.unit.trim();
     photoController.text = item.image ?? "";
+
+    nameController.addListener(() => setState(() {}));
+    amountController.addListener(() => setState(() {}));
+    unitController.addListener(() => setState(() {}));
+    photoController.addListener(() => setState(() {}));
+  }
+
+  void get initPage {
+    item = widget.item;
+    index = widget.index;
+    activityId = widget.activityId;
   }
 
   @override
   void dispose() {
     nameController.dispose();
-    weightController.dispose();
+    amountController.dispose();
     unitController.dispose();
     photoController.dispose();
     super.dispose();
   }
 
   @override
+  void initState() {
+    initPage;
+    initController;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        scrolledUnderElevation: 0,
-        backgroundColor: Colours.primaryColour,
-        leading: NestedBackButton(
-          onPressed: context.read<FileProvider>().resetEditItem,
-        ),
-        title: const Text(
-          "Edit Tambahan Barang",
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-            color: Colours.secondaryColour,
+    return BlocConsumer<ActivityManagementBloc, ActivityManagementState>(
+      listener: (context, state) {
+        if (state is ActivityManagementError) {
+          CoreUtils.showSnackBar(context, state.message);
+        } else if (state is DataUpdated) {
+          item = state.activity.items[index];
+          initController;
+          CoreUtils.showSnackBar(context, "item berhasil diubah");
+        } else if (state is PhotoAdded) {
+          CoreUtils.showSnackBar(context, "Foto Berhasil diubah");
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            backgroundColor: Colours.primaryColour,
+            leading: NestedBackButton(
+              onPressed: context.read<FileProvider>().resetEditItem,
+            ),
+            title: const Text(
+              "Edit Tambahan Barang",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
+                color: Colours.secondaryColour,
+              ),
+            ),
           ),
-        ),
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white,
-      body: GradientBackground(
-        image: MediaRes.colorBackground,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Consumer<FileProvider>(
-            builder: (_, fileProvider, __) {
-              return ContainerCard(
-                mediaHeight: 0.75,
-                headerHeight: 62,
-                header: Stack(
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: fileProvider.fileEditItem != null
-                          ? Image.file(
-                              fileProvider.fileEditItem!,
-                              width: 104,
-                              height: 104,
-                              fit: BoxFit.cover,
-                            )
-                          : photoController.text != ""
-                              ? Image.network(
-                                  photoController.text,
-                                  width: 104,
-                                  height: 104,
-                                  fit: BoxFit.cover,
-                                )
-                              : Container(
-                                  width: 104,
-                                  height: 104,
-                                  padding: const EdgeInsets.all(24),
-                                  color: Colours.profileBackgroundColour,
-                                  child: SvgPicture.asset(
-                                    MediaRes.profileIcon,
-                                    fit: BoxFit.cover,
-                                  ),
+          resizeToAvoidBottomInset: true,
+          backgroundColor: Colors.white,
+          body: GradientBackground(
+            image: MediaRes.colorBackground,
+            child: SingleChildScrollView(
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Consumer<FileProvider>(
+                  builder: (_, fileProvider, __) {
+                    return ContainerCard(
+                      mediaHeight: 0.85,
+                      headerHeight: 62,
+                      children: [
+                        const SizedBox(height: 20),
+                        ItemForm(
+                            nameController: nameController,
+                            weightController: amountController,
+                            photoController: photoController,
+                            unitController: unitController,
+                            fileProvider: fileProvider,
+                            formKey: formKey),
+                        const SizedBox(height: 30),
+                        StatefulBuilder(
+                            key: key,
+                            builder: (_, refresh) {
+                              return IgnorePointer(
+                                ignoring: nothingChanged,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    FocusManager.instance.primaryFocus
+                                        ?.unfocus();
+                                    if (formKey.currentState!.validate()) {
+                                      context
+                                          .read<ActivityManagementBloc>()
+                                          .add(UpdateItemEvent(
+                                              activityId: activityId,
+                                              item: Item(
+                                                  name: nameController.text
+                                                      .trim(),
+                                                  amount: int.parse(
+                                                      amountController.text),
+                                                  unit: unitController.text
+                                                      .trim(),
+                                                  image: fileProvider
+                                                      .uriEditItem)));
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: nothingChanged
+                                          ? Colours.primaryColourDisabled
+                                          : Colours.primaryColour,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10))),
+                                  child: state is ActivityManagementLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : const Text(
+                                          "Simpan",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: Fonts.inter,
+                                              color: Colours.secondaryColour),
+                                        ),
                                 ),
-                    ),
-                    Positioned(
-                      bottom: 15,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          // Navigator.pushNamed(context, routeName)
-                        },
-                        child: Container(
-                          width: 30.15,
-                          height: 30.15,
-                          margin: const EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white,
-                              border: Border.all(
-                                  width: 1, color: Colours.primaryColour),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    spreadRadius: 1,
-                                    blurRadius: 2,
-                                    offset: const Offset(0, 5))
-                              ]),
-                          child: Transform.scale(
-                            scale: 0.5,
-                            child: SvgPicture.asset(
-                                MediaRes.changePhotoProfileIcon),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
+                              );
+                            })
+                      ],
+                    );
+                  },
                 ),
-                children: [
-                  const SizedBox(height: 40),
-                  ItemForm(
-                      nameController: nameController,
-                      weightController: weightController,
-                      photoController: photoController,
-                      unitController: unitController,
-                      fileProvider: fileProvider,
-                      formKey: formKey),
-                  const SizedBox(height: 30),
-                  StatefulBuilder(
-                      key: key,
-                      builder: (_, refresh) {
-                        return IgnorePointer(
-                          ignoring: nothingChanged,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              FocusManager.instance.primaryFocus?.unfocus();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: nothingChanged
-                                  ? Colours.primaryColourDisabled
-                                  : Colours.primaryColour,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)
-                              )
-                            ),
-                            child: const Text(
-                              "Simpan",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: Fonts.inter,
-                                  color: Colours
-                                      .secondaryColour),
-                            ),
-                          ),
-                        );
-                      })
-                ],
-              );
-            },
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

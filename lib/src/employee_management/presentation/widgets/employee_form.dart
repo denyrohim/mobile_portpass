@@ -433,6 +433,7 @@ class _EmployeeFormState extends State<EmployeeForm> {
                   readOnly: true,
                   onTap: () {
                     showModalBottomSheet<void>(
+                      isScrollControlled: true,
                       context: context,
                       builder: (BuildContext context) {
                         return BlocProvider(

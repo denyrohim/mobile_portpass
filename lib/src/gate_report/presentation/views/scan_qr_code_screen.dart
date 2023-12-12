@@ -157,10 +157,10 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                 ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      isCanScan = true;
-                                      isButtonScanPressed = true;
+                                      isCanScan = !isCanScan;
+                                      isButtonScanPressed =
+                                          !isButtonScanPressed;
                                     });
-                                    debugPrint('Mulai ga Kontol: $isCanScan');
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,

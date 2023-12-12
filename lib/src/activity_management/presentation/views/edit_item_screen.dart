@@ -59,6 +59,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
     amountController.text = item.amount.toString();
     unitController.text = item.unit.trim();
     photoController.text = item.image ?? "";
+    context.read<FileProvider>().initFilePathEditItem(item.image);
 
     nameController.addListener(() => setState(() {}));
     amountController.addListener(() => setState(() {}));

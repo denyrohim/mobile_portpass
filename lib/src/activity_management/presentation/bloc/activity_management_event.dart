@@ -96,6 +96,15 @@ class UpdateItemEvent extends ActivityManagementEvent {
   List<Object> get props => [activityId, item];
 }
 
+class AddPhotoEvent extends ActivityManagementEvent {
+  const AddPhotoEvent({required this.type});
+
+  final String type;
+
+  @override
+  List<Object> get props => [type];
+}
+
 class GetActivityEvent extends ActivityManagementEvent {
   const GetActivityEvent();
 

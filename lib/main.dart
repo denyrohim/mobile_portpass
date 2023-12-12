@@ -2,6 +2,7 @@ import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/employee_division_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/employees_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
+import 'package:port_pass_app/core/common/app/providers/report_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
 import 'package:port_pass_app/src/dashboard/presentation/providers/dashboard_controller.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EmployeeDivisionProvider()),
         ChangeNotifierProvider(create: (_) => FileProvider()),
         ChangeNotifierProvider(create: (_) => DashboardController()),
-        ChangeNotifierProvider(create: (_) => ActivityProvider())
+        ChangeNotifierProvider(create: (_) => ActivityProvider()),
+        ChangeNotifierProvider(create: (_) => ReportProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

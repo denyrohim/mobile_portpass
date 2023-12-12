@@ -36,7 +36,14 @@ class MediaRes {
   static const failedNFCIcon = '$_baseIcons/failed_nfc_icon.svg';
   static const hourIcon = '$_baseIcons/hour_icon.svg';
   static const addWhiteIcon = '$_baseIcons/add_white.svg';
+  static const itemMenuCameraIcon = '$_baseIcons/camera_icon.svg';
+  static const itemMenuGalleryIcon = '$_baseIcons/gallery_icon.svg';
   static const acceptIcon = '$_baseIcons/accept_icon.svg';
+  static const rejectIcon = '$_baseIcons/reject_icon.svg';
+  static const waitingIcon = '$_baseIcons/waiting_icon.svg';
+  static const reloadIcon = '$_baseIcons/ulangi_icon.svg';
+  static const uploadIcon = '$_baseIcons/unggah_icon.svg';
+
   static const qrCodeIcon = '$_baseIcons/qr_icon.svg';
   static const locationIcon = '$_baseIcons/location.svg';
 
@@ -44,6 +51,9 @@ class MediaRes {
   static const defaultBackground = '$_baseImages/background.png';
   static const colorBackground = '$_baseImages/color_background.png';
   static const splashBackground = '$_baseImages/splash_background.png';
+
+  // Objects
+  static const itemExample = '$_baseImages/item_example.png';
 
   // Logo
   static const logoPortPass = '$_baseImages/logo_port_pass.png';

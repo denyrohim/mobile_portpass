@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/headers.dart';
@@ -35,6 +38,10 @@ abstract class ActivityManagementRemoteDataSource {
     required int activityId,
     required ItemModel item,
   });
+
+  Future<dynamic> addPhotoItem({
+    required String type
+  });
 }
 
 const kToken = 'token';
@@ -45,13 +52,16 @@ class ActivityManagementRemoteDataSourceImpl
     required SharedPreferences sharedPreferences,
     required Dio dio,
     required API api,
+    required ImagePicker imagePicker
   })  : _dio = dio,
         _api = api,
-        _sharedPreferences = sharedPreferences;
+        _sharedPreferences = sharedPreferences,
+        _imagePicker = imagePicker;
 
   final SharedPreferences _sharedPreferences;
   final Dio _dio;
   final API _api;
+  final ImagePicker _imagePicker;
 
   @override
   Future<ActivityModel> addActivity({
@@ -309,7 +319,7 @@ class ActivityManagementRemoteDataSourceImpl
           'activity_id': activityId,
           'name': item.name,
           'image': item.image,
-          'weight': item.weight,
+          'weight': item.amount,
         },
         options: Options(
           headers: ApiHeaders.getHeaders(
@@ -328,6 +338,33 @@ class ActivityManagementRemoteDataSourceImpl
       }
 
       return ActivityModel.fromMap(activityResult);
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future addPhotoItem({required String type}) async {
+    try {
+      if (type != "remove") {
+        final result = await _imagePicker.pickImage(
+          source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
+          imageQuality: 50,
+          maxWidth: 150,
+        );
+
+        if (result == null) {
+          throw ServerException(
+              message: "$type can't be accessed", statusCode: 505);
+        }
+        final image = File(result.path);
+        return image;
+      } else {
+        return null;
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {

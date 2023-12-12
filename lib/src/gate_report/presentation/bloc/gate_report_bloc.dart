@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:latlng/latlng.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
+import 'package:port_pass_app/src/gate_report/domain/entities/location.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/add_documentation.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/add_report.dart';

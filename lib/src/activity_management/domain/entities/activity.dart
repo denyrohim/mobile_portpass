@@ -17,6 +17,7 @@ class Activity extends Equatable {
 
   const Activity({
     required this.id,
+    required this.id,
     required this.name,
     required this.shipName,
     required this.type,

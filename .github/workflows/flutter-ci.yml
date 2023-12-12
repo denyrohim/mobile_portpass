@@ -37,20 +37,20 @@ jobs:
     # Run widget tests for our flutter project.
     - run: flutter test
     
-    # # Build apk.
-    - run: flutter build apk --no-tree-shake-icons
+    # # # Build apk.
+    # - run: flutter build apk --no-tree-shake-icons
 
-    # # Build ios.
-    - run: flutter build ios --release --no-codesign --no-tree-shake-icons
+    # # # Build ios.
+    # - run: flutter build ios --release --no-codesign --no-tree-shake-icons
     
-    # Upload generated apk to the artifacts.
-    - uses: actions/upload-artifact@v1
-      with:
-        name: release-apk
-        path: build/app/outputs/apk/release/app-release.apk
+    # # Upload generated apk to the artifacts.
+    # - uses: actions/upload-artifact@v1
+    #   with:
+    #     name: release-apk
+    #     path: build/app/outputs/apk/release/app-release.apk
 
-    # Upload generated ios to the artifacts.
-    - uses: actions/upload-artifact@v1
-      with:
-        name: release-ios
-        path: build/ios/iphoneos/Runner.app
+    # # Upload generated ios to the artifacts.
+    # - uses: actions/upload-artifact@v1
+    #   with:
+    #     name: release-ios
+    #     path: build/ios/iphoneos/Runner.app

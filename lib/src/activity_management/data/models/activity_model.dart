@@ -81,6 +81,7 @@ class ActivityModel extends Activity {
 
   DataMap toMap() {
     return {
+      'id': id,
       'name': name,
       'ship_name': shipName,
       'type': type,

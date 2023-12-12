@@ -89,54 +89,55 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                     ),
                     const SizedBox(height: 18),
                     Expanded(
-                        child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colours.secondaryColour,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colours.secondaryColour,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: (state is EmployeeManagementLoading)
-                          ? const LoadingView(
-                              color: Colours.primaryColour,
-                            )
-                          : Stack(
-                              children: [
-                                if (employees.isEmpty)
-                                  const Center(
-                                    child: Text(
-                                      'Tidak ada data',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colours.primaryColour),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: (state is EmployeeManagementLoading)
+                            ? const LoadingView(
+                                color: Colours.primaryColour,
+                              )
+                            : Stack(
+                                children: [
+                                  if (employees.isEmpty)
+                                    const Center(
+                                      child: Text(
+                                        'Tidak ada data',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color: Colours.primaryColour),
+                                      ),
                                     ),
+                                  ListView.builder(
+                                    itemCount: employees.length,
+                                    itemBuilder: (context, index) {
+                                      if (employees[index]
+                                          .name
+                                          .toLowerCase()
+                                          .contains(_searchController.text)) {
+                                        return EmployeeItem(
+                                          context,
+                                          isShowCheckBox:
+                                              employeesProvider.isShowChecked,
+                                          index: index,
+                                          employees: employees,
+                                        );
+                                      } else {
+                                        return const SizedBox.shrink();
+                                      }
+                                    },
                                   ),
-                                ListView.builder(
-                                  itemCount: employees.length,
-                                  itemBuilder: (context, index) {
-                                    if (employees[index]
-                                        .name
-                                        .toLowerCase()
-                                        .contains(_searchController.text)) {
-                                      return EmployeeItem(
-                                        context,
-                                        isShowCheckBox:
-                                            employeesProvider.isShowChecked,
-                                        index: index,
-                                        employees: employees,
-                                      );
-                                    } else {
-                                      return const SizedBox.shrink();
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
-                    ))
+                                ],
+                              ),
+                      ),
+                    )
                   ],
                 ),
               ),

@@ -1,7 +1,7 @@
-import 'package:latlng/latlng.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
+import 'package:port_pass_app/src/gate_report/domain/entities/location.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 
 abstract class GateReportRepository {
@@ -15,7 +15,7 @@ abstract class GateReportRepository {
     required List<Barcode> barcodes,
   });
 
-  ResultFuture<LatLng> getLocation();
+  ResultFuture<Location> getLocation();
 
   ResultFuture<Activity> addReport({
     required int activityId,

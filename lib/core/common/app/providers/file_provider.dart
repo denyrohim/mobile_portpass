@@ -169,4 +169,146 @@ class FileProvider extends ChangeNotifier {
     _base64EditActivity = null;
     _uriEditActivity = null;
   }
+
+  File? _fileEditItem;
+  String? _filePathEditItem;
+  String? _base64EditItem;
+  String? _uriEditItem;
+
+  File? get fileEditItem => _fileEditItem;
+  String? get filePathEditItem => _filePathEditItem;
+  String? get base64EditItem => _base64EditItem;
+  String? get uriEditItem => _uriEditItem;
+
+  void initFileEditItem(File fileEditItem) {
+    if (_fileEditItem != fileEditItem) {
+      _fileEditItem = fileEditItem;
+      _filePathEditItem = fileEditItem.path;
+      _base64EditItem = base64Encode(fileEditItem.readAsBytesSync());
+      _uriEditItem =
+          "data:image/${fileEditItem.path.split('/').last.split('.').last};base64,${base64Encode(fileEditItem.readAsBytesSync())}";
+    }
+  }
+
+  void initFilePathEditItem(String? filePathEditItem) {
+    if (_filePathEditItem != filePathEditItem) {
+      _filePathEditItem = filePathEditItem;
+    }
+  }
+
+  // reset
+  void resetEditItem() {
+    _fileEditItem = null;
+    _filePathEditItem = null;
+    _base64EditItem = null;
+    _uriEditItem = null;
+  }
+
+  File? _fileAddReport;
+  String? _filePathAddReport;
+  String? _fileNameAddReport;
+  double? _fileSizeAddReport;
+  String? _fileUnitSizeAddReport;
+  String? _base64AddReport;
+  String? _uriAddReport;
+
+  File? get fileAddReport => _fileAddReport;
+  String? get filePathAddReport => _filePathAddReport;
+  double? get fileSizeAddReport => _fileSizeAddReport;
+  String? get fileUnitSizeAddReport => _fileUnitSizeAddReport;
+  String? get fileNameAddReport => _fileNameAddReport;
+  String? get base64AddReport => _base64AddReport;
+  String? get uriAddReport => _uriAddReport;
+
+  void initFileAddReport(File fileAddReport) {
+    if (_fileAddReport != fileAddReport) {
+      _fileAddReport = fileAddReport;
+      _filePathAddReport = fileAddReport.path;
+      _fileNameAddReport = fileAddReport.path.split('/').last;
+      _fileSizeAddReport = fileAddReport.lengthSync() > 1000000
+          ? fileAddReport.lengthSync() / 1000000
+          : fileAddReport.lengthSync() > 1000
+              ? fileAddReport.lengthSync() / 1000
+              : fileAddReport.lengthSync() / 1;
+      _fileUnitSizeAddReport = fileAddReport.lengthSync() > 1000000
+          ? "MB"
+          : fileAddReport.lengthSync() > 1000
+              ? "KB"
+              : "Bytes";
+      _base64AddReport = base64Encode(fileAddReport.readAsBytesSync());
+      _uriAddReport =
+          "data:image/${fileAddReport.path.split('/').last.split('.').last};base64,${base64Encode(fileAddReport.readAsBytesSync())}";
+    }
+  }
+
+  void initFilePathAddReport(String filePathAddReport) {
+    if (_filePathAddReport != filePathAddReport) {
+      _filePathAddReport = filePathAddReport;
+    }
+  }
+
+  void resetFileAddReport() {
+    _fileAddReport = null;
+    _filePathAddReport = null;
+    _fileNameAddReport = null;
+    _fileSizeAddReport = null;
+    _fileUnitSizeAddReport = null;
+    _base64AddReport = null;
+    _uriAddReport = null;
+  }
+
+  File? _documentationAddReport;
+  String? _documentationPathAddReport;
+  String? _documentationNameAddReport;
+  double? _documentationSizeAddReport;
+  String? _documentationUnitSizeAddReport;
+  String? _documentationBase64AddReport;
+  String? _documentationUriAddReport;
+
+  File? get documentationAddReport => _documentationAddReport;
+  String? get documentationPathAddReport => _documentationPathAddReport;
+  String? get documentationNameAddReport => _documentationNameAddReport;
+  double? get documentationSizeAddReport => _documentationSizeAddReport;
+  String? get documentationUnitSizeAddReport => _documentationUnitSizeAddReport;
+  String? get documentationBase64AddReport => _documentationBase64AddReport;
+  String? get documentationUriAddReport => _documentationUriAddReport;
+
+  void initDocumentationAddReport(File documentationAddReport) {
+    if (_documentationAddReport != documentationAddReport) {
+      _documentationAddReport = documentationAddReport;
+      _documentationPathAddReport = documentationAddReport.path;
+      _documentationNameAddReport = documentationAddReport.path.split('/').last;
+      _documentationSizeAddReport =
+          documentationAddReport.lengthSync() > 1000000
+              ? documentationAddReport.lengthSync() / 1000000
+              : documentationAddReport.lengthSync() > 1000
+                  ? documentationAddReport.lengthSync() / 1000
+                  : documentationAddReport.lengthSync() / 1;
+      _documentationUnitSizeAddReport =
+          documentationAddReport.lengthSync() > 1000000
+              ? "MB"
+              : documentationAddReport.lengthSync() > 1000
+                  ? "KB"
+                  : "Bytes";
+      _documentationBase64AddReport =
+          base64Encode(documentationAddReport.readAsBytesSync());
+      _documentationUriAddReport =
+          "data:image/${documentationAddReport.path.split('/').last.split('.').last};base64,${base64Encode(documentationAddReport.readAsBytesSync())}";
+    }
+  }
+
+  void initDocumentationPathAddReport(String documentationPathAddReport) {
+    if (_documentationPathAddReport != documentationPathAddReport) {
+      _documentationPathAddReport = documentationPathAddReport;
+    }
+  }
+
+  void resetDocumentationAddReport() {
+    _documentationAddReport = null;
+    _documentationPathAddReport = null;
+    _documentationNameAddReport = null;
+    _documentationSizeAddReport = null;
+    _documentationBase64AddReport = null;
+    _documentationUriAddReport = null;
+  }
 }

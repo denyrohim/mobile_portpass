@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/src/activity_management/data/datasources/activity_management_remote_data_source.dart';
@@ -7,6 +8,7 @@ import 'package:port_pass_app/src/activity_management/data/repositories/activity
 import 'package:port_pass_app/src/activity_management/domain/repositories/activity_management_repository.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_item.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/add_photo_item.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_items.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';

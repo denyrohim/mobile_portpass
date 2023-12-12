@@ -14,8 +14,8 @@ class Item extends Equatable {
   const Item.empty()
       : this(
           image: '',
-          name: '',
-          weight: '',
+          name: 'Testing',
+          weight: '15 Kg',
         );
 
   @override

@@ -3,6 +3,7 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity_p
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 
 class Activity extends Equatable {
+  final int id;
   final String name;
   final String shipName;
   final String type;
@@ -12,8 +13,10 @@ class Activity extends Equatable {
   final String status;
   final List<ActivityProgress> activityProgress;
   final String qrCode;
+  final bool isChecked;
 
   const Activity({
+    required this.id,
     required this.name,
     required this.shipName,
     required this.type,
@@ -23,10 +26,12 @@ class Activity extends Equatable {
     required this.status,
     required this.activityProgress,
     required this.qrCode,
+    required this.isChecked,
   });
 
   Activity.empty()
       : this(
+          id: 0,
           name: '',
           shipName: '',
           type: '',
@@ -34,10 +39,11 @@ class Activity extends Equatable {
           time: '',
           items: [],
           status: '',
-          activityProgress: [],
+          activityProgress: List<ActivityProgress>.empty(),
           qrCode: '',
+          isChecked: false,
         );
 
   @override
-  List<Object?> get props => [name, shipName, type, date, time];
+  List<Object?> get props => [id, name, shipName, type, date, time, isChecked];
 }

@@ -1,6 +1,5 @@
 part of 'activity_management_bloc.dart';
 
-
 abstract class ActivityManagementEvent extends Equatable {
   const ActivityManagementEvent();
 }
@@ -95,4 +94,24 @@ class UpdateItemEvent extends ActivityManagementEvent {
 
   @override
   List<Object> get props => [activityId, item];
+}
+
+class GetActivityEvent extends ActivityManagementEvent {
+  const GetActivityEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class UpdateCheckBoxActivityEvent extends ActivityManagementEvent {
+  const UpdateCheckBoxActivityEvent({
+    required this.activityId,
+    required this.activities,
+  });
+
+  final int activityId;
+  final List<Activity> activities;
+
+  @override
+  List<Object> get props => [activityId, activities];
 }

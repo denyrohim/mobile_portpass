@@ -5,6 +5,7 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity.d
 
 class ActivityModel extends Activity {
   const ActivityModel({
+    required super.id,
     required super.name,
     required super.shipName,
     required super.type,
@@ -14,10 +15,12 @@ class ActivityModel extends Activity {
     required super.status,
     required super.activityProgress,
     required super.qrCode,
+    required super.isChecked,
   });
 
   ActivityModel.empty()
       : this(
+          id: 0,
           name: '',
           shipName: '',
           type: '',
@@ -27,9 +30,11 @@ class ActivityModel extends Activity {
           status: '',
           activityProgress: [],
           qrCode: '',
+          isChecked: false,
         );
 
   ActivityModel copyWith({
+    int? id,
     String? name,
     String? shipName,
     String? type,
@@ -41,6 +46,7 @@ class ActivityModel extends Activity {
     String? qrCode,
   }) {
     return ActivityModel(
+      id: id ?? this.id,
       name: name ?? this.name,
       shipName: shipName ?? this.shipName,
       type: type ?? this.type,
@@ -50,11 +56,13 @@ class ActivityModel extends Activity {
       status: status ?? this.status,
       activityProgress: activityProgress ?? this.activityProgress,
       qrCode: qrCode ?? this.qrCode,
+      isChecked: isChecked,
     );
   }
 
   ActivityModel.fromMap(DataMap map)
       : super(
+          id: map['id'] as int,
           name: map['name'] as String,
           shipName: map['ship_name'] as String,
           type: map['type'] as String,
@@ -68,6 +76,7 @@ class ActivityModel extends Activity {
               .map((e) => ActivityProgressModel.fromMap(e))
               .toList(),
           qrCode: map['qr_code'] as String,
+          isChecked: false,
         );
 
   DataMap toMap() {
@@ -83,6 +92,7 @@ class ActivityModel extends Activity {
           .map((e) => (e as ActivityProgressModel).toMap())
           .toList(),
       'qr_code': qrCode,
+      'isChecked': isChecked,
     };
   }
 }

@@ -36,6 +36,9 @@ class MediaRes {
   static const failedNFCIcon = '$_baseIcons/failed_nfc_icon.svg';
   static const hourIcon = '$_baseIcons/hour_icon.svg';
   static const addWhiteIcon = '$_baseIcons/add_white.svg';
+  static const acceptIcon = '$_baseIcons/accept_icon.svg';
+  static const qrCodeIcon = '$_baseIcons/qr_icon.svg';
+  static const locationIcon = '$_baseIcons/location.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

@@ -1,7 +1,9 @@
+import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/employees_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
 import 'package:port_pass_app/core/common/app/providers/user_provider.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/auth/domain/entities/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +21,8 @@ extension ContextExtensions on BuildContext {
   UserProvider get userProvider => read<UserProvider>();
 
   EmployeesProvider get employeesProvider => read<EmployeesProvider>();
+
+  ActivityProvider get activityProvider => read<ActivityProvider>();
 
   FileProvider get fileProvider => read<FileProvider>();
 

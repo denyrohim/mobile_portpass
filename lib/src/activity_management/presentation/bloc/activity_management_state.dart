@@ -73,3 +73,12 @@ class DataUpdated extends ActivityManagementState {
   @override
   List<Object> get props => [activity];
 }
+
+class PhotoAdded extends ActivityManagementState {
+  const PhotoAdded(this.photo);
+
+  final dynamic photo;
+
+  @override
+  List<Object> get props => [photo];
+}

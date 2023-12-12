@@ -36,11 +36,14 @@ class MediaRes {
   static const failedNFCIcon = '$_baseIcons/failed_nfc_icon.svg';
   static const hourIcon = '$_baseIcons/hour_icon.svg';
   static const addWhiteIcon = '$_baseIcons/add_white.svg';
+  static const itemMenuCameraIcon = '$_baseIcons/camera_icon.svg';
+  static const itemMenuGalleryIcon = '$_baseIcons/gallery_icon.svg';
   static const acceptIcon = '$_baseIcons/accept_icon.svg';
   static const rejectIcon = '$_baseIcons/reject_icon.svg';
   static const waitingIcon = '$_baseIcons/waiting_icon.svg';
   static const reloadIcon = '$_baseIcons/ulangi_icon.svg';
   static const uploadIcon = '$_baseIcons/unggah_icon.svg';
+
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

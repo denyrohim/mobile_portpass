@@ -33,4 +33,8 @@ abstract class ActivityManagementRepository {
     required int activityId,
     required Item item,
   });
+
+  ResultFuture<dynamic> addPhotoItem({
+    required String type
+  });
 }

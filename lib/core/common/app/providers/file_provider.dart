@@ -170,6 +170,40 @@ class FileProvider extends ChangeNotifier {
     _uriEditActivity = null;
   }
 
+
+  File? _fileEditItem;
+  String? _filePathEditItem;
+  String? _base64EditItem;
+  String? _uriEditItem;
+
+  File? get fileEditItem => _fileEditItem;
+  String? get filePathEditItem => _filePathEditItem;
+  String? get base64EditItem => _base64EditItem;
+  String? get uriEditItem => _uriEditItem;
+
+  void initFileEditItem(File fileEditItem) {
+    if (_fileEditItem != fileEditItem) {
+      _fileEditItem = fileEditItem;
+      _filePathEditItem = fileEditItem.path;
+      _base64EditItem = base64Encode(fileEditItem.readAsBytesSync());
+      _uriEditItem =
+      "data:image/${fileEditItem.path.split('/').last.split('.').last};base64,${base64Encode(fileEditItem.readAsBytesSync())}";
+    }
+  }
+
+  void initFilePathEditItem(String? filePathEditItem) {
+    if (_filePathEditItem != filePathEditItem) {
+      _filePathEditItem = filePathEditItem;
+    }
+  }
+
+  // reset
+  void resetEditItem() {
+    _fileEditItem = null;
+    _filePathEditItem = null;
+    _base64EditItem = null;
+    _uriEditItem = null;
+
   File? _fileAddReport;
   String? _filePathAddReport;
   String? _fileNameAddReport;
@@ -276,5 +310,6 @@ class FileProvider extends ChangeNotifier {
     _documentationSizeAddReport = null;
     _documentationBase64AddReport = null;
     _documentationUriAddReport = null;
+
   }
 }

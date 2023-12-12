@@ -101,4 +101,16 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
       return Left(ServerFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture addPhotoItem({required String type}) async {
+    try {
+      final result = await _remoteDataSource.addPhotoItem(
+        type: type
+      );
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
 }

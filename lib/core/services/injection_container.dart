@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/src/activity_management/data/datasources/activity_management_remote_data_source.dart';

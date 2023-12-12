@@ -80,10 +80,10 @@ class ActivityLoaded extends GateReportState {
 }
 
 class LocationLoaded extends GateReportState {
-  const LocationLoaded(this.latLng);
+  const LocationLoaded(this.location);
 
-  final LatLng latLng;
+  final Location location;
 
   @override
-  List<Object> get props => [latLng];
+  List<Object> get props => [location];
 }

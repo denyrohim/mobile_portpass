@@ -5,6 +5,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/nested_back_button.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/qr_scanner_bottom_sheet.dart';
@@ -37,10 +38,12 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
       isDismissible: false,
       isScrollControlled: true,
       builder: (BuildContext context) {
-        return QrScannerBottomSheet(
-          isSuccess: isSuccess,
-          cameraController: cameraController,
-        );
+        return BlocProvider(
+            create: (_) => sl<GateReportBloc>(),
+            child: QrScannerBottomSheet(
+              isSuccess: isSuccess,
+              cameraController: cameraController,
+            ));
       },
     );
   }
@@ -77,8 +80,6 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         return Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
-            // scrolledUnderElevation: 0,
-            // backgroundColor: Colours.primaryColour,
             leading: NestedBackButton(
               onPressed: () {
                 context.dashboardController.changeIndex(0);

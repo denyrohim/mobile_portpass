@@ -5,6 +5,7 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity.d
 
 class ActivityModel extends Activity {
   const ActivityModel({
+    required super.id,
     required super.name,
     required super.shipName,
     required super.type,
@@ -18,6 +19,7 @@ class ActivityModel extends Activity {
 
   ActivityModel.empty()
       : this(
+          id: 0,
           name: '',
           shipName: '',
           type: '',
@@ -30,6 +32,7 @@ class ActivityModel extends Activity {
         );
 
   ActivityModel copyWith({
+    int? id,
     String? name,
     String? shipName,
     String? type,
@@ -41,6 +44,7 @@ class ActivityModel extends Activity {
     String? qrCode,
   }) {
     return ActivityModel(
+      id: id ?? this.id,
       name: name ?? this.name,
       shipName: shipName ?? this.shipName,
       type: type ?? this.type,
@@ -55,6 +59,7 @@ class ActivityModel extends Activity {
 
   ActivityModel.fromMap(DataMap map)
       : super(
+          id: map['id'] as int,
           name: map['name'] as String,
           shipName: map['ship_name'] as String,
           type: map['type'] as String,
@@ -72,6 +77,7 @@ class ActivityModel extends Activity {
 
   DataMap toMap() {
     return {
+      'id': id,
       'name': name,
       'ship_name': shipName,
       'type': type,

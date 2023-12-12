@@ -1,11 +1,10 @@
-import 'package:geolocator/geolocator.dart';
-import 'package:latlng/latlng.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:dartz/dartz.dart';
 import 'package:port_pass_app/src/gate_report/data/datasources/gate_report_remote_data_source.dart';
+import 'package:port_pass_app/src/gate_report/data/models/location_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/report_model.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
@@ -52,10 +51,10 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }
 
   @override
-  ResultFuture<LatLng> getLocation() async {
+  ResultFuture<LocationModel> getLocation() async {
     try {
-      final result = await Geolocator.getCurrentPosition()
-          .then((value) => LatLng(value.latitude, value.longitude));
+      final result = await _remoteDataSource.getLocation();
+
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

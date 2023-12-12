@@ -6,8 +6,15 @@ Future<void> init() async {
   final prefs = await SharedPreferences.getInstance();
   final dio = Dio();
   final api = API();
+  final imagePicker = ImagePicker();
+  final geolocator = GeolocatorPlatform.instance;
 
-  await _initCore(prefs: prefs, dio: dio, api: api);
+  await _initCore(
+      prefs: prefs,
+      dio: dio,
+      api: api,
+      imagePicker: imagePicker,
+      geolocator: geolocator);
   await _initAuth();
   await _initEmployeeManagement();
   await _initActivityManagement();
@@ -18,11 +25,15 @@ Future<void> _initCore({
   required SharedPreferences prefs,
   required Dio dio,
   required API api,
+  required ImagePicker imagePicker,
+  required GeolocatorPlatform geolocator,
 }) async {
   sl
     ..registerLazySingleton(() => dio)
     ..registerLazySingleton(() => api)
-    ..registerLazySingleton(() => prefs);
+    ..registerLazySingleton(() => prefs)
+    ..registerLazySingleton(() => imagePicker)
+    ..registerLazySingleton(() => geolocator);
 }
 
 Future<void> _initAuth() async {
@@ -52,7 +63,6 @@ Future<void> _initAuth() async {
 }
 
 Future<void> _initEmployeeManagement() async {
-  final imagePicker = ImagePicker();
   sl
     ..registerFactory(
       () => EmployeeManagementBloc(
@@ -80,7 +90,6 @@ Future<void> _initEmployeeManagement() async {
     ..registerLazySingleton(() => GetEmployeeDivision(sl()))
     ..registerLazySingleton<EmployeeManagementRepository>(
         () => EmployeeManagementRepositoryImpl(sl()))
-    ..registerLazySingleton(() => imagePicker)
     ..registerLazySingleton<EmploymentManagementRemoteDataSource>(
       () => EmploymentManagementRemoteDataSourceImpl(
         sharedPreferences: sl(),
@@ -153,6 +162,8 @@ Future<void> _initGateReport() async {
         dio: sl(),
         api: sl(),
         filePicker: sl(),
+        imagePicker: sl(),
+        geolocator: sl(),
       ),
     );
 }

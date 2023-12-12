@@ -9,6 +9,7 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
     this.child,
     this.size = 20,
     this.isBackButton = false,
+    this.centerTitle = false,
   });
 
   final Icon? icon;
@@ -16,6 +17,7 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
   final Widget? child;
   final double? size;
   final bool? isBackButton;
+  final bool centerTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +30,28 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
               )
             : const SizedBox.shrink(),
       ],
-      centerTitle: true,
+      centerTitle: centerTitle,
       backgroundColor: Colours.primaryColour,
       foregroundColor: Colours.secondaryColour,
       elevation: 0,
-      leadingWidth: double.infinity,
-      leading: Container(
-        margin: const EdgeInsets.only(left: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            isBackButton == true
-                ? IconButton(
-                    icon: const Icon(
-                      Icons.arrow_back,
-                      size: 30,
-                      color: Colours.secondaryColour,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                    color: Colors.red,
-                  )
-                : const SizedBox.shrink(),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colours.secondaryColour,
-                fontSize: size,
-                fontWeight: FontWeight.w700,
+      leading: isBackButton == true
+          ? IconButton(
+              icon: Icon(
+                Theme.of(context).platform == TargetPlatform.iOS
+                    ? Icons.arrow_back_ios_new
+                    : Icons.arrow_back,
               ),
-            ),
-          ],
+              onPressed: () => Navigator.pop(context),
+              color: Colours.secondaryColour,
+              iconSize: 30,
+            )
+          : const SizedBox.shrink(),
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colours.secondaryColour,
+          fontSize: size,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );

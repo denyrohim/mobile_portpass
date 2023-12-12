@@ -3,6 +3,7 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity_p
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 
 class Activity extends Equatable {
+  final int id;
   final String name;
   final String shipName;
   final String type;
@@ -14,6 +15,7 @@ class Activity extends Equatable {
   final String qrCode;
 
   const Activity({
+    required this.id,
     required this.name,
     required this.shipName,
     required this.type,
@@ -27,17 +29,30 @@ class Activity extends Equatable {
 
   Activity.empty()
       : this(
-          name: '',
-          shipName: '',
-          type: '',
-          date: '',
-          time: '',
-          items: [],
-          status: '',
-          activityProgress: [],
-          qrCode: '',
+          id: 0,
+          name: 'Testing',
+          shipName: 'Testing',
+          type: 'Testing',
+          date: '29/06/2021',
+          time: '09:00',
+          items: List.generate(5, (index) => const Item.empty()),
+          status: 'Diterima',
+          activityProgress:
+              List.generate(5, (index) => const ActivityProgress.empty()),
+          qrCode: '1234567890',
         );
 
   @override
-  List<Object?> get props => [name, shipName, type, date, time];
+  List<Object?> get props => [
+        id,
+        name,
+        shipName,
+        type,
+        date,
+        time,
+        items,
+        status,
+        activityProgress,
+        qrCode,
+      ];
 }

@@ -6,18 +6,11 @@ class ActivityProvider extends ChangeNotifier {
 
   List<Activity>? get activities => _activities;
 
-  void initActivity(List<Activity> activities) {
+  void initActivities(List<Activity>? activities) {
     if (_activities != activities) {
       _activities = activities;
     }
     notifyListeners();
-  }
-
-  set user(List<Activity>? activities) {
-    if (_activities != activities) {
-      _activities = activities;
-      Future.delayed(Duration.zero, notifyListeners);
-    }
   }
 
   String searchText = '';

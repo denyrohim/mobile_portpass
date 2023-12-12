@@ -15,10 +15,10 @@ class ActivityProgress extends Equatable {
 
   const ActivityProgress.empty()
       : this(
-          name: '',
-          date: '',
-          time: '',
-          status: '',
+          name: 'Testing',
+          date: '29/06/2021',
+          time: '09:00',
+          status: 'Testing Status',
         );
 
   @override

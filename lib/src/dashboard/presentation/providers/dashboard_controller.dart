@@ -4,7 +4,6 @@ import 'package:port_pass_app/core/common/app/providers/tab_navigator.dart';
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_activity_screen.dart';
-import 'package:port_pass_app/src/activity_management/presentation/views/edit_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/list_activity_screen.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';

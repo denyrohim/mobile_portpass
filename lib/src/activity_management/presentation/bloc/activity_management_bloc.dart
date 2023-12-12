@@ -11,23 +11,22 @@ import 'package:port_pass_app/src/activity_management/domain/usecase/delete_item
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
-import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
 
 part 'activity_management_event.dart';
 part 'activity_management_state.dart';
 
 class ActivityManagementBloc
     extends Bloc<ActivityManagementEvent, ActivityManagementState> {
-  ActivityManagementBloc({
-    required AddActivity addActivity,
-    required AddItem addItem,
-    required DeleteActivities deleteActivities,
-    required DeleteItems deleteItems,
-    required GetActivities getActivities,
-    required UpdateActivity updateActivity,
-    required UpdateItem updateItem,
-    required AddPhotoItem addPhotoItem
-  })  : _addActivity = addActivity,
+  ActivityManagementBloc(
+      {required AddActivity addActivity,
+      required AddItem addItem,
+      required DeleteActivities deleteActivities,
+      required DeleteItems deleteItems,
+      required GetActivities getActivities,
+      required UpdateActivity updateActivity,
+      required UpdateItem updateItem,
+      required AddPhotoItem addPhotoItem})
+      : _addActivity = addActivity,
         _addItem = addItem,
         _deleteActivities = deleteActivities,
         _deleteItems = deleteItems,
@@ -147,15 +146,10 @@ class ActivityManagementBloc
   }
 
   Future<void> _addPhotoHandler(
-    AddPhotoEvent event,
-    Emitter<ActivityManagementState> emit
-  ) async {
-    final result = await _addPhoto(
-      event.type
-    );
+      AddPhotoEvent event, Emitter<ActivityManagementState> emit) async {
+    final result = await _addPhoto(event.type);
     return result.fold(
         (failure) => emit(ActivityManagementError(failure.errorMessage)),
-        (photo) => emit(PhotoAdded(photo))
-    );
+        (photo) => emit(PhotoAdded(photo)));
   }
 }

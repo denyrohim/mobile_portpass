@@ -111,6 +111,7 @@ Future<void> _initActivityManagement() async {
         getActivities: sl(),
         updateActivity: sl(),
         updateItem: sl(),
+        addPhotoItem: sl()
       ),
     )
     ..registerLazySingleton(() => AddActivity(sl()))
@@ -120,6 +121,7 @@ Future<void> _initActivityManagement() async {
     ..registerLazySingleton(() => GetActivities(sl()))
     ..registerLazySingleton(() => UpdateActivity(sl()))
     ..registerLazySingleton(() => UpdateItem(sl()))
+    ..registerLazySingleton(() => AddPhotoItem(sl()))
     ..registerLazySingleton<ActivityManagementRepository>(
         () => ActivityManagementRepositoryImpl(sl()))
     ..registerLazySingleton<ActivityManagementRemoteDataSource>(
@@ -127,6 +129,7 @@ Future<void> _initActivityManagement() async {
         sharedPreferences: sl(),
         dio: sl(),
         api: sl(),
+        imagePicker: sl()
       ),
     );
 }

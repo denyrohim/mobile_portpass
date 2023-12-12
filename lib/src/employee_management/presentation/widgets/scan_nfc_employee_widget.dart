@@ -33,7 +33,7 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
       },
       builder: (context, state) {
         return BottomSheetWidget(
-          height: 580,
+          height: 500,
           buttons: !(state is NFCScanSuccess ||
                   state is NFCScanFailed ||
                   state is EmployeeManagementLoading)

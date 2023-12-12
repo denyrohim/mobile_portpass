@@ -5,11 +5,13 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity.d
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_item.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/add_photo_item.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_items.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
+import 'package:port_pass_app/src/employee_management/presentation/bloc/employee_management_bloc.dart';
 
 part 'activity_management_event.dart';
 part 'activity_management_state.dart';
@@ -24,6 +26,7 @@ class ActivityManagementBloc
     required GetActivities getActivities,
     required UpdateActivity updateActivity,
     required UpdateItem updateItem,
+    required AddPhotoItem addPhotoItem
   })  : _addActivity = addActivity,
         _addItem = addItem,
         _deleteActivities = deleteActivities,
@@ -31,6 +34,7 @@ class ActivityManagementBloc
         _getActivities = getActivities,
         _updateActivity = updateActivity,
         _updateItem = updateItem,
+        _addPhoto = addPhotoItem,
         super(const ActivityManagementInitial()) {
     on<ActivityManagementEvent>((event, emit) {
       emit(const ActivityManagementLoading());
@@ -42,6 +46,7 @@ class ActivityManagementBloc
     on<GetActivitiesEvent>(_getActivitiesHandler);
     on<UpdateActivityEvent>(_updateActivityHandler);
     on<UpdateItemEvent>(_updateItemHandler);
+    on<AddPhotoEvent>(_addPhotoHandler);
   }
   final AddActivity _addActivity;
   final AddItem _addItem;
@@ -50,6 +55,7 @@ class ActivityManagementBloc
   final GetActivities _getActivities;
   final UpdateActivity _updateActivity;
   final UpdateItem _updateItem;
+  final AddPhotoItem _addPhoto;
 
   Future<void> _addActivityHandler(
     AddActivityEvent event,
@@ -137,6 +143,19 @@ class ActivityManagementBloc
     result.fold(
       (failure) => emit(ActivityManagementError(failure.errorMessage)),
       (item) => emit(DataUpdated(item)),
+    );
+  }
+
+  Future<void> _addPhotoHandler(
+    AddPhotoEvent event,
+    Emitter<ActivityManagementState> emit
+  ) async {
+    final result = await _addPhoto(
+      event.type
+    );
+    return result.fold(
+        (failure) => emit(ActivityManagementError(failure.errorMessage)),
+        (photo) => emit(PhotoAdded(photo))
     );
   }
 }

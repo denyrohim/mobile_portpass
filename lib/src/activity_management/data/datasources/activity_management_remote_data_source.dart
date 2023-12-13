@@ -17,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class ActivityManagementRemoteDataSource {
   const ActivityManagementRemoteDataSource();
 
-  Future<void> addActivity({
+  Future<ActivityModel> addActivity({
     required ActivityModel activity,
   });
 
@@ -64,7 +64,7 @@ class ActivityManagementRemoteDataSourceImpl
   final ImagePicker _imagePicker;
 
   @override
-  Future<void> addActivity({
+  Future<ActivityModel> addActivity({
     required ActivityModel activity,
   }) async {
     try {
@@ -109,6 +109,7 @@ class ActivityManagementRemoteDataSourceImpl
       //   throw const ServerException(
       //       message: "Please try again later", statusCode: 505);
       // }
+      return activity;
     } on ServerException {
       rethrow;
     } catch (e, s) {

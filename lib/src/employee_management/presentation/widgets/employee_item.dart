@@ -81,28 +81,6 @@ class EmployeeItem extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Colours.profileBackgroundColour,
-                    // photoController.text != ""
-                    //                 ? Image.network(
-                    //                     photoController.text,
-                    //                     width: 104,
-                    //                     height: 104,
-                    //                     fit: BoxFit.cover,
-                    //                   )
-                    // : Container(
-                    //     width: 104,
-                    //     height: 104,
-                    //     padding: const EdgeInsets.only(
-                    //       left: 24,
-                    //       top: 24,
-                    //       right: 24,
-                    //       bottom: 24,
-                    //     ),
-                    //     color: Colours.profileBackgroundColour,
-                    //     child: SvgPicture.asset(
-                    //       MediaRes.profileIcon,
-                    //       fit: BoxFit.cover,
-                    //     ),
-                    //   ),
                     image: employees[index].photo != null
                         ? DecorationImage(
                             image: NetworkImage(employees[index].photo!),

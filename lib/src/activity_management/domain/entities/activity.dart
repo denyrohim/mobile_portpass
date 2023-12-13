@@ -13,8 +13,10 @@ class Activity extends Equatable {
   final String status;
   final List<ActivityProgress> activityProgress;
   final String qrCode;
+  final bool isChecked;
 
   const Activity({
+    required this.id,
     required this.id,
     required this.name,
     required this.shipName,
@@ -25,34 +27,24 @@ class Activity extends Equatable {
     required this.status,
     required this.activityProgress,
     required this.qrCode,
+    required this.isChecked,
   });
 
   Activity.empty()
       : this(
           id: 0,
-          name: 'Testing',
-          shipName: 'Testing',
-          type: 'Testing',
-          date: '29/06/2021',
-          time: '09:00',
-          items: List.generate(5, (index) => const Item.empty()),
-          status: 'Diterima',
-          activityProgress:
-              List.generate(5, (index) => const ActivityProgress.empty()),
-          qrCode: '1234567890',
+          name: '',
+          shipName: '',
+          type: '',
+          date: '',
+          time: '',
+          items: [],
+          status: '',
+          activityProgress: List<ActivityProgress>.empty(),
+          qrCode: '',
+          isChecked: false,
         );
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        shipName,
-        type,
-        date,
-        time,
-        items,
-        status,
-        activityProgress,
-        qrCode,
-      ];
+  List<Object?> get props => [id, name, shipName, type, date, time, isChecked];
 }

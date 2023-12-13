@@ -195,30 +195,56 @@ class ActivityManagementRemoteDataSourceImpl
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      final result = await _dio.get(
-        _api.activity.activities,
-        data: {},
-        options: Options(
-          headers: ApiHeaders.getHeaders(
-            token: token,
-          ).headers,
-          validateStatus: (status) {
-            return status! < 500;
-          },
-        ),
-      );
-      final activityResult = result.data['data']['activity'] as List<DataMap?>?;
+      // final result = await _dio.get(
+      //   _api.activity.activities,
+      //   data: {},
+      //   options: Options(
+      //     headers: ApiHeaders.getHeaders(
+      //       token: token,
+      //     ).headers,
+      //     validateStatus: (status) {
+      //       return status! < 500;
+      //     },
+      //   ),
+      // );
+      // final activityResult = result.data['data']['activity'] as List<DataMap?>?;
 
-      if (activityResult == null) {
-        throw const ServerException(
-            message: "Please try again later", statusCode: 505);
-      }
+      // if (activityResult == null) {
+      //   throw const ServerException(
+      //       message: "Please try again later", statusCode: 505);
+      // }
 
-      return List<ActivityModel>.from(
-        activityResult.map(
-          (e) => ActivityModel.fromMap(e!),
-        ),
-      );
+      // list generate of activity.empty
+      List<ActivityModel> activityResult = List.generate(
+          10,
+          (index) => ActivityModel(
+                id: index,
+                name: "Activity $index",
+                shipName: "Ship $index",
+                type: "Type $index",
+                date: "Date $index",
+                time: "Time $index",
+                items: [],
+                status: "Status $index",
+                activityProgress: List.generate(
+                    10,
+                    (index) => ActivityProgressModel(
+                          name: "ActivityProgress $index",
+                          date: "Date $index",
+                          time: "Time $index",
+                          status: "Status $index",
+                        )),
+                qrCode: "QrCode $index",
+                isChecked: false,
+              ));
+
+      // return List<ActivityModel>.from(
+      //   activityResult.map(
+      //     (e) => ActivityModel.fromMap(e!),
+      //   ),
+      // );
+
+      return activityResult;
     } on ServerException {
       rethrow;
     } catch (e, s) {

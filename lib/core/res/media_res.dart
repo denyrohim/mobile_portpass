@@ -44,6 +44,8 @@ class MediaRes {
   static const reloadIcon = '$_baseIcons/ulangi_icon.svg';
   static const uploadIcon = '$_baseIcons/unggah_icon.svg';
 
+  static const qrCodeIcon = '$_baseIcons/qr_icon.svg';
+  static const locationIcon = '$_baseIcons/location.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

@@ -28,7 +28,7 @@ class ItemCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Image.asset(item.image.toString()),
+              Image.asset(item.image!),
               const SizedBox(
                 width: 10,
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:port_pass_app/core/common/app/providers/report_provider.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/nested_back_button.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
@@ -65,6 +66,8 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             isCanScan = false;
             isSuccess = true;
             isButtonScanPressed = false;
+            context.read<ReportProvider>().initActivityId(1);
+            debugPrint("sukseskah maniezz: $isSuccess");
           });
           _scanBottomSheet();
         } else if (state is ScanFailed) {

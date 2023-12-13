@@ -222,7 +222,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                 ItemCard(
                                   item: item,
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                               ]
                             ],
                           ),

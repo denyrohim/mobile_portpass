@@ -11,29 +11,25 @@ import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_form.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/item_card.dart';
 import 'package:provider/provider.dart';
 
-class AddActivityScreen extends StatefulWidget {
-  const AddActivityScreen({super.key});
+class EditActivityScreen extends StatefulWidget {
+  const EditActivityScreen({super.key, required this.activity});
+
+  final Activity activity;
 
   static const routeName = '/add-activity';
 
   @override
-  State<AddActivityScreen> createState() => _AddActivityScreenState();
+  State<EditActivityScreen> createState() => EditdActivityScreenState();
 }
 
-class _AddActivityScreenState extends State<AddActivityScreen> {
-  // final nameController = TextEditingController();
-  // final emailController = TextEditingController();
-  // final phoneController = TextEditingController();
-  // final dateOfBirthController = TextEditingController();
-  // final nikController = TextEditingController();
-  // final cardStartController = TextEditingController();
-  // final cardStopController = TextEditingController();
-  // final cardNumberController = TextEditingController();
-  // final stillWorkingController = TextEditingController();
-  // final photoController = TextEditingController();
-  // final formKey = GlobalKey<FormState>();
+class EditdActivityScreenState extends State<EditActivityScreen> {
+  late Activity activity;
+  List<Item>? items;
 
   final nameController = TextEditingController();
   final shipNameController = TextEditingController();
@@ -44,41 +40,32 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
 
   final key = GlobalKey();
 
-  // File? pickedImage;
-
-  // // ignore: unused_element
-  // Future<void> _pickImage({required String type}) async {
-  //   final pickedImageFile = await ImagePicker().pickImage(
-  //     source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
-  //     imageQuality: 50,
-  //     maxWidth: 150,
-  //   );
-  //   if (pickedImageFile != null) {
-  //     setState(() {
-  //       pickedImage = File(pickedImageFile.path);
-  //     });
-  //   }
-  // }
-
-  bool get nameChanged => nameController.text.trim() != "";
-  bool get shipNameChanged => shipNameController.text.trim() != "";
-  bool get activityTypeChanged => activityTypeController.text.trim() != "";
-  bool get activityDateChanged => activityDateController.text.trim() != "";
-  bool get activityHourChanged => activityHourController.text.trim() != "";
+  bool get nameChanged => activity.name.trim() != nameController.text.trim();
+  bool get shipNameChanged =>
+      activity.shipName.trim() != shipNameController.text.trim();
+  bool get activityTypeChanged =>
+      activity.type.trim() != activityTypeController.text.trim();
+  bool get activityDateChanged =>
+      activity.date.trim() != activityDateController.text.trim();
+  bool get activityHourChanged =>
+      activity.time.trim() != activityHourController.text.trim();
+  bool get itemsChanged => activity.items != items;
 
   bool get nothingChanged =>
       !nameChanged &&
       !shipNameChanged &&
       !activityTypeChanged &&
       !activityDateChanged &&
-      !activityHourChanged;
+      !activityHourChanged &&
+      !itemsChanged;
 
   void get initController {
-    nameController.text = "";
-    shipNameController.text = "";
-    activityTypeController.text = "";
-    activityDateController.text = "";
-    activityHourController.text = "";
+    nameController.text = activity.name;
+    shipNameController.text = activity.shipName;
+    activityTypeController.text = activity.type;
+    activityDateController.text = activity.date;
+    activityHourController.text = activity.time;
+    items = activity.items;
 
     nameController.addListener(() => setState(() {}));
     shipNameController.addListener(() => setState(() {}));
@@ -89,8 +76,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
 
   @override
   void initState() {
-    super.initState();
+    activity = widget.activity;
     initController;
+    super.initState();
   }
 
   @override
@@ -213,19 +201,31 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 150,
-                      child: Center(
-                        child: Text(
-                          '0 Daftar',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: Fonts.inter,
-                            color: Colours.primaryColour.withOpacity(0.5),
+                    items!.isEmpty
+                        ? SizedBox(
+                            height: 150,
+                            child: Center(
+                              child: Text(
+                                '0 Daftar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour.withOpacity(0.5),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              for (var item in items!) ...[
+                                ItemCard(
+                                  item: item,
+                                ),
+                                SizedBox(height: 10),
+                              ]
+                            ],
                           ),
-                        ),
-                      ),
-                    ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

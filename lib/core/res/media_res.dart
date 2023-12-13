@@ -43,7 +43,7 @@ class MediaRes {
   static const waitingIcon = '$_baseIcons/waiting_icon.svg';
   static const reloadIcon = '$_baseIcons/ulangi_icon.svg';
   static const uploadIcon = '$_baseIcons/unggah_icon.svg';
-
+  static const waitingIcon2 = '$_baseIcons/wait_icon.svg';
   static const qrCodeIcon = '$_baseIcons/qr_icon.svg';
   static const locationIcon = '$_baseIcons/location.svg';
   static const noImage = '$_baseIcons/no_image.svg';

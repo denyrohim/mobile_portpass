@@ -26,9 +26,6 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
   void initState() {
     super.initState();
     context.read<ActivityManagementBloc>().add(const GetActivitiesEvent());
-    // context
-    //     .read<ActivityManagementBloc>()
-    //     .add(const GetActivityDivisionEvent());
   }
 
   @override
@@ -84,54 +81,142 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                     ),
                     const SizedBox(height: 18),
                     Expanded(
-                        child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colours.secondaryColour,
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          color: Colours.secondaryColour,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 20),
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: (state is ActivityManagementLoading)
-                          ? const LoadingView(
-                              color: Colours.primaryColour,
-                            )
-                          : Stack(
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                        ),
+                        height: MediaQuery.of(context).size.height * 0.69,
+                        child: Stack(
+                          children: [
+                            Stack(
                               children: [
-                                if (activities.isEmpty)
-                                  const Center(
-                                    child: Text(
-                                      'Tidak ada data',
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colours.primaryColour),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        // context
+                                        //     .read<ActivityManagementBloc>()
+                                        //     .add(const GetActivitiesEvent());
+                                        debugPrint('Aktivitas');
+                                      },
+                                      child: Column(
+                                        children: [
+                                          const Text(
+                                            'Aktivitas',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colours.primaryColour,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 120,
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              color: Colours.primaryColour,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ListView.builder(
-                                  itemCount: activities.length,
-                                  itemBuilder: (context, index) {
-                                    if (activities[index]
-                                        .name
-                                        .toLowerCase()
-                                        .contains(_searchController.text)) {
-                                      return ActivityItem(
-                                        context,
-                                        index: index,
-                                        activities: activities,
-                                        isShowCheckBox:
-                                            activityProvider.isShowChecked,
-                                      );
-                                    } else {
-                                      return const SizedBox.shrink();
-                                    }
-                                  },
+                                    TextButton(
+                                      onPressed: () {
+                                        // context
+                                        //     .read<ActivityManagementBloc>()
+                                        //     .add(const GetDraftsEvent());
+                                        debugPrint('Draft');
+                                      },
+                                      child: Column(
+                                        children: [
+                                          const Text(
+                                            'Draft',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colours.primaryColour,
+                                            ),
+                                          ),
+                                          Container(
+                                            width: 120,
+                                            height: 8,
+                                            decoration: BoxDecoration(
+                                              color: Colours.primaryColour,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 42),
+                                  height: 1,
+                                  width: double.infinity,
+                                  color: Colours.primaryColour,
                                 ),
                               ],
                             ),
-                    ))
+                            (state is ActivityManagementLoading)
+                                ? const LoadingView(
+                                    color: Colours.primaryColour,
+                                  )
+                                : Container(
+                                    margin: const EdgeInsets.only(top: 43),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.60,
+                                    child: Stack(
+                                      children: [
+                                        if (activities.isEmpty)
+                                          const Center(
+                                            child: Text(
+                                              'Tidak ada data',
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colours.primaryColour),
+                                            ),
+                                          ),
+                                        ListView.builder(
+                                          itemCount: activities.length,
+                                          itemBuilder: (context, index) {
+                                            if (activities[index]
+                                                .name
+                                                .toLowerCase()
+                                                .contains(
+                                                    _searchController.text)) {
+                                              return ActivityItem(
+                                                context,
+                                                index: index,
+                                                activities: activities,
+                                                isShowCheckBox: activityProvider
+                                                    .isShowChecked,
+                                              );
+                                            } else {
+                                              return const SizedBox.shrink();
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),

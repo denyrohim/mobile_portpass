@@ -13,6 +13,7 @@ class AddItem implements UsecaseWithParams<List<Item>, AddItemParams> {
   ResultFuture<List<Item>> call(AddItemParams params) => _repository.addItem(
         items: params.items,
         item: params.item,
+        index: params.index,
       );
 }
 
@@ -20,14 +21,17 @@ class AddItemParams extends Equatable {
   const AddItemParams({
     required this.items,
     required this.item,
+    required this.index,
   });
 
   AddItemParams.empty()
       : items = [],
-        item = const Item.empty();
+        item = const Item.empty(),
+        index = -1;
 
   final List<Item> items;
   final Item item;
+  final int index;
 
   @override
   List<Object?> get props => [item];

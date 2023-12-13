@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 
@@ -37,6 +38,10 @@ class IFields extends StatelessWidget {
     return TextFormField(
       enableInteractiveSelection: onTap == null,
       controller: controller,
+      inputFormatters: [
+        if (keyboardType == TextInputType.number)
+          FilteringTextInputFormatter.digitsOnly,
+      ],
       validator: overrideValidator
           ? validator
           : (value) {

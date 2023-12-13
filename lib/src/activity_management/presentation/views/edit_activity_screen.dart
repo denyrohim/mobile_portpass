@@ -220,6 +220,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                               const SizedBox(height: 10),
                               for (var item in items!) ...[
                                 ItemCard(
+                                  index: items!.indexOf(item),
                                   item: item,
                                 ),
                                 const SizedBox(height: 10),

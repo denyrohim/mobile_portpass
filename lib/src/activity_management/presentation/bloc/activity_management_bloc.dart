@@ -74,11 +74,15 @@ class ActivityManagementBloc
     Emitter<ActivityManagementState> emit,
   ) async {
     final result = await _addItem(
-      AddItemParams(items: event.items, item: event.item),
+      AddItemParams(
+        items: event.items,
+        item: event.item,
+        index: event.index,
+      ),
     );
     result.fold(
       (failure) => emit(ActivityManagementError(failure.errorMessage)),
-      (_) => emit(const DataAdded()),
+      (items) => emit(ItemAdded(items)),
     );
   }
 

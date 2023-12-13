@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 
 class ActivityProvider extends ChangeNotifier {
   List<Activity>? _activities;
@@ -65,5 +66,28 @@ class ActivityProvider extends ChangeNotifier {
       }
     }
     return idCheckedEmployees;
+  }
+
+  List<Item>? _items;
+
+  List<Item>? get items => _items;
+
+  void initItems(List<Item> items) {
+    if (_items != items) {
+      _items = items;
+    }
+    notifyListeners();
+  }
+
+  set items(List<Item>? items) {
+    if (_items != items) {
+      _items = items;
+      Future.delayed(Duration.zero, notifyListeners);
+    }
+  }
+
+  void resetItems() {
+    _items = [];
+    notifyListeners();
   }
 }

@@ -65,9 +65,9 @@ class ListItems extends StatelessWidget {
           // ListView.builder(itemCount: items.length,itemBuilder: (BuildContext context, int index) {
           //   return _Item(item: items[index]);
           // }),
-          ItemCard(item: items[0]),
-          ItemCard(item: items[1]),
-          ItemCard(item: items[2]),
+          ItemCard(index: 0, item: items[0]),
+          ItemCard(index: 0, item: items[1]),
+          ItemCard(index: 0, item: items[2]),
           // Text(items[0].name)
         ],
       )

@@ -9,8 +9,10 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/add_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_form.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/item_card.dart';
 import 'package:provider/provider.dart';
@@ -25,17 +27,7 @@ class AddActivityScreen extends StatefulWidget {
 }
 
 class _AddActivityScreenState extends State<AddActivityScreen> {
-  // final nameController = TextEditingController();
-  // final emailController = TextEditingController();
-  // final phoneController = TextEditingController();
-  // final dateOfBirthController = TextEditingController();
-  // final nikController = TextEditingController();
-  // final cardStartController = TextEditingController();
-  // final cardStopController = TextEditingController();
-  // final cardNumberController = TextEditingController();
-  // final stillWorkingController = TextEditingController();
-  // final photoController = TextEditingController();
-  // final formKey = GlobalKey<FormState>();
+  List<Item> items = [];
 
   final nameController = TextEditingController();
   final shipNameController = TextEditingController();
@@ -45,22 +37,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
-
-  // File? pickedImage;
-
-  // // ignore: unused_element
-  // Future<void> _pickImage({required String type}) async {
-  //   final pickedImageFile = await ImagePicker().pickImage(
-  //     source: (type == "camera") ? ImageSource.camera : ImageSource.gallery,
-  //     imageQuality: 50,
-  //     maxWidth: 150,
-  //   );
-  //   if (pickedImageFile != null) {
-  //     setState(() {
-  //       pickedImage = File(pickedImageFile.path);
-  //     });
-  //   }
-  // }
 
   bool get nameChanged => nameController.text.trim() != "";
 
@@ -72,12 +48,23 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
 
   bool get activityHourChanged => activityHourController.text.trim() != "";
 
+  bool get itemsChanged => items.isNotEmpty;
+
   bool get nothingChanged =>
       !nameChanged &&
       !shipNameChanged &&
       !activityTypeChanged &&
       !activityDateChanged &&
-      !activityHourChanged;
+      !activityHourChanged &&
+      !itemsChanged;
+
+  bool get allChanged =>
+      nameChanged &&
+      shipNameChanged &&
+      activityTypeChanged &&
+      activityDateChanged &&
+      activityHourChanged &&
+      itemsChanged;
 
   void get initController {
     nameController.text = "";
@@ -85,6 +72,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.text = "";
     activityDateController.text = "";
     activityHourController.text = "";
+    setState(() {
+      items = [];
+    });
 
     nameController.addListener(() => setState(() {}));
     shipNameController.addListener(() => setState(() {}));
@@ -92,14 +82,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
   }
-
-  // TODO: Remove this after API ready
-  final List<Item> items = [
-    const Item(
-        image: MediaRes.itemExample, name: "Masako", amount: 10, unit: 'ton'),
-    const Item(
-        image: MediaRes.itemExample, name: "Masako", amount: 10, unit: 'ton'),
-  ];
 
   @override
   void initState() {
@@ -126,6 +108,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
         } else if (state is DataAdded) {
           initController;
           context.read<FileProvider>().resetAddActivity();
+          context.read<ActivityProvider>().resetItems();
           CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
         }
       },
@@ -161,6 +144,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
             image: MediaRes.colorBackground,
             child: Consumer<ActivityProvider>(
               builder: (_, activityProvider, __) {
+                items = activityProvider.items ?? [];
                 return ContainerCard(
                   mediaHeight: 0.76,
                   padding: 10,
@@ -178,7 +162,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: SizedBox(
-                        width: 194,
+                        width: 200,
                         height: 28,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -187,7 +171,12 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            final navigator = Navigator.of(context);
+                            navigator.pushNamed(
+                              AddItemScreen.routeName,
+                            );
+                          },
                           child: Row(
                             children: [
                               SvgPicture.asset(
@@ -209,216 +198,159 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(height: 10),
-                        ActivityForm(
-                          nameController: nameController,
-                          shipNameController: shipNameController,
-                          activityTypeController: activityTypeController,
-                          activityDateController: activityDateController,
-                          activityHourController: activityHourController,
-                          formKey: formKey,
+                        const Text(
+                          'Daftar Barang',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Fonts.inter,
+                              color: Colours.primaryColour),
                         ),
-                        const SizedBox(height: 12),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: SizedBox(
-                            width: 194,
-                            height: 28,
+                        Text(
+                          '${items.length} Daftar',
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Fonts.inter,
+                              color: Colours.primaryColour),
+                        ),
+                      ],
+                    ),
+                    items.isNotEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Wrap(
+                              runSpacing: 15,
+                              children: [
+                                for (var item in items)
+                                  ItemCard(
+                                    index: items.indexOf(item),
+                                    item: item,
+                                  ),
+                              ],
+                            ),
+                          )
+                        : SizedBox(
+                            height: 150,
+                            child: Center(
+                              child: Text(
+                                '0 Daftar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour.withOpacity(0.5),
+                                ),
+                              ),
+                            ),
+                          ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 160,
+                          height: 40,
+                          child: IgnorePointer(
+                            ignoring: nothingChanged ||
+                                state is ActivityManagementLoading,
                             child: ElevatedButton(
+                              onPressed: () {
+                                initController;
+                                context.read<FileProvider>().resetAddItems();
+                                context.read<ActivityProvider>().resetItems();
+                              },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colours.primaryColour,
+                                backgroundColor: nothingChanged
+                                    ? Colours.primaryColourDisabled
+                                    : Colours.primaryColour,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              onPressed: () {},
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    MediaRes.addWhiteIcon,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text(
-                                    "Tambah Barang",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: Fonts.inter,
-                                        color: Colours.secondaryColour),
-                                  )
-                                ],
-                              ),
+                              child: state is ActivityManagementLoading
+                                  ? const Center(
+                                      child: CircularProgressIndicator())
+                                  : const Text(
+                                      "Batal",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: Fonts.inter,
+                                          color: Colours.secondaryColour),
+                                    ),
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Daftar Barang',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Fonts.inter,
-                                  color: Colours.primaryColour),
-                            ),
-                            Text(
-                              '${items.length ?? "0"} Daftar',
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: Fonts.inter,
-                                  color: Colours.primaryColour),
-                            ),
-                          ],
-                        ),
-                        items.isNotEmpty
-                            ? Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 10, bottom: 10),
-                                child: Wrap(
-                                  runSpacing: 15,
-                                  children: [
-                                    ItemCard(item: items[0]),
-                                    ItemCard(item: items[1]),
-                                    // Text(items[0].name)
-                                  ],
-                                ),
-                              )
-                            : SizedBox(
-                                height: 150,
-                                child: Center(
-                                  child: Text(
-                                    '0 Daftar',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: Fonts.inter,
-                                      color: Colours.primaryColour
-                                          .withOpacity(0.5),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              width: 160,
-                              height: 40,
-                              child: IgnorePointer(
-                                ignoring: nothingChanged ||
-                                    state is ActivityManagementLoading,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    initController;
-                                    // context
-                                    //     .read<ActivityProvider>()
-                                    //     .resetAddActivity();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: nothingChanged
-                                        ? Colours.primaryColourDisabled
-                                        : Colours.primaryColour,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  child: state is ActivityManagementLoading
-                                      ? const Center(
-                                          child: CircularProgressIndicator())
-                                      : const Text(
-                                          "Batal",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.secondaryColour),
-                                        ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 160,
-                              height: 40,
-                              child: StatefulBuilder(
-                                  key: key,
-                                  builder: (_, refresh) {
-                                    return IgnorePointer(
-                                      ignoring: nothingChanged ||
-                                          state is ActivityManagementLoading,
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          // FocusManager.instance.primaryFocus
-                                          //     ?.unfocus();
-                                          // if (formKey.currentState!
-                                          //     .validate()) {
-                                          //   context
-                                          //       .read<ActivityManagementBloc>()
-                                          //       .add(
-                                          //         AddActivityEvent(
-                                          //           activityData: Activity(
-                                          //             name: nameController.text
-                                          //                 .trim(),
-                                          //             shipName: shipNameController
-                                          //                 .text
-                                          //                 .trim(),
-                                          //             type:
-                                          //                 activityTypeController
-                                          //                     .text
-                                          //                     .trim(),
-                                          //             date: activityDateController.text
-                                          //                 .trim(),
-                                          //             time:
-                                          //                 activityHourController
-                                          //                     .text
-                                          //                     .trim(),
-
-                                          //           ),
-                                          //         ),
-                                          //       );
-                                          // }
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: nothingChanged
-                                              ? Colours.primaryColourDisabled
-                                              : Colours.primaryColour,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                        child: state
-                                                is ActivityManagementLoading
-                                            ? const Center(
-                                                child:
-                                                    CircularProgressIndicator())
-                                            : const Text(
-                                                "Simpan",
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontFamily: Fonts.inter,
-                                                    color: Colours
-                                                        .secondaryColour),
+                        SizedBox(
+                          width: 160,
+                          height: 40,
+                          child: StatefulBuilder(
+                              key: key,
+                              builder: (_, refresh) {
+                                return IgnorePointer(
+                                  ignoring: !allChanged ||
+                                      state is ActivityManagementLoading,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      FocusManager.instance.primaryFocus
+                                          ?.unfocus();
+                                      if (formKey.currentState!.validate()) {
+                                        context
+                                            .read<ActivityManagementBloc>()
+                                            .add(
+                                              AddActivityEvent(
+                                                activityData: Activity(
+                                                  id: 0,
+                                                  name: nameController.text
+                                                      .trim(),
+                                                  shipName: shipNameController
+                                                      .text
+                                                      .trim(),
+                                                  type: activityTypeController
+                                                      .text
+                                                      .trim(),
+                                                  date: activityDateController
+                                                      .text
+                                                      .trim(),
+                                                  time: activityHourController
+                                                      .text
+                                                      .trim(),
+                                                  items: items,
+                                                  status: "Menunggu",
+                                                  activityProgress: const [],
+                                                  qrCode: "",
+                                                  isChecked: false,
+                                                ),
                                               ),
+                                            );
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: !allChanged
+                                          ? Colours.primaryColourDisabled
+                                          : Colours.primaryColour,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
-                                    );
-                                  }),
-                            ),
-                            // ElevatedButton(
-                            //   onPressed: (){},
-                            //   child: const Row(
-                            //     children: [
-                            //       Icon(Icons.add),
-                            //       Text("Tambah Barang")
-                            //     ],
-                            //   ),
-                            // ),
-                          ],
+                                    ),
+                                    child: state is ActivityManagementLoading
+                                        ? const Center(
+                                            child: CircularProgressIndicator())
+                                        : const Text(
+                                            "Simpan",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.secondaryColour),
+                                          ),
+                                  ),
+                                );
+                              }),
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
+                    const SizedBox(height: 20),
                   ],
                 );
               },

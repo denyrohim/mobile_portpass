@@ -61,10 +61,12 @@ class AddItemEvent extends ActivityManagementEvent {
   const AddItemEvent({
     required this.item,
     required this.items,
+    required this.index,
   });
 
   final Item item;
   final List<Item> items;
+  final int index;
 
   @override
   List<Object> get props => [item, items];

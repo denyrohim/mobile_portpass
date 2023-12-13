@@ -46,6 +46,7 @@ class MediaRes {
 
   static const qrCodeIcon = '$_baseIcons/qr_icon.svg';
   static const locationIcon = '$_baseIcons/location.svg';
+  static const noImage = '$_baseIcons/no_image.svg';
 
   // Backgrounds
   static const defaultBackground = '$_baseImages/background.png';

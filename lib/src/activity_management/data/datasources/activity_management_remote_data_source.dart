@@ -11,12 +11,13 @@ import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/activity_management/data/models/activity_model.dart';
 import 'package:port_pass_app/src/activity_management/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/activity_management/data/models/item_model.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ActivityManagementRemoteDataSource {
   const ActivityManagementRemoteDataSource();
 
-  Future<ActivityModel> addActivity({
+  Future<void> addActivity({
     required ActivityModel activity,
   });
 
@@ -63,7 +64,7 @@ class ActivityManagementRemoteDataSourceImpl
   final ImagePicker _imagePicker;
 
   @override
-  Future<ActivityModel> addActivity({
+  Future<void> addActivity({
     required ActivityModel activity,
   }) async {
     try {
@@ -73,38 +74,41 @@ class ActivityManagementRemoteDataSourceImpl
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      final result = await _dio.post(
-        _api.activity.activities,
-        data: {
-          'name': activity.name,
-          'ship_name': activity.shipName,
-          'type': activity.type,
-          'date': activity.date,
-          'time': activity.time,
-          'items': activity.items.map((e) => (e as ItemModel).toMap()).toList(),
-          'status': activity.status,
-          'activity_progress': activity.activityProgress
-              .map((e) => (e as ActivityProgressModel).toMap())
-              .toList(),
-          'qr_code': activity.qrCode,
-        },
-        options: Options(
-          headers: ApiHeaders.getHeaders(
-            token: token,
-          ).headers,
-          validateStatus: (status) {
-            return status! < 500;
-          },
-        ),
-      );
-      final activityResult = result.data['data']['activity'] as DataMap?;
+      // final result = await _dio.post(
+      //   _api.activity.activities,
+      //   data: {
+      //     'name': activity.name,
+      //     'ship_name': activity.shipName,
+      //     'type': activity.type,
+      //     'date': activity.date,
+      //     'time': activity.time,
+      //     'items': activity.items.map((e) {
+      //       return {
+      //         'name': e.name,
+      //         'image': e.image,
+      //         'weight': e.amount,
+      //       };
+      //     }).toList(),
+      //     'status': activity.status,
+      //     'activity_progress': [],
+      //     'qr_code': activity.qrCode,
+      //   },
+      //   options: Options(
+      //     headers: ApiHeaders.getHeaders(
+      //       token: token,
+      //     ).headers,
+      //     validateStatus: (status) {
+      //       return status! < 500;
+      //     },
+      //   ),
+      // );
 
-      if (activityResult == null) {
-        throw const ServerException(
-            message: "Please try again later", statusCode: 505);
-      }
+      // final activityResult = result.data['data']['activity'] as DataMap?;
 
-      return ActivityModel.fromMap(activityResult);
+      // if (activityResult == null) {
+      //   throw const ServerException(
+      //       message: "Please try again later", statusCode: 505);
+      // }
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -223,14 +227,18 @@ class ActivityManagementRemoteDataSourceImpl
                 type: "Memasukkan Barang",
                 date: "Date $index",
                 time: "Time $index",
-                items: List.generate(
-                    10,
-                    (index) => ItemModel(
-                          name: "Item $index",
-                          image: MediaRes.itemExample,
-                          amount: 10,
-                          unit: "Unit $index",
-                        )),
+                items: const [
+                  Item(
+                      image: MediaRes.itemExample,
+                      name: "Masako",
+                      amount: 10,
+                      unit: 'ton'),
+                  Item(
+                      image: MediaRes.itemExample,
+                      name: "Masako",
+                      amount: 10,
+                      unit: 'ton'),
+                ],
                 status: "Status $index",
                 activityProgress: List.generate(
                     10,

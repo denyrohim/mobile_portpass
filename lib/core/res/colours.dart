@@ -13,7 +13,7 @@ class Colours {
 
   static const Color secondaryColour = Color(0xFFF4F6F8);
 
-  static const Color neutralTextColour = Color(0xFF757C8E);
+  static const Color neutralTextColour = Color(0xFFD8D8D8);
 
   static const Color physicsTileColour = Color(0xFFD3D5FE);
 
@@ -47,7 +47,7 @@ class Colours {
 
   static const Color otherUserChatBubbleColourDarker = Color(0xFFE0E0E0);
 
-  static const Color errorColour = Color(0xFFD32F2F);
+  static const Color errorColour = Color(0xFFB90000);
 
   static const Color itemCardBorderColour = Color(0xFFD9D9D9);
 

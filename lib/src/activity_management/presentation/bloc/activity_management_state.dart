@@ -79,6 +79,15 @@ class DataAdded extends ActivityManagementState {
   const DataAdded();
 }
 
+class ItemAdded extends ActivityManagementState {
+  const ItemAdded(this.items);
+
+  final List<Item> items;
+
+  @override
+  List<Object> get props => [items];
+}
+
 class DataDeleted extends ActivityManagementState {
   const DataDeleted();
 }

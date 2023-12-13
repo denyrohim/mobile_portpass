@@ -94,6 +94,26 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         ),
         settings: settings,
       );
+
+    case AddItemScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<ActivityManagementBloc>(),
+          child: const AddItemScreen(),
+        ),
+        settings: settings,
+      );
+
+    case EditItemScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<ActivityManagementBloc>(),
+          child: EditItemScreen(
+            item: settings.arguments as dynamic,
+          ),
+        ),
+        settings: settings,
+      );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),

@@ -5,13 +5,14 @@ import 'package:port_pass_app/src/activity_management/domain/entities/item.dart'
 abstract class ActivityManagementRepository {
   const ActivityManagementRepository();
 
-  ResultFuture<Activity> addActivity({
+  ResultFuture<void> addActivity({
     required Activity activity,
   });
 
   ResultFuture<List<Item>> addItem({
     required List<Item> items,
     required Item item,
+    required int index,
   });
 
   ResultFuture<void> deleteActivities({
@@ -34,7 +35,5 @@ abstract class ActivityManagementRepository {
     required Item item,
   });
 
-  ResultFuture<dynamic> addPhotoItem({
-    required String type
-  });
+  ResultFuture<dynamic> addPhotoItem({required String type});
 }

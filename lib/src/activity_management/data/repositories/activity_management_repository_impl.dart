@@ -15,12 +15,25 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   final ActivityManagementRemoteDataSource _remoteDataSource;
 
   @override
-  ResultFuture<Activity> addActivity({required Activity activity}) async {
+  ResultFuture<void> addActivity({required Activity activity}) async {
     try {
-      final result = await _remoteDataSource.addActivity(
-        activity: activity as ActivityModel,
+      final activityData = ActivityModel(
+        id: activity.id,
+        name: activity.name,
+        shipName: activity.shipName,
+        type: activity.type,
+        date: activity.date,
+        time: activity.time,
+        items: activity.items,
+        status: activity.status,
+        activityProgress: activity.activityProgress,
+        qrCode: activity.qrCode,
+        isChecked: activity.isChecked,
       );
-      return Right(result);
+      await _remoteDataSource.addActivity(
+        activity: activityData,
+      );
+      return Right(Future.value(null));
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }
@@ -30,9 +43,14 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   ResultFuture<List<Item>> addItem({
     required List<Item> items,
     required Item item,
+    required int index,
   }) {
     try {
-      items.add(item);
+      if (index != -1) {
+        items[index] = item;
+      } else {
+        items.add(item);
+      }
       final result = items;
       return Future.value(Right(result));
     } on ServerException catch (e) {
@@ -105,9 +123,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   @override
   ResultFuture addPhotoItem({required String type}) async {
     try {
-      final result = await _remoteDataSource.addPhotoItem(
-        type: type
-      );
+      final result = await _remoteDataSource.addPhotoItem(type: type);
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

@@ -170,6 +170,87 @@ class FileProvider extends ChangeNotifier {
     _uriEditActivity = null;
   }
 
+  List<File>? _fileAddItems;
+  List<String>? _filePathAddItems;
+  List<String>? _base64AddItems;
+  List<String>? _uriAddItems;
+
+  List<File>? get fileAddItem => _fileAddItems;
+  List<String>? get filePathAddItem => _filePathAddItems;
+  List<String>? get base64AddItem => _base64AddItems;
+  List<String>? get uriAddItem => _uriAddItems;
+
+  File? fileAddItemByIndex(int index) {
+    if (index == -1) {
+      return _fileAddItems!.last;
+    }
+    return _fileAddItems![index];
+  }
+
+  String? filePathAddItemByIndex(int index) {
+    if (index == -1) {
+      return _filePathAddItems!.last;
+    }
+    return _filePathAddItems![index];
+  }
+
+  String? base64AddItemByIndex(int index) {
+    if (index == -1) {
+      return _base64AddItems!.last;
+    }
+    return _base64AddItems![index];
+  }
+
+  String? uriAddItemByIndex(int index) {
+    if (index == -1) {
+      return _uriAddItems!.last;
+    }
+    return _uriAddItems![index];
+  }
+
+  void addFileAddItems(File fileAddItem, {int index = -1}) {
+    if (_fileAddItems == null) {
+      _fileAddItems = [];
+      _filePathAddItems = [];
+      _base64AddItems = [];
+      _uriAddItems = [];
+    }
+
+    if (index == -1) {
+      _fileAddItems!.add(fileAddItem);
+      _filePathAddItems!.add(fileAddItem.path);
+      _base64AddItems!.add(base64Encode(fileAddItem.readAsBytesSync()));
+      _uriAddItems!.add(
+          "data:image/${fileAddItem.path.split('/').last.split('.').last};base64,${base64Encode(fileAddItem.readAsBytesSync())}");
+    } else {
+      _fileAddItems![index] = fileAddItem;
+      _filePathAddItems![index] = fileAddItem.path;
+      _base64AddItems![index] = base64Encode(fileAddItem.readAsBytesSync());
+      _uriAddItems![index] =
+          "data:image/${fileAddItem.path.split('/').last.split('.').last};base64,${base64Encode(fileAddItem.readAsBytesSync())}";
+    }
+  }
+
+  void changeLastFileAddItems(File fileAddItem) {
+    _fileAddItems!.removeLast();
+    _filePathAddItems!.removeLast();
+    _base64AddItems!.removeLast();
+    _uriAddItems!.removeLast();
+    _fileAddItems!.add(fileAddItem);
+    _filePathAddItems!.add(fileAddItem.path);
+    _base64AddItems!.add(base64Encode(fileAddItem.readAsBytesSync()));
+    _uriAddItems!.add(
+        "data:image/${fileAddItem.path.split('/').last.split('.').last};base64,${base64Encode(fileAddItem.readAsBytesSync())}");
+  }
+
+  // reset
+  void resetAddItems() {
+    _fileAddItems = null;
+    _filePathAddItems = null;
+    _base64AddItems = null;
+    _uriAddItems = null;
+  }
+
   File? _fileEditItem;
   String? _filePathEditItem;
   String? _base64EditItem;

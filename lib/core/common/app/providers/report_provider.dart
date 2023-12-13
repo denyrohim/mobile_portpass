@@ -32,4 +32,14 @@ class ReportProvider extends ChangeNotifier {
     _location = null;
     notifyListeners();
   }
+
+  int? _activityId;
+  int? get activityId => _activityId;
+
+  void initActivityId(int? activityId) {
+    if (_activityId != activityId) {
+      _activityId = activityId;
+    }
+    notifyListeners();
+  }
 }

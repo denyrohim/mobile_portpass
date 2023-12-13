@@ -39,12 +39,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
       );
 
-    case QRCodeActivityScreen.routeName:
-      return _pageBuilder(
-        (_) => const QRCodeActivityScreen(),
-        settings: settings,
-      );
-
     case AddEmployeePhotoScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(
@@ -90,6 +84,28 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           create: (_) => sl<GateReportBloc>(),
           child: AddReportScreen(
             activity: settings.arguments as Activity,
+          ),
+        ),
+        settings: settings,
+      );
+
+    case TrackingActivityScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<ActivityManagementBloc>(),
+          child: TrackingActivityScreen(
+            activity: settings.arguments,
+          ),
+        ),
+        settings: settings,
+      );
+
+    case QRCodeActivityScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<ActivityManagementBloc>(),
+          child: QRCodeActivityScreen(
+            activity: settings.arguments,
           ),
         ),
         settings: settings,

@@ -14,7 +14,7 @@ class DetailActivity extends StatelessWidget {
           padding: const EdgeInsets.only(top: 30),
           child: Center(
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.7,
+              width: MediaQuery.of(context).size.width * 0.8,
               height: 140,
               child: Column(
                 children: [

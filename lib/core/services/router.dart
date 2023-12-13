@@ -1,9 +1,11 @@
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
+import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/detail_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/edit_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
 import 'package:port_pass_app/src/auth/presentation/bloc/auth_bloc.dart';
 import 'package:port_pass_app/src/auth/presentation/views/sign_in_screen.dart';
 import 'package:port_pass_app/src/dashboard/presentation/views/dashboard.dart';

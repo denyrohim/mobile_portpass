@@ -7,8 +7,8 @@ import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_search_bar.dart';
 import 'package:provider/provider.dart';
-import '../../../employee_management/presentation/widgets/costum_search_bar.dart';
 
 class ListActivityScreen extends StatefulWidget {
   const ListActivityScreen({super.key});
@@ -21,10 +21,25 @@ class ListActivityScreen extends StatefulWidget {
 
 class _ListActivityScreenState extends State<ListActivityScreen> {
   final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _typeController = TextEditingController();
+  bool deniedActivity = false;
+  void changeListActivity(bool value) {
+    setState(() {
+      deniedActivity = value;
+    });
+    if (deniedActivity) {
+      _typeController.text = 'Ditolak';
+    } else {
+      // _typeController.text = '';
+    }
+    debugPrint('Denied Activity: $deniedActivity');
+    debugPrint('_typeController: ${_typeController.text}');
+  }
 
   @override
   void initState() {
     super.initState();
+    _typeController.text = 'Ditolak';
     context.read<ActivityManagementBloc>().add(const GetActivitiesEvent());
   }
 
@@ -74,7 +89,7 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                         children: [
                           Container(
                             margin: const EdgeInsets.only(top: 12),
-                            child: const CustomSearchBar(),
+                            child: const ActivitySearchBar(),
                           )
                         ],
                       ),
@@ -96,67 +111,77 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                           children: [
                             Stack(
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                Column(
                                   children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        // context
-                                        //     .read<ActivityManagementBloc>()
-                                        //     .add(const GetActivitiesEvent());
-                                        debugPrint('Aktivitas');
-                                      },
-                                      child: Column(
-                                        children: [
-                                          const Text(
-                                            'Aktivitas',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colours.primaryColour,
-                                            ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            changeListActivity(false);
+                                            // context
+                                            //     .read<ActivityManagementBloc>()
+                                            //     .add(const GetActivitiesEvent());
+                                            debugPrint('Aktivitas');
+                                          },
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                'Aktivitas',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 120,
+                                                height: 8,
+                                                decoration: BoxDecoration(
+                                                  color: (!deniedActivity)
+                                                      ? Colours.primaryColour
+                                                      : Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Container(
-                                            width: 120,
-                                            height: 8,
-                                            decoration: BoxDecoration(
-                                              color: Colours.primaryColour,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            changeListActivity(true);
+                                            // context
+                                            //     .read<ActivityManagementBloc>()
+                                            //     .add(const GetDraftsEvent());
+                                            debugPrint('Draft');
+                                          },
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                'Draft',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ),
+                                              Container(
+                                                width: 120,
+                                                height: 8,
+                                                decoration: BoxDecoration(
+                                                  color: (deniedActivity)
+                                                      ? Colours.primaryColour
+                                                      : Colors.transparent,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        // context
-                                        //     .read<ActivityManagementBloc>()
-                                        //     .add(const GetDraftsEvent());
-                                        debugPrint('Draft');
-                                      },
-                                      child: Column(
-                                        children: [
-                                          const Text(
-                                            'Draft',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w700,
-                                              color: Colours.primaryColour,
-                                            ),
-                                          ),
-                                          Container(
-                                            width: 120,
-                                            height: 8,
-                                            decoration: BoxDecoration(
-                                              color: Colours.primaryColour,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -193,20 +218,50 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                         ListView.builder(
                                           itemCount: activities.length,
                                           itemBuilder: (context, index) {
-                                            if (activities[index]
-                                                .name
-                                                .toLowerCase()
-                                                .contains(
-                                                    _searchController.text)) {
-                                              return ActivityItem(
-                                                context,
-                                                index: index,
-                                                activities: activities,
-                                                isShowCheckBox: activityProvider
-                                                    .isShowChecked,
-                                              );
+                                            if (deniedActivity) {
+                                              if (activities[index]
+                                                      .name
+                                                      .toLowerCase()
+                                                      .contains(
+                                                          _searchController
+                                                              .text) &&
+                                                  activities[index]
+                                                      .status
+                                                      .contains(_typeController
+                                                          .text)) {
+                                                return ActivityItem(
+                                                  context,
+                                                  index: index,
+                                                  activities: activities,
+                                                  isShowCheckBox:
+                                                      activityProvider
+                                                          .isShowChecked,
+                                                );
+                                              } else {
+                                                return const SizedBox.shrink();
+                                              }
                                             } else {
-                                              return const SizedBox.shrink();
+                                              if (activities[index]
+                                                      .name
+                                                      .toLowerCase()
+                                                      .contains(
+                                                          _searchController
+                                                              .text) &&
+                                                  !activities[index]
+                                                      .status
+                                                      .contains(_typeController
+                                                          .text)) {
+                                                return ActivityItem(
+                                                  context,
+                                                  index: index,
+                                                  activities: activities,
+                                                  isShowCheckBox:
+                                                      activityProvider
+                                                          .isShowChecked,
+                                                );
+                                              } else {
+                                                return const SizedBox.shrink();
+                                              }
                                             }
                                           },
                                         ),

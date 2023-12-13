@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
-import 'package:provider/provider.dart';
 
 class ActivitySearchBar extends StatefulWidget {
   const ActivitySearchBar({super.key});

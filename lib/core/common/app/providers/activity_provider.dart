@@ -13,7 +13,7 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  set user(List<Activity>? activities) {
+  set activities(List<Activity>? activities) {
     if (_activities != activities) {
       _activities = activities;
       Future.delayed(Duration.zero, notifyListeners);

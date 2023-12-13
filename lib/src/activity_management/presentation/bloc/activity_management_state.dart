@@ -39,8 +39,17 @@ class UpdateChecked extends ActivityManagementState {
   List<Object> get props => [activities];
 }
 
-class DataLoaded extends ActivityManagementState {
-  const DataLoaded(this.activities);
+class ShowChecked extends ActivityManagementState {
+  const ShowChecked(this.activities);
+
+  final List<Activity> activities;
+
+  @override
+  List<Object> get props => [activities];
+}
+
+class UnshowChecked extends ActivityManagementState {
+  const UnshowChecked(this.activities);
 
   final List<Activity> activities;
 
@@ -50,6 +59,15 @@ class DataLoaded extends ActivityManagementState {
 
 class SelectedAll extends ActivityManagementState {
   const SelectedAll(this.activities);
+
+  final List<Activity> activities;
+
+  @override
+  List<Object> get props => [activities];
+}
+
+class DataLoaded extends ActivityManagementState {
+  const DataLoaded(this.activities);
 
   final List<Activity> activities;
 

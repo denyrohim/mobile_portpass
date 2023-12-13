@@ -112,152 +112,171 @@ class EditPhotoProfileScreenState extends State<EditPhotoProfileScreen> {
                   );
                 },
               ),
-              padding: MediaQuery.of(context).size.width * 0.2,
+              padding: 10,
               children: [
-                const SizedBox(
-                  height: 60,
-                ),
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Tambah Foto Profil',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colours.primaryColour,
-                      fontFamily: Fonts.inter,
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 60,
                     ),
-                  ),
-                ),
-                const SizedBox(height: 40),
-                GestureDetector(
-                  onTap: () {
-                    debugPrint("Camera Clicked");
-                    context.read<AuthBloc>().add(
-                          const AddPhotoEvent(type: 'camera'),
-                        );
-                  },
-                  child: Container(
-                    height: 96,
-                    decoration: BoxDecoration(
-                      color: Colours.primaryColour,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 18),
-                          decoration: BoxDecoration(
-                            color: Colours.secondaryColour,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: const Icon(
-                            Icons.camera_alt_rounded,
-                            color: Colours.primaryColour,
-                            size: 40,
-                          ),
+                    const Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Tambah Foto Profil',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colours.primaryColour,
+                          fontFamily: Fonts.inter,
                         ),
-                        const Text(
-                          'Kamera',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colours.secondaryColour,
-                            fontFamily: Fonts.inter,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    context.read<AuthBloc>().add(
-                          const AddPhotoEvent(type: 'galery'),
-                        );
-                  },
-                  child: Container(
-                    height: 96,
-                    decoration: BoxDecoration(
-                      color: Colours.primaryColour,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 18),
-                          decoration: BoxDecoration(
-                            color: Colours.secondaryColour,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: const Icon(
-                            Icons.image,
-                            color: Colours.primaryColour,
-                            size: 40,
-                          ),
+                    const SizedBox(height: 40),
+                    GestureDetector(
+                      onTap: () {
+                        debugPrint("Camera Clicked");
+                        context.read<AuthBloc>().add(
+                              const AddPhotoEvent(type: 'camera'),
+                            );
+                      },
+                      child: Container(
+                        width: 220,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          color: Colours.primaryColour,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        const Text(
-                          'Galeri',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colours.secondaryColour,
-                            fontFamily: Fonts.inter,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 64,
+                              height: 64,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 18),
+                              decoration: BoxDecoration(
+                                color: Colours.secondaryColour,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: const Icon(
+                                Icons.camera_alt_rounded,
+                                color: Colours.primaryColour,
+                                size: 40,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 100,
+                              child: Text(
+                                'Kamera',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  fontFamily: Fonts.inter,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    context.read<AuthBloc>().add(
-                          const AddPhotoEvent(type: 'remove'),
-                        );
-                  },
-                  child: Container(
-                    height: 96,
-                    decoration: BoxDecoration(
-                      color: Colours.primaryColour,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 64,
-                          height: 64,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 18),
-                          decoration: BoxDecoration(
-                            color: Colours.secondaryColour,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: const Icon(
-                            Icons.person,
-                            color: Colours.primaryColour,
-                            size: 40,
-                          ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AuthBloc>().add(
+                              const AddPhotoEvent(type: 'galery'),
+                            );
+                      },
+                      child: Container(
+                        width: 220,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          color: Colours.primaryColour,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        const Text(
-                          'Tanpa Foto',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                            color: Colours.secondaryColour,
-                            fontFamily: Fonts.inter,
-                          ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 64,
+                              height: 64,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 18),
+                              decoration: BoxDecoration(
+                                color: Colours.secondaryColour,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: const Icon(
+                                Icons.image,
+                                color: Colours.primaryColour,
+                                size: 40,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 100,
+                              child: Text(
+                                'Galeri',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  fontFamily: Fonts.inter,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AuthBloc>().add(
+                              const AddPhotoEvent(type: 'remove'),
+                            );
+                      },
+                      child: Container(
+                        width: 220,
+                        height: 96,
+                        decoration: BoxDecoration(
+                          color: Colours.primaryColour,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 64,
+                              height: 64,
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 18),
+                              decoration: BoxDecoration(
+                                color: Colours.secondaryColour,
+                                borderRadius: BorderRadius.circular(100),
+                              ),
+                              child: const Icon(
+                                Icons.person,
+                                color: Colours.primaryColour,
+                                size: 40,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 100,
+                              child: Text(
+                                'Tanpa Foto',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16,
+                                  fontFamily: Fonts.inter,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

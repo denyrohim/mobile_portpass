@@ -46,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
             image: MediaRes.colorBackground,
             child: ContainerCard(
               headerHeight: 62,
-              padding: MediaQuery.of(context).size.width * 0.2,
+              padding: 10,
               header: ClipRRect(
                 borderRadius: BorderRadius.circular(100),
                 child: (context.currentUser!.profileImg != null)
@@ -108,6 +108,7 @@ class ProfileScreen extends StatelessWidget {
                         ));
                       },
                       style: ElevatedButton.styleFrom(
+                        maximumSize: const Size(600, 96),
                         backgroundColor: Colours.primaryColour,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -134,12 +135,16 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   )),
                               const SizedBox(width: 20),
-                              const Text(
-                                'Edit Profile',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: Fonts.inter),
+                              const SizedBox(
+                                width: 100,
+                                child: Text(
+                                  'Edit Profile',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: Fonts.inter),
+                                ),
                               ),
                             ],
                           ),
@@ -181,10 +186,16 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                   )),
                               const SizedBox(width: 20),
-                              const Text(
-                                'Keluar',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                              const SizedBox(
+                                width: 100,
+                                child: Text(
+                                  'Keluar',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontFamily: Fonts.inter),
+                                ),
                               ),
                             ],
                           ),

@@ -39,21 +39,19 @@ abstract class ActivityManagementRemoteDataSource {
     required ItemModel item,
   });
 
-  Future<dynamic> addPhotoItem({
-    required String type
-  });
+  Future<dynamic> addPhotoItem({required String type});
 }
 
 const kToken = 'token';
 
 class ActivityManagementRemoteDataSourceImpl
     implements ActivityManagementRemoteDataSource {
-  const ActivityManagementRemoteDataSourceImpl({
-    required SharedPreferences sharedPreferences,
-    required Dio dio,
-    required API api,
-    required ImagePicker imagePicker
-  })  : _dio = dio,
+  const ActivityManagementRemoteDataSourceImpl(
+      {required SharedPreferences sharedPreferences,
+      required Dio dio,
+      required API api,
+      required ImagePicker imagePicker})
+      : _dio = dio,
         _api = api,
         _sharedPreferences = sharedPreferences,
         _imagePicker = imagePicker;
@@ -224,7 +222,7 @@ class ActivityManagementRemoteDataSourceImpl
                 type: "Type $index",
                 date: "Date $index",
                 time: "Time $index",
-                items: [],
+                items: const [],
                 status: "Status $index",
                 activityProgress: List.generate(
                     10,

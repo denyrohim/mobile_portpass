@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
-// import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_search_bar.dart';
-// import 'package:port_pass_app/src/employee_management/presentation/widgets/employee_confirmation_button.dart';
-import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
-import 'package:port_pass_app/core/services/injection_container.dart';
 
 class ActivityItem extends StatelessWidget {
   const ActivityItem(
@@ -25,6 +22,8 @@ class ActivityItem extends StatelessWidget {
 
   @override
   Flex build(BuildContext context) {
+    double buttonContainerHeight = 56;
+    double buttonContainerWidth = 68;
     return Flex(
       direction: Axis.horizontal,
       children: [
@@ -55,7 +54,7 @@ class ActivityItem extends StatelessWidget {
           flex: 1,
           child: Container(
             margin: const EdgeInsets.only(bottom: 12),
-            height: 160,
+            height: 180,
             decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -83,20 +82,23 @@ class ActivityItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               activities[index].name,
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color: isShowCheckBox
-                                      ? Colours.primaryColourDisabled
-                                      : Colours.primaryColour,
-                                  fontWeight: FontWeight.w700),
+                                fontSize: 16,
+                                color: isShowCheckBox
+                                    ? Colours.primaryColourDisabled
+                                    : Colours.primaryColour,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: Fonts.inter,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
+                            const SizedBox(height: 4),
                             Text(
                               activities[index].type,
                               style: TextStyle(
@@ -120,23 +122,22 @@ class ActivityItem extends StatelessWidget {
                           ],
                         ),
                         Container(
-                          alignment: Alignment.center,
+                          alignment: Alignment.topCenter,
                           child: Container(
                               width: 88,
                               height: 24,
                               decoration: ShapeDecoration(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    side: const BorderSide(
-                                      color: Colours.itemCardBorderColour,
-                                    ),
-                                  ),
+                                      borderRadius: BorderRadius.circular(5),
+                                      side: const BorderSide(
+                                        color: Colours.itemCardBorderColour,
+                                      )),
                                   color: Colours.secondaryColour,
                                   shadows: const [
                                     BoxShadow(
                                         color: Color(0x3f000000),
-                                        blurRadius: 4,
-                                        offset: Offset(0, 4),
+                                        blurRadius: 2,
+                                        offset: Offset(0, 2),
                                         spreadRadius: 0)
                                   ]),
                               child: Padding(
@@ -170,26 +171,29 @@ class ActivityItem extends StatelessWidget {
                     ),
                   ),
                 ),
-                IgnorePointer(
-                  ignoring: isShowCheckBox,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
+                Flex(
+                  direction: Axis.horizontal,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
                         onTap: () {
-                          context.push(BlocProvider(
-                            create: (_) => sl<ActivityManagementBloc>(),
-                            // child: EditEmployeeScreen(
-                            //   employee: employees[index],
-                            // ),
-                          ));
+                          // context.push(
+                          //   BlocProvider(
+                          //     create: (_) => sl<ActivityManagementBloc>(),
+                          //     // child: EditEmployeeScreen(
+                          //     //   employee: employees[index],
+                          //     // ),
+                          //   ),
+                          // );
+                          debugPrint('Lacak');
                         },
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
                             Container(
-                              width: 60,
-                              height: 52,
+                              width: buttonContainerWidth,
+                              height: buttonContainerHeight,
                               decoration: BoxDecoration(
                                   color: isShowCheckBox
                                       ? Colours.primaryColourDisabled
@@ -219,22 +223,25 @@ class ActivityItem extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
                         onTap: () {
-                          context.push(BlocProvider(
-                            create: (_) => sl<ActivityManagementBloc>(),
-                            // child: EditEmployeeScreen(
-                            //   employee: employees[index],
-                            // ),
-                          ));
+                          // context.push(BlocProvider(
+                          //   create: (_) => sl<ActivityManagementBloc>(),
+                          //   // child: EditEmployeeScreen(
+                          //   //   employee: employees[index],
+                          //   // ),
+                          // ));
+                          debugPrint('QR Code');
                         },
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
                             Container(
-                              width: 60,
-                              height: 52,
+                              width: buttonContainerWidth,
+                              height: buttonContainerHeight,
                               decoration: BoxDecoration(
                                   color: isShowCheckBox
                                       ? Colours.primaryColourDisabled
@@ -261,22 +268,25 @@ class ActivityItem extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
                         onTap: () {
-                          context.push(BlocProvider(
-                            create: (_) => sl<ActivityManagementBloc>(),
-                            // child: EditEmployeeScreen(
-                            //   employee: employees[index],
-                            // ),
-                          ));
+                          // context.push(BlocProvider(
+                          //   create: (_) => sl<ActivityManagementBloc>(),
+                          //   // child: EditEmployeeScreen(
+                          //   //   employee: employees[index],
+                          //   // ),
+                          // ));
+                          debugPrint('Edit');
                         },
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
                             Container(
-                              width: 60,
-                              height: 52,
+                              width: buttonContainerWidth,
+                              height: buttonContainerHeight,
                               decoration: BoxDecoration(
                                   color: isShowCheckBox
                                       ? Colours.primaryColourDisabled
@@ -306,30 +316,33 @@ class ActivityItem extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      GestureDetector(
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
                         onTap: () {
                           showModalBottomSheet<void>(
                             isScrollControlled: true,
                             context: context,
                             builder: (BuildContext context) {
-                              return BlocProvider(
-                                create: (_) => sl<ActivityManagementBloc>(),
-                                // child: ActivityConfirmationButton(
-                                //   text: 'Yakin hapus?',
-                                //   textStyle: const TextStyle(
-                                //     fontSize: 20,
-                                //     color: Colours.primaryColour,
-                                //     fontWeight: FontWeight.w700,
-                                //   ),
-                                //   textButtonNegative: 'Batal',
-                                //   textButtonPositive: 'Hapus',
-                                //   colorTextButtonNegative:
-                                //       Colours.primaryColour,
-                                //   colorTextButtonPositive: Colours.errorColour,
-                                //   employeesIds: [activity[index].id],
-                                // ),
-                              );
+                              // return BlocProvider(
+                              //   create: (_) => sl<ActivityManagementBloc>(),
+                              //   // child: ActivityConfirmationButton(
+                              //   //   text: 'Yakin hapus?',
+                              //   //   textStyle: const TextStyle(
+                              //   //     fontSize: 20,
+                              //   //     color: Colours.primaryColour,
+                              //   //     fontWeight: FontWeight.w700,
+                              //   //   ),
+                              //   //   textButtonNegative: 'Batal',
+                              //   //   textButtonPositive: 'Hapus',
+                              //   //   colorTextButtonNegative:
+                              //   //       Colours.primaryColour,
+                              //   //   colorTextButtonPositive: Colours.errorColour,
+                              //   //   employeesIds: [activity[index].id],
+                              //   // ),
+                              // );
+                              return const Placeholder();
                             },
                           );
                         },
@@ -337,8 +350,8 @@ class ActivityItem extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
                             Container(
-                              width: 60,
-                              height: 52,
+                              width: buttonContainerWidth,
+                              height: buttonContainerHeight,
                               decoration: BoxDecoration(
                                   color: isShowCheckBox
                                       ? Colours.errorColourDisabled
@@ -368,8 +381,8 @@ class ActivityItem extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               ],
             ),

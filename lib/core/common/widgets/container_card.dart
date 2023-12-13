@@ -58,8 +58,8 @@ class _ContainerCardState extends State<ContainerCard> {
                         : null,
                     child: ListView(
                       shrinkWrap: true,
-                      padding: EdgeInsets.symmetric(
-                          horizontal: widget.padding ?? 10),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: widget.padding ?? 0),
                       children: widget.children,
                     ),
                   ),

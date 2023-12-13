@@ -223,7 +223,7 @@ class ActivityManagementRemoteDataSourceImpl
                 date: "Date $index",
                 time: "Time $index",
                 items: const [],
-                status: "Status $index",
+                status: "Diterima",
                 activityProgress: List.generate(
                     10,
                     (index) => ActivityProgressModel(
@@ -235,6 +235,47 @@ class ActivityManagementRemoteDataSourceImpl
                 qrCode: "QrCode $index",
                 isChecked: false,
               ));
+
+      activityResult.add(ActivityModel(
+        id: 11,
+        name: "Activity 11",
+        shipName: "Ship 11",
+        type: "Type 11",
+        date: "Date 11",
+        time: "Time 11",
+        items: const [],
+        status: "Ditolak",
+        activityProgress: List.generate(
+            10,
+            (index) => ActivityProgressModel(
+                  name: "ActivityProgress $index",
+                  date: "Date $index",
+                  time: "Time $index",
+                  status: "Status $index",
+                )),
+        qrCode: "QrCode 11",
+        isChecked: false,
+      ));
+      activityResult.add(ActivityModel(
+        id: 12,
+        name: "Activity 12",
+        shipName: "Ship 12",
+        type: "Type 12",
+        date: "Date 12",
+        time: "Time 12",
+        items: const [],
+        status: "Menunggu",
+        activityProgress: List.generate(
+            10,
+            (index) => ActivityProgressModel(
+                  name: "ActivityProgress $index",
+                  date: "Date $index",
+                  time: "Time $index",
+                  status: "Status $index",
+                )),
+        qrCode: "QrCode 12",
+        isChecked: false,
+      ));
 
       // return List<ActivityModel>.from(
       //   activityResult.map(

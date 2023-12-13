@@ -6,6 +6,8 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity.d
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
 
 class ActivityItem extends StatelessWidget {
   const ActivityItem(
@@ -53,7 +55,7 @@ class ActivityItem extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            margin: const EdgeInsets.only(bottom: 12),
+            margin: const EdgeInsets.only(top: 12),
             height: 180,
             decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
@@ -124,7 +126,7 @@ class ActivityItem extends StatelessWidget {
                         Container(
                           alignment: Alignment.topCenter,
                           child: Container(
-                              width: 88,
+                              width: 100,
                               height: 24,
                               decoration: ShapeDecoration(
                                   shape: RoundedRectangleBorder(
@@ -146,7 +148,12 @@ class ActivityItem extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SvgPicture.asset(
-                                      MediaRes.acceptIcon,
+                                      (activities[index].status == 'Diterima')
+                                          ? MediaRes.acceptIcon
+                                          : (activities[index].status ==
+                                                  'Menunggu')
+                                              ? MediaRes.waitingIcon
+                                              : MediaRes.rejectIcon,
                                       width: 16,
                                       height: 16,
                                     ),
@@ -178,15 +185,13 @@ class ActivityItem extends StatelessWidget {
                       flex: 1,
                       child: GestureDetector(
                         onTap: () {
-                          // context.push(
-                          //   BlocProvider(
-                          //     create: (_) => sl<ActivityManagementBloc>(),
-                          //     // child: EditEmployeeScreen(
-                          //     //   employee: employees[index],
-                          //     // ),
-                          //   ),
-                          // );
-                          debugPrint('Lacak');
+                          if (activities[index].status == 'Diterima') {
+                            final navigator = Navigator.of(context);
+                            navigator.pushNamed(
+                                TrackingActivityScreen.routeName,
+                                arguments: activities[index]);
+                            debugPrint('Lacak');
+                          }
                         },
                         child: Stack(
                           alignment: Alignment.center,
@@ -195,9 +200,9 @@ class ActivityItem extends StatelessWidget {
                               width: buttonContainerWidth,
                               height: buttonContainerHeight,
                               decoration: BoxDecoration(
-                                  color: isShowCheckBox
-                                      ? Colours.primaryColourDisabled
-                                      : Colours.primaryColour,
+                                  color: activities[index].status == "Diterima"
+                                      ? Colours.primaryColour
+                                      : Colours.primaryColourDisabled,
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                             Padding(
@@ -228,13 +233,12 @@ class ActivityItem extends StatelessWidget {
                       flex: 1,
                       child: GestureDetector(
                         onTap: () {
-                          // context.push(BlocProvider(
-                          //   create: (_) => sl<ActivityManagementBloc>(),
-                          //   // child: EditEmployeeScreen(
-                          //   //   employee: employees[index],
-                          //   // ),
-                          // ));
-                          debugPrint('QR Code');
+                          if (activities[index].status == 'Diterima') {
+                            final navigator = Navigator.of(context);
+                            navigator.pushNamed(QRCodeActivityScreen.routeName,
+                                arguments: activities[index]);
+                            debugPrint('QR Code');
+                          }
                         },
                         child: Stack(
                           alignment: Alignment.center,
@@ -243,9 +247,9 @@ class ActivityItem extends StatelessWidget {
                               width: buttonContainerWidth,
                               height: buttonContainerHeight,
                               decoration: BoxDecoration(
-                                  color: isShowCheckBox
-                                      ? Colours.primaryColourDisabled
-                                      : Colours.primaryColour,
+                                  color: activities[index].status == "Diterima"
+                                      ? Colours.primaryColour
+                                      : Colours.primaryColourDisabled,
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                             Padding(
@@ -273,6 +277,12 @@ class ActivityItem extends StatelessWidget {
                       flex: 1,
                       child: GestureDetector(
                         onTap: () {
+                          if (activities[index].status == 'Ditolak') {
+                            // final navigator = Navigator.of(context);
+                            // navigator.pushNamed(QRCodeActivityScreen.routeName,
+                            //     arguments: activities[index]);
+                            // debugPrint('QR Code');
+                          }
                           // context.push(BlocProvider(
                           //   create: (_) => sl<ActivityManagementBloc>(),
                           //   // child: EditEmployeeScreen(
@@ -288,9 +298,9 @@ class ActivityItem extends StatelessWidget {
                               width: buttonContainerWidth,
                               height: buttonContainerHeight,
                               decoration: BoxDecoration(
-                                  color: isShowCheckBox
-                                      ? Colours.primaryColourDisabled
-                                      : Colours.primaryColour,
+                                  color: activities[index].status == "Ditolak"
+                                      ? Colours.primaryColour
+                                      : Colours.primaryColourDisabled,
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                             Padding(
@@ -321,30 +331,32 @@ class ActivityItem extends StatelessWidget {
                       flex: 1,
                       child: GestureDetector(
                         onTap: () {
-                          showModalBottomSheet<void>(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              // return BlocProvider(
-                              //   create: (_) => sl<ActivityManagementBloc>(),
-                              //   // child: ActivityConfirmationButton(
-                              //   //   text: 'Yakin hapus?',
-                              //   //   textStyle: const TextStyle(
-                              //   //     fontSize: 20,
-                              //   //     color: Colours.primaryColour,
-                              //   //     fontWeight: FontWeight.w700,
-                              //   //   ),
-                              //   //   textButtonNegative: 'Batal',
-                              //   //   textButtonPositive: 'Hapus',
-                              //   //   colorTextButtonNegative:
-                              //   //       Colours.primaryColour,
-                              //   //   colorTextButtonPositive: Colours.errorColour,
-                              //   //   employeesIds: [activity[index].id],
-                              //   // ),
-                              // );
-                              return const Placeholder();
-                            },
-                          );
+                          if (activities[index].status == "Ditolak") {
+                            showModalBottomSheet<void>(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                // return BlocProvider(
+                                //   create: (_) => sl<ActivityManagementBloc>(),
+                                //   // child: ActivityConfirmationButton(
+                                //   //   text: 'Yakin hapus?',
+                                //   //   textStyle: const TextStyle(
+                                //   //     fontSize: 20,
+                                //   //     color: Colours.primaryColour,
+                                //   //     fontWeight: FontWeight.w700,
+                                //   //   ),
+                                //   //   textButtonNegative: 'Batal',
+                                //   //   textButtonPositive: 'Hapus',
+                                //   //   colorTextButtonNegative:
+                                //   //       Colours.primaryColour,
+                                //   //   colorTextButtonPositive: Colours.errorColour,
+                                //   //   employeesIds: [activity[index].id],
+                                //   // ),
+                                // );
+                                return const Placeholder();
+                              },
+                            );
+                          }
                         },
                         child: Stack(
                           alignment: Alignment.center,
@@ -353,9 +365,9 @@ class ActivityItem extends StatelessWidget {
                               width: buttonContainerWidth,
                               height: buttonContainerHeight,
                               decoration: BoxDecoration(
-                                  color: isShowCheckBox
-                                      ? Colours.errorColourDisabled
-                                      : Colours.errorColour,
+                                  color: activities[index].status == "Ditolak"
+                                      ? Colours.errorColour
+                                      : Colours.errorColourDisabled,
                                   borderRadius: BorderRadius.circular(5)),
                             ),
                             Padding(

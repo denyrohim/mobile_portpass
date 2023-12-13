@@ -9,8 +9,10 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_form.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/item_card.dart';
 import 'package:provider/provider.dart';
 
 class AddActivityScreen extends StatefulWidget {
@@ -61,9 +63,13 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   // }
 
   bool get nameChanged => nameController.text.trim() != "";
+
   bool get shipNameChanged => shipNameController.text.trim() != "";
+
   bool get activityTypeChanged => activityTypeController.text.trim() != "";
+
   bool get activityDateChanged => activityDateController.text.trim() != "";
+
   bool get activityHourChanged => activityHourController.text.trim() != "";
 
   bool get nothingChanged =>
@@ -86,6 +92,14 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
   }
+
+  // TODO: Remove this after API ready
+  final List<Item> items = [
+    const Item(
+        image: MediaRes.itemExample, name: "Masako", amount: 10, unit: 'ton'),
+    const Item(
+        image: MediaRes.itemExample, name: "Masako", amount: 10, unit: 'ton'),
+  ];
 
   @override
   void initState() {
@@ -149,6 +163,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
               builder: (_, activityProvider, __) {
                 return ContainerCard(
                   mediaHeight: 0.76,
+                  padding: 10,
                   children: [
                     const SizedBox(height: 10),
                     ActivityForm(
@@ -191,155 +206,219 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                         ),
                       ),
                     ),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Daftar Barang',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Fonts.inter,
-                              color: Colours.primaryColour),
-                        ),
-                        Text(
-                          '0 Daftar',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: Fonts.inter,
-                              color: Colours.primaryColour),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 150,
-                      child: Center(
-                        child: Text(
-                          '0 Daftar',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: Fonts.inter,
-                            color: Colours.primaryColour.withOpacity(0.5),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: 160,
-                          height: 40,
-                          child: IgnorePointer(
-                            ignoring: nothingChanged ||
-                                state is ActivityManagementLoading,
+                        const SizedBox(height: 10),
+                        ActivityForm(
+                          nameController: nameController,
+                          shipNameController: shipNameController,
+                          activityTypeController: activityTypeController,
+                          activityDateController: activityDateController,
+                          activityHourController: activityHourController,
+                          formKey: formKey,
+                        ),
+                        const SizedBox(height: 12),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            width: 194,
+                            height: 28,
                             child: ElevatedButton(
-                              onPressed: () {
-                                initController;
-                                // context
-                                //     .read<ActivityProvider>()
-                                //     .resetAddActivity();
-                              },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: nothingChanged
-                                    ? Colours.primaryColourDisabled
-                                    : Colours.primaryColour,
+                                backgroundColor: Colours.primaryColour,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              child: state is ActivityManagementLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator())
-                                  : const Text(
-                                      "Batal",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: Fonts.inter,
-                                          color: Colours.secondaryColour),
-                                    ),
+                              onPressed: () {},
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    MediaRes.addWhiteIcon,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text(
+                                    "Tambah Barang",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontFamily: Fonts.inter,
+                                        color: Colours.secondaryColour),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 160,
-                          height: 40,
-                          child: StatefulBuilder(
-                              key: key,
-                              builder: (_, refresh) {
-                                return IgnorePointer(
-                                  ignoring: nothingChanged ||
-                                      state is ActivityManagementLoading,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      // FocusManager.instance.primaryFocus
-                                      //     ?.unfocus();
-                                      // if (formKey.currentState!
-                                      //     .validate()) {
-                                      //   context
-                                      //       .read<ActivityManagementBloc>()
-                                      //       .add(
-                                      //         AddActivityEvent(
-                                      //           activityData: Activity(
-                                      //             name: nameController.text
-                                      //                 .trim(),
-                                      //             shipName: shipNameController
-                                      //                 .text
-                                      //                 .trim(),
-                                      //             type:
-                                      //                 activityTypeController
-                                      //                     .text
-                                      //                     .trim(),
-                                      //             date: activityDateController.text
-                                      //                 .trim(),
-                                      //             time:
-                                      //                 activityHourController
-                                      //                     .text
-                                      //                     .trim(),
-
-                                      //           ),
-                                      //         ),
-                                      //       );
-                                      // }
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: nothingChanged
-                                          ? Colours.primaryColourDisabled
-                                          : Colours.primaryColour,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                    ),
-                                    child: state is ActivityManagementLoading
-                                        ? const Center(
-                                            child: CircularProgressIndicator())
-                                        : const Text(
-                                            "Simpan",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: Fonts.inter,
-                                                color: Colours.secondaryColour),
-                                          ),
-                                  ),
-                                );
-                              }),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Daftar Barang',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour),
+                            ),
+                            Text(
+                              '${items.length ?? "0"} Daftar',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour),
+                            ),
+                          ],
                         ),
-                        // ElevatedButton(
-                        //   onPressed: (){},
-                        //   child: const Row(
-                        //     children: [
-                        //       Icon(Icons.add),
-                        //       Text("Tambah Barang")
-                        //     ],
-                        //   ),
-                        // ),
+                        items.isNotEmpty
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Wrap(
+                                  runSpacing: 15,
+                                  children: [
+                                    ItemCard(item: items[0]),
+                                    ItemCard(item: items[1]),
+                                    // Text(items[0].name)
+                                  ],
+                                ),
+                              )
+                            : SizedBox(
+                                height: 150,
+                                child: Center(
+                                  child: Text(
+                                    '0 Daftar',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: Fonts.inter,
+                                      color: Colours.primaryColour
+                                          .withOpacity(0.5),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: IgnorePointer(
+                                ignoring: nothingChanged ||
+                                    state is ActivityManagementLoading,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    initController;
+                                    // context
+                                    //     .read<ActivityProvider>()
+                                    //     .resetAddActivity();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: nothingChanged
+                                        ? Colours.primaryColourDisabled
+                                        : Colours.primaryColour,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: state is ActivityManagementLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : const Text(
+                                          "Batal",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: Fonts.inter,
+                                              color: Colours.secondaryColour),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 160,
+                              height: 40,
+                              child: StatefulBuilder(
+                                  key: key,
+                                  builder: (_, refresh) {
+                                    return IgnorePointer(
+                                      ignoring: nothingChanged ||
+                                          state is ActivityManagementLoading,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          // FocusManager.instance.primaryFocus
+                                          //     ?.unfocus();
+                                          // if (formKey.currentState!
+                                          //     .validate()) {
+                                          //   context
+                                          //       .read<ActivityManagementBloc>()
+                                          //       .add(
+                                          //         AddActivityEvent(
+                                          //           activityData: Activity(
+                                          //             name: nameController.text
+                                          //                 .trim(),
+                                          //             shipName: shipNameController
+                                          //                 .text
+                                          //                 .trim(),
+                                          //             type:
+                                          //                 activityTypeController
+                                          //                     .text
+                                          //                     .trim(),
+                                          //             date: activityDateController.text
+                                          //                 .trim(),
+                                          //             time:
+                                          //                 activityHourController
+                                          //                     .text
+                                          //                     .trim(),
+
+                                          //           ),
+                                          //         ),
+                                          //       );
+                                          // }
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: nothingChanged
+                                              ? Colours.primaryColourDisabled
+                                              : Colours.primaryColour,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        child: state
+                                                is ActivityManagementLoading
+                                            ? const Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : const Text(
+                                                "Simpan",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: Fonts.inter,
+                                                    color: Colours
+                                                        .secondaryColour),
+                                              ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                            // ElevatedButton(
+                            //   onPressed: (){},
+                            //   child: const Row(
+                            //     children: [
+                            //       Icon(Icons.add),
+                            //       Text("Tambah Barang")
+                            //     ],
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                       ],
                     ),
-                    const SizedBox(height: 20),
                   ],
                 );
               },

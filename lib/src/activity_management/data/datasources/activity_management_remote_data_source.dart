@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/headers.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
@@ -222,8 +223,15 @@ class ActivityManagementRemoteDataSourceImpl
                 type: "Type $index",
                 date: "Date $index",
                 time: "Time $index",
-                items: const [],
                 status: "Diterima",
+                items: List.generate(
+                    10,
+                    (index) => ItemModel(
+                          name: "Item $index",
+                          image: MediaRes.itemExample,
+                          amount: 10,
+                          unit: "Unit $index",
+                        )),
                 activityProgress: List.generate(
                     10,
                     (index) => ActivityProgressModel(

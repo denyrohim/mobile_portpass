@@ -31,23 +31,20 @@ class DetailActivityScreen extends StatelessWidget {
                       ListItems(
                         items: [
                           Item(
-                            image: 'assets/icons/flutter.png',
-                            name: "sasa",
-                            amount: 10,
-                            unit: 'ton'
-                          ),
+                              image: 'assets/icons/flutter.png',
+                              name: "sasa",
+                              amount: 10,
+                              unit: 'ton'),
                           Item(
-                            image: 'assets/icons/flutter.png',
-                            name: "ssadasa",
-                            amount: 10,
-                            unit: 'ton'
-                          ),
+                              image: 'assets/icons/flutter.png',
+                              name: "ssadasa",
+                              amount: 10,
+                              unit: 'ton'),
                           Item(
-                            image: 'assets/icons/flutter.png',
-                            name: "safdsfsa",
-                            amount: 10,
-                            unit: 'ton'
-                          )
+                              image: 'assets/icons/flutter.png',
+                              name: "safdsfsa",
+                              amount: 10,
+                              unit: 'ton')
                         ],
                       ),
                     ],

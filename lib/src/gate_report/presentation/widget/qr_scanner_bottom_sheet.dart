@@ -25,7 +25,13 @@ class QrScannerBottomSheet extends StatefulWidget {
 }
 
 class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
-  late int activityId;
+  int? activityId;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isSuccess = widget.isSuccess;
@@ -33,8 +39,10 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
     return BlocConsumer<GateReportBloc, GateReportState>(
       listener: (context, state) {
         if (state is ScanSuccess) {
-          isSuccess = true;
-          activityId = int.parse(state.result.split('-').last);
+          // isSuccess = true;
+          activityId = 1;
+          debugPrint("sukseskah maniezz: $isSuccess");
+          // int.parse(state.result.split('-').last);
         } else if (state is ActivityLoaded) {
           // activityProvider
           context.read<ReportProvider>().initActivity(state.activity);
@@ -90,8 +98,10 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
             ),
             IconButton(
               onPressed: () {
+                activityId = context.read<ReportProvider>().activityId;
+                debugPrint('activityId = $activityId');
                 context.read<GateReportBloc>().add(
-                      GetActivityEvent(activityId: activityId),
+                      GetActivityEvent(activityId: activityId!),
                     );
               },
               icon: const Icon(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 
 class ItemCard extends StatelessWidget {
@@ -14,24 +15,29 @@ class ItemCard extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       height: 112,
       width: MediaQuery.of(context).size.width * 0.9,
-      decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-              color: Colors.grey,
-              spreadRadius: 1,
-              blurRadius: 10,
-              blurStyle: BlurStyle.outer)
-        ],
-        borderRadius: BorderRadius.circular(20),
-      ),
+      decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+              side: const BorderSide(
+                color: Colours.itemCardBorderColour,
+              )),
+          color: Colours.secondaryColour,
+          shadows: const [
+            BoxShadow(
+                color: Color(0x3f000000),
+                blurRadius: 4,
+                offset: Offset(0, 4),
+                spreadRadius: 0)
+          ]),
       child: Row(
         children: [
           Row(
             children: [
-              Image.asset(item.image.toString()),
-              const SizedBox(
-                width: 10,
-              ),
+              item.image != null
+                  ? Image.asset(item.image.toString())
+                  : const SizedBox(
+                      width: 10,
+                    ),
             ],
           ),
           const SizedBox(

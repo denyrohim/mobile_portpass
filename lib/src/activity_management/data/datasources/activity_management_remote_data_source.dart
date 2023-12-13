@@ -220,7 +220,7 @@ class ActivityManagementRemoteDataSourceImpl
                 id: index,
                 name: "Activity $index",
                 shipName: "Ship $index",
-                type: "Type $index",
+                type: "Memasukkan Barang",
                 date: "Date $index",
                 time: "Time $index",
                 status: "Diterima",

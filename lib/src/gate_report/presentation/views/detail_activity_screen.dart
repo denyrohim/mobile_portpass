@@ -291,6 +291,7 @@ class _GateDetailActivityScreenState extends State<GateDetailActivityScreen> {
                                         padding: const EdgeInsets.all(4.0),
                                         child: ItemCard(
                                           item: activity.items[index],
+                                          index: index,
                                         ),
                                       );
                                     }),

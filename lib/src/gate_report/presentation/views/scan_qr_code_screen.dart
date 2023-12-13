@@ -102,7 +102,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             child: Stack(
               children: [
                 MobileScanner(
-                  controller: MobileScannerController(),
+                  controller: cameraController,
                   onDetect: (capture) {
                     if (isCanScan) {
                       debugPrint('Ahhh Masuk');
@@ -164,6 +164,8 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                       isButtonScanPressed =
                                           !isButtonScanPressed;
                                     });
+                                    debugPrint(
+                                        "${!cameraController.isStarting}");
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,

@@ -6,13 +6,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlng/latlng.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
+import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:port_pass_app/core/utils/headers.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
-import 'package:port_pass_app/src/activity_management/data/models/activity_model.dart';
+import 'package:port_pass_app/src/gate_report/data/models/activity_model.dart';
+import 'package:port_pass_app/src/gate_report/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/location_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/report_model.dart';
+import 'package:port_pass_app/src/gate_report/domain/entities/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class GateReportRemoteDataSource {
@@ -115,32 +118,71 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      final result = await _dio.get(
-        "${_api.activity.activities}/$activityId",
-        options: Options(
-          headers: ApiHeaders.getHeaders(
-            token: token,
-          ).headers,
-          receiveDataWhenStatusError: true,
-          validateStatus: (status) {
-            return status! < 500;
-          },
-        ),
+      // final result = await _dio.get(
+      //   "${_api.activity.activities}/$activityId",
+      //   options: Options(
+      //     headers: ApiHeaders.getHeaders(
+      //       token: token,
+      //     ).headers,
+      //     receiveDataWhenStatusError: true,
+      //     validateStatus: (status) {
+      //       return status! < 500;
+      //     },
+      //   ),
+      // );
+
+      // if (result.statusCode != 200) {
+      //   throw ServerException(
+      //       message: result.data['message'] ?? "Data tidak terkirim",
+      //       statusCode: result.statusCode ?? 505);
+      // }
+
+      // var activityData = result.data['data'] as DataMap?;
+      // if (activityData == null) {
+      //   throw const ServerException(
+      //       message: "Please try again later", statusCode: 505);
+      // }
+
+      // return ActivityModel.fromMap(activityData);
+
+      return const ActivityModel(
+        id: 1,
+        name: "Activity",
+        shipName: "Ship ",
+        type: "Memasukkan Barang",
+        date: "Date ",
+        time: "Time ",
+        items: [
+          Item(
+            image: MediaRes.itemExample,
+            name: "Masako",
+            amount: 10,
+            unit: 'ton',
+          ),
+          Item(
+            image: MediaRes.itemExample,
+            name: "Masako",
+            amount: 10,
+            unit: 'ton',
+          ),
+        ],
+        status: "Diterima",
+        activityProgress: [
+          ActivityProgressModel(
+            name: "ActivityProgress ",
+            date: "Date ",
+            time: "Time ",
+            status: "Status ",
+          ),
+          ActivityProgressModel(
+            name: "ActivityProgress ",
+            date: "Date ",
+            time: "Time ",
+            status: "Status ",
+          ),
+        ],
+        qrCode: "QrCode ",
       );
-
-      if (result.statusCode != 200) {
-        throw ServerException(
-            message: result.data['message'] ?? "Data tidak terkirim",
-            statusCode: result.statusCode ?? 505);
-      }
-
-      var activityData = result.data['data'] as DataMap?;
-      if (activityData == null) {
-        throw const ServerException(
-            message: "Please try again later", statusCode: 505);
-      }
-
-      return ActivityModel.fromMap(activityData);
     } on ServerException {
       rethrow;
     } catch (e, s) {

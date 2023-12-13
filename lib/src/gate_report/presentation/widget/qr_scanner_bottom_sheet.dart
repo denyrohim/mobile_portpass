@@ -38,12 +38,7 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
     final MobileScannerController cameraController = widget.cameraController;
     return BlocConsumer<GateReportBloc, GateReportState>(
       listener: (context, state) {
-        if (state is ScanSuccess) {
-          // isSuccess = true;
-          activityId = 1;
-          debugPrint("sukseskah maniezz: $isSuccess");
-          // int.parse(state.result.split('-').last);
-        } else if (state is ActivityLoaded) {
+        if (state is ActivityLoaded) {
           // activityProvider
           context.read<ReportProvider>().initActivity(state.activity);
           final navigator = Navigator.of(context);

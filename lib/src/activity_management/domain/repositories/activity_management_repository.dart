@@ -5,7 +5,7 @@ import 'package:port_pass_app/src/activity_management/domain/entities/item.dart'
 abstract class ActivityManagementRepository {
   const ActivityManagementRepository();
 
-  ResultFuture<void> addActivity({
+  ResultFuture<Activity> addActivity({
     required Activity activity,
   });
 

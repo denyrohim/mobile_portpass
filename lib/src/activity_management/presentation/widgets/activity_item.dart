@@ -185,214 +185,231 @@ class ActivityItem extends StatelessWidget {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (activities[index].status == 'Diterima') {
-                            final navigator = Navigator.of(context);
-                            navigator.pushNamed(
-                                TrackingActivityScreen.routeName,
-                                arguments: activities[index]);
-                            debugPrint('Lacak');
-                          }
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: buttonContainerWidth,
-                              height: buttonContainerHeight,
-                              decoration: BoxDecoration(
-                                  color: activities[index].status == "Diterima"
-                                      ? Colours.primaryColour
-                                      : Colours.primaryColourDisabled,
-                                  borderRadius: BorderRadius.circular(5)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    MediaRes.locationIcon,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colours.secondaryColour,
-                                        BlendMode.srcATop),
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                  const Text('Lacak',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xffffffff),
-                                          fontWeight: FontWeight.w400)),
-                                ],
+                      child: IgnorePointer(
+                        ignoring: activities[index].status != 'Diterima',
+                        child: GestureDetector(
+                          onTap: () {
+                            if (activities[index].status == 'Diterima') {
+                              final navigator = Navigator.of(context);
+                              navigator.pushNamed(
+                                  TrackingActivityScreen.routeName,
+                                  arguments: activities[index]);
+                              debugPrint('Lacak');
+                            }
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: buttonContainerWidth,
+                                height: buttonContainerHeight,
+                                decoration: BoxDecoration(
+                                    color:
+                                        activities[index].status == "Diterima"
+                                            ? Colours.primaryColour
+                                            : Colours.primaryColourDisabled,
+                                    borderRadius: BorderRadius.circular(5)),
                               ),
-                            )
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      MediaRes.locationIcon,
+                                      colorFilter: const ColorFilter.mode(
+                                          Colours.secondaryColour,
+                                          BlendMode.srcATop),
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    const Text('Lacak',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xffffffff),
+                                            fontWeight: FontWeight.w400)),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (activities[index].status == 'Diterima') {
-                            final navigator = Navigator.of(context);
-                            navigator.pushNamed(QRCodeActivityScreen.routeName,
-                                arguments: activities[index]);
-                            debugPrint('QR Code');
-                          }
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: buttonContainerWidth,
-                              height: buttonContainerHeight,
-                              decoration: BoxDecoration(
-                                  color: activities[index].status == "Diterima"
-                                      ? Colours.primaryColour
-                                      : Colours.primaryColourDisabled,
-                                  borderRadius: BorderRadius.circular(5)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    MediaRes.qrCodeIcon,
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                  const Text('QR Code',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xffffffff),
-                                          fontWeight: FontWeight.w400)),
-                                ],
+                      child: IgnorePointer(
+                        ignoring: activities[index].status != 'Diterima',
+                        child: GestureDetector(
+                          onTap: () {
+                            if (activities[index].status == 'Diterima') {
+                              final navigator = Navigator.of(context);
+                              navigator.pushNamed(
+                                  QRCodeActivityScreen.routeName,
+                                  arguments: activities[index]);
+                              debugPrint('QR Code');
+                            }
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: buttonContainerWidth,
+                                height: buttonContainerHeight,
+                                decoration: BoxDecoration(
+                                    color:
+                                        activities[index].status == "Diterima"
+                                            ? Colours.primaryColour
+                                            : Colours.primaryColourDisabled,
+                                    borderRadius: BorderRadius.circular(5)),
                               ),
-                            )
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      MediaRes.qrCodeIcon,
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    const Text('QR Code',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xffffffff),
+                                            fontWeight: FontWeight.w400)),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (activities[index].status == 'Ditolak') {
-                            // final navigator = Navigator.of(context);
-                            // navigator.pushNamed(QRCodeActivityScreen.routeName,
-                            //     arguments: activities[index]);
-                            // debugPrint('QR Code');
-                          }
-                          // context.push(BlocProvider(
-                          //   create: (_) => sl<ActivityManagementBloc>(),
-                          //   // child: EditEmployeeScreen(
-                          //   //   employee: employees[index],
-                          //   // ),
-                          // ));
-                          debugPrint('Edit');
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: buttonContainerWidth,
-                              height: buttonContainerHeight,
-                              decoration: BoxDecoration(
-                                  color: activities[index].status == "Ditolak"
-                                      ? Colours.primaryColour
-                                      : Colours.primaryColourDisabled,
-                                  borderRadius: BorderRadius.circular(5)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    MediaRes.buttonEditIcons,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colours.secondaryColour,
-                                        BlendMode.srcATop),
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                  const Text('Edit',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xffffffff),
-                                          fontWeight: FontWeight.w400)),
-                                ],
+                      child: IgnorePointer(
+                        ignoring: activities[index].status == 'Diterima',
+                        child: GestureDetector(
+                          onTap: () {
+                            if (activities[index].status == 'Ditolak') {
+                              // final navigator = Navigator.of(context);
+                              // navigator.pushNamed(QRCodeActivityScreen.routeName,
+                              //     arguments: activities[index]);
+                              // debugPrint('QR Code');
+                            }
+                            // context.push(BlocProvider(
+                            //   create: (_) => sl<ActivityManagementBloc>(),
+                            //   // child: EditEmployeeScreen(
+                            //   //   employee: employees[index],
+                            //   // ),
+                            // ));
+                            debugPrint('Edit');
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: buttonContainerWidth,
+                                height: buttonContainerHeight,
+                                decoration: BoxDecoration(
+                                    color:
+                                        activities[index].status != 'Diterima'
+                                            ? Colours.primaryColour
+                                            : Colours.primaryColourDisabled,
+                                    borderRadius: BorderRadius.circular(5)),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      MediaRes.buttonEditIcons,
+                                      colorFilter: const ColorFilter.mode(
+                                          Colours.secondaryColour,
+                                          BlendMode.srcATop),
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    const Text('Edit',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xffffffff),
+                                            fontWeight: FontWeight.w400)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: GestureDetector(
-                        onTap: () {
-                          if (activities[index].status == "Ditolak") {
-                            showModalBottomSheet<void>(
-                              isScrollControlled: true,
-                              context: context,
-                              builder: (BuildContext context) {
-                                // return BlocProvider(
-                                //   create: (_) => sl<ActivityManagementBloc>(),
-                                //   // child: ActivityConfirmationButton(
-                                //   //   text: 'Yakin hapus?',
-                                //   //   textStyle: const TextStyle(
-                                //   //     fontSize: 20,
-                                //   //     color: Colours.primaryColour,
-                                //   //     fontWeight: FontWeight.w700,
-                                //   //   ),
-                                //   //   textButtonNegative: 'Batal',
-                                //   //   textButtonPositive: 'Hapus',
-                                //   //   colorTextButtonNegative:
-                                //   //       Colours.primaryColour,
-                                //   //   colorTextButtonPositive: Colours.errorColour,
-                                //   //   employeesIds: [activity[index].id],
-                                //   // ),
-                                // );
-                                return const Placeholder();
-                              },
-                            );
-                          }
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: buttonContainerWidth,
-                              height: buttonContainerHeight,
-                              decoration: BoxDecoration(
-                                  color: activities[index].status == "Ditolak"
-                                      ? Colours.errorColour
-                                      : Colours.errorColourDisabled,
-                                  borderRadius: BorderRadius.circular(5)),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4.0),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    MediaRes.buttonDeleteIcons,
-                                    colorFilter: const ColorFilter.mode(
-                                        Colours.secondaryColour,
-                                        BlendMode.srcATop),
-                                    width: 20,
-                                    height: 20,
-                                  ),
-                                  const Text('Hapus',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xffffffff),
-                                          fontWeight: FontWeight.w400)),
-                                ],
+                      child: IgnorePointer(
+                        ignoring: activities[index].status == 'Diterima',
+                        child: GestureDetector(
+                          onTap: () {
+                            if (activities[index].status == "Ditolak") {
+                              showModalBottomSheet<void>(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // return BlocProvider(
+                                  //   create: (_) => sl<ActivityManagementBloc>(),
+                                  //   // child: ActivityConfirmationButton(
+                                  //   //   text: 'Yakin hapus?',
+                                  //   //   textStyle: const TextStyle(
+                                  //   //     fontSize: 20,
+                                  //   //     color: Colours.primaryColour,
+                                  //   //     fontWeight: FontWeight.w700,
+                                  //   //   ),
+                                  //   //   textButtonNegative: 'Batal',
+                                  //   //   textButtonPositive: 'Hapus',
+                                  //   //   colorTextButtonNegative:
+                                  //   //       Colours.primaryColour,
+                                  //   //   colorTextButtonPositive: Colours.errorColour,
+                                  //   //   employeesIds: [activity[index].id],
+                                  //   // ),
+                                  // );
+                                  return const Placeholder();
+                                },
+                              );
+                            }
+                          },
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width: buttonContainerWidth,
+                                height: buttonContainerHeight,
+                                decoration: BoxDecoration(
+                                    color:
+                                        activities[index].status != "Diterima"
+                                            ? Colours.errorColour
+                                            : Colours.errorColourDisabled,
+                                    borderRadius: BorderRadius.circular(5)),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      MediaRes.buttonDeleteIcons,
+                                      colorFilter: const ColorFilter.mode(
+                                          Colours.secondaryColour,
+                                          BlendMode.srcATop),
+                                      width: 20,
+                                      height: 20,
+                                    ),
+                                    const Text('Hapus',
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0xffffffff),
+                                            fontWeight: FontWeight.w400)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

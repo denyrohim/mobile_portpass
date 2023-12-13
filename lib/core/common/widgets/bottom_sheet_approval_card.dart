@@ -155,7 +155,7 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                     Row(
                                       children: [
                                         const Expanded(
-                                          flex: 1,
+                                          flex: 5,
                                           child: Text(
                                             'Nama Aktivitas',
                                             style: TextStyle(
@@ -166,20 +166,21 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                           ),
                                         ),
                                         Expanded(
+                                            flex: 7,
                                             child: Text(
-                                          ': ${widget.name}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: Fonts.inter,
-                                            color: Colours.primaryColour,
-                                          ),
-                                        ))
+                                              ': ${widget.name}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.primaryColour,
+                                              ),
+                                            ))
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         const Expanded(
-                                          flex: 1,
+                                          flex: 5,
                                           child: Text(
                                             'Nama Kapal',
                                             style: TextStyle(
@@ -190,20 +191,21 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                           ),
                                         ),
                                         Expanded(
+                                            flex: 7,
                                             child: Text(
-                                          ': ${widget.shipName}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: Fonts.inter,
-                                            color: Colours.primaryColour,
-                                          ),
-                                        ))
+                                              ': ${widget.shipName}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.primaryColour,
+                                              ),
+                                            ))
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         const Expanded(
-                                          flex: 1,
+                                          flex: 5,
                                           child: Text(
                                             'Jenis Kegiatan',
                                             style: TextStyle(
@@ -214,20 +216,21 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                           ),
                                         ),
                                         Expanded(
+                                            flex: 7,
                                             child: Text(
-                                          ': ${widget.shipName}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: Fonts.inter,
-                                            color: Colours.primaryColour,
-                                          ),
-                                        ))
+                                              ': ${widget.type}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.primaryColour,
+                                              ),
+                                            ))
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         const Expanded(
-                                          flex: 1,
+                                          flex: 5,
                                           child: Text(
                                             'Tanggal Dibuat',
                                             style: TextStyle(
@@ -238,20 +241,21 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                           ),
                                         ),
                                         Expanded(
+                                            flex: 7,
                                             child: Text(
-                                          ': ${widget.date}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: Fonts.inter,
-                                            color: Colours.primaryColour,
-                                          ),
-                                        ))
+                                              ': ${widget.date}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.primaryColour,
+                                              ),
+                                            ))
                                       ],
                                     ),
                                     Row(
                                       children: [
                                         const Expanded(
-                                          flex: 1,
+                                          flex: 5,
                                           child: Text(
                                             'Status',
                                             style: TextStyle(
@@ -262,14 +266,15 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                           ),
                                         ),
                                         Expanded(
+                                            flex: 7,
                                             child: Text(
-                                          ': ${widget.status}',
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: Fonts.inter,
-                                            color: Colours.primaryColour,
-                                          ),
-                                        ))
+                                              ': ${widget.status}',
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.primaryColour,
+                                              ),
+                                            ))
                                       ],
                                     ),
                                   ],

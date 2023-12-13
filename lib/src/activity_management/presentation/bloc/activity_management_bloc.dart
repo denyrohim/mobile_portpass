@@ -65,7 +65,7 @@ class ActivityManagementBloc
     );
     result.fold(
       (failure) => emit(ActivityManagementError(failure.errorMessage)),
-      (_) => emit(const DataAdded()),
+      (activity) => emit(DataAdded(activity)),
     );
   }
 

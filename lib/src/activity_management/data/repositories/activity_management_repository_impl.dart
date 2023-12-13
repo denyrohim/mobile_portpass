@@ -15,7 +15,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   final ActivityManagementRemoteDataSource _remoteDataSource;
 
   @override
-  ResultFuture<void> addActivity({required Activity activity}) async {
+  ResultFuture<Activity> addActivity({required Activity activity}) async {
     try {
       final activityData = ActivityModel(
         id: activity.id,
@@ -30,10 +30,10 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
         qrCode: activity.qrCode,
         isChecked: activity.isChecked,
       );
-      await _remoteDataSource.addActivity(
+      final result = await _remoteDataSource.addActivity(
         activity: activityData,
       );
-      return Right(Future.value(null));
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

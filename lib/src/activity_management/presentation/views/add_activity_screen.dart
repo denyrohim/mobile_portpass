@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
+import 'package:port_pass_app/core/common/widgets/bottom_sheet_approval_card.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
@@ -106,10 +107,22 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
         if (state is ActivityManagementError) {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataAdded) {
+          showModalBottomSheet<void>(
+            isScrollControlled: true,
+            context: context,
+            builder: (BuildContext context) {
+              return BottomSheetApprovalCard(
+                name: state.activity.name,
+                shipName: state.activity.shipName,
+                type: state.activity.type,
+                date: state.activity.date,
+                status: state.activity.status,
+              );
+            },
+          );
           initController;
           context.read<FileProvider>().resetAddActivity();
           context.read<ActivityProvider>().resetItems();
-          CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
         }
       },
       builder: (context, state) {

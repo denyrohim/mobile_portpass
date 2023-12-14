@@ -6,10 +6,14 @@ import 'package:port_pass_app/src/activity_management/domain/entities/item.dart'
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_item.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_photo_item.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/cancel_check_box_activities.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/change_status_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_items.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/select_all_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/update_check_box_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
 
 part 'activity_management_event.dart';
@@ -25,7 +29,11 @@ class ActivityManagementBloc
       required GetActivities getActivities,
       required UpdateActivity updateActivity,
       required UpdateItem updateItem,
-      required AddPhotoItem addPhotoItem})
+      required AddPhotoItem addPhotoItem,
+      required ChangeStatusActivities changeStatusActivities,
+      required CancelCheckBoxActivities cancelCheckBoxActivities,
+      required UpdateCheckBoxActivity updateCheckBoxActivity,
+      required SelectAllActivities selectAllActivities})
       : _addActivity = addActivity,
         _addItem = addItem,
         _deleteActivities = deleteActivities,
@@ -34,6 +42,10 @@ class ActivityManagementBloc
         _updateActivity = updateActivity,
         _updateItem = updateItem,
         _addPhoto = addPhotoItem,
+        _changeStatusActivities = changeStatusActivities,
+        _cancelCheckBoxActivities = cancelCheckBoxActivities,
+        _updateCheckBoxActivity = updateCheckBoxActivity,
+        _selectAllActivities = selectAllActivities,
         super(const ActivityManagementInitial()) {
     on<ActivityManagementEvent>((event, emit) {
       emit(const ActivityManagementLoading());
@@ -46,6 +58,10 @@ class ActivityManagementBloc
     on<UpdateActivityEvent>(_updateActivityHandler);
     on<UpdateItemEvent>(_updateItemHandler);
     on<AddPhotoEvent>(_addPhotoHandler);
+    on<ChangeStatusActivitiesEvent>(_changeStatusActivitiesHandler);
+    on<CancelCheckBoxActivitiesEvent>(_cancelCheckBoxActivityHandler);
+    on<UpdateCheckBoxActivityEvent>(_updateCheckBoxActivityHandler);
+    on<SelectAllActivitiesEvent>(_selectAllActivitiesHandler);
   }
   final AddActivity _addActivity;
   final AddItem _addItem;
@@ -55,6 +71,10 @@ class ActivityManagementBloc
   final UpdateActivity _updateActivity;
   final UpdateItem _updateItem;
   final AddPhotoItem _addPhoto;
+  final ChangeStatusActivities _changeStatusActivities;
+  final CancelCheckBoxActivities _cancelCheckBoxActivities;
+  final UpdateCheckBoxActivity _updateCheckBoxActivity;
+  final SelectAllActivities _selectAllActivities;
 
   Future<void> _addActivityHandler(
     AddActivityEvent event,
@@ -150,10 +170,82 @@ class ActivityManagementBloc
   }
 
   Future<void> _addPhotoHandler(
-      AddPhotoEvent event, Emitter<ActivityManagementState> emit) async {
+    AddPhotoEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
     final result = await _addPhoto(event.type);
     return result.fold(
         (failure) => emit(ActivityManagementError(failure.errorMessage)),
         (photo) => emit(PhotoAdded(photo)));
+  }
+
+  Future<void> _changeStatusActivitiesHandler(
+    ChangeStatusActivitiesEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
+    final result = await _changeStatusActivities(ChangeStatusActivitiesParams(
+        activities: event.activities, status: event.status));
+    return result.fold(
+        (failure) => emit(ActivityManagementError(failure.errorMessage)),
+        (activities) => emit(DataLoaded(activities)));
+  }
+
+  Future<List<Activity>> _cancelCheckBoxActivityHandler(
+    CancelCheckBoxActivitiesEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
+    final result = await _cancelCheckBoxActivities(
+      event.activities,
+    );
+    return result.fold(
+      (failure) {
+        emit(ActivityManagementError(failure.errorMessage));
+        return event.activities;
+      },
+      (activities) {
+        emit(UnshowChecked(activities));
+        return activities;
+      },
+    );
+  }
+
+  Future<List<Activity>> _updateCheckBoxActivityHandler(
+    UpdateCheckBoxActivityEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
+    final result = await _updateCheckBoxActivity(UpdateCheckBoxActivityParams(
+      activityId: event.activityId,
+      activities: event.activities,
+    ));
+    return result.fold(
+      (failure) {
+        emit(ActivityManagementError(failure.errorMessage));
+        return event.activities;
+      },
+      (activities) {
+        emit(UpdateChecked(activities));
+        return activities;
+      },
+    );
+  }
+
+  Future<List<Activity>> _selectAllActivitiesHandler(
+    SelectAllActivitiesEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
+    print("masuk");
+    final result = await _selectAllActivities(
+      event.activities,
+    );
+    return result.fold(
+      (failure) {
+        emit(ActivityManagementError(failure.errorMessage));
+        return event.activities;
+      },
+      (activities) {
+        emit(SelectedAll(activities));
+        return activities;
+      },
+    );
   }
 }

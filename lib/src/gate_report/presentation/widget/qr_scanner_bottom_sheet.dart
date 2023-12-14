@@ -37,11 +37,13 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
     bool isSuccess = widget.isSuccess;
     final MobileScannerController cameraController = widget.cameraController;
     return BlocConsumer<GateReportBloc, GateReportState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is ActivityLoaded) {
           // activityProvider
           context.read<ReportProvider>().initActivity(state.activity);
           final navigator = Navigator.of(context);
+
+          await cameraController.stop();
 
           if (navigator.canPop()) {
             navigator.pop();
@@ -49,7 +51,6 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
           navigator.pushNamed(
             GateDetailActivityScreen.routeName,
           );
-          cameraController.stop();
         }
       },
       builder: (context, state) {

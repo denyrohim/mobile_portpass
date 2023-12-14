@@ -165,6 +165,46 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
             amount: 10,
             unit: 'ton',
           ),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
         ],
         status: "Diterima",
         activityProgress: [
@@ -256,8 +296,8 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
           3,
           (index) => LocationModel(
                 location: 'Location $index',
-                latitude: -6.89589 + 12 * index,
-                longitude: 113.26854 + 10 * index,
+                latitude: latLng.latitude + 12 * index,
+                longitude: latLng.longitude + 10 * index,
               ));
 
       double nearestDistance = double.infinity;

@@ -46,17 +46,6 @@ class UpdateActivityEvent extends ActivityManagementEvent {
   List<Object> get props => [actions, activity];
 }
 
-class SelectAllActivityManagementEvent extends ActivityManagementEvent {
-  const SelectAllActivityManagementEvent({
-    required this.activities,
-  });
-
-  final List<Activity> activities;
-
-  @override
-  List<Object> get props => [activities];
-}
-
 class AddItemEvent extends ActivityManagementEvent {
   const AddItemEvent({
     required this.item,
@@ -125,4 +114,37 @@ class UpdateCheckBoxActivityEvent extends ActivityManagementEvent {
 
   @override
   List<Object> get props => [activityId, activities];
+}
+
+class CancelCheckBoxActivitiesEvent extends ActivityManagementEvent {
+  const CancelCheckBoxActivitiesEvent({
+    required this.activities,
+  });
+
+  final List<Activity> activities;
+  @override
+  List<Object> get props => [activities];
+}
+
+class ChangeStatusActivitiesEvent extends ActivityManagementEvent {
+  const ChangeStatusActivitiesEvent({
+    required this.activities,
+    required this.status,
+  });
+
+  final List<Activity> activities;
+  final String status;
+
+  @override
+  List<Object> get props => [status, activities];
+}
+
+class SelectAllActivitiesEvent extends ActivityManagementEvent {
+  const SelectAllActivitiesEvent({
+    required this.activities,
+  });
+
+  final List<Activity> activities;
+  @override
+  List<Object> get props => [activities];
 }

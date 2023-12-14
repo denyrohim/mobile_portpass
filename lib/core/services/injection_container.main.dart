@@ -111,7 +111,11 @@ Future<void> _initActivityManagement() async {
         getActivities: sl(),
         updateActivity: sl(),
         updateItem: sl(),
-        addPhotoItem: sl()
+        addPhotoItem: sl(),
+        changeStatusActivities: sl(),
+        cancelCheckBoxActivities: sl(),
+        updateCheckBoxActivity: sl(),
+        selectAllActivities: sl(),
       ),
     )
     ..registerLazySingleton(() => AddActivity(sl()))
@@ -122,15 +126,15 @@ Future<void> _initActivityManagement() async {
     ..registerLazySingleton(() => UpdateActivity(sl()))
     ..registerLazySingleton(() => UpdateItem(sl()))
     ..registerLazySingleton(() => AddPhotoItem(sl()))
+    ..registerLazySingleton(() => ChangeStatusActivities(sl()))
+    ..registerLazySingleton(() => CancelCheckBoxActivities(sl()))
+    ..registerLazySingleton(() => UpdateCheckBoxActivity(sl()))
+    ..registerLazySingleton(() => SelectAllActivities(sl()))
     ..registerLazySingleton<ActivityManagementRepository>(
         () => ActivityManagementRepositoryImpl(sl()))
     ..registerLazySingleton<ActivityManagementRemoteDataSource>(
       () => ActivityManagementRemoteDataSourceImpl(
-        sharedPreferences: sl(),
-        dio: sl(),
-        api: sl(),
-        imagePicker: sl()
-      ),
+          sharedPreferences: sl(), dio: sl(), api: sl(), imagePicker: sl()),
     );
 }
 

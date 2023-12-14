@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
-import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
+import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
 
@@ -16,9 +16,11 @@ class ActivityItem extends StatelessWidget {
     required this.isShowCheckBox,
     required this.index,
     required this.activities,
+    required this.status,
   });
 
   final bool isShowCheckBox;
+  final String status;
   final int index;
   final List<Activity> activities;
 
@@ -29,7 +31,7 @@ class ActivityItem extends StatelessWidget {
     return Flex(
       direction: Axis.horizontal,
       children: [
-        if (isShowCheckBox)
+        if (isShowCheckBox && status == 'Ditolak')
           GestureDetector(
             onTap: () {
               context.read<ActivityManagementBloc>().add(
@@ -285,7 +287,8 @@ class ActivityItem extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: IgnorePointer(
-                        ignoring: activities[index].status == 'Diterima',
+                        ignoring: activities[index].status == 'Diterima' ||
+                            (isShowCheckBox && status == 'Ditolak'),
                         child: GestureDetector(
                           onTap: () {
                             if (activities[index].status == 'Ditolak') {
@@ -309,8 +312,9 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color:
-                                        activities[index].status != 'Diterima'
+                                    color: isShowCheckBox && status == 'Ditolak'
+                                        ? Colours.primaryColourDisabled
+                                        : activities[index].status != 'Diterima'
                                             ? Colours.primaryColour
                                             : Colours.primaryColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
@@ -343,7 +347,8 @@ class ActivityItem extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: IgnorePointer(
-                        ignoring: activities[index].status == 'Diterima',
+                        ignoring: activities[index].status == 'Diterima' ||
+                            (isShowCheckBox && status == 'Ditolak'),
                         child: GestureDetector(
                           onTap: () {
                             if (activities[index].status == "Ditolak") {
@@ -380,8 +385,9 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color:
-                                        activities[index].status != "Diterima"
+                                    color: isShowCheckBox && status == 'Ditolak'
+                                        ? Colours.errorColourDisabled
+                                        : activities[index].status != "Diterima"
                                             ? Colours.errorColour
                                             : Colours.errorColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),

@@ -44,7 +44,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
       final result = await _remoteDataSource.getActivity(
         activityId: activityId,
       );
-      return Right(result as Activity);
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

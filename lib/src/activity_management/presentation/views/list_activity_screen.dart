@@ -4,6 +4,7 @@ import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/views/loading_view.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
@@ -20,26 +21,28 @@ class ListActivityScreen extends StatefulWidget {
 }
 
 class _ListActivityScreenState extends State<ListActivityScreen> {
+  List<Activity> activitiesDefault = [];
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _typeController = TextEditingController();
+  final TextEditingController _statusController = TextEditingController();
+  final TextEditingController _countController = TextEditingController();
   bool deniedActivity = false;
   void changeListActivity(bool value) {
     setState(() {
       deniedActivity = value;
     });
-    if (deniedActivity) {
-      _typeController.text = 'Ditolak';
-    } else {
-      // _typeController.text = '';
-    }
-    debugPrint('Denied Activity: $deniedActivity');
-    debugPrint('_typeController: ${_typeController.text}');
   }
 
   @override
   void initState() {
     super.initState();
-    _typeController.text = 'Ditolak';
+    _statusController.text = 'Aktivitas';
+    _countController.text = '0';
+    _countController.addListener(() {
+      setState(() {});
+    });
+    _statusController.addListener(() {
+      setState(() {});
+    });
     context.read<ActivityManagementBloc>().add(const GetActivitiesEvent());
   }
 
@@ -51,6 +54,9 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataLoaded) {
           context.read<ActivityProvider>().initActivities(state.activities);
+          if (activitiesDefault.isEmpty) {
+            activitiesDefault = state.activities;
+          }
         } else if (state is DataAdded) {
           debugPrint('Data Added');
         } else if (state is DataUpdated) {
@@ -76,6 +82,8 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
               appBar: ActivityManagementAppBar(
                 count: activities.length,
                 activityProvider: activityProvider,
+                statusController: _statusController,
+                activitiesDefault: activitiesDefault,
               ),
               body: Container(
                 color: Colours.primaryColour,
@@ -120,10 +128,19 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                         TextButton(
                                           onPressed: () {
                                             changeListActivity(false);
-                                            // context
-                                            //     .read<ActivityManagementBloc>()
-                                            //     .add(const GetActivitiesEvent());
-                                            debugPrint('Aktivitas');
+                                            activityProvider
+                                                .setShowChecked(false);
+                                            context
+                                                .read<ActivityManagementBloc>()
+                                                .add(
+                                                  ChangeStatusActivitiesEvent(
+                                                    activities:
+                                                        activitiesDefault,
+                                                    status: "Aktivitas",
+                                                  ),
+                                                );
+                                            _statusController.text =
+                                                'Aktivitas';
                                           },
                                           child: Column(
                                             children: [
@@ -152,10 +169,16 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                         TextButton(
                                           onPressed: () {
                                             changeListActivity(true);
-                                            // context
-                                            //     .read<ActivityManagementBloc>()
-                                            //     .add(const GetDraftsEvent());
-                                            debugPrint('Draft');
+                                            context
+                                                .read<ActivityManagementBloc>()
+                                                .add(
+                                                  ChangeStatusActivitiesEvent(
+                                                    activities:
+                                                        activitiesDefault,
+                                                    status: "Ditolak",
+                                                  ),
+                                                );
+                                            _statusController.text = 'Ditolak';
                                           },
                                           child: Column(
                                             children: [
@@ -218,51 +241,70 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                         ListView.builder(
                                           itemCount: activities.length,
                                           itemBuilder: (context, index) {
-                                            if (deniedActivity) {
-                                              if (activities[index]
-                                                      .name
-                                                      .toLowerCase()
-                                                      .contains(
-                                                          _searchController
-                                                              .text) &&
-                                                  activities[index]
-                                                      .status
-                                                      .contains(_typeController
-                                                          .text)) {
-                                                return ActivityItem(
-                                                  context,
-                                                  index: index,
-                                                  activities: activities,
-                                                  isShowCheckBox:
-                                                      activityProvider
-                                                          .isShowChecked,
-                                                );
-                                              } else {
-                                                return const SizedBox.shrink();
-                                              }
+                                            if (activities[index]
+                                                .name
+                                                .toLowerCase()
+                                                .contains(
+                                                    _searchController.text)) {
+                                              return ActivityItem(
+                                                context,
+                                                index: index,
+                                                activities: activities,
+                                                status: _statusController.text,
+                                                isShowCheckBox: activityProvider
+                                                    .isShowChecked,
+                                              );
                                             } else {
-                                              if (activities[index]
-                                                      .name
-                                                      .toLowerCase()
-                                                      .contains(
-                                                          _searchController
-                                                              .text) &&
-                                                  !activities[index]
-                                                      .status
-                                                      .contains(_typeController
-                                                          .text)) {
-                                                return ActivityItem(
-                                                  context,
-                                                  index: index,
-                                                  activities: activities,
-                                                  isShowCheckBox:
-                                                      activityProvider
-                                                          .isShowChecked,
-                                                );
-                                              } else {
-                                                return const SizedBox.shrink();
-                                              }
+                                              return const SizedBox.shrink();
                                             }
+
+                                            // if (deniedActivity) {
+                                            //   if (activities[index]
+                                            //           .name
+                                            //           .toLowerCase()
+                                            //           .contains(
+                                            //               _searchController
+                                            //                   .text) &&
+                                            //       activities[index]
+                                            //           .status
+                                            //           .contains("Ditolak")) {
+                                            //     return ActivityItem(
+                                            //       context,
+                                            //       index: index,
+                                            //       activities: activities,
+                                            //       isShowCheckBox:
+                                            //           activityProvider
+                                            //               .isShowChecked,
+                                            //     );
+                                            //   } else {
+                                            //     return const SizedBox.shrink();
+                                            //   }
+                                            // } else {
+                                            //   if (activities[index]
+                                            //           .name
+                                            //           .toLowerCase()
+                                            //           .contains(
+                                            //               _searchController
+                                            //                   .text) &&
+                                            //       activities[index]
+                                            //           .status
+                                            //           .contains(_statusController
+                                            //               .text) &&
+                                            //       !activities[index]
+                                            //           .status
+                                            //           .contains("Ditolak")) {
+                                            //     return ActivityItem(
+                                            //       context,
+                                            //       index: index,
+                                            //       activities: activities,
+                                            //       isShowCheckBox:
+                                            //           activityProvider
+                                            //               .isShowChecked,
+                                            //     );
+                                            //   } else {
+                                            //     return const SizedBox.shrink();
+                                            //   }
+                                            // }
                                           },
                                         ),
                                       ],

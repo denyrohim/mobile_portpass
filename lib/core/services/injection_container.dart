@@ -9,10 +9,14 @@ import 'package:port_pass_app/src/activity_management/domain/repositories/activi
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_item.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_photo_item.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/cancel_check_box_activities.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/change_status_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_items.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/select_all_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/update_check_box_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/auth/data/datasources/auth_remote_data_source.dart';

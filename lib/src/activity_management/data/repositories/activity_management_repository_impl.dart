@@ -129,4 +129,95 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
       return Left(ServerFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<List<Activity>> changeStatusActivities({
+    required List<Activity> activities,
+    required String status,
+  }) {
+    try {
+      List<Activity> activitiesResult = [];
+      if (status == "Aktivitas") {
+        for (var i = 0; i < activities.length; i++) {
+          if (activities[i].status != "Ditolak") {
+            activitiesResult.add(activities[i]);
+          }
+        }
+      } else if (status == "Diterima") {
+        for (var i = 0; i < activities.length; i++) {
+          if (activities[i].status == "Diterima") {
+            activitiesResult.add(activities[i]);
+          }
+        }
+      } else if (status == "Menunggu") {
+        for (var i = 0; i < activities.length; i++) {
+          if (activities[i].status == "Menunggu") {
+            activitiesResult.add(activities[i]);
+          }
+        }
+      } else if (status == "Ditolak") {
+        for (var i = 0; i < activities.length; i++) {
+          if (activities[i].status == "Ditolak") {
+            activitiesResult.add(activities[i]);
+          }
+        }
+      }
+
+      return Future.value(Right(activitiesResult));
+    } on ServerException catch (e) {
+      return Future.value(Left(ServerFailure.fromException(e)));
+    }
+  }
+
+  @override
+  ResultFuture<List<Activity>> cancelCheckBoxActivities(
+      {required List<Activity> activities}) {
+    try {
+      final List<Activity> result = [];
+      for (int i = 0; i < activities.length; i++) {
+        final ActivityModel activity = activities[i] as ActivityModel;
+        final newActivity = activity.copyWith(isChecked: false);
+        result.add(newActivity);
+      }
+      return Future.value(Right(result));
+    } on ServerException catch (e) {
+      return Future.value(Left(ServerFailure.fromException(e)));
+    }
+  }
+
+  @override
+  ResultFuture<List<Activity>> updateCheckBoxActivity(
+      {required int activityId, required List<Activity> activities}) {
+    try {
+      final ActivityModel activity = activities[activityId] as ActivityModel;
+      final newActivity = activity.copyWith(isChecked: !activity.isChecked);
+      final List<Activity> result = [];
+      for (int i = 0; i < activities.length; i++) {
+        if (i == activityId) {
+          result.add(newActivity);
+        } else {
+          result.add(activities[i]);
+        }
+      }
+      return Future.value(Right(result));
+    } on ServerException catch (e) {
+      return Future.value(Left(ServerFailure.fromException(e)));
+    }
+  }
+
+  @override
+  ResultFuture<List<Activity>> selectAllActivities(
+      {required List<Activity> activities}) {
+    try {
+      final List<Activity> result = [];
+      for (int i = 0; i < activities.length; i++) {
+        final ActivityModel activity = activities[i] as ActivityModel;
+        final newActivity = activity.copyWith(isChecked: true);
+        result.add(newActivity);
+      }
+      return Future.value(Right(result));
+    } on ServerException catch (e) {
+      return Future.value(Left(ServerFailure.fromException(e)));
+    }
+  }
 }

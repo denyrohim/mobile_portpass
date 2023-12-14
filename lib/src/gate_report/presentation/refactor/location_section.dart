@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/app/providers/report_provider.dart';
 import 'package:port_pass_app/core/res/colours.dart';
@@ -40,21 +41,18 @@ class _LocationSectionState extends State<LocationSection> {
               ),
               height: 30,
               width: 30,
-              child: RotationTransition(
-                turns: const AlwaysStoppedAnimation(45 / 360),
-                child: IconButton(
-                  onPressed: () {
-                    context.read<GateReportBloc>().add(
-                          const GetLocationEvent(),
-                        );
-                  },
-                  icon: SvgPicture.asset(
-                    MediaRes.reloadIcon,
-                    width: 100,
-                    height: 100,
-                  ),
-                  color: Colours.primaryColour,
+              child: IconButton(
+                onPressed: () {
+                  context.read<GateReportBloc>().add(
+                        const GetLocationEvent(),
+                      );
+                },
+                icon: SvgPicture.asset(
+                  MediaRes.reloadIcon,
+                  width: 100,
+                  height: 100,
                 ),
+                color: Colours.primaryColour,
               ),
             ),
           ],

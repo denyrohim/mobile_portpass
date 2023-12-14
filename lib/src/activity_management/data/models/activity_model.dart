@@ -44,6 +44,7 @@ class ActivityModel extends Activity {
     String? status,
     List<ActivityProgressModel>? activityProgress,
     String? qrCode,
+    bool? isChecked,
   }) {
     return ActivityModel(
       id: id ?? this.id,
@@ -56,7 +57,7 @@ class ActivityModel extends Activity {
       status: status ?? this.status,
       activityProgress: activityProgress ?? this.activityProgress,
       qrCode: qrCode ?? this.qrCode,
-      isChecked: isChecked,
+      isChecked: isChecked ?? this.isChecked,
     );
   }
 
@@ -76,7 +77,7 @@ class ActivityModel extends Activity {
               .map((e) => ActivityProgressModel.fromMap(e))
               .toList(),
           qrCode: map['qr_code'] as String,
-          isChecked: false,
+          isChecked: map['isChecked'] as bool,
         );
 
   DataMap toMap() {

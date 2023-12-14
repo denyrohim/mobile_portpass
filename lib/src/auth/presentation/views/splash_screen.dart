@@ -37,9 +37,11 @@ class _SplashScreenState extends State<SplashScreen> {
             CoreUtils.showSnackBar(context, state.message);
           } else if (state is SignedIn) {
             context.read<UserProvider>().initUser(state.user as LocalUserModel);
-            Navigator.pushReplacementNamed(context, Dashboard.routeName);
+            await Future.delayed(const Duration(seconds: 1), () {
+              Navigator.pushReplacementNamed(context, Dashboard.routeName);
+            });
           } else if (state is NotSignedIn) {
-            await Future.delayed(const Duration(seconds: 2), () {
+            await Future.delayed(const Duration(seconds: 1), () {
               Navigator.pushReplacementNamed(context, SignInScreen.routeName);
             });
           }

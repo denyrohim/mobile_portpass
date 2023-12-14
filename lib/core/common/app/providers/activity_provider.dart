@@ -30,7 +30,7 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get countEmployeeChecked {
+  int get countActivitiesChecked {
     int count = 0;
     for (var i = 0; i < _activities!.length; i++) {
       if (_activities![i].isChecked) {
@@ -58,14 +58,14 @@ class ActivityProvider extends ChangeNotifier {
     }
   }
 
-  List<int> get idCheckedEmployees {
-    List<int> idCheckedEmployees = [];
+  List<int> get idCheckedActivities {
+    List<int> idCheckedActivities = [];
     for (var i = 0; i < _activities!.length; i++) {
       if (_activities![i].isChecked) {
-        idCheckedEmployees.add(_activities![i].id);
+        idCheckedActivities.add(_activities![i].id);
       }
     }
-    return idCheckedEmployees;
+    return idCheckedActivities;
   }
 
   List<Item>? _items;

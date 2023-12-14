@@ -105,7 +105,6 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                   controller: cameraController,
                   onDetect: (capture) {
                     if (isCanScan) {
-                      debugPrint('Ahhh Masuk');
                       barcodes = capture.barcodes;
                       context.read<GateReportBloc>().add(
                             ScanQrActivityEvent(barcodes: barcodes),
@@ -165,7 +164,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                           !isButtonScanPressed;
                                     });
                                     debugPrint(
-                                        "${!cameraController.isStarting}");
+                                        "${cameraController.isStarting}");
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,

@@ -36,4 +36,22 @@ abstract class ActivityManagementRepository {
   });
 
   ResultFuture<dynamic> addPhotoItem({required String type});
+
+  ResultFuture<List<Activity>> changeStatusActivities({
+    required List<Activity> activities,
+    required String status,
+  });
+
+  ResultFuture<List<Activity>> cancelCheckBoxActivities({
+    required List<Activity> activities,
+  });
+
+  ResultFuture<List<Activity>> updateCheckBoxActivity({
+    required int activityId,
+    required List<Activity> activities,
+  });
+
+  ResultFuture<List<Activity>> selectAllActivities({
+    required List<Activity> activities,
+  });
 }

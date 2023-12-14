@@ -39,7 +39,7 @@ class ItemCard extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: false
+                child: item.image != null
                     ? Image.asset(
                         item.image!,
                         width: 88,

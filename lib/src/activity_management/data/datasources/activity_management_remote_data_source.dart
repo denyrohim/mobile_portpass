@@ -239,6 +239,26 @@ class ActivityManagementRemoteDataSourceImpl
                       name: "Masako",
                       amount: 10,
                       unit: 'ton'),
+                  Item(
+                      image: MediaRes.itemExample,
+                      name: "Masako",
+                      amount: 10,
+                      unit: 'ton'),
+                  Item(
+                      image: MediaRes.itemExample,
+                      name: "Masako",
+                      amount: 10,
+                      unit: 'ton'),
+                  Item(
+                      image: MediaRes.itemExample,
+                      name: "Masako",
+                      amount: 10,
+                      unit: 'ton'),
+                  Item(
+                      image: MediaRes.itemExample,
+                      name: "Masako",
+                      amount: 10,
+                      unit: 'ton'),
                 ],
                 status: "Diterima",
                 activityProgress: List.generate(

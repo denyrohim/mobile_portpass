@@ -45,5 +45,17 @@ class Activity extends Equatable {
         );
 
   @override
-  List<Object?> get props => [id, name, shipName, type, date, time, isChecked];
+  List<Object?> get props => [
+        id,
+        name,
+        shipName,
+        type,
+        date,
+        time,
+        items,
+        status,
+        activityProgress,
+        qrCode,
+        isChecked,
+      ];
 }

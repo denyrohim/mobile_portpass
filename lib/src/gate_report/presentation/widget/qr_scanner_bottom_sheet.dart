@@ -8,7 +8,7 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
-import 'package:port_pass_app/src/gate_report/presentation/views/detail_activity_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/gate_detail_activity_screen.dart';
 
 class QrScannerBottomSheet extends StatefulWidget {
   const QrScannerBottomSheet({

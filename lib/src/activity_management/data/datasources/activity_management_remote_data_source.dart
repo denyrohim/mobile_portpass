@@ -226,40 +226,16 @@ class ActivityManagementRemoteDataSourceImpl
                 name: "Activity $index",
                 shipName: "Ship $index",
                 type: "Memasukkan Barang",
-                date: "Date $index",
-                time: "Time $index",
-                items: const [
-                  Item(
+                date: "2020-12-12",
+                time: "00:00",
+                items: List.generate(
+                  10,
+                  (index) => Item(
                       image: MediaRes.itemExample,
-                      name: "Masako",
+                      name: "Masako $index",
                       amount: 10,
-                      unit: 'ton'),
-                  Item(
-                      image: MediaRes.itemExample,
-                      name: "Masako",
-                      amount: 10,
-                      unit: 'ton'),
-                  Item(
-                      image: MediaRes.itemExample,
-                      name: "Masako",
-                      amount: 10,
-                      unit: 'ton'),
-                  Item(
-                      image: MediaRes.itemExample,
-                      name: "Masako",
-                      amount: 10,
-                      unit: 'ton'),
-                  Item(
-                      image: MediaRes.itemExample,
-                      name: "Masako",
-                      amount: 10,
-                      unit: 'ton'),
-                  Item(
-                      image: MediaRes.itemExample,
-                      name: "Masako",
-                      amount: 10,
-                      unit: 'ton'),
-                ],
+                      unit: 'Ton'),
+                ),
                 status: "Diterima",
                 activityProgress: List.generate(
                     10,
@@ -277,10 +253,17 @@ class ActivityManagementRemoteDataSourceImpl
         id: 11,
         name: "Activity 11",
         shipName: "Ship 11",
-        type: "Type 11",
-        date: "Date 11",
-        time: "Time 11",
-        items: const [],
+        type: "Memasukkan Barang",
+        date: "2020-12-12",
+        time: "00:00",
+        items: List.generate(
+          10,
+          (index) => Item(
+              image: MediaRes.itemExample,
+              name: "Masako $index",
+              amount: 10,
+              unit: 'Ton'),
+        ),
         status: "Ditolak",
         activityProgress: List.generate(
             10,
@@ -297,10 +280,17 @@ class ActivityManagementRemoteDataSourceImpl
         id: 12,
         name: "Activity 12",
         shipName: "Ship 12",
-        type: "Type 12",
-        date: "Date 12",
-        time: "Time 12",
-        items: const [],
+        type: "Memasukkan Barang",
+        date: "2020-12-12",
+        time: "00:00",
+        items: List.generate(
+          10,
+          (index) => Item(
+              image: MediaRes.itemExample,
+              name: "Masako $index",
+              amount: 10,
+              unit: 'Ton'),
+        ),
         status: "Menunggu",
         activityProgress: List.generate(
             10,

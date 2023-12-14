@@ -10,6 +10,7 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
     this.size = 20,
     this.isBackButton = false,
     this.centerTitle = false,
+    this.onPressed,
   });
 
   final Icon? icon;
@@ -18,6 +19,7 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
   final double? size;
   final bool? isBackButton;
   final bool centerTitle;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,10 @@ class AppBarCore extends StatelessWidget implements PreferredSizeWidget {
                     ? Icons.arrow_back_ios_new
                     : Icons.arrow_back,
               ),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                Navigator.pop(context);
+                onPressed?.call();
+              },
               color: Colours.secondaryColour,
               iconSize: 30,
             )

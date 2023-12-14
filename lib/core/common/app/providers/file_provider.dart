@@ -184,28 +184,28 @@ class FileProvider extends ChangeNotifier {
     if (index == -1) {
       return _fileAddItems!.last;
     }
-    return _fileAddItems![index];
+    return _fileAddItems?[index];
   }
 
   String? filePathAddItemByIndex(int index) {
     if (index == -1) {
       return _filePathAddItems!.last;
     }
-    return _filePathAddItems![index];
+    return _filePathAddItems?[index];
   }
 
   String? base64AddItemByIndex(int index) {
     if (index == -1) {
       return _base64AddItems!.last;
     }
-    return _base64AddItems![index];
+    return _base64AddItems?[index];
   }
 
   String? uriAddItemByIndex(int index) {
     if (index == -1) {
       return _uriAddItems!.last;
     }
-    return _uriAddItems![index];
+    return _uriAddItems?[index];
   }
 
   void addFileAddItems(File fileAddItem, {int index = -1}) {
@@ -251,38 +251,94 @@ class FileProvider extends ChangeNotifier {
     _uriAddItems = null;
   }
 
-  File? _fileEditItem;
-  String? _filePathEditItem;
-  String? _base64EditItem;
-  String? _uriEditItem;
+  Map<int, File>? _fileEditItems;
+  Map<int, String>? _filePathEditItems;
+  Map<int, String>? _base64EditItems;
+  Map<int, String>? _uriEditItems;
 
-  File? get fileEditItem => _fileEditItem;
-  String? get filePathEditItem => _filePathEditItem;
-  String? get base64EditItem => _base64EditItem;
-  String? get uriEditItem => _uriEditItem;
+  Map<int, File>? get fileEditItem => _fileEditItems;
+  Map<int, String>? get filePathEditItem => _filePathEditItems;
+  Map<int, String>? get base64EditItem => _base64EditItems;
+  Map<int, String>? get uriEditItem => _uriEditItems;
 
-  void initFileEditItem(File fileEditItem) {
-    if (_fileEditItem != fileEditItem) {
-      _fileEditItem = fileEditItem;
-      _filePathEditItem = fileEditItem.path;
-      _base64EditItem = base64Encode(fileEditItem.readAsBytesSync());
-      _uriEditItem =
+  File? fileEditItemByIndex(int index) {
+    if (_fileEditItems != null && _fileEditItems!.containsKey(index)) {
+      return _fileEditItems![index];
+    }
+    return null;
+  }
+
+  String? filePathEditItemByIndex(int index) {
+    if (_filePathEditItems != null && _filePathEditItems!.containsKey(index)) {
+      return _filePathEditItems![index];
+    }
+    return null;
+  }
+
+  String? base64EditItemByIndex(int index) {
+    if (_base64EditItems != null && _base64EditItems!.containsKey(index)) {
+      return _base64EditItems![index];
+    }
+    return null;
+  }
+
+  String? uriEditItemByIndex(int index) {
+    if (_uriEditItems != null && _uriEditItems!.containsKey(index)) {
+      return _uriEditItems![index];
+    }
+    return null;
+  }
+
+  void addFileEditItems(File fileEditItem, {int index = -1}) {
+    _fileEditItems ??= {};
+    _filePathEditItems ??= {};
+    _base64EditItems ??= {};
+    _uriEditItems ??= {};
+
+    if (index == -1) {
+      index = _fileEditItems!.length;
+    }
+
+    _fileEditItems![index] = fileEditItem;
+    _filePathEditItems![index] = fileEditItem.path;
+    _base64EditItems![index] = base64Encode(fileEditItem.readAsBytesSync());
+    _uriEditItems![index] =
+        "data:image/${fileEditItem.path.split('/').last.split('.').last};base64,${base64Encode(fileEditItem.readAsBytesSync())}";
+  }
+
+  void addFilePathEditItems(String filePathEditItem, {int index = -1}) {
+    _filePathEditItems ??= {};
+
+    if (index == -1) {
+      index = _filePathEditItems!.length;
+    }
+
+    _filePathEditItems![index] = filePathEditItem;
+  }
+
+  void changeLastFileEditItems(File fileEditItem) {
+    if (_fileEditItems != null && _fileEditItems!.isNotEmpty) {
+      final lastIndex = _fileEditItems!.keys.last;
+      _fileEditItems!.remove(lastIndex);
+      _filePathEditItems!.remove(lastIndex);
+      _base64EditItems!.remove(lastIndex);
+      _uriEditItems!.remove(lastIndex);
+
+      _fileEditItems![lastIndex] = fileEditItem;
+      _filePathEditItems![lastIndex] = fileEditItem.path;
+      _base64EditItems![lastIndex] =
+          base64Encode(fileEditItem.readAsBytesSync());
+      _uriEditItems![lastIndex] =
           "data:image/${fileEditItem.path.split('/').last.split('.').last};base64,${base64Encode(fileEditItem.readAsBytesSync())}";
     }
   }
 
-  void initFilePathEditItem(String? filePathEditItem) {
-    if (_filePathEditItem != filePathEditItem) {
-      _filePathEditItem = filePathEditItem;
-    }
-  }
-
   // reset
-  void resetEditItem() {
-    _fileEditItem = null;
-    _filePathEditItem = null;
-    _base64EditItem = null;
-    _uriEditItem = null;
+  void resetEditItems() {
+    _fileEditItems = null;
+    _filePathEditItems = null;
+    _base64EditItems = null;
+    _uriEditItems = null;
   }
 
   File? _fileAddReport;
@@ -317,8 +373,18 @@ class FileProvider extends ChangeNotifier {
               ? "KB"
               : "Bytes";
       _base64AddReport = base64Encode(fileAddReport.readAsBytesSync());
-      _uriAddReport =
-          "data:image/${fileAddReport.path.split('/').last.split('.').last};base64,${base64Encode(fileAddReport.readAsBytesSync())}";
+      if (_fileAddReport!.path.split('/').last.split('.').last == "pdf") {
+        _uriAddReport =
+            "data:application/pdf;base64,${base64Encode(fileAddReport.readAsBytesSync())}";
+      } else if (_fileAddReport!.path.split('/').last.split('.').last ==
+              "docx" ||
+          _fileAddReport!.path.split('/').last.split('.').last == "doc") {
+        _uriAddReport =
+            "data:application/msword;base64,${base64Encode(fileAddReport.readAsBytesSync())}";
+      } else {
+        _uriAddReport =
+            "data:image/${fileAddReport.path.split('/').last.split('.').last};base64,${base64Encode(fileAddReport.readAsBytesSync())}";
+      }
     }
   }
 

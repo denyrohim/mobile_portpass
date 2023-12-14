@@ -6,6 +6,7 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/activity_detail_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_management_app_bar.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_search_bar.dart';
@@ -246,13 +247,27 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                                 .toLowerCase()
                                                 .contains(
                                                     _searchController.text)) {
-                                              return ActivityItem(
-                                                context,
-                                                index: index,
-                                                activities: activities,
-                                                status: _statusController.text,
-                                                isShowCheckBox: activityProvider
-                                                    .isShowChecked,
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  final navigator =
+                                                      Navigator.of(context);
+                                                  navigator.pushNamed(
+                                                    ActivityDetailActivityScreen
+                                                        .routeName,
+                                                    arguments:
+                                                        activities[index],
+                                                  );
+                                                },
+                                                child: ActivityItem(
+                                                  context,
+                                                  index: index,
+                                                  activities: activities,
+                                                  status:
+                                                      _statusController.text,
+                                                  isShowCheckBox:
+                                                      activityProvider
+                                                          .isShowChecked,
+                                                ),
                                               );
                                             } else {
                                               return const SizedBox.shrink();

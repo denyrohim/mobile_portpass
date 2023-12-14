@@ -51,9 +51,11 @@ class QRCodeActivityScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const DetailActivity(),
+                      DetailActivity(
+                        activity: activity,
+                      ),
                       Container(
-                        height: 336,
+                        height: 316,
                         width: MediaQuery.of(context).size.width * 1,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
@@ -63,7 +65,7 @@ class QRCodeActivityScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             QrImageView(
-                              data: activity.name,
+                              data: activity.qrCode,
                               size: 222,
                               version: QrVersions.auto,
                               foregroundColor: const Color(0xff315784),

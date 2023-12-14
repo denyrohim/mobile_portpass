@@ -65,7 +65,10 @@ class _EditItemScreenState extends State<EditItemScreen> {
   void initState() {
     item = widget.item;
     initController;
-    index = context.read<ActivityProvider>().items!.indexOf(item);
+    index = context.read<ActivityProvider>().itemsEdit?.indexOf(item) ?? 0;
+    if (index == -1) {
+      index = context.read<ActivityProvider>().itemsEdit!.length;
+    }
     debugPrint("index: $index");
     super.initState();
   }
@@ -90,12 +93,13 @@ class _EditItemScreenState extends State<EditItemScreen> {
             debugPrint("index: $index");
             context
                 .read<FileProvider>()
-                .addFileAddItems(state.photo, index: index);
+                .addFileEditItems(state.photo, index: index);
             photoController.text = state.photo.path;
             debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().initItems(state.items);
+          context.read<ActivityProvider>().initItemsEdit(state.items);
+          debugPrint('sp');
           final navidator = Navigator.of(context);
           if (navidator.canPop()) {
             navidator.pop();
@@ -105,7 +109,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
       builder: (context, state) {
         return Scaffold(
             appBar: const AppBarCore(
-              title: 'Tambahan Barang',
+              title: 'Edit Barang',
               isBackButton: true,
             ),
             body: GradientBackground(
@@ -206,13 +210,15 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                         )),
                                   ],
                                 ),
-                                fileProvider.fileAddItemByIndex(index) != null
+                                fileProvider.fileEditItem != null &&
+                                        fileProvider
+                                                .fileEditItemByIndex(index) !=
+                                            null
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.file(
-                                          // fileProvider.fileAddItem[-1], last item
                                           fileProvider
-                                              .fileAddItemByIndex(index)!,
+                                              .fileEditItemByIndex(index)!,
                                           width: 120,
                                           height: 120,
                                           fit: BoxFit.cover,
@@ -222,7 +228,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                         ? ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Image.network(
+                                            child: Image.asset(
                                               photoController.text,
                                               width: 120,
                                               height: 120,
@@ -275,8 +281,8 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                               .read<ActivityManagementBloc>()
                                               .add(
                                                 AddItemEvent(
-                                                  items:
-                                                      activityProvider.items!,
+                                                  items: activityProvider
+                                                      .itemsEdit!,
                                                   item: Item(
                                                     name: nameController.text
                                                         .trim(),
@@ -285,8 +291,10 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                                             .trim()),
                                                     unit: unitController.text
                                                         .trim(),
-                                                    image: photoController.text
-                                                        .trim(),
+                                                    image: fileProvider
+                                                        .uriEditItemByIndex(
+                                                      index,
+                                                    ),
                                                   ),
                                                   index: index,
                                                 ),

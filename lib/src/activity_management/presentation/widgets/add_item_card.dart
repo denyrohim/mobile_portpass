@@ -7,8 +7,8 @@ import 'package:port_pass_app/src/activity_management/domain/entities/item.dart'
 import 'package:port_pass_app/src/activity_management/presentation/views/edit_item_screen.dart';
 import 'package:provider/provider.dart';
 
-class ItemCard extends StatelessWidget {
-  const ItemCard({
+class AddItemCard extends StatelessWidget {
+  const AddItemCard({
     super.key,
     required this.item,
     required this.index,
@@ -45,9 +45,10 @@ class ItemCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: item.image != null
-                    ? item.image!.split(":").first == ""
+                    ? item.image!.split(":").first == "data" &&
+                            fileProvider.fileAddItemByIndex(index) != null
                         ? Image.file(
-                            fileProvider.fileEditItemByIndex(index)!,
+                            fileProvider.fileAddItemByIndex(index)!,
                             width: 88,
                             height: 88,
                             fit: BoxFit.cover,

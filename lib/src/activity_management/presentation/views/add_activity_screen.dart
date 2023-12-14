@@ -15,7 +15,7 @@ import 'package:port_pass_app/src/activity_management/domain/entities/item.dart'
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_form.dart';
-import 'package:port_pass_app/src/activity_management/presentation/widgets/item_card.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/add_item_card.dart';
 import 'package:provider/provider.dart';
 
 class AddActivityScreen extends StatefulWidget {
@@ -122,7 +122,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
           );
           initController;
           context.read<FileProvider>().resetAddActivity();
-          context.read<ActivityProvider>().resetItems();
+          context.read<ActivityProvider>().resetItemsAdd();
         }
       },
       builder: (context, state) {
@@ -157,7 +157,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
             image: MediaRes.colorBackground,
             child: Consumer<ActivityProvider>(
               builder: (_, activityProvider, __) {
-                items = activityProvider.items ?? [];
+                items = activityProvider.itemsAdd ?? [];
                 return ContainerCard(
                   mediaHeight: 0.76,
                   padding: 10,
@@ -236,7 +236,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               runSpacing: 15,
                               children: [
                                 for (var item in items)
-                                  ItemCard(
+                                  AddItemCard(
                                     index: items.indexOf(item),
                                     item: item,
                                   ),
@@ -270,7 +270,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               onPressed: () {
                                 initController;
                                 context.read<FileProvider>().resetAddItems();
-                                context.read<ActivityProvider>().resetItems();
+                                context
+                                    .read<ActivityProvider>()
+                                    .resetItemsAdd();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: nothingChanged

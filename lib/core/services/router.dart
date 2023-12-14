@@ -1,7 +1,8 @@
 import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_item_screen.dart';
-import 'package:port_pass_app/src/activity_management/presentation/views/detail_activity_screen.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/activity_detail_activity_screen.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/edit_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/edit_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
@@ -14,7 +15,7 @@ import 'package:port_pass_app/src/employee_management/presentation/views/edit_em
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/add_report_screen.dart';
-import 'package:port_pass_app/src/gate_report/presentation/views/detail_activity_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/gate_detail_activity_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/edit_photo_profile_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';

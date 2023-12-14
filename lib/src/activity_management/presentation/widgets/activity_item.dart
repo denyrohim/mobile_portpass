@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
+import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
+import 'package:port_pass_app/src/activity_management/presentation/views/edit_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
 
@@ -291,18 +294,16 @@ class ActivityItem extends StatelessWidget {
                             (isShowCheckBox && status == 'Ditolak'),
                         child: GestureDetector(
                           onTap: () {
-                            if (activities[index].status == 'Ditolak') {
-                              // final navigator = Navigator.of(context);
-                              // navigator.pushNamed(QRCodeActivityScreen.routeName,
-                              //     arguments: activities[index]);
-                              // debugPrint('QR Code');
+                            if (activities[index].status != 'Diterima') {
+                              context.read<FileProvider>().resetEditItems();
+                              context.read<ActivityProvider>().resetItemsEdit();
+                              context
+                                  .read<ActivityProvider>()
+                                  .initItemsEdit(activities[index].items);
+                              final navigator = Navigator.of(context);
+                              navigator.pushNamed(EditActivityScreen.routeName,
+                                  arguments: activities[index]);
                             }
-                            // context.push(BlocProvider(
-                            //   create: (_) => sl<ActivityManagementBloc>(),
-                            //   // child: EditEmployeeScreen(
-                            //   //   employee: employees[index],
-                            //   // ),
-                            // ));
                             debugPrint('Edit');
                           },
                           child: Stack(

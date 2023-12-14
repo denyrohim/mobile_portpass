@@ -68,26 +68,49 @@ class ActivityProvider extends ChangeNotifier {
     return idCheckedActivities;
   }
 
-  List<Item>? _items;
+  List<Item>? _itemsAdd;
 
-  List<Item>? get items => _items;
+  List<Item>? get itemsAdd => _itemsAdd;
 
-  void initItems(List<Item> items) {
-    if (_items != items) {
-      _items = items;
+  void initItemsAdd(List<Item> itemsAdd) {
+    if (_itemsAdd != itemsAdd) {
+      _itemsAdd = itemsAdd;
     }
     notifyListeners();
   }
 
-  set items(List<Item>? items) {
-    if (_items != items) {
-      _items = items;
+  set itemsAdd(List<Item>? itemsAdd) {
+    if (_itemsAdd != itemsAdd) {
+      _itemsAdd = itemsAdd;
       Future.delayed(Duration.zero, notifyListeners);
     }
   }
 
-  void resetItems() {
-    _items = [];
+  void resetItemsAdd() {
+    _itemsAdd = [];
+    notifyListeners();
+  }
+
+  List<Item>? _itemsEdit;
+
+  List<Item>? get itemsEdit => _itemsEdit;
+
+  void initItemsEdit(List<Item> itemsEdit) {
+    if (_itemsEdit != itemsEdit) {
+      _itemsEdit = itemsEdit;
+    }
+    notifyListeners();
+  }
+
+  set itemsEdit(List<Item>? itemsEdit) {
+    if (_itemsEdit != itemsEdit) {
+      _itemsEdit = itemsEdit;
+      Future.delayed(Duration.zero, notifyListeners);
+    }
+  }
+
+  void resetItemsEdit() {
+    _itemsEdit = [];
     notifyListeners();
   }
 }

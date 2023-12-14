@@ -90,7 +90,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
             debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().initItems(state.items);
+          context.read<ActivityProvider>().initItemsAdd(state.items);
           debugPrint("item added: ${state.items.length}");
           final navidator = Navigator.of(context);
           if (navidator.canPop()) {
@@ -258,9 +258,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                               .read<ActivityManagementBloc>()
                                               .add(
                                                 AddItemEvent(
-                                                  items:
-                                                      activityProvider.items ??
-                                                          [],
+                                                  items: activityProvider
+                                                          .itemsAdd ??
+                                                      [],
                                                   item: Item(
                                                     name: nameController.text
                                                         .trim(),

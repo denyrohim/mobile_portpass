@@ -233,7 +233,6 @@ class ActivityManagementBloc
     SelectAllActivitiesEvent event,
     Emitter<ActivityManagementState> emit,
   ) async {
-    print("masuk");
     final result = await _selectAllActivities(
       event.activities,
     );

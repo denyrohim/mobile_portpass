@@ -32,7 +32,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
         activityId: activityId,
         reportData: reportModel,
       );
-      return Right(result as Activity);
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

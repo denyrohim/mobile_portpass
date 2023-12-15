@@ -35,6 +35,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   final activityTypeController = TextEditingController();
   final activityDateController = TextEditingController();
   final activityHourController = TextEditingController();
+  final itemsController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -49,7 +50,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
 
   bool get activityHourChanged => activityHourController.text.trim() != "";
 
-  bool get itemsChanged => items.isNotEmpty;
+  bool get itemsChanged => itemsController.text.trim() != "";
 
   bool get nothingChanged =>
       !nameChanged &&
@@ -73,6 +74,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.text = "";
     activityDateController.text = "";
     activityHourController.text = "";
+    itemsController.text = "";
     setState(() {
       items = [];
     });
@@ -82,6 +84,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.addListener(() => setState(() {}));
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
+    itemsController.addListener(() => setState(() {}));
   }
 
   @override
@@ -97,6 +100,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.dispose();
     activityDateController.dispose();
     activityHourController.dispose();
+    itemsController.dispose();
     super.dispose();
   }
 
@@ -122,7 +126,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
           );
           initController;
           context.read<FileProvider>().resetAddActivity();
-          context.read<ActivityProvider>().resetItemsAdd();
         }
       },
       builder: (context, state) {
@@ -157,7 +160,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
             image: MediaRes.colorBackground,
             child: Consumer<ActivityProvider>(
               builder: (_, activityProvider, __) {
-                items = activityProvider.itemsAdd ?? [];
+                items = [];
                 return ContainerCard(
                   mediaHeight: 0.76,
                   padding: 10,
@@ -270,9 +273,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               onPressed: () {
                                 initController;
                                 context.read<FileProvider>().resetAddItems();
-                                context
-                                    .read<ActivityProvider>()
-                                    .resetItemsAdd();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: nothingChanged

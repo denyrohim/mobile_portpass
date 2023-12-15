@@ -38,6 +38,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
   final activityTypeController = TextEditingController();
   final activityDateController = TextEditingController();
   final activityHourController = TextEditingController();
+  final itemsController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -51,7 +52,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
       activity.date.trim() != activityDateController.text.trim();
   bool get activityHourChanged =>
       activity.time.trim() != activityHourController.text.trim();
-  bool get itemsChanged => activity.items != items;
+  bool get itemsChanged => "false" != itemsController.text;
 
   bool get nothingChanged =>
       !nameChanged &&
@@ -61,32 +62,49 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
       !activityHourChanged &&
       !itemsChanged;
 
+  // what is change
+  void whatIsChange() {
+    if (nameChanged) {
+      print("nameChanged");
+    }
+    if (shipNameChanged) {
+      print("shipNameChanged");
+    }
+    if (activityTypeChanged) {
+      print("activityTypeChanged");
+    }
+    if (activityDateChanged) {
+      print("activityDateChanged");
+    }
+    if (activityHourChanged) {
+      print("activityHourChanged");
+    }
+    if (itemsChanged) {
+      print("itemsChanged");
+    }
+  }
+
   void get initController {
     nameController.text = activity.name;
     shipNameController.text = activity.shipName;
     activityTypeController.text = activity.type;
     activityDateController.text = activity.date;
     activityHourController.text = activity.time;
-    items = activity.items;
+    itemsController.text = "false";
 
     nameController.addListener(() => setState(() {}));
     shipNameController.addListener(() => setState(() {}));
     activityTypeController.addListener(() => setState(() {}));
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
-  }
-
-  void initItems() {
-    for (var item in activity.items) {
-      context.read<FileProvider>().addFilePathEditItems(item.image!);
-    }
+    itemsController.addListener(() => setState(() {}));
   }
 
   @override
   void initState() {
     activity = widget.activity;
+    items = activity.items;
     initController;
-    initItems();
     super.initState();
   }
 
@@ -97,41 +115,46 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
     activityTypeController.dispose();
     activityDateController.dispose();
     activityHourController.dispose();
+    itemsController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ActivityManagementBloc, ActivityManagementState>(
-      listener: (context, state) {
-        if (state is ActivityManagementError) {
-          CoreUtils.showSnackBar(context, state.message);
-        } else if (state is DataAdded) {
-          initController;
-          // context.read<FileProvider>().resetEditActivity();
-          CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
+    return Consumer<ActivityProvider>(
+      builder: (_, activityProvider, __) {
+        if (activityProvider.itemsChanged == true) {
+          Future.delayed(Duration.zero, () {
+            itemsController.text = activityProvider.itemsChanged.toString();
+            setState(() {});
+          });
         }
-      },
-      builder: (context, state) {
-        return PopScope(
-          canPop: false,
-          onPopInvoked: (_) {
-            context.read<FileProvider>().resetEditActivity();
-            context.read<ActivityProvider>().resetItemsEdit();
-            ;
+        return BlocConsumer<ActivityManagementBloc, ActivityManagementState>(
+          listener: (context, state) {
+            if (state is ActivityManagementError) {
+              CoreUtils.showSnackBar(context, state.message);
+            } else if (state is DataAdded) {
+              initController;
+              // context.read<FileProvider>().resetEditActivity();
+              CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
+            }
           },
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            resizeToAvoidBottomInset: false,
-            appBar: const AppBarCore(
-              title: 'Edit Aktivitas',
-              isBackButton: true,
-            ),
-            body: GradientBackground(
-              image: MediaRes.colorBackground,
-              child: Consumer<ActivityProvider>(
-                builder: (_, activityProvider, __) {
-                  return ContainerCard(
+          builder: (context, state) {
+            return PopScope(
+              canPop: false,
+              onPopInvoked: (_) {
+                context.read<FileProvider>().resetEditActivity();
+              },
+              child: Scaffold(
+                backgroundColor: Colors.white,
+                resizeToAvoidBottomInset: false,
+                appBar: const AppBarCore(
+                  title: 'Edit Aktivitas',
+                  isBackButton: true,
+                ),
+                body: GradientBackground(
+                  image: MediaRes.colorBackground,
+                  child: ContainerCard(
                     mediaHeight: 0.9,
                     padding: 10,
                     children: [
@@ -218,6 +241,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                 for (var item in items!) ...[
                                   EditItemCard(
                                     index: items!.indexOf(item),
+                                    items: items!,
                                     item: item,
                                     editable: true,
                                   ),
@@ -233,17 +257,21 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                             width: 160,
                             height: 40,
                             child: IgnorePointer(
-                              ignoring: false,
-                              // nothingChanged ||
-                              //     state is ActivityManagementLoading,
+                              ignoring: nothingChanged ||
+                                  state is ActivityManagementLoading,
                               child: ElevatedButton(
                                 onPressed: () {
-                                  // initController;
-                                  debugPrint(activity.items.toString());
-                                  debugPrint(widget.activity.items.toString());
-                                  // context
-                                  //     .read<ActivityProvider>()
-                                  //     .resetAddActivity();
+                                  whatIsChange();
+                                  context
+                                      .read<ActivityProvider>()
+                                      .setItemsChanged(false);
+                                  context
+                                      .read<ActivityProvider>()
+                                      .initItems(activity.items);
+                                  setState(() {
+                                    items = widget.activity.items;
+                                  });
+                                  initController;
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: nothingChanged
@@ -354,11 +382,11 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                       ),
                       const SizedBox(height: 100),
                     ],
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

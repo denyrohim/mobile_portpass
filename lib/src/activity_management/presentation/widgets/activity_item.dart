@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
-import 'package:port_pass_app/core/common/app/providers/file_provider.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/core/res/colours.dart';
@@ -295,11 +294,9 @@ class ActivityItem extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             if (activities[index].status != 'Diterima') {
-                              context.read<FileProvider>().resetEditItems();
-                              context.read<ActivityProvider>().resetItemsEdit();
                               context
                                   .read<ActivityProvider>()
-                                  .initItemsEdit(activities[index].items);
+                                  .initItems(activities[index].items);
                               final navigator = Navigator.of(context);
                               navigator.pushNamed(EditActivityScreen.routeName,
                                   arguments: activities[index]);

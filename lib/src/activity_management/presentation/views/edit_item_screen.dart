@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -28,7 +30,7 @@ class EditItemScreen extends StatefulWidget {
 
 class _EditItemScreenState extends State<EditItemScreen> {
   late Item item;
-  late int index;
+  File? image;
 
   final nameController = TextEditingController();
   final amountController = TextEditingController();
@@ -38,7 +40,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
 
   bool get nameChanged => item.name != nameController.text.trim();
   bool get amountChanged => "${item.amount}" != amountController.text.trim();
-  bool get photoChanged => item.image != photoController.text.trim();
+  bool get photoChanged => item.imagePath != photoController.text.trim();
   bool get unitChanged => item.unit != unitController.text.trim();
 
   bool get nothingChanged =>
@@ -53,7 +55,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
     nameController.text = item.name;
     amountController.text = "${item.amount}";
     unitController.text = item.unit;
-    photoController.text = item.image ?? "";
+    photoController.text = item.imagePath ?? "";
 
     nameController.addListener(() => setState(() {}));
     amountController.addListener(() => setState(() {}));
@@ -64,12 +66,8 @@ class _EditItemScreenState extends State<EditItemScreen> {
   @override
   void initState() {
     item = widget.item;
+
     initController;
-    index = context.read<ActivityProvider>().itemsEdit?.indexOf(item) ?? 0;
-    if (index == -1) {
-      index = context.read<ActivityProvider>().itemsEdit!.length;
-    }
-    debugPrint("index: $index");
     super.initState();
   }
 
@@ -90,19 +88,14 @@ class _EditItemScreenState extends State<EditItemScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is PhotoAdded) {
           if (state.photo != null) {
-            debugPrint("index: $index");
-            context
-                .read<FileProvider>()
-                .addFileEditItems(state.photo, index: index);
             photoController.text = state.photo.path;
             debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().initItemsEdit(state.items);
-          debugPrint('sp');
-          final navidator = Navigator.of(context);
-          if (navidator.canPop()) {
-            navidator.pop();
+          context.read<ActivityProvider>().setItemsChanged(true);
+          final navigator = Navigator.of(context);
+          if (navigator.canPop()) {
+            navigator.pop();
           }
         }
       },
@@ -210,15 +203,11 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                         )),
                                   ],
                                 ),
-                                fileProvider.fileEditItem != null &&
-                                        fileProvider
-                                                .fileEditItemByIndex(index) !=
-                                            null
+                                item.image != null
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.file(
-                                          fileProvider
-                                              .fileEditItemByIndex(index)!,
+                                          item.image!,
                                           width: 120,
                                           height: 120,
                                           fit: BoxFit.cover,
@@ -276,13 +265,12 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                         FocusManager.instance.primaryFocus
                                             ?.unfocus();
                                         if (formKey.currentState!.validate()) {
-                                          debugPrint("index: $index");
                                           context
                                               .read<ActivityManagementBloc>()
                                               .add(
                                                 AddItemEvent(
-                                                  items: activityProvider
-                                                      .itemsEdit!,
+                                                  items:
+                                                      activityProvider.items!,
                                                   item: Item(
                                                     name: nameController.text
                                                         .trim(),
@@ -291,12 +279,13 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                                             .trim()),
                                                     unit: unitController.text
                                                         .trim(),
-                                                    image: fileProvider
-                                                        .uriEditItemByIndex(
-                                                      index,
-                                                    ),
+                                                    imagePath: photoController
+                                                        .text
+                                                        .trim(),
+                                                    image: image ?? item.image,
                                                   ),
-                                                  index: index,
+                                                  index: activityProvider.items!
+                                                      .indexOf(widget.item),
                                                 ),
                                               );
                                         }

@@ -45,24 +45,23 @@ class AddItemCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: item.image != null
-                    ? item.image!.split(":").first == "data" &&
-                            fileProvider.fileAddItemByIndex(index) != null
-                        ? Image.file(
-                            fileProvider.fileAddItemByIndex(index)!,
+                    ? Image.file(
+                        fileProvider.fileEditItemByIndex(index)!,
+                        width: 88,
+                        height: 88,
+                        fit: BoxFit.cover,
+                      )
+                    : item.imagePath != null
+                        ? Image.asset(
+                            item.imagePath!,
                             width: 88,
                             height: 88,
                             fit: BoxFit.cover,
                           )
-                        : Image.asset(
-                            item.image!,
-                            width: 88,
-                            height: 88,
-                            fit: BoxFit.cover,
-                          )
-                    : const SizedBox(
-                        width: 10,
-                        height: 10,
-                      ),
+                        : const SizedBox(
+                            width: 10,
+                            height: 10,
+                          ),
               ),
               const SizedBox(
                 width: 10,

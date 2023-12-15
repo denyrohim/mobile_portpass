@@ -231,7 +231,8 @@ class ActivityManagementRemoteDataSourceImpl
                 items: List.generate(
                   10,
                   (index) => Item(
-                      image: MediaRes.itemExample,
+                      imagePath: MediaRes.itemExample,
+                      image: null,
                       name: "Masako $index",
                       amount: 10,
                       unit: 'Ton'),
@@ -259,7 +260,8 @@ class ActivityManagementRemoteDataSourceImpl
         items: List.generate(
           10,
           (index) => Item(
-              image: MediaRes.itemExample,
+              imagePath: MediaRes.itemExample,
+              image: null,
               name: "Masako $index",
               amount: 10,
               unit: 'Ton'),
@@ -286,7 +288,8 @@ class ActivityManagementRemoteDataSourceImpl
         items: List.generate(
           10,
           (index) => Item(
-              image: MediaRes.itemExample,
+              imagePath: MediaRes.itemExample,
+              image: null,
               name: "Masako $index",
               amount: 10,
               unit: 'Ton'),

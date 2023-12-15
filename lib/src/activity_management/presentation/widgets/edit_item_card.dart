@@ -11,12 +11,14 @@ class EditItemCard extends StatelessWidget {
   const EditItemCard({
     super.key,
     required this.item,
+    required this.items,
     required this.index,
     this.editable = false,
   });
 
   final int index;
   final Item item;
+  final List<Item> items;
   final bool editable;
   @override
   Widget build(BuildContext context) {
@@ -45,23 +47,23 @@ class EditItemCard extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: item.image != null
-                    ? item.image!.split(":")[0] == "data"
-                        ? Image.file(
-                            fileProvider.fileEditItemByIndex(index)!,
+                    ? Image.file(
+                        fileProvider.fileEditItemByIndex(index)!,
+                        width: 88,
+                        height: 88,
+                        fit: BoxFit.cover,
+                      )
+                    : item.imagePath != null
+                        ? Image.asset(
+                            item.imagePath!,
                             width: 88,
                             height: 88,
                             fit: BoxFit.cover,
                           )
-                        : Image.asset(
-                            item.image!,
-                            width: 88,
-                            height: 88,
-                            fit: BoxFit.cover,
-                          )
-                    : const SizedBox(
-                        width: 10,
-                        height: 10,
-                      ),
+                        : const SizedBox(
+                            width: 10,
+                            height: 10,
+                          ),
               ),
               const SizedBox(
                 width: 10,
@@ -103,11 +105,8 @@ class EditItemCard extends StatelessWidget {
                           IconButton(
                             onPressed: () {
                               final navigator = Navigator.of(context);
-                              navigator.pushNamed(
-                                EditItemScreen.routeName,
-                                arguments: item,
-                              );
-                              debugPrint("index: $index");
+                              navigator.pushNamed(EditItemScreen.routeName,
+                                  arguments: item);
                             },
                             icon: Container(
                               height: 30,

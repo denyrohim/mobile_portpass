@@ -138,7 +138,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => BlocProvider(
           create: (_) => sl<ActivityManagementBloc>(),
           child: EditItemScreen(
-            item: settings.arguments as dynamic,
+            item: settings.arguments,
           ),
         ),
         settings: settings,

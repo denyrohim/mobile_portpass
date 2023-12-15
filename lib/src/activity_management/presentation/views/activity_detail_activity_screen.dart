@@ -146,6 +146,7 @@ class ActivityDetailActivityScreen extends StatelessWidget {
                                 name: item.name,
                                 amount: item.amount,
                                 unit: item.unit,
+                                imagePath: item.imagePath,
                                 image: item.image,
                               )
                           ],

@@ -11,7 +11,6 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
-import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/item_form.dart';
 import 'package:provider/provider.dart';
@@ -90,7 +89,6 @@ class _AddItemScreenState extends State<AddItemScreen> {
             debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().initItemsAdd(state.items);
           debugPrint("item added: ${state.items.length}");
           final navidator = Navigator.of(context);
           if (navidator.canPop()) {
@@ -251,30 +249,30 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                   builder: (_, activityProvider, __) {
                                     return ElevatedButton(
                                       onPressed: () {
-                                        FocusManager.instance.primaryFocus
-                                            ?.unfocus();
-                                        if (formKey.currentState!.validate()) {
-                                          context
-                                              .read<ActivityManagementBloc>()
-                                              .add(
-                                                AddItemEvent(
-                                                  items: activityProvider
-                                                          .itemsAdd ??
-                                                      [],
-                                                  item: Item(
-                                                    name: nameController.text
-                                                        .trim(),
-                                                    amount: int.parse(
-                                                        amountController.text),
-                                                    unit: unitController.text
-                                                        .trim(),
-                                                    image: fileProvider
-                                                        .uriAddItemByIndex(-1),
-                                                  ),
-                                                  index: -1,
-                                                ),
-                                              );
-                                        }
+                                        // FocusManager.instance.primaryFocus
+                                        //     ?.unfocus();
+                                        // if (formKey.currentState!.validate()) {
+                                        //   context
+                                        //       .read<ActivityManagementBloc>()
+                                        //       .add(
+                                        //         AddItemEvent(
+                                        //           items: activityProvider
+                                        //                   .itemsAdd ??
+                                        //               [],
+                                        //           item: Item(
+                                        //             name: nameController.text
+                                        //                 .trim(),
+                                        //             amount: int.parse(
+                                        //                 amountController.text),
+                                        //             unit: unitController.text
+                                        //                 .trim(),
+                                        //             image: fileProvider
+                                        //                 .uriAddItemByIndex(-1),
+                                        //           ),
+                                        //           index: -1,
+                                        //         ),
+                                        //       );
+                                        // }
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: !allChanged

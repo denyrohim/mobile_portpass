@@ -10,14 +10,12 @@ class ItemForm extends StatefulWidget {
   const ItemForm(
       {required this.nameController,
       required this.weightController,
-      required this.photoController,
       required this.unitController,
       required this.formKey,
       super.key});
 
   final TextEditingController nameController;
   final TextEditingController weightController;
-  final TextEditingController photoController;
   final TextEditingController unitController;
   final GlobalKey<FormState> formKey;
 
@@ -113,7 +111,7 @@ class _ItemFormState extends State<ItemForm> {
                               child: Text(
                                 'Satuan',
                                 style: TextStyle(
-                                  color: Colours.primaryColourDisabled,
+                                  color: Colours.primaryColour,
                                   fontFamily: Fonts.inter,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,

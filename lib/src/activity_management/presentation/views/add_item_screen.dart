@@ -11,6 +11,7 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/item_form.dart';
 import 'package:provider/provider.dart';
@@ -80,16 +81,11 @@ class _AddItemScreenState extends State<AddItemScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is PhotoAdded) {
           if (state.photo != null) {
-            if (photoController.text == "") {
-              context.read<FileProvider>().addFileAddItems(state.photo);
-            } else {
-              context.read<FileProvider>().changeLastFileAddItems(state.photo);
-            }
+            context.read<FileProvider>().initFileItem(state.photo);
             photoController.text = state.photo.path;
-            debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
-          debugPrint("item added: ${state.items.length}");
+          context.read<ActivityProvider>().initItemsAddActivity(state.items);
           final navidator = Navigator.of(context);
           if (navidator.canPop()) {
             navidator.pop();
@@ -204,8 +200,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.file(
-                                          // fileProvider.fileAddItem[-1], last item
-                                          fileProvider.fileAddItemByIndex(-1)!,
+                                          fileProvider.fileItem!,
                                           width: 120,
                                           height: 120,
                                           fit: BoxFit.cover,
@@ -237,9 +232,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                         ItemForm(
                             nameController: nameController,
                             weightController: amountController,
-                            photoController: photoController,
                             unitController: unitController,
                             formKey: formKey),
+                        const SizedBox(height: 20),
                         StatefulBuilder(
                             key: key,
                             builder: (_, refresh) {
@@ -249,30 +244,33 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                   builder: (_, activityProvider, __) {
                                     return ElevatedButton(
                                       onPressed: () {
-                                        // FocusManager.instance.primaryFocus
-                                        //     ?.unfocus();
-                                        // if (formKey.currentState!.validate()) {
-                                        //   context
-                                        //       .read<ActivityManagementBloc>()
-                                        //       .add(
-                                        //         AddItemEvent(
-                                        //           items: activityProvider
-                                        //                   .itemsAdd ??
-                                        //               [],
-                                        //           item: Item(
-                                        //             name: nameController.text
-                                        //                 .trim(),
-                                        //             amount: int.parse(
-                                        //                 amountController.text),
-                                        //             unit: unitController.text
-                                        //                 .trim(),
-                                        //             image: fileProvider
-                                        //                 .uriAddItemByIndex(-1),
-                                        //           ),
-                                        //           index: -1,
-                                        //         ),
-                                        //       );
-                                        // }
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
+                                        if (formKey.currentState!.validate()) {
+                                          context
+                                              .read<ActivityManagementBloc>()
+                                              .add(
+                                                AddItemEvent(
+                                                  items: activityProvider
+                                                      .itemsAddActivity,
+                                                  item: Item(
+                                                    name: nameController.text
+                                                        .trim(),
+                                                    amount: int.parse(
+                                                        amountController.text
+                                                            .trim()),
+                                                    unit: unitController.text
+                                                        .trim(),
+                                                    imagePath: photoController
+                                                        .text
+                                                        .trim(),
+                                                    image:
+                                                        fileProvider.fileItem,
+                                                  ),
+                                                  index: -1,
+                                                ),
+                                              );
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: !allChanged
@@ -283,8 +281,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                                   BorderRadius.circular(10))),
                                       child: state is ActivityManagementLoading
                                           ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
+                                              child: CircularProgressIndicator(
+                                              color: Colours.secondaryColour,
+                                            ))
                                           : const Text(
                                               "Simpan",
                                               style: TextStyle(

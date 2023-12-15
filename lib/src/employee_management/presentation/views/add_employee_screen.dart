@@ -314,7 +314,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                 ),
                                 child: state is EmployeeManagementLoading
                                     ? const Center(
-                                        child: CircularProgressIndicator())
+                                        child: CircularProgressIndicator(
+                                        color: Colours.secondaryColour,
+                                      ))
                                     : const Text(
                                         "Batal",
                                         style: TextStyle(
@@ -394,8 +396,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                       ),
                                       child: state is EmployeeManagementLoading
                                           ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
+                                              child: CircularProgressIndicator(
+                                              color: Colours.secondaryColour,
+                                            ))
                                           : const Text(
                                               "Simpan",
                                               style: TextStyle(

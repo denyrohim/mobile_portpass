@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
@@ -68,30 +70,97 @@ class ActivityProvider extends ChangeNotifier {
     return idCheckedActivities;
   }
 
-  List<Item>? _items;
+  List<Item> _itemsEditActivity = [];
 
-  List<Item>? get items => _items;
+  List<Item> get itemsEditActivity => _itemsEditActivity;
 
-  void initItems(List<Item> items) {
-    if (_items != items) {
-      _items = items;
+  void initItemsEditActivity(List<Item> items) {
+    if (_itemsEditActivity != items) {
+      _itemsEditActivity = List.from(
+        items.map(
+          (item) => Item(
+            imagePath: item.imagePath,
+            image: item.image,
+            name: item.name,
+            amount: item.amount,
+            unit: item.unit,
+          ),
+        ),
+      );
     }
-    notifyListeners();
+    Future.delayed(Duration.zero, notifyListeners);
   }
 
-  set items(List<Item>? items) {
-    if (_items != items) {
-      _items = items;
-      Future.delayed(Duration.zero, notifyListeners);
-    }
+  void resetItemsEditActivity() {
+    _itemsEditActivity = [];
+    Future.delayed(Duration.zero, notifyListeners);
   }
 
-  bool _itemsChanged = false;
+  void updateImageIteEditActivity(File image, int index) {
+    _itemsEditActivity = List.from(
+      _itemsEditActivity.map(
+        (item) {
+          if (_itemsEditActivity.indexOf(item) == index) {
+            return Item(
+              imagePath: image.path,
+              image: image,
+              name: item.name,
+              amount: item.amount,
+              unit: item.unit,
+            );
+          } else {
+            return item;
+          }
+        },
+      ),
+    );
+    Future.delayed(Duration.zero, notifyListeners);
+  }
 
-  bool get itemsChanged => _itemsChanged;
+  List<Item> _itemsAddActivity = [];
 
-  void setItemsChanged(bool value) {
-    _itemsChanged = value;
-    notifyListeners();
+  List<Item> get itemsAddActivity => _itemsAddActivity;
+
+  void initItemsAddActivity(List<Item> items) {
+    if (_itemsAddActivity != items) {
+      _itemsAddActivity = List.from(
+        items.map(
+          (item) => Item(
+            imagePath: item.imagePath,
+            image: item.image,
+            name: item.name,
+            amount: item.amount,
+            unit: item.unit,
+          ),
+        ),
+      );
+    }
+    Future.delayed(Duration.zero, notifyListeners);
+  }
+
+  void resetItemsAddActivity() {
+    _itemsAddActivity = [];
+    Future.delayed(Duration.zero, notifyListeners);
+  }
+
+  void updateImageItemAddActivity(File image, int index) {
+    _itemsAddActivity = List.from(
+      _itemsAddActivity.map(
+        (item) {
+          if (_itemsAddActivity.indexOf(item) == index) {
+            return Item(
+              imagePath: image.path,
+              image: image,
+              name: item.name,
+              amount: item.amount,
+              unit: item.unit,
+            );
+          } else {
+            return item;
+          }
+        },
+      ),
+    );
+    Future.delayed(Duration.zero, notifyListeners);
   }
 }

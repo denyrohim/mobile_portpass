@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,10 +17,10 @@ import 'package:port_pass_app/src/activity_management/presentation/widgets/item_
 import 'package:provider/provider.dart';
 
 class EditItemScreen extends StatefulWidget {
-  const EditItemScreen({super.key, required this.item});
+  const EditItemScreen({super.key, required this.index});
   static const routeName = '/edit-item';
 
-  final dynamic item;
+  final dynamic index;
 
   @override
   State<EditItemScreen> createState() => _EditItemScreenState();
@@ -30,7 +28,6 @@ class EditItemScreen extends StatefulWidget {
 
 class _EditItemScreenState extends State<EditItemScreen> {
   late Item item;
-  File? image;
 
   final nameController = TextEditingController();
   final amountController = TextEditingController();
@@ -63,10 +60,13 @@ class _EditItemScreenState extends State<EditItemScreen> {
     photoController.addListener(() => setState(() {}));
   }
 
+  void get initItem {
+    item = context.read<ActivityProvider>().itemsEditActivity[widget.index];
+  }
+
   @override
   void initState() {
-    item = widget.item;
-
+    initItem;
     initController;
     super.initState();
   }
@@ -88,11 +88,14 @@ class _EditItemScreenState extends State<EditItemScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is PhotoAdded) {
           if (state.photo != null) {
-            photoController.text = state.photo.path;
+            context
+                .read<ActivityProvider>()
+                .updateImageIteEditActivity(state.photo, widget.index);
+            initItem;
             debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().setItemsChanged(true);
+          context.read<ActivityProvider>().initItemsEditActivity(state.items);
           final navigator = Navigator.of(context);
           if (navigator.canPop()) {
             navigator.pop();
@@ -250,9 +253,9 @@ class _EditItemScreenState extends State<EditItemScreen> {
                         ItemForm(
                             nameController: nameController,
                             weightController: amountController,
-                            photoController: photoController,
                             unitController: unitController,
                             formKey: formKey),
+                        const SizedBox(height: 20),
                         StatefulBuilder(
                             key: key,
                             builder: (_, refresh) {
@@ -269,8 +272,8 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                               .read<ActivityManagementBloc>()
                                               .add(
                                                 AddItemEvent(
-                                                  items:
-                                                      activityProvider.items!,
+                                                  items: activityProvider
+                                                      .itemsEditActivity,
                                                   item: Item(
                                                     name: nameController.text
                                                         .trim(),
@@ -282,10 +285,9 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                                     imagePath: photoController
                                                         .text
                                                         .trim(),
-                                                    image: image ?? item.image,
+                                                    image: item.image,
                                                   ),
-                                                  index: activityProvider.items!
-                                                      .indexOf(widget.item),
+                                                  index: widget.index,
                                                 ),
                                               );
                                         }
@@ -299,8 +301,9 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                                   BorderRadius.circular(10))),
                                       child: state is ActivityManagementLoading
                                           ? const Center(
-                                              child:
-                                                  CircularProgressIndicator())
+                                              child: CircularProgressIndicator(
+                                              color: Colours.secondaryColour,
+                                            ))
                                           : const Text(
                                               "Simpan",
                                               style: TextStyle(

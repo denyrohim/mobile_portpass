@@ -11,11 +11,10 @@ import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
-import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/add_item_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_form.dart';
-import 'package:port_pass_app/src/activity_management/presentation/widgets/add_item_card.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/item_card.dart';
 import 'package:provider/provider.dart';
 
 class AddActivityScreen extends StatefulWidget {
@@ -28,14 +27,11 @@ class AddActivityScreen extends StatefulWidget {
 }
 
 class _AddActivityScreenState extends State<AddActivityScreen> {
-  List<Item> items = [];
-
   final nameController = TextEditingController();
   final shipNameController = TextEditingController();
   final activityTypeController = TextEditingController();
   final activityDateController = TextEditingController();
   final activityHourController = TextEditingController();
-  final itemsController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -50,7 +46,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
 
   bool get activityHourChanged => activityHourController.text.trim() != "";
 
-  bool get itemsChanged => itemsController.text.trim() != "";
+  bool get itemsChanged =>
+      context.read<ActivityProvider>().itemsAddActivity.toString() != "[]";
 
   bool get nothingChanged =>
       !nameChanged &&
@@ -74,17 +71,13 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.text = "";
     activityDateController.text = "";
     activityHourController.text = "";
-    itemsController.text = "";
-    setState(() {
-      items = [];
-    });
+    context.read<ActivityProvider>().resetItemsAddActivity();
 
     nameController.addListener(() => setState(() {}));
     shipNameController.addListener(() => setState(() {}));
     activityTypeController.addListener(() => setState(() {}));
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
-    itemsController.addListener(() => setState(() {}));
   }
 
   @override
@@ -100,7 +93,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.dispose();
     activityDateController.dispose();
     activityHourController.dispose();
-    itemsController.dispose();
     super.dispose();
   }
 
@@ -125,7 +117,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
             },
           );
           initController;
-          context.read<FileProvider>().resetAddActivity();
         }
       },
       builder: (context, state) {
@@ -160,7 +151,6 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
             image: MediaRes.colorBackground,
             child: Consumer<ActivityProvider>(
               builder: (_, activityProvider, __) {
-                items = [];
                 return ContainerCard(
                   mediaHeight: 0.76,
                   padding: 10,
@@ -223,7 +213,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               color: Colours.primaryColour),
                         ),
                         Text(
-                          '${items.length} Daftar',
+                          '${activityProvider.itemsAddActivity.length} Daftar',
                           style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -232,16 +222,21 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                         ),
                       ],
                     ),
-                    items.isNotEmpty
+                    activityProvider.itemsAddActivity.isNotEmpty
                         ? Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Wrap(
                               runSpacing: 15,
                               children: [
-                                for (var item in items)
-                                  AddItemCard(
-                                    index: items.indexOf(item),
-                                    item: item,
+                                for (var item
+                                    in activityProvider.itemsAddActivity)
+                                  ItemCard(
+                                    index: activityProvider.itemsAddActivity
+                                        .indexOf(item),
+                                    item: activityProvider.itemsAddActivity[
+                                        activityProvider.itemsAddActivity
+                                            .indexOf(item)],
+                                    isEdit: true,
                                   ),
                               ],
                             ),
@@ -272,7 +267,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                                 initController;
-                                context.read<FileProvider>().resetAddItems();
+                                context.read<FileProvider>().resetFileItem();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: nothingChanged
@@ -284,7 +279,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                               ),
                               child: state is ActivityManagementLoading
                                   ? const Center(
-                                      child: CircularProgressIndicator())
+                                      child: CircularProgressIndicator(
+                                      color: Colours.secondaryColour,
+                                    ))
                                   : const Text(
                                       "Batal",
                                       style: TextStyle(
@@ -330,7 +327,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                                   time: activityHourController
                                                       .text
                                                       .trim(),
-                                                  items: items,
+                                                  items: activityProvider
+                                                      .itemsAddActivity,
                                                   status: "Menunggu",
                                                   activityProgress: const [],
                                                   qrCode: "",
@@ -350,7 +348,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                     ),
                                     child: state is ActivityManagementLoading
                                         ? const Center(
-                                            child: CircularProgressIndicator())
+                                            child: CircularProgressIndicator(
+                                            color: Colours.secondaryColour,
+                                          ))
                                         : const Text(
                                             "Simpan",
                                             style: TextStyle(

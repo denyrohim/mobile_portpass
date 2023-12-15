@@ -217,7 +217,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                               child: state is AuthLoading
                                   ? const Center(
-                                      child: CircularProgressIndicator())
+                                      child: CircularProgressIndicator(
+                                      color: Colours.secondaryColour,
+                                    ))
                                   : const Text(
                                       "Batal",
                                       style: TextStyle(
@@ -277,7 +279,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   ),
                                   child: state is AuthLoading
                                       ? const Center(
-                                          child: CircularProgressIndicator())
+                                          child: CircularProgressIndicator(
+                                          color: Colours.secondaryColour,
+                                        ))
                                       : const Text(
                                           "Simpan",
                                           style: TextStyle(

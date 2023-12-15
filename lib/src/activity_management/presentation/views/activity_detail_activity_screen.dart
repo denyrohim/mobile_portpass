@@ -6,11 +6,10 @@ import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
-import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/detail_activity.dart';
-import 'package:port_pass_app/src/activity_management/presentation/widgets/detail_activity_list_container.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/list_items_container.dart';
 
 class ActivityDetailActivityScreen extends StatelessWidget {
   const ActivityDetailActivityScreen({
@@ -137,22 +136,27 @@ class ActivityDetailActivityScreen extends StatelessWidget {
                     ),
                   ),
                   children: [
-                    Column(
-                      children: [
-                        ListItems(
-                          items: [
-                            for (Item item in activity.items)
-                              Item(
-                                name: item.name,
-                                amount: item.amount,
-                                unit: item.unit,
-                                imagePath: item.imagePath,
-                                image: item.image,
-                              )
-                          ],
-                        ),
-                      ],
-                    )
+                    activity.items!.isEmpty
+                        ? SizedBox(
+                            height: 150,
+                            child: Center(
+                              child: Text(
+                                '0 Daftar',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontFamily: Fonts.inter,
+                                  color: Colours.primaryColour.withOpacity(0.5),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              ListItemsContainer(
+                                items: activity.items!,
+                              ),
+                            ],
+                          )
                   ],
                 ),
               ],

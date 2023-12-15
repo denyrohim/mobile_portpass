@@ -296,7 +296,8 @@ class ActivityItem extends StatelessWidget {
                             if (activities[index].status != 'Diterima') {
                               context
                                   .read<ActivityProvider>()
-                                  .initItems(activities[index].items);
+                                  .initItemsEditActivity(
+                                      activities[index].items);
                               final navigator = Navigator.of(context);
                               navigator.pushNamed(EditActivityScreen.routeName,
                                   arguments: activities[index]);

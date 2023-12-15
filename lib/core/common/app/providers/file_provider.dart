@@ -104,241 +104,28 @@ class FileProvider extends ChangeNotifier {
     _uriEditUser = null;
   }
 
-  File? _fileAddActivity;
-  String? _filePathAddActivity;
-  String? _base64AddActivity;
-  String? _uriAddActivity;
+  File? _fileItem;
+  String? _filePathItem;
 
-  File? get fileAddActivity => _fileAddActivity;
-  String? get filePathAddActivity => _filePathAddActivity;
-  String? get base64AddActivity => _base64AddActivity;
-  String? get uriAddActivity => _uriAddActivity;
+  File? get fileItem => _fileItem;
+  String? get filePathItem => _filePathItem;
 
-  void initFileAddActivity(File fileAddActivity) {
-    if (_fileAddActivity != fileAddActivity) {
-      _fileAddActivity = fileAddActivity;
-      _filePathAddActivity = fileAddActivity.path;
-      _base64AddActivity = base64Encode(fileAddActivity.readAsBytesSync());
-      _uriAddActivity =
-          "data:image/${fileAddActivity.path.split('/').last.split('.').last};base64,${base64Encode(fileAddActivity.readAsBytesSync())}";
+  void initFileItem(File fileItem) {
+    if (_fileItem != fileItem) {
+      _fileItem = fileItem;
+      _filePathItem = fileItem.path;
     }
   }
 
-  void initFilePathAddActivity(String filePathAddActivity) {
-    if (_filePathAddActivity != filePathAddActivity) {
-      _filePathAddActivity = filePathAddActivity;
+  void initFilePathItem(String filePathItem) {
+    if (_filePathItem != filePathItem) {
+      _filePathItem = filePathItem;
     }
   }
 
-  void resetAddActivity() {
-    _fileAddActivity = null;
-    _filePathAddActivity = null;
-    _base64AddActivity = null;
-    _uriAddActivity = null;
-  }
-
-  File? _fileEditActivity;
-  String? _filePathEditActivity;
-  String? _base64EditActivity;
-  String? _uriEditActivity;
-
-  File? get fileEditActivity => _fileEditActivity;
-  String? get filePathEditActivity => _filePathEditActivity;
-  String? get base64EditActivity => _base64EditActivity;
-  String? get uriEditActivity => _uriEditActivity;
-
-  void initFileEditActivity(File fileEditActivity) {
-    if (_fileEditActivity != fileEditActivity) {
-      _fileEditActivity = fileEditActivity;
-      _filePathEditActivity = fileEditActivity.path;
-      _base64EditActivity = base64Encode(fileEditActivity.readAsBytesSync());
-      _uriEditActivity =
-          "data:image/${fileEditActivity.path.split('/').last.split('.').last};base64,${base64Encode(fileEditActivity.readAsBytesSync())}";
-    }
-  }
-
-  void initFilePathEditActivity(String filePathEditActivity) {
-    if (_filePathEditActivity != filePathEditActivity) {
-      _filePathEditActivity = filePathEditActivity;
-    }
-  }
-
-  void resetEditActivity() {
-    _fileEditActivity = null;
-    _filePathEditActivity = null;
-    _base64EditActivity = null;
-    _uriEditActivity = null;
-  }
-
-  List<File>? _fileAddItems;
-  List<String>? _filePathAddItems;
-  List<String>? _base64AddItems;
-  List<String>? _uriAddItems;
-
-  List<File>? get fileAddItem => _fileAddItems;
-  List<String>? get filePathAddItem => _filePathAddItems;
-  List<String>? get base64AddItem => _base64AddItems;
-  List<String>? get uriAddItem => _uriAddItems;
-
-  File? fileAddItemByIndex(int index) {
-    if (index == -1) {
-      return _fileAddItems!.last;
-    }
-    return _fileAddItems?[index];
-  }
-
-  String? filePathAddItemByIndex(int index) {
-    if (index == -1) {
-      return _filePathAddItems!.last;
-    }
-    return _filePathAddItems?[index];
-  }
-
-  String? base64AddItemByIndex(int index) {
-    if (index == -1) {
-      return _base64AddItems!.last;
-    }
-    return _base64AddItems?[index];
-  }
-
-  String? uriAddItemByIndex(int index) {
-    if (index == -1) {
-      return _uriAddItems!.last;
-    }
-    return _uriAddItems?[index];
-  }
-
-  void addFileAddItems(File fileAddItem, {int index = -1}) {
-    if (_fileAddItems == null) {
-      _fileAddItems = [];
-      _filePathAddItems = [];
-      _base64AddItems = [];
-      _uriAddItems = [];
-    }
-
-    if (index == -1) {
-      _fileAddItems!.add(fileAddItem);
-      _filePathAddItems!.add(fileAddItem.path);
-      _base64AddItems!.add(base64Encode(fileAddItem.readAsBytesSync()));
-      _uriAddItems!.add(
-          "data:image/${fileAddItem.path.split('/').last.split('.').last};base64,${base64Encode(fileAddItem.readAsBytesSync())}");
-    } else {
-      _fileAddItems![index] = fileAddItem;
-      _filePathAddItems![index] = fileAddItem.path;
-      _base64AddItems![index] = base64Encode(fileAddItem.readAsBytesSync());
-      _uriAddItems![index] =
-          "data:image/${fileAddItem.path.split('/').last.split('.').last};base64,${base64Encode(fileAddItem.readAsBytesSync())}";
-    }
-  }
-
-  void changeLastFileAddItems(File fileAddItem) {
-    _fileAddItems!.removeLast();
-    _filePathAddItems!.removeLast();
-    _base64AddItems!.removeLast();
-    _uriAddItems!.removeLast();
-    _fileAddItems!.add(fileAddItem);
-    _filePathAddItems!.add(fileAddItem.path);
-    _base64AddItems!.add(base64Encode(fileAddItem.readAsBytesSync()));
-    _uriAddItems!.add(
-        "data:image/${fileAddItem.path.split('/').last.split('.').last};base64,${base64Encode(fileAddItem.readAsBytesSync())}");
-  }
-
-  // reset
-  void resetAddItems() {
-    _fileAddItems = null;
-    _filePathAddItems = null;
-    _base64AddItems = null;
-    _uriAddItems = null;
-  }
-
-  Map<int, File>? _fileEditItems;
-  Map<int, String>? _filePathEditItems;
-  Map<int, String>? _base64EditItems;
-  Map<int, String>? _uriEditItems;
-
-  Map<int, File>? get fileEditItem => _fileEditItems;
-  Map<int, String>? get filePathEditItem => _filePathEditItems;
-  Map<int, String>? get base64EditItem => _base64EditItems;
-  Map<int, String>? get uriEditItem => _uriEditItems;
-
-  File? fileEditItemByIndex(int index) {
-    if (_fileEditItems != null && _fileEditItems!.containsKey(index)) {
-      return _fileEditItems![index];
-    }
-    return null;
-  }
-
-  String? filePathEditItemByIndex(int index) {
-    if (_filePathEditItems != null && _filePathEditItems!.containsKey(index)) {
-      return _filePathEditItems![index];
-    }
-    return null;
-  }
-
-  String? base64EditItemByIndex(int index) {
-    if (_base64EditItems != null && _base64EditItems!.containsKey(index)) {
-      return _base64EditItems![index];
-    }
-    return null;
-  }
-
-  String? uriEditItemByIndex(int index) {
-    if (_uriEditItems != null && _uriEditItems!.containsKey(index)) {
-      return _uriEditItems![index];
-    }
-    return null;
-  }
-
-  void addFileEditItems(File fileEditItem, {int index = -1}) {
-    _fileEditItems ??= {};
-    _filePathEditItems ??= {};
-    _base64EditItems ??= {};
-    _uriEditItems ??= {};
-
-    if (index == -1) {
-      index = _fileEditItems!.length;
-    }
-
-    _fileEditItems![index] = fileEditItem;
-    _filePathEditItems![index] = fileEditItem.path;
-    _base64EditItems![index] = base64Encode(fileEditItem.readAsBytesSync());
-    _uriEditItems![index] =
-        "data:image/${fileEditItem.path.split('/').last.split('.').last};base64,${base64Encode(fileEditItem.readAsBytesSync())}";
-  }
-
-  void addFilePathEditItems(String filePathEditItem, {int index = -1}) {
-    _filePathEditItems ??= {};
-
-    if (index == -1) {
-      index = _filePathEditItems!.length;
-    }
-
-    _filePathEditItems![index] = filePathEditItem;
-  }
-
-  void changeLastFileEditItems(File fileEditItem) {
-    if (_fileEditItems != null && _fileEditItems!.isNotEmpty) {
-      final lastIndex = _fileEditItems!.keys.last;
-      _fileEditItems!.remove(lastIndex);
-      _filePathEditItems!.remove(lastIndex);
-      _base64EditItems!.remove(lastIndex);
-      _uriEditItems!.remove(lastIndex);
-
-      _fileEditItems![lastIndex] = fileEditItem;
-      _filePathEditItems![lastIndex] = fileEditItem.path;
-      _base64EditItems![lastIndex] =
-          base64Encode(fileEditItem.readAsBytesSync());
-      _uriEditItems![lastIndex] =
-          "data:image/${fileEditItem.path.split('/').last.split('.').last};base64,${base64Encode(fileEditItem.readAsBytesSync())}";
-    }
-  }
-
-  // reset
-  void resetEditItems() {
-    _fileEditItems = null;
-    _filePathEditItems = null;
-    _base64EditItems = null;
-    _uriEditItems = null;
+  void resetFileItem() {
+    _fileItem = null;
+    _filePathItem = null;
   }
 
   File? _fileAddReport;

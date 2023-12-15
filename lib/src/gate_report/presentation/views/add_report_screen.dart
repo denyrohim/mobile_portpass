@@ -13,7 +13,6 @@ import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/add_report_form.dart';
-import 'package:port_pass_app/src/gate_report/presentation/refactor/location_section.dart';
 import 'package:provider/provider.dart';
 
 class AddReportScreen extends StatefulWidget {
@@ -42,26 +41,20 @@ class _AddReportScreenState extends State<AddReportScreen> {
 
   final urgentLetterController = TextEditingController();
   final documentationController = TextEditingController();
-  final locationController = TextEditingController();
 
   bool get urgentLetterChanged => urgentLetterController.text.trim() != "";
   bool get documentationChanged => documentationController.text.trim() != "";
-  bool get locationChanged => locationController.text.trim() != "";
 
-  bool get nothingChanged =>
-      !urgentLetterChanged && !documentationChanged && !locationChanged;
+  bool get nothingChanged => !urgentLetterChanged && !documentationChanged;
 
-  bool get allChanged =>
-      urgentLetterChanged && documentationChanged && locationChanged;
+  bool get allChanged => urgentLetterChanged && documentationChanged;
 
   void get initController {
     urgentLetterController.text = "";
     documentationController.text = "";
-    locationController.text = "";
 
     urgentLetterController.addListener(() => setState(() {}));
     documentationController.addListener(() => setState(() {}));
-    locationController.addListener(() => setState(() {}));
 
     context.read<FileProvider>().resetFileAddReport();
     context.read<FileProvider>().resetDocumentationAddReport();
@@ -98,11 +91,6 @@ class _AddReportScreenState extends State<AddReportScreen> {
           CoreUtils.showSnackBar(context, "Laporan berhasil ditambahkan");
           context.read<FileProvider>().resetFileAddReport();
           context.read<FileProvider>().resetDocumentationAddReport();
-        } else if (state is LocationLoaded) {
-          CoreUtils.showSnackBar(context, "Lokasi berhasil ditambahkan");
-          context.read<ReportProvider>().initLocation(state.location);
-          locationController.text =
-              context.read<ReportProvider>().location!.location;
         }
       },
       builder: (context, state) {
@@ -123,7 +111,6 @@ class _AddReportScreenState extends State<AddReportScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const LocationSection(),
                       const SizedBox(
                         height: 10,
                       ),
@@ -180,8 +167,6 @@ class _AddReportScreenState extends State<AddReportScreen> {
                                                 documentation: context
                                                     .read<FileProvider>()
                                                     .documentationUriAddReport!,
-                                                location: reportProvider
-                                                    .location!.location,
                                                 dateTime: DateTime.now(),
                                               )),
                                         );

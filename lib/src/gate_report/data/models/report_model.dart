@@ -3,7 +3,6 @@ import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 
 class ReportModel extends Report {
   const ReportModel({
-    required super.location,
     required super.urgentLetter,
     required super.documentation,
     required super.dateTime,
@@ -11,7 +10,6 @@ class ReportModel extends Report {
 
   ReportModel.empty()
       : this(
-          location: '',
           urgentLetter: '',
           documentation: '',
           dateTime: DateTime.now(),
@@ -24,7 +22,6 @@ class ReportModel extends Report {
     DateTime? dateTime,
   }) {
     return ReportModel(
-      location: location ?? this.location,
       urgentLetter: urgentLetter ?? this.urgentLetter,
       documentation: documentation ?? this.documentation,
       dateTime: dateTime ?? this.dateTime,
@@ -33,7 +30,6 @@ class ReportModel extends Report {
 
   ReportModel.fromMap(DataMap map)
       : super(
-          location: map['location'] as String,
           urgentLetter: map['urgent_letter'] as String,
           documentation: map['documentation'] as String,
           dateTime: map['date_time'] as DateTime,
@@ -41,7 +37,6 @@ class ReportModel extends Report {
 
   DataMap toMap() {
     return {
-      'location': location,
       'urgent_letter': urgentLetter,
       'documentation': documentation,
       'date_time': dateTime,

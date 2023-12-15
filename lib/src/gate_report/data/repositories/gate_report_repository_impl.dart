@@ -22,7 +22,6 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }) async {
     try {
       final reportModel = ReportModel(
-        location: reportData.location,
         urgentLetter: reportData.urgentLetter,
         documentation: reportData.documentation,
         dateTime: reportData.dateTime,

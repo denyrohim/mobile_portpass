@@ -102,6 +102,69 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       }
 
       return ActivityModel.fromMap(activityData);
+      // return const ActivityModel(
+      //   id: 1,
+      //   name: "Activity",
+      //   shipName: "Ship ",
+      //   type: "Memasukkan Barang",
+      //   date: "Date ",
+      //   time: "Time ",
+      //   items: [
+      //     Item(
+      //       image: MediaRes.itemExample,
+      //       name: "Masako",
+      //       amount: 10,
+      //       unit: 'ton',
+      //     ),
+      //     Item(
+      //       image: MediaRes.itemExample,
+      //       name: "Masako",
+      //       amount: 10,
+      //       unit: 'ton',
+      //     ),
+      //     Item(
+      //         image: MediaRes.itemExample,
+      //         name: "Masako",
+      //         amount: 10,
+      //         unit: 'ton'),
+      //     Item(
+      //         image: MediaRes.itemExample,
+      //         name: "Masako",
+      //         amount: 10,
+      //         unit: 'ton'),
+      //     Item(
+      //         image: MediaRes.itemExample,
+      //         name: "Masako",
+      //         amount: 10,
+      //         unit: 'ton'),
+      //     Item(
+      //         image: MediaRes.itemExample,
+      //         name: "Masako",
+      //         amount: 10,
+      //         unit: 'ton'),
+      //     Item(
+      //         image: MediaRes.itemExample,
+      //         name: "Masako",
+      //         amount: 10,
+      //         unit: 'ton'),
+      //   ],
+      //   status: "Diterima",
+      //   activityProgress: [
+      //     ActivityProgressModel(
+      //       name: "ActivityProgress ",
+      //       date: "Date ",
+      //       time: "Time ",
+      //       status: "Status ",
+      //     ),
+      //     ActivityProgressModel(
+      //       name: "ActivityProgress ",
+      //       date: "Date ",
+      //       time: "Time ",
+      //       status: "Status ",
+      //     ),
+      //   ],
+      //   qrCode: "QrCode ",
+      // );
     } on ServerException {
       rethrow;
     } catch (e, s) {

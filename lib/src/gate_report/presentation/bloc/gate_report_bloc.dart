@@ -92,7 +92,7 @@ class GateReportBloc extends Bloc<GateReportEvent, GateReportState> {
     ));
     result.fold(
       (failure) => emit(GateReportError(failure.errorMessage)),
-      (_) => emit(const ReportAdded()),
+      (activity) => emit(ReportAdded(activity)),
     );
   }
 

@@ -8,13 +8,15 @@ Future<void> init() async {
   final api = API();
   final imagePicker = ImagePicker();
   final geolocator = GeolocatorPlatform.instance;
+  final filePicker = FilePicker.platform;
 
   await _initCore(
       prefs: prefs,
       dio: dio,
       api: api,
       imagePicker: imagePicker,
-      geolocator: geolocator);
+      geolocator: geolocator,
+      filePicker: filePicker);
   await _initAuth();
   await _initEmployeeManagement();
   await _initActivityManagement();
@@ -27,13 +29,15 @@ Future<void> _initCore({
   required API api,
   required ImagePicker imagePicker,
   required GeolocatorPlatform geolocator,
+  required FilePicker filePicker,
 }) async {
   sl
     ..registerLazySingleton(() => dio)
     ..registerLazySingleton(() => api)
     ..registerLazySingleton(() => prefs)
     ..registerLazySingleton(() => imagePicker)
-    ..registerLazySingleton(() => geolocator);
+    ..registerLazySingleton(() => geolocator)
+    ..registerLazySingleton(() => filePicker);
 }
 
 Future<void> _initAuth() async {
@@ -139,7 +143,6 @@ Future<void> _initActivityManagement() async {
 }
 
 Future<void> _initGateReport() async {
-  final filePicker = FilePicker.platform;
   sl
     ..registerFactory(
       () => GateReportBloc(
@@ -159,7 +162,6 @@ Future<void> _initGateReport() async {
     ..registerLazySingleton(() => AddDocumentation(sl()))
     ..registerLazySingleton<GateReportRepository>(
         () => GateReportRepositoryImpl(sl()))
-    ..registerLazySingleton(() => filePicker)
     ..registerLazySingleton<GateReportRemoteDataSource>(
       () => GateReportRemoteDataSourceImpl(
         sharedPreferences: sl(),

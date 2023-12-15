@@ -12,6 +12,7 @@ import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/gate_tracking_activity_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/add_report_form.dart';
 import 'package:provider/provider.dart';
 
@@ -89,8 +90,12 @@ class _AddReportScreenState extends State<AddReportScreen> {
               context.read<FileProvider>().documentationNameAddReport!;
         } else if (state is ReportAdded) {
           CoreUtils.showSnackBar(context, "Laporan berhasil ditambahkan");
-          context.read<FileProvider>().resetFileAddReport();
-          context.read<FileProvider>().resetDocumentationAddReport();
+          initController;
+          final navigator = Navigator.of(context);
+          navigator.pushNamed(
+            GateTrackingActivityScreen.routeName,
+            arguments: state.activity,
+          );
         }
       },
       builder: (context, state) {

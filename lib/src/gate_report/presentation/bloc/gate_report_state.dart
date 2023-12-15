@@ -67,7 +67,12 @@ class UrgentLetterAdded extends GateReportState {
 }
 
 class ReportAdded extends GateReportState {
-  const ReportAdded();
+  const ReportAdded(this.activity);
+
+  final Activity activity;
+
+  @override
+  List<Object> get props => [activity];
 }
 
 class ActivityLoaded extends GateReportState {

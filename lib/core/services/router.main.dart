@@ -102,6 +102,17 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         settings: settings,
       );
 
+    case GateTrackingActivityScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<GateReportBloc>(),
+          child: GateTrackingActivityScreen(
+            activity: settings.arguments,
+          ),
+        ),
+        settings: settings,
+      );
+
     case QRCodeActivityScreen.routeName:
       return _pageBuilder(
         (_) => BlocProvider(

@@ -16,6 +16,7 @@ import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/add_report_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/gate_detail_activity_screen.dart';
+import 'package:port_pass_app/src/gate_report/presentation/views/gate_tracking_activity_screen.dart';
 import 'package:port_pass_app/src/gate_report/presentation/views/home_gate_report_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/edit_photo_profile_screen.dart';
 import 'package:port_pass_app/src/profile/presentation/views/profile_screen.dart';

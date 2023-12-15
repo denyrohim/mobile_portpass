@@ -69,102 +69,39 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      // final String dateTime = reportData.dateTime.toString().split(' ')[0];
-      // final result = await _dio.post(
-      //   _api.report.report,
-      //   data: {
-      //     "activity_id": activityId,
-      //     "urgent_letter": reportData.urgentLetter,
-      //     "documentation": reportData.documentation,
-      //     "date_time": dateTime
-      //   },
-      //   options: Options(
-      //     headers: ApiHeaders.getHeaders(
-      //       token: token,
-      //     ).headers,
-      //     receiveDataWhenStatusError: true,
-      //     validateStatus: (status) {
-      //       return status! < 500;
-      //     },
-      //   ),
-      // );
-
-      // if (result.statusCode != 200) {
-      //   throw ServerException(
-      //       message: result.data['message'] ?? "Data tidak terkirim",
-      //       statusCode: result.statusCode ?? 505);
-      // }
-
-      // var activityData = result.data['data'] as DataMap?;
-      // if (activityData == null) {
-      //   throw const ServerException(
-      //       message: "Please try again later", statusCode: 505);
-      // }
-
-      // return ActivityModel.fromMap(activityData);
-      return const ActivityModel(
-        id: 1,
-        name: "Activity",
-        shipName: "Ship ",
-        type: "Memasukkan Barang",
-        date: "Date ",
-        time: "Time ",
-        items: [
-          Item(
-            image: MediaRes.itemExample,
-            name: "Masako",
-            amount: 10,
-            unit: 'ton',
-          ),
-          Item(
-            image: MediaRes.itemExample,
-            name: "Masako",
-            amount: 10,
-            unit: 'ton',
-          ),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-        ],
-        status: "Diterima",
-        activityProgress: [
-          ActivityProgressModel(
-            name: "ActivityProgress ",
-            date: "Date ",
-            time: "Time ",
-            status: "Status ",
-          ),
-          ActivityProgressModel(
-            name: "ActivityProgress ",
-            date: "Date ",
-            time: "Time ",
-            status: "Status ",
-          ),
-        ],
-        qrCode: "QrCode ",
+      final String dateTime = reportData.dateTime.toString().split(' ')[0];
+      final result = await _dio.post(
+        _api.report.report,
+        data: {
+          "activity_id": activityId,
+          "urgent_letter": reportData.urgentLetter,
+          "documentation": reportData.documentation,
+          "date_time": dateTime
+        },
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+          receiveDataWhenStatusError: true,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
       );
+
+      if (result.statusCode != 200) {
+        throw ServerException(
+            message: result.data['message'] ?? "Data tidak terkirim",
+            statusCode: result.statusCode ?? 505);
+      }
+
+      var activityData = result.data['data'] as DataMap?;
+      if (activityData == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+
+      return ActivityModel.fromMap(activityData);
     } on ServerException {
       rethrow;
     } catch (e, s) {

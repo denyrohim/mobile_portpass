@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 
 import '../../../../core/res/fonts.dart';
 import '../../../../core/res/media_res.dart';
@@ -26,10 +28,10 @@ class HomeGateReportScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.1,
                 ),
                 Expanded(
-                  flex: 2,
+                  flex: 1,
                   child: Image.asset(
                     MediaRes.logoPortPass,
-                    height: 202,
+                    height: 180,
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -38,65 +40,79 @@ class HomeGateReportScreen extends StatelessWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
-                      color: Colors.white,
+                      color: Colours.secondaryColour,
                     ),
                     height: 270,
                     width: 300,
-                    child: Stack(
-                      alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 35),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 4),
+                        Text(
+                          context.currentUser!.location ?? 'Lokasi belum ada',
+                          style: const TextStyle(
+                            fontFamily: Fonts.inter,
+                            fontWeight: FontWeight.w700,
+                            color: Colours.primaryColour,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 35),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  color: Colours.secondaryColour,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.25),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                            height: 155,
-                            width: 242,
-                            child: const Padding(
-                              padding: EdgeInsets.only(top: 70),
-                              child: Text(
-                                'Ingin Scan Activity?\nKlik Disini.',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: Fonts.inter,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xff315784),
-                                  fontSize: 20,
+                                height: 155,
+                                width: 242,
+                                child: const Padding(
+                                  padding: EdgeInsets.only(top: 70),
+                                  child: Text(
+                                    'Ingin Scan Activity?\nKlik Disini.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: Fonts.inter,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colours.primaryColour,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 115),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.25),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 4),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 115),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.25),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                                height: 104,
+                                width: 104,
+                              ),
                             ),
-                            height: 104,
-                            width: 104,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 115),
-                          child: SvgPicture.asset(MediaRes.scanBold),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 115),
+                              child: SvgPicture.asset(MediaRes.scanBold),
+                            ),
+                          ],
                         ),
                       ],
                     ),

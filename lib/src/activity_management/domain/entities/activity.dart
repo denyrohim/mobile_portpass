@@ -14,6 +14,7 @@ class Activity extends Equatable {
   final List<ActivityProgress> activityProgress;
   final String qrCode;
   final bool isChecked;
+  final String? route;
 
   const Activity({
     required this.id,
@@ -27,6 +28,7 @@ class Activity extends Equatable {
     required this.activityProgress,
     required this.qrCode,
     required this.isChecked,
+    this.route,
   });
 
   Activity.empty()
@@ -42,6 +44,7 @@ class Activity extends Equatable {
           activityProgress: List<ActivityProgress>.empty(),
           qrCode: '',
           isChecked: false,
+          route: null,
         );
 
   @override
@@ -57,5 +60,6 @@ class Activity extends Equatable {
         activityProgress,
         qrCode,
         isChecked,
+        route
       ];
 }

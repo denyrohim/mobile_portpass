@@ -8,4 +8,5 @@ enum UpdateActivityAction {
   status,
   activityProgress,
   qrCode,
+  route
 }

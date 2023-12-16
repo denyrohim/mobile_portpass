@@ -32,6 +32,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   final activityTypeController = TextEditingController();
   final activityDateController = TextEditingController();
   final activityHourController = TextEditingController();
+  final activityRouteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -46,6 +47,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
 
   bool get activityHourChanged => activityHourController.text.trim() != "";
 
+  bool get activityRouteChanged => activityRouteController.text.trim() != "";
+
   bool get itemsChanged =>
       context.read<ActivityProvider>().itemsAddActivity.toString() != "[]";
 
@@ -55,6 +58,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
       !activityTypeChanged &&
       !activityDateChanged &&
       !activityHourChanged &&
+      !activityRouteChanged &&
       !itemsChanged;
 
   bool get allChanged =>
@@ -63,6 +67,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
       activityTypeChanged &&
       activityDateChanged &&
       activityHourChanged &&
+      activityRouteChanged &&
       itemsChanged;
 
   void get initController {
@@ -71,6 +76,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.text = "";
     activityDateController.text = "";
     activityHourController.text = "";
+    activityRouteController.text = "";
     context.read<ActivityProvider>().resetItemsAddActivity();
 
     nameController.addListener(() => setState(() {}));
@@ -78,6 +84,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.addListener(() => setState(() {}));
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
+    activityRouteController.addListener(() => setState(() {}));
   }
 
   @override
@@ -93,6 +100,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
     activityTypeController.dispose();
     activityDateController.dispose();
     activityHourController.dispose();
+    activityRouteController.dispose();
     super.dispose();
   }
 
@@ -113,6 +121,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                 type: state.activity.type,
                 date: state.activity.date,
                 status: state.activity.status,
+                route: state.activity.route ?? '-',
               );
             },
           );
@@ -162,6 +171,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                       activityTypeController: activityTypeController,
                       activityDateController: activityDateController,
                       activityHourController: activityHourController,
+                      activityRouteController: activityRouteController,
                       formKey: formKey,
                     ),
                     const SizedBox(height: 12),
@@ -324,6 +334,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                                       .text
                                                       .trim(),
                                                   time: activityHourController
+                                                      .text
+                                                      .trim(),
+                                                  route: activityRouteController
                                                       .text
                                                       .trim(),
                                                   items: activityProvider

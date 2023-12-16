@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,9 +10,7 @@ import 'package:latlng/latlng.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/api.dart';
-import 'package:port_pass_app/core/utils/headers.dart';
 import 'package:flutter/material.dart';
-import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/gate_report/data/models/activity_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/location_model.dart';
@@ -70,101 +70,101 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
       final String dateTime = reportData.dateTime.toString().split(' ')[0];
-      final result = await _dio.post(
-        _api.report.report,
-        data: {
-          "activity_id": activityId,
-          "urgent_letter": reportData.urgentLetter,
-          "documentation": reportData.documentation,
-          "date_time": dateTime
-        },
-        options: Options(
-          headers: ApiHeaders.getHeaders(
-            token: token,
-          ).headers,
-          receiveDataWhenStatusError: true,
-          validateStatus: (status) {
-            return status! < 500;
-          },
-        ),
-      );
-
-      if (result.statusCode != 200) {
-        throw ServerException(
-            message: result.data['message'] ?? "Data tidak terkirim",
-            statusCode: result.statusCode ?? 505);
-      }
-
-      var activityData = result.data['data'] as DataMap?;
-      if (activityData == null) {
-        throw const ServerException(
-            message: "Please try again later", statusCode: 505);
-      }
-
-      return ActivityModel.fromMap(activityData);
-      // return const ActivityModel(
-      //   id: 1,
-      //   name: "Activity",
-      //   shipName: "Ship ",
-      //   type: "Memasukkan Barang",
-      //   date: "Date ",
-      //   time: "Time ",
-      //   items: [
-      //     Item(
-      //       image: MediaRes.itemExample,
-      //       name: "Masako",
-      //       amount: 10,
-      //       unit: 'ton',
-      //     ),
-      //     Item(
-      //       image: MediaRes.itemExample,
-      //       name: "Masako",
-      //       amount: 10,
-      //       unit: 'ton',
-      //     ),
-      //     Item(
-      //         image: MediaRes.itemExample,
-      //         name: "Masako",
-      //         amount: 10,
-      //         unit: 'ton'),
-      //     Item(
-      //         image: MediaRes.itemExample,
-      //         name: "Masako",
-      //         amount: 10,
-      //         unit: 'ton'),
-      //     Item(
-      //         image: MediaRes.itemExample,
-      //         name: "Masako",
-      //         amount: 10,
-      //         unit: 'ton'),
-      //     Item(
-      //         image: MediaRes.itemExample,
-      //         name: "Masako",
-      //         amount: 10,
-      //         unit: 'ton'),
-      //     Item(
-      //         image: MediaRes.itemExample,
-      //         name: "Masako",
-      //         amount: 10,
-      //         unit: 'ton'),
-      //   ],
-      //   status: "Diterima",
-      //   activityProgress: [
-      //     ActivityProgressModel(
-      //       name: "ActivityProgress ",
-      //       date: "Date ",
-      //       time: "Time ",
-      //       status: "Status ",
-      //     ),
-      //     ActivityProgressModel(
-      //       name: "ActivityProgress ",
-      //       date: "Date ",
-      //       time: "Time ",
-      //       status: "Status ",
-      //     ),
-      //   ],
-      //   qrCode: "QrCode ",
+      debugPrint('dateTime: $dateTime');
+      // final result = await _dio.post(
+      //   _api.report.report,
+      //   data: {
+      //     "activity_id": activityId,
+      //     "urgent_letter": reportData.urgentLetter,
+      //     "documentation": reportData.documentation,
+      //     "date_time": dateTime
+      //   },
+      //   options: Options(
+      //     headers: ApiHeaders.getHeaders(
+      //       token: token,
+      //     ).headers,
+      //     receiveDataWhenStatusError: true,
+      //     validateStatus: (status) {
+      //       return status! < 500;
+      //     },
+      //   ),
       // );
+      // debugPrint(result.toString());
+      // if (result.statusCode != 200) {
+      //   throw ServerException(
+      //       message: result.data['message'] ?? "Data tidak terkirim",
+      //       statusCode: result.statusCode ?? 505);
+      // }
+
+      // var activityData = result.data['data'] as DataMap?;
+      // if (activityData == null) {
+      //   throw const ServerException(
+      //       message: "Please try again later", statusCode: 505);
+      // }
+      // return ActivityModel.fromMap(activityData);
+      return const ActivityModel(
+        id: 1,
+        name: "Activity",
+        shipName: "Ship ",
+        type: "Memasukkan Barang",
+        date: "Date ",
+        time: "Time ",
+        items: [
+          Item(
+            image: MediaRes.itemExample,
+            name: "Masako",
+            amount: 10,
+            unit: 'ton',
+          ),
+          Item(
+            image: MediaRes.itemExample,
+            name: "Masako",
+            amount: 10,
+            unit: 'ton',
+          ),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+          Item(
+              image: MediaRes.itemExample,
+              name: "Masako",
+              amount: 10,
+              unit: 'ton'),
+        ],
+        status: "Diterima",
+        activityProgress: [
+          ActivityProgressModel(
+            name: "ActivityProgress ",
+            date: "Date ",
+            time: "Time ",
+            status: "Status ",
+          ),
+          ActivityProgressModel(
+            name: "ActivityProgress ",
+            date: "Date ",
+            time: "Time ",
+            status: "Status ",
+          ),
+        ],
+        qrCode: "QrCode ",
+      );
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -299,7 +299,7 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
     try {
       final result = await _imagePicker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 80,
+        imageQuality: 50,
         maxWidth: 850,
       );
 
@@ -323,6 +323,7 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       final result = await _filePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png', 'jpeg'],
+        allowCompression: true,
       );
 
       if (result == null) {

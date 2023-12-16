@@ -29,7 +29,7 @@ class IFile extends StatelessWidget {
           children: [
             Container(
               height: 50,
-              width: screenWidth * 0.9,
+              width: screenWidth * 0.89,
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
                   borderRadius: BorderRadius.circular(15)),
@@ -78,10 +78,11 @@ class IFile extends StatelessWidget {
                       backgroundColor:
                           MaterialStateProperty.all(Colours.primaryColour),
                       foregroundColor: MaterialStateProperty.all(Colors.black),
-                      fixedSize: MaterialStateProperty.all(const Size(150, 60)),
+                      fixedSize: MaterialStateProperty.all(
+                          Size(screenWidth * 0.4, 60)),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(13),
                         ),
                       ),
                     ),

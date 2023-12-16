@@ -16,7 +16,6 @@ class ReportModel extends Report {
         );
 
   ReportModel copyWith({
-    String? location,
     String? urgentLetter,
     String? documentation,
     DateTime? dateTime,

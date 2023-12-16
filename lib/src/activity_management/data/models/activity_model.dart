@@ -16,6 +16,7 @@ class ActivityModel extends Activity {
     required super.activityProgress,
     required super.qrCode,
     required super.isChecked,
+    super.route,
   });
 
   ActivityModel.empty()
@@ -31,6 +32,7 @@ class ActivityModel extends Activity {
           activityProgress: [],
           qrCode: '',
           isChecked: false,
+          route: null,
         );
 
   ActivityModel copyWith({
@@ -45,6 +47,7 @@ class ActivityModel extends Activity {
     List<ActivityProgressModel>? activityProgress,
     String? qrCode,
     bool? isChecked,
+    String? route,
   }) {
     return ActivityModel(
       id: id ?? this.id,
@@ -58,6 +61,7 @@ class ActivityModel extends Activity {
       activityProgress: activityProgress ?? this.activityProgress,
       qrCode: qrCode ?? this.qrCode,
       isChecked: isChecked ?? this.isChecked,
+      route: route ?? this.route,
     );
   }
 
@@ -78,6 +82,7 @@ class ActivityModel extends Activity {
               .toList(),
           qrCode: map['qr_code'] as String,
           isChecked: map['isChecked'] as bool,
+          route: map['route'] as String?,
         );
 
   DataMap toMap() {
@@ -95,6 +100,7 @@ class ActivityModel extends Activity {
           .toList(),
       'qr_code': qrCode,
       'isChecked': isChecked,
+      'route': route,
     };
   }
 }

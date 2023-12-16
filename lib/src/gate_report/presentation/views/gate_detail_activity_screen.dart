@@ -174,6 +174,33 @@ class _GateDetailActivityScreenState extends State<GateDetailActivityScreen> {
                                   children: [
                                     const Expanded(
                                       flex: 5,
+                                      child: Text("Rute Kegiatan",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.white)),
+                                    ),
+                                    Expanded(
+                                      flex: 6,
+                                      child: Text(
+                                        ": ${activity.route ?? "-"}",
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.white,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 5,
                                       child: Text("Tanggal Dibuat",
                                           style: TextStyle(
                                               fontSize: 16,

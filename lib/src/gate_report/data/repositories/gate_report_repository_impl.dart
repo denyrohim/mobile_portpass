@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
@@ -31,6 +32,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
         activityId: activityId,
         reportData: reportModel,
       );
+      debugPrint(result.toString());
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

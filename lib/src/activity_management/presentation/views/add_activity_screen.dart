@@ -179,9 +179,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                           ),
                           onPressed: () {
                             final navigator = Navigator.of(context);
-                            navigator.pushNamed(
-                              AddItemScreen.routeName,
-                            );
+                            navigator.pushNamed(AddItemScreen.routeName,
+                                arguments: "Add");
                           },
                           child: Row(
                             children: [
@@ -267,7 +266,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                                 initController;
-                                context.read<FileProvider>().resetFileItem();
+                                context.read<FileProvider>().resetFileAddItem();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: nothingChanged

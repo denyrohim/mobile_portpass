@@ -104,28 +104,52 @@ class FileProvider extends ChangeNotifier {
     _uriEditUser = null;
   }
 
-  File? _fileItem;
-  String? _filePathItem;
+  File? _fileAddItem;
+  String? _filePathAddItem;
 
-  File? get fileItem => _fileItem;
-  String? get filePathItem => _filePathItem;
+  File? get fileAddItem => _fileAddItem;
+  String? get filePathAddItem => _filePathAddItem;
 
-  void initFileItem(File fileItem) {
-    if (_fileItem != fileItem) {
-      _fileItem = fileItem;
-      _filePathItem = fileItem.path;
+  void initFileAddItem(File fileItem) {
+    if (_fileAddItem != fileItem) {
+      _fileAddItem = fileItem;
+      _filePathAddItem = fileItem.path;
     }
   }
 
-  void initFilePathItem(String filePathItem) {
-    if (_filePathItem != filePathItem) {
-      _filePathItem = filePathItem;
+  void initFilePathAddItem(String filePathItem) {
+    if (_filePathAddItem != filePathItem) {
+      _filePathAddItem = filePathItem;
     }
   }
 
-  void resetFileItem() {
-    _fileItem = null;
-    _filePathItem = null;
+  void resetFileAddItem() {
+    _fileAddItem = null;
+    _filePathAddItem = null;
+  }
+
+  File? _fileEditItem;
+  String? _filePathEditItem;
+
+  File? get fileEditItem => _fileEditItem;
+  String? get filePathEditItem => _filePathEditItem;
+
+  void initFileEditItem(File fileItem) {
+    if (_fileEditItem != fileItem) {
+      _fileEditItem = fileItem;
+      _filePathEditItem = fileItem.path;
+    }
+  }
+
+  void initFilePathEditItem(String filePathItem) {
+    if (_filePathEditItem != filePathItem) {
+      _filePathEditItem = filePathItem;
+    }
+  }
+
+  void resetFileEditItem() {
+    _fileEditItem = null;
+    _filePathEditItem = null;
   }
 
   File? _fileAddReport;

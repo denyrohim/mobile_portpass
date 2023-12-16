@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:port_pass_app/core/utils/core_utils.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 
@@ -31,7 +32,7 @@ class ItemModel extends Item {
   ItemModel.fromMap(DataMap map)
       : super(
             imagePath: map['image'] as String,
-            image: null,
+            image: map['image'] as File,
             name: map['name'] as String,
             amount: map['amount'] as int,
             unit: map['unit'] as String);
@@ -39,7 +40,7 @@ class ItemModel extends Item {
   DataMap toMap() {
     return {
       'imagePath': imagePath,
-      'image': image,
+      'image': CoreUtils.fileToUriBase64(image),
       'name': name,
       'amount': amount,
       'unit': unit

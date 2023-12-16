@@ -75,6 +75,15 @@ class DataLoaded extends ActivityManagementState {
   List<Object> get props => [activities];
 }
 
+class StatusChanged extends ActivityManagementState {
+  const StatusChanged(this.activities);
+
+  final List<Activity> activities;
+
+  @override
+  List<Object> get props => [activities];
+}
+
 class DataAdded extends ActivityManagementState {
   const DataAdded(this.activity);
 

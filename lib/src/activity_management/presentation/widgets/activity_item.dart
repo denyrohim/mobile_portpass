@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
+import 'package:port_pass_app/core/services/injection_container.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
@@ -10,6 +11,7 @@ import 'package:port_pass_app/src/activity_management/presentation/bloc/activity
 import 'package:port_pass_app/src/activity_management/presentation/views/edit_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/qr_code_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/tracking_activity_screen.dart';
+import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_confirmation_button.dart';
 
 class ActivityItem extends StatelessWidget {
   const ActivityItem(
@@ -59,7 +61,7 @@ class ActivityItem extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            margin: const EdgeInsets.only(top: 12),
+            margin: const EdgeInsets.symmetric(vertical: 12),
             height: 180,
             decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
@@ -355,24 +357,24 @@ class ActivityItem extends StatelessWidget {
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (BuildContext context) {
-                                  // return BlocProvider(
-                                  //   create: (_) => sl<ActivityManagementBloc>(),
-                                  //   // child: ActivityConfirmationButton(
-                                  //   //   text: 'Yakin hapus?',
-                                  //   //   textStyle: const TextStyle(
-                                  //   //     fontSize: 20,
-                                  //   //     color: Colours.primaryColour,
-                                  //   //     fontWeight: FontWeight.w700,
-                                  //   //   ),
-                                  //   //   textButtonNegative: 'Batal',
-                                  //   //   textButtonPositive: 'Hapus',
-                                  //   //   colorTextButtonNegative:
-                                  //   //       Colours.primaryColour,
-                                  //   //   colorTextButtonPositive: Colours.errorColour,
-                                  //   //   employeesIds: [activity[index].id],
-                                  //   // ),
-                                  // );
-                                  return const Placeholder();
+                                  return BlocProvider(
+                                    create: (_) => sl<ActivityManagementBloc>(),
+                                    child: ActivityConfirmationButton(
+                                      text: 'Yakin hapus activity ?',
+                                      textStyle: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colours.primaryColour,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      textButtonNegative: 'Batal',
+                                      textButtonPositive: 'Hapus',
+                                      colorTextButtonNegative:
+                                          Colours.primaryColour,
+                                      colorTextButtonPositive:
+                                          Colours.errorColour,
+                                      activitiesIds: [activities[index].id],
+                                    ),
+                                  );
                                 },
                               );
                             }

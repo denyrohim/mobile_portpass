@@ -33,9 +33,8 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
+  void get initController {
+    deniedActivity = false;
     _statusController.text = 'Aktivitas';
     _countController.text = '0';
     _countController.addListener(() {
@@ -44,6 +43,12 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
     _statusController.addListener(() {
       setState(() {});
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
     context.read<ActivityManagementBloc>().add(const GetActivitiesEvent());
   }
 
@@ -58,6 +63,14 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
           if (activitiesDefault.isEmpty) {
             activitiesDefault = state.activities;
           }
+          initController;
+          context.read<ActivityManagementBloc>().add(
+                ChangeStatusActivitiesEvent(
+                  activities: activitiesDefault,
+                  status: _statusController.text,
+                ),
+              );
+          debugPrint('Data Loaded');
         } else if (state is DataAdded) {
           debugPrint('Data Added');
         } else if (state is DataUpdated) {
@@ -70,6 +83,9 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
           context.read<ActivityProvider>().initActivities(state.activities);
         } else if (state is SelectedAll) {
           debugPrint('Select All');
+          context.read<ActivityProvider>().initActivities(state.activities);
+        } else if (state is StatusChanged) {
+          debugPrint('Status Changed');
           context.read<ActivityProvider>().initActivities(state.activities);
         }
       },
@@ -224,9 +240,8 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                 : Container(
                                     margin: const EdgeInsets.only(top: 43),
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    height: MediaQuery.of(context).size.height *
-                                        0.60,
+                                      horizontal: 20,
+                                    ),
                                     child: Stack(
                                       children: [
                                         if (activities.isEmpty)
@@ -272,54 +287,6 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                             } else {
                                               return const SizedBox.shrink();
                                             }
-
-                                            // if (deniedActivity) {
-                                            //   if (activities[index]
-                                            //           .name
-                                            //           .toLowerCase()
-                                            //           .contains(
-                                            //               _searchController
-                                            //                   .text) &&
-                                            //       activities[index]
-                                            //           .status
-                                            //           .contains("Ditolak")) {
-                                            //     return ActivityItem(
-                                            //       context,
-                                            //       index: index,
-                                            //       activities: activities,
-                                            //       isShowCheckBox:
-                                            //           activityProvider
-                                            //               .isShowChecked,
-                                            //     );
-                                            //   } else {
-                                            //     return const SizedBox.shrink();
-                                            //   }
-                                            // } else {
-                                            //   if (activities[index]
-                                            //           .name
-                                            //           .toLowerCase()
-                                            //           .contains(
-                                            //               _searchController
-                                            //                   .text) &&
-                                            //       activities[index]
-                                            //           .status
-                                            //           .contains(_statusController
-                                            //               .text) &&
-                                            //       !activities[index]
-                                            //           .status
-                                            //           .contains("Ditolak")) {
-                                            //     return ActivityItem(
-                                            //       context,
-                                            //       index: index,
-                                            //       activities: activities,
-                                            //       isShowCheckBox:
-                                            //           activityProvider
-                                            //               .isShowChecked,
-                                            //     );
-                                            //   } else {
-                                            //     return const SizedBox.shrink();
-                                            //   }
-                                            // }
                                           },
                                         ),
                                       ],

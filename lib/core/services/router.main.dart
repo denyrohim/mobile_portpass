@@ -139,7 +139,9 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _pageBuilder(
         (_) => BlocProvider(
           create: (_) => sl<ActivityManagementBloc>(),
-          child: const AddItemScreen(),
+          child: AddItemScreen(
+            activityType: settings.arguments,
+          ),
         ),
         settings: settings,
       );

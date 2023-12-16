@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:flutter/material.dart';
 
@@ -39,5 +42,24 @@ class CoreUtils {
     }
 
     return null;
+  }
+
+  static String? fileToUriBase64(File? file) {
+    if (file == null) {
+      return null;
+    }
+    final filePath = file.path;
+    final base64File = base64Encode(file.readAsBytesSync());
+    String uriBase64;
+    if (filePath.split('/').last.split('.').last == "pdf") {
+      uriBase64 = "data:application/pdf;base64,$base64File";
+    } else if (filePath.split('/').last.split('.').last == "docx" ||
+        filePath.split('/').last.split('.').last == "doc") {
+      uriBase64 = "data:application/msword;base64,$base64File";
+    } else {
+      uriBase64 =
+          "data:image/${filePath.split('/').last.split('.').last};base64,$base64File";
+    }
+    return uriBase64;
   }
 }

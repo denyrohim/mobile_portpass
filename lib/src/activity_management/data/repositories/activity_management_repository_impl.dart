@@ -4,8 +4,10 @@ import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/activity_management/data/datasources/activity_management_remote_data_source.dart';
 import 'package:port_pass_app/src/activity_management/data/models/activity_model.dart';
+import 'package:port_pass_app/src/activity_management/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/activity_management/data/models/item_model.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity_progress.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
 import 'package:port_pass_app/src/activity_management/domain/repositories/activity_management_repository.dart';
 
@@ -17,6 +19,24 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   @override
   ResultFuture<Activity> addActivity({required Activity activity}) async {
     try {
+      final itemsData = List<ItemModel>.from(activity.items
+          .map((item) => ItemModel(
+                imagePath: item.imagePath,
+                image: item.image,
+                name: item.name,
+                amount: item.amount,
+                unit: item.unit,
+              ))
+          .toList());
+      final activityProgressData =
+          List<ActivityProgress>.from(activity.activityProgress
+              .map((progress) => ActivityProgressModel(
+                    name: progress.name,
+                    date: progress.date,
+                    time: progress.time,
+                    status: progress.status,
+                  ))
+              .toList());
       final activityData = ActivityModel(
         id: activity.id,
         name: activity.name,
@@ -24,9 +44,9 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
         type: activity.type,
         date: activity.date,
         time: activity.time,
-        items: activity.items,
+        items: itemsData,
         status: activity.status,
-        activityProgress: activity.activityProgress,
+        activityProgress: activityProgressData,
         qrCode: activity.qrCode,
         isChecked: activity.isChecked,
       );
@@ -59,7 +79,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   }
 
   @override
-  ResultFuture<void> deleteActivities({required List<int> ids}) async {
+  ResultFuture<dynamic> deleteActivities({required List<int> ids}) async {
     try {
       final result = await _remoteDataSource.deleteActivities(
         ids: ids,
@@ -97,8 +117,39 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   @override
   ResultFuture<Activity> updateActivity({required Activity activity}) async {
     try {
+      final itemsData = List<ItemModel>.from(activity.items
+          .map((item) => ItemModel(
+                imagePath: item.imagePath,
+                image: item.image,
+                name: item.name,
+                amount: item.amount,
+                unit: item.unit,
+              ))
+          .toList());
+      final activityProgressData =
+          List<ActivityProgress>.from(activity.activityProgress
+              .map((progress) => ActivityProgressModel(
+                    name: progress.name,
+                    date: progress.date,
+                    time: progress.time,
+                    status: progress.status,
+                  ))
+              .toList());
+      final activityData = ActivityModel(
+        id: activity.id,
+        name: activity.name,
+        shipName: activity.shipName,
+        type: activity.type,
+        date: activity.date,
+        time: activity.time,
+        items: itemsData,
+        status: activity.status,
+        activityProgress: activityProgressData,
+        qrCode: activity.qrCode,
+        isChecked: activity.isChecked,
+      );
       final result = await _remoteDataSource.updateActivity(
-        activity: activity as ActivityModel,
+        activity: activityData,
       );
       return Right(result);
     } on ServerException catch (e) {

@@ -19,8 +19,11 @@ import 'package:provider/provider.dart';
 class AddItemScreen extends StatefulWidget {
   const AddItemScreen({
     super.key,
+    required this.activityType,
   });
   static const routeName = '/add-item';
+
+  final dynamic activityType;
 
   @override
   State<AddItemScreen> createState() => _AddItemScreenState();
@@ -81,11 +84,19 @@ class _AddItemScreenState extends State<AddItemScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is PhotoAdded) {
           if (state.photo != null) {
-            context.read<FileProvider>().initFileItem(state.photo);
+            if (widget.activityType == "Add") {
+              context.read<FileProvider>().initFileAddItem(state.photo);
+            } else if (widget.activityType == "Edit") {
+              context.read<FileProvider>().initFileEditItem(state.photo);
+            }
             photoController.text = state.photo.path;
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().initItemsAddActivity(state.items);
+          if (widget.activityType == "Add") {
+            context.read<ActivityProvider>().initItemsAddActivity(state.items);
+          } else if (widget.activityType == "Edit") {
+            context.read<ActivityProvider>().initItemsEditActivity(state.items);
+          }
           final navidator = Navigator.of(context);
           if (navidator.canPop()) {
             navidator.pop();
@@ -200,7 +211,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                     ? ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: Image.file(
-                                          fileProvider.fileItem!,
+                                          (widget.activityType == "Add")
+                                              ? fileProvider.fileAddItem!
+                                              : fileProvider.fileEditItem!,
                                           width: 120,
                                           height: 120,
                                           fit: BoxFit.cover,
@@ -251,8 +264,12 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                               .read<ActivityManagementBloc>()
                                               .add(
                                                 AddItemEvent(
-                                                  items: activityProvider
-                                                      .itemsAddActivity,
+                                                  items: (widget.activityType ==
+                                                          "Add")
+                                                      ? activityProvider
+                                                          .itemsAddActivity
+                                                      : activityProvider
+                                                          .itemsEditActivity,
                                                   item: Item(
                                                     name: nameController.text
                                                         .trim(),
@@ -261,11 +278,14 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                                             .trim()),
                                                     unit: unitController.text
                                                         .trim(),
-                                                    imagePath: photoController
-                                                        .text
-                                                        .trim(),
-                                                    image:
-                                                        fileProvider.fileItem,
+                                                    imagePath:
+                                                        photoController.text,
+                                                    image: (widget.activityType ==
+                                                            "Add")
+                                                        ? fileProvider
+                                                            .fileAddItem
+                                                        : fileProvider
+                                                            .fileEditItem,
                                                   ),
                                                   index: -1,
                                                 ),

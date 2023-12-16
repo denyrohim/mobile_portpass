@@ -15,7 +15,7 @@ abstract class ActivityManagementRepository {
     required int index,
   });
 
-  ResultFuture<void> deleteActivities({
+  ResultFuture<dynamic> deleteActivities({
     required List<int> ids,
   });
 

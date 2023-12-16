@@ -144,9 +144,8 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                           ),
                           onPressed: () {
                             final navigator = Navigator.of(context);
-                            navigator.pushNamed(
-                              AddItemScreen.routeName,
-                            );
+                            navigator.pushNamed(AddItemScreen.routeName,
+                                arguments: "Edit");
                           },
                           child: Row(
                             children: [
@@ -269,7 +268,8 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                     onPressed: () {
                                       FocusManager.instance.primaryFocus
                                           ?.unfocus();
-                                      if (formKey.currentState!.validate()) {
+                                      if (formKey.currentState?.validate() ??
+                                          true) {
                                         context
                                             .read<ActivityManagementBloc>()
                                             .add(

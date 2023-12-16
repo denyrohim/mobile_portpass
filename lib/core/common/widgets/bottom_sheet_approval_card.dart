@@ -93,6 +93,8 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                   height: 140,
                                   width: 280,
                                   child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
                                     decoration: BoxDecoration(
                                       color: Colours.primaryColour,
                                       borderRadius: BorderRadius.circular(20),
@@ -137,147 +139,151 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Ringkasan Aktivitas',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: Fonts.inter,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colours.primaryColour,
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Ringkasan Aktivitas',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: Fonts.inter,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colours.primaryColour,
+                                        ),
+                                        textAlign: TextAlign.left,
                                       ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Expanded(
-                                          flex: 5,
-                                          child: Text(
-                                            'Nama Aktivitas',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.primaryColour,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                            flex: 7,
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 5,
                                             child: Text(
-                                              ': ${widget.name}',
-                                              style: const TextStyle(
+                                              'Nama Aktivitas',
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: Fonts.inter,
                                                 color: Colours.primaryColour,
                                               ),
-                                            ))
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Expanded(
-                                          flex: 5,
-                                          child: Text(
-                                            'Nama Kapal',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.primaryColour,
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                            flex: 7,
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ': ${widget.name}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: Fonts.inter,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 5,
                                             child: Text(
-                                              ': ${widget.shipName}',
-                                              style: const TextStyle(
+                                              'Nama Kapal',
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: Fonts.inter,
                                                 color: Colours.primaryColour,
                                               ),
-                                            ))
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Expanded(
-                                          flex: 5,
-                                          child: Text(
-                                            'Jenis Kegiatan',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.primaryColour,
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                            flex: 7,
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ': ${widget.shipName}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: Fonts.inter,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 5,
                                             child: Text(
-                                              ': ${widget.type}',
-                                              style: const TextStyle(
+                                              'Jenis Kegiatan',
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: Fonts.inter,
                                                 color: Colours.primaryColour,
                                               ),
-                                            ))
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Expanded(
-                                          flex: 5,
-                                          child: Text(
-                                            'Tanggal Dibuat',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.primaryColour,
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                            flex: 7,
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ': ${widget.type}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: Fonts.inter,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 5,
                                             child: Text(
-                                              ': ${widget.date}',
-                                              style: const TextStyle(
+                                              'Tanggal Dibuat',
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: Fonts.inter,
                                                 color: Colours.primaryColour,
                                               ),
-                                            ))
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Expanded(
-                                          flex: 5,
-                                          child: Text(
-                                            'Status',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontFamily: Fonts.inter,
-                                              color: Colours.primaryColour,
                                             ),
                                           ),
-                                        ),
-                                        Expanded(
-                                            flex: 7,
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ': ${widget.date}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: Fonts.inter,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 5,
                                             child: Text(
-                                              ': ${widget.status}',
-                                              style: const TextStyle(
+                                              'Status',
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontFamily: Fonts.inter,
                                                 color: Colours.primaryColour,
                                               ),
-                                            ))
-                                      ],
-                                    ),
-                                  ],
+                                            ),
+                                          ),
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ': ${widget.status}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: Fonts.inter,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],

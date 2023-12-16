@@ -187,7 +187,7 @@ class ActivityManagementBloc
         activities: event.activities, status: event.status));
     return result.fold(
         (failure) => emit(ActivityManagementError(failure.errorMessage)),
-        (activities) => emit(DataLoaded(activities)));
+        (activities) => emit(StatusChanged(activities)));
   }
 
   Future<List<Activity>> _cancelCheckBoxActivityHandler(

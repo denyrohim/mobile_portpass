@@ -96,7 +96,7 @@ class ActivityProvider extends ChangeNotifier {
     Future.delayed(Duration.zero, notifyListeners);
   }
 
-  void updateImageIteEditActivity(File image, int index) {
+  void updateImageItemEditActivity(File image, int index) {
     _itemsEditActivity = List.from(
       _itemsEditActivity.map(
         (item) {

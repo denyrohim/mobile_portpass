@@ -43,14 +43,34 @@ class _ActivityConfirmationButtonState
       listener: (context, state) {
         if (state is ActivityManagementError) {
           CoreUtils.showSnackBar(context, state.message);
+          final navigator = Navigator.of(context);
+          if (navigator.canPop()) {
+            navigator.pop();
+          }
         } else if (state is DataLoaded) {
+          debugPrint('Data Loaded');
           context.read<ActivityProvider>().initActivities(state.activities);
           context.read<ActivityProvider>().setShowChecked(false);
+          context.read<ActivityManagementBloc>().add(
+                ChangeStatusActivitiesEvent(
+                  activities: state.activities,
+                  status: "Ditolak",
+                ),
+              );
+        } else if (state is StatusChanged) {
+          debugPrint('Status Changed');
+          context.read<ActivityProvider>().initActivities(state.activities);
         } else if (state is DataDeleted) {
           final navigator = Navigator.of(context);
           if (navigator.canPop()) {
             navigator.pop();
           }
+
+          debugPrint('Data Deleted');
+          context
+              .read<ActivityManagementBloc>()
+              .add(const GetActivitiesEvent());
+
           showDialog(
             context: context,
             builder: (context) {

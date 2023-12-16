@@ -21,7 +21,7 @@ abstract class ActivityManagementRemoteDataSource {
     required ActivityModel activity,
   });
 
-  Future<void> deleteActivities({
+  Future<dynamic> deleteActivities({
     required List<int> ids,
   });
 
@@ -119,7 +119,7 @@ class ActivityManagementRemoteDataSourceImpl
   }
 
   @override
-  Future<void> deleteActivities({required List<int> ids}) async {
+  Future<dynamic> deleteActivities({required List<int> ids}) async {
     try {
       final token = _sharedPreferences.getString(kToken);
 
@@ -127,7 +127,7 @@ class ActivityManagementRemoteDataSourceImpl
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      await _dio.delete(
+      final result = await _dio.delete(
         _api.activity.activities,
         data: {
           "ids": ids,
@@ -141,6 +141,10 @@ class ActivityManagementRemoteDataSourceImpl
           },
         ),
       );
+      if (result.statusCode != 200) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -331,6 +335,15 @@ class ActivityManagementRemoteDataSourceImpl
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
+      final items = activity.items
+          .map((e) => ItemModel(
+                imagePath: e.imagePath,
+                image: e.image,
+                name: e.name,
+                amount: e.amount,
+                unit: e.unit,
+              ).toMap())
+          .toList();
 
       final result = await _dio.put(
         _api.activity.activities,
@@ -340,10 +353,15 @@ class ActivityManagementRemoteDataSourceImpl
           'type': activity.type,
           'date': activity.date,
           'time': activity.time,
-          'items': activity.items.map((e) => (e as ItemModel).toMap()).toList(),
+          'items': items,
           'status': activity.status,
           'activity_progress': activity.activityProgress
-              .map((e) => (e as ActivityProgressModel).toMap())
+              .map((e) => ActivityProgressModel(
+                    name: e.name,
+                    date: e.date,
+                    time: e.time,
+                    status: e.status,
+                  ).toMap())
               .toList(),
           'qr_code': activity.qrCode,
         },
@@ -356,6 +374,12 @@ class ActivityManagementRemoteDataSourceImpl
           },
         ),
       );
+      if (result.statusCode != 200) {
+        throw ServerException(
+          message: "${result.data['message']}",
+          statusCode: result.statusCode,
+        );
+      }
       final activityResult = result.data['data']['activity'] as DataMap?;
 
       if (activityResult == null) {

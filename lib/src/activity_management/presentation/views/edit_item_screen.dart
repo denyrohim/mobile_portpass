@@ -90,9 +90,8 @@ class _EditItemScreenState extends State<EditItemScreen> {
           if (state.photo != null) {
             context
                 .read<ActivityProvider>()
-                .updateImageIteEditActivity(state.photo, widget.index);
+                .updateImageItemEditActivity(state.photo, widget.index);
             initItem;
-            debugPrint("photo path: ${photoController.text}");
           }
         } else if (state is ItemAdded) {
           context.read<ActivityProvider>().initItemsEditActivity(state.items);

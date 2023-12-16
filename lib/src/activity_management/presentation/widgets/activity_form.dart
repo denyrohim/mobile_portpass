@@ -16,6 +16,7 @@ class ActivityForm extends StatefulWidget {
     required this.activityTypeController,
     required this.activityDateController,
     required this.activityHourController,
+    required this.activityRouteController,
     required this.formKey,
   });
 
@@ -24,6 +25,7 @@ class ActivityForm extends StatefulWidget {
   final TextEditingController activityTypeController;
   final TextEditingController activityDateController;
   final TextEditingController activityHourController;
+  final TextEditingController activityRouteController;
   final GlobalKey<FormState> formKey;
 
   @override
@@ -204,7 +206,70 @@ class _ActivityFormState extends State<ActivityForm> {
                 },
               );
             },
-          )
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Rute Kegiatan',
+            style: TextStyle(
+              color: Colours.primaryColour,
+              fontSize: 16,
+              fontFamily: Fonts.inter,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          IDropdown(
+              suffixIcon: const Icon(
+                Icons.arrow_drop_down,
+                color: Colours.primaryColour,
+              ),
+              controller: widget.activityRouteController,
+              hintText: 'Rute Kegiatan',
+              hintStyle: const TextStyle(
+                color: Colours.primaryColour,
+                fontFamily: Fonts.inter,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              fillColor: Colours.secondaryColour,
+              items: const [
+                DropdownMenuItem(
+                  value: 'Route 1',
+                  child: Text(
+                    'Route 1',
+                    style: TextStyle(
+                      color: Colours.primaryColour,
+                      fontFamily: Fonts.inter,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 'Route 2',
+                  child: Text(
+                    'Route 2',
+                    style: TextStyle(
+                      color: Colours.primaryColour,
+                      fontFamily: Fonts.inter,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ),
+                DropdownMenuItem(
+                  value: 'Route 3',
+                  child: Text(
+                    'Route 3',
+                    style: TextStyle(
+                      color: Colours.primaryColour,
+                      fontFamily: Fonts.inter,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                )
+              ]),
         ],
       ),
     );

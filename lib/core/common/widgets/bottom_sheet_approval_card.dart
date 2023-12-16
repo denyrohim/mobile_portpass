@@ -12,12 +12,14 @@ class BottomSheetApprovalCard extends StatefulWidget {
     required this.type,
     required this.date,
     required this.status,
+    required this.route,
   });
 
   final String name;
   final String shipName;
   final String type;
   final String date;
+  final String route;
   final String status;
 
   @override
@@ -224,6 +226,31 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                                               flex: 7,
                                               child: Text(
                                                 ': ${widget.type}',
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontFamily: Fonts.inter,
+                                                  color: Colours.primaryColour,
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          const Expanded(
+                                            flex: 5,
+                                            child: Text(
+                                              'Rute Kegiatan',
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontFamily: Fonts.inter,
+                                                color: Colours.primaryColour,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                              flex: 7,
+                                              child: Text(
+                                                ': ${widget.route}',
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                   fontFamily: Fonts.inter,

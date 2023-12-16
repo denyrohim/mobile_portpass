@@ -49,6 +49,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
         activityProgress: activityProgressData,
         qrCode: activity.qrCode,
         isChecked: activity.isChecked,
+        route: activity.route,
       );
       final result = await _remoteDataSource.addActivity(
         activity: activityData,

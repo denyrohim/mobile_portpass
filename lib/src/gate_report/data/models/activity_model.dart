@@ -15,6 +15,7 @@ class ActivityModel extends Activity {
     required super.status,
     required super.activityProgress,
     required super.qrCode,
+    super.route,
   });
 
   ActivityModel.empty()
@@ -29,6 +30,7 @@ class ActivityModel extends Activity {
           status: '',
           activityProgress: [],
           qrCode: '',
+          route: null,
         );
 
   ActivityModel copyWith({
@@ -42,6 +44,7 @@ class ActivityModel extends Activity {
     String? status,
     List<ActivityProgressModel>? activityProgress,
     String? qrCode,
+    String? route,
   }) {
     return ActivityModel(
       id: id ?? this.id,
@@ -54,6 +57,7 @@ class ActivityModel extends Activity {
       status: status ?? this.status,
       activityProgress: activityProgress ?? this.activityProgress,
       qrCode: qrCode ?? this.qrCode,
+      route: route ?? this.route,
     );
   }
 
@@ -73,6 +77,7 @@ class ActivityModel extends Activity {
               .map((e) => ActivityProgressModel.fromMap(e))
               .toList(),
           qrCode: map['qr_code'] as String,
+          route: map['route'] as String?,
         );
 
   DataMap toMap() {
@@ -89,6 +94,7 @@ class ActivityModel extends Activity {
           .map((e) => (e as ActivityProgressModel).toMap())
           .toList(),
       'qr_code': qrCode,
+      'route': route,
     };
   }
 }

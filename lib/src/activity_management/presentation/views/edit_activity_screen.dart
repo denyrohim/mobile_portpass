@@ -36,6 +36,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
   final activityTypeController = TextEditingController();
   final activityDateController = TextEditingController();
   final activityHourController = TextEditingController();
+  final activityRouteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   final key = GlobalKey();
@@ -49,6 +50,8 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
       activity.date.trim() != activityDateController.text.trim();
   bool get activityHourChanged =>
       activity.time.trim() != activityHourController.text.trim();
+  bool get activityRouteChanged =>
+      (activity.route?.trim() ?? "") != activityRouteController.text.trim();
   bool get itemsChanged =>
       activity.items.toString() !=
       context.read<ActivityProvider>().itemsEditActivity.toString();
@@ -59,6 +62,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
       !activityTypeChanged &&
       !activityDateChanged &&
       !activityHourChanged &&
+      !activityRouteChanged &&
       !itemsChanged;
 
   void get initController {
@@ -67,6 +71,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
     activityTypeController.text = activity.type;
     activityDateController.text = activity.date;
     activityHourController.text = activity.time;
+    activityRouteController.text = activity.route ?? "";
     context.read<ActivityProvider>().initItemsEditActivity(activity.items);
 
     nameController.addListener(() => setState(() {}));
@@ -74,6 +79,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
     activityTypeController.addListener(() => setState(() {}));
     activityDateController.addListener(() => setState(() {}));
     activityHourController.addListener(() => setState(() {}));
+    activityRouteController.addListener(() => setState(() {}));
   }
 
   @override
@@ -90,6 +96,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
     activityTypeController.dispose();
     activityDateController.dispose();
     activityHourController.dispose();
+    activityRouteController.dispose();
     super.dispose();
   }
 
@@ -127,6 +134,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                       activityTypeController: activityTypeController,
                       activityDateController: activityDateController,
                       activityHourController: activityHourController,
+                      activityRouteController: activityRouteController,
                       formKey: formKey,
                     ),
                     const SizedBox(height: 12),
@@ -286,6 +294,8 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                                     UpdateActivityAction.date,
                                                   if (activityHourChanged)
                                                     UpdateActivityAction.time,
+                                                  if (activityRouteChanged)
+                                                    UpdateActivityAction.route,
                                                   if (itemsChanged)
                                                     UpdateActivityAction.items,
                                                 ],
@@ -299,6 +309,8 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                                   date: activityDateController
                                                       .text,
                                                   time: activityHourController
+                                                      .text,
+                                                  route: activityRouteController
                                                       .text,
                                                   items: activityProvider
                                                       .itemsEditActivity,

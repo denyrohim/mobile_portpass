@@ -56,10 +56,17 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
   }
 
   @override
+  void dispose() {
+    cameraController.stop();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<GateReportBloc, GateReportState>(
       listener: (context, state) {
         if (state is GateReportError) {
+          context.dashboardController.changeIndex(0);
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is ScanSuccess) {
           setState(() {
@@ -77,6 +84,12 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             isButtonScanPressed = false;
           });
           CoreUtils.showSnackBar(context, state.message);
+        } else if (state is LocationLoaded) {
+          setState(() {
+            isCanScan = !isCanScan;
+            isButtonScanPressed = !isButtonScanPressed;
+          });
+          debugPrint("${cameraController.isStarting}");
         }
       },
       builder: (context, state) {
@@ -158,13 +171,13 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    setState(() {
-                                      isCanScan = !isCanScan;
-                                      isButtonScanPressed =
-                                          !isButtonScanPressed;
-                                    });
-                                    debugPrint(
-                                        "${cameraController.isStarting}");
+                                    context.read<GateReportBloc>().add(
+                                          GetLocationEvent(
+                                              latitude:
+                                                  context.currentUser!.latitude,
+                                              longitude: context
+                                                  .currentUser!.longitude),
+                                        );
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.white,

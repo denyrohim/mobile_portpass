@@ -8,6 +8,8 @@ class LocalUser extends Equatable {
     required this.role,
     this.profileImg,
     this.location,
+    this.latitude,
+    this.longitude,
   });
 
   const LocalUser.empty()
@@ -16,7 +18,9 @@ class LocalUser extends Equatable {
         name = 'testing',
         role = 'employee',
         profileImg = '',
-        location = '';
+        location = '',
+        latitude = 0,
+        longitude = 0;
 
   final int id;
   final String email;
@@ -24,14 +28,18 @@ class LocalUser extends Equatable {
   final String role;
   final String? profileImg;
   final String? location;
+  final double? latitude;
+  final double? longitude;
 
   @override
-  List<Object?> get props => [id, name, email, profileImg, location, role];
+  List<Object?> get props =>
+      [id, name, email, profileImg, location, role, latitude, longitude];
 
   @override
   String toString() {
     return 'LocalUser{id: $id, email: $email,'
         ' role: $role,'
-        ' name: $name, profileImg: $profileImg, location: $location}';
+        ' name: $name, profileImg: $profileImg, location: $location}'
+        ' latitude: $latitude, longitude: $longitude';
   }
 }

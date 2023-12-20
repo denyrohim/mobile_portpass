@@ -13,7 +13,6 @@ import 'package:port_pass_app/core/services/api.dart';
 import 'package:flutter/material.dart';
 import 'package:port_pass_app/src/gate_report/data/models/activity_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/activity_progress_model.dart';
-import 'package:port_pass_app/src/gate_report/data/models/location_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/report_model.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,7 +32,10 @@ abstract class GateReportRemoteDataSource {
 
   Future<dynamic> addDocumentation();
 
-  Future<LocationModel> getLocation();
+  Future<bool> getLocation({
+    required double? longitude,
+    required double? latitude,
+  });
 }
 
 const kToken = 'token';
@@ -341,8 +343,15 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
   }
 
   @override
-  Future<LocationModel> getLocation() async {
+  Future<bool> getLocation({
+    required double? longitude,
+    required double? latitude,
+  }) async {
     try {
+      if (latitude == null || longitude == null) {
+        throw const ServerException(
+            message: "User doesn't have location yet", statusCode: 403);
+      }
       LocationPermission permission;
       permission = await _geolocator.requestPermission();
       if (permission == LocationPermission.denied ||
@@ -356,39 +365,15 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
 
       debugPrint('latLng: ${latLng.latitude}, ${latLng.longitude}');
 
-      final locations = List.generate(
-          3,
-          (index) => LocationModel(
-                location: 'Location $index',
-                latitude: latLng.latitude + 12 * index,
-                longitude: latLng.longitude + 10 * index,
-              ));
+      double distance = Geolocator.distanceBetween(
+          latLng.latitude, latLng.longitude, latitude, longitude);
 
-      double nearestDistance = double.infinity;
-      String? nearestLocationName;
-      double? nearestLatitude;
-      double? nearestLongitude;
-
-      for (LocationModel location in locations) {
-        double distance = Geolocator.distanceBetween(latLng.latitude,
-            latLng.longitude, location.latitude, location.longitude);
-
-        if (distance < nearestDistance && distance <= 300) {
-          nearestDistance = distance;
-          nearestLocationName = location.location;
-          nearestLatitude = location.latitude;
-          nearestLongitude = location.longitude;
-        }
-      }
-      if (nearestLocationName == null) {
+      if (distance <= 300) {
+        return true;
+      } else {
         throw const ServerException(
-            message: "Can't get location", statusCode: 505);
+            message: "You are not in the location", statusCode: 400);
       }
-      return LocationModel(
-        latitude: nearestLatitude!,
-        longitude: nearestLongitude!,
-        location: nearestLocationName,
-      );
     } on ServerException {
       rethrow;
     } catch (e, s) {

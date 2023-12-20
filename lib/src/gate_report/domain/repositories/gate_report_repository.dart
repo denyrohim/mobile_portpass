@@ -1,7 +1,6 @@
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
-import 'package:port_pass_app/src/gate_report/domain/entities/location.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 
 abstract class GateReportRepository {
@@ -15,7 +14,10 @@ abstract class GateReportRepository {
     required List<Barcode> barcodes,
   });
 
-  ResultFuture<Location> getLocation();
+  ResultFuture<bool> getLocation({
+    required double? longitude,
+    required double? latitude,
+  });
 
   ResultFuture<Activity> addReport({
     required int activityId,

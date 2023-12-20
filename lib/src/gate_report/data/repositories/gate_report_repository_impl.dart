@@ -5,7 +5,6 @@ import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:dartz/dartz.dart';
 import 'package:port_pass_app/src/gate_report/data/datasources/gate_report_remote_data_source.dart';
-import 'package:port_pass_app/src/gate_report/data/models/location_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/report_model.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
@@ -52,9 +51,15 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }
 
   @override
-  ResultFuture<LocationModel> getLocation() async {
+  ResultFuture<bool> getLocation({
+    required double? longitude,
+    required double? latitude,
+  }) async {
     try {
-      final result = await _remoteDataSource.getLocation();
+      final result = await _remoteDataSource.getLocation(
+        longitude: longitude,
+        latitude: latitude,
+      );
 
       return Right(result);
     } on ServerException catch (e) {

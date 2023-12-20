@@ -25,6 +25,7 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
           }
         }
         if (state is NFCScanFailed) {
+          cardNumberController.text = state.failureMessage;
           await Future.delayed(const Duration(seconds: 2));
           if (navigator.canPop()) {
             navigator.pop();
@@ -34,6 +35,7 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
       builder: (context, state) {
         return BottomSheetWidget(
           height: 500,
+          // height: 800,
           buttons: !(state is NFCScanSuccess ||
                   state is NFCScanFailed ||
                   state is EmployeeManagementLoading)
@@ -127,7 +129,8 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
                   ? Center(
                       child: Container(
                         width: 240,
-                        height: 282,
+                        // height: 282,
+                        padding: const EdgeInsets.all(20),
                         margin: const EdgeInsets.only(bottom: 50),
                         decoration: BoxDecoration(
                           color: Colours.secondaryColour,
@@ -179,6 +182,14 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold),
                             ),
+                            Text(
+                              cardNumberController.text,
+                              style: const TextStyle(
+                                  color: Colours.primaryColour,
+                                  fontFamily: Fonts.inter,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ],
                         ),
                       ),
@@ -187,7 +198,7 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
                       ? Center(
                           child: Container(
                             width: 240,
-                            height: 282,
+                            // height: 282,
                             margin: const EdgeInsets.only(bottom: 50),
                             decoration: BoxDecoration(
                               color: Colours.secondaryColour,
@@ -237,6 +248,14 @@ class ScanNFCEmployeeWidget extends StatelessWidget {
                                       color: Colours.primaryColour,
                                       fontFamily: Fonts.inter,
                                       fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  cardNumberController.text,
+                                  style: const TextStyle(
+                                      color: Colours.primaryColour,
+                                      fontFamily: Fonts.inter,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],

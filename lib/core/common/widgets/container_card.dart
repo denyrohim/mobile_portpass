@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 
 class ContainerCard extends StatefulWidget {
@@ -24,12 +25,12 @@ class ContainerCard extends StatefulWidget {
 }
 
 class _ContainerCardState extends State<ContainerCard> {
-  double mediaHeight = 550;
+  double mediaHeight = double.infinity;
   @override
   Widget build(BuildContext context) {
-    if (mediaHeight > 550) {
+    if (mediaHeight > context.height * 0.9) {
       setState(() {
-        mediaHeight = 550;
+        mediaHeight = context.height * 0.9;
       });
     }
     return Align(

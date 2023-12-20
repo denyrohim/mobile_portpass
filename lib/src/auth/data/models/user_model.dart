@@ -9,6 +9,8 @@ class LocalUserModel extends LocalUser {
     required super.role,
     super.profileImg,
     super.location,
+    super.latitude,
+    super.longitude,
   });
 
   const LocalUserModel.empty()
@@ -19,6 +21,8 @@ class LocalUserModel extends LocalUser {
           role: 'employee',
           profileImg: null,
           location: null,
+          latitude: 0,
+          longitude: 0,
         );
 
   LocalUserModel copyWith({
@@ -28,6 +32,8 @@ class LocalUserModel extends LocalUser {
     String? role,
     String? profileImg,
     String? location,
+    double? latitude,
+    double? longitude,
   }) {
     return LocalUserModel(
       id: id ?? this.id,
@@ -36,6 +42,8 @@ class LocalUserModel extends LocalUser {
       role: role ?? this.role,
       profileImg: profileImg ?? this.profileImg,
       location: location ?? this.location,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
     );
   }
 
@@ -47,6 +55,8 @@ class LocalUserModel extends LocalUser {
           role: map['role'] as String,
           profileImg: map['profile_img'] as String?,
           location: map['location'] as String?,
+          latitude: map['latitude'] as double?,
+          longitude: map['longitude'] as double?,
         );
 
   DataMap toMap() {
@@ -57,6 +67,8 @@ class LocalUserModel extends LocalUser {
       'role': role,
       'profile_img': profileImg,
       'location': location,
+      'latitude': latitude,
+      'longitude': longitude,
     };
   }
 }

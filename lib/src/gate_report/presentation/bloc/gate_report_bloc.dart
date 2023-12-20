@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity.dart';
-import 'package:port_pass_app/src/gate_report/domain/entities/location.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/report.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/add_documentation.dart';
 import 'package:port_pass_app/src/gate_report/domain/usecases/add_report.dart';
@@ -75,10 +74,13 @@ class GateReportBloc extends Bloc<GateReportEvent, GateReportState> {
     GetLocationEvent event,
     Emitter<GateReportState> emit,
   ) async {
-    final result = await _getLocation();
+    final result = await _getLocation(GetLocationParams(
+      longitude: event.longitude,
+      latitude: event.latitude,
+    ));
     result.fold(
       (failure) => emit(GateReportError(failure.errorMessage)),
-      (location) => emit(LocationLoaded(location)),
+      (insideLocation) => emit(LocationLoaded(insideLocation)),
     );
   }
 

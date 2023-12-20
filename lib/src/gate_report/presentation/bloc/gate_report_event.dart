@@ -43,7 +43,13 @@ class GetActivityEvent extends GateReportEvent {
 }
 
 class GetLocationEvent extends GateReportEvent {
-  const GetLocationEvent();
+  const GetLocationEvent({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  final double? latitude;
+  final double? longitude;
 
   @override
   List<Object> get props => [];

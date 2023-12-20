@@ -13,6 +13,8 @@ import 'package:port_pass_app/src/employee_management/data/models/employee_divis
 import 'package:port_pass_app/src/employee_management/data/models/employee_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/utils/core_utils.dart';
+
 abstract class EmploymentManagementRemoteDataSource {
   const EmploymentManagementRemoteDataSource();
 
@@ -289,21 +291,25 @@ class EmploymentManagementRemoteDataSourceImpl
             message: "Doesn't support NFC", statusCode: 400);
       }
       var tag = await FlutterNfcKit.poll(
-          timeout: const Duration(seconds: 20),
-          iosMultipleTagMessage: "Multiple tags found!",
-          iosAlertMessage: "Scan your tag");
-
-      // Call finish() only once
-      await FlutterNfcKit.finish();
-      debugPrint(tag.toJson().toString());
-      // iOS only: show alert/error message on finish
-      await FlutterNfcKit.finish(iosAlertMessage: "Success");
-      await FlutterNfcKit.finish(iosErrorMessage: "Failed");
-      return Future.value(tag.id);
+        timeout: const Duration(seconds: 20),
+        iosMultipleTagMessage: "Multiple tags found!",
+        iosAlertMessage: "Scan your tag",
+      );
+      String uid = CoreUtils.hexToDec(tag.id);
+      await Future.delayed(const Duration(seconds: 1));
+      if (Platform.isIOS) {
+        await FlutterNfcKit.finish(iosAlertMessage: "Success");
+        debugPrint("Ios");
+      } else {
+        debugPrint("Android");
+        await FlutterNfcKit.finish();
+      }
+      return Future.value(uid);
     } on ServerException {
       rethrow;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
+      await FlutterNfcKit.finish(iosErrorMessage: "Failed");
       throw ServerException(message: e.toString(), statusCode: 505);
     }
   }

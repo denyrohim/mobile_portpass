@@ -62,4 +62,13 @@ class CoreUtils {
     }
     return uriBase64;
   }
+
+  // change string(hex) to string(int)
+  static String hexToDec(String hex) {
+    var value = hex;
+    if (hex.contains('#')) {
+      value = hex.replaceAll('#', '');
+    }
+    return int.parse(value, radix: 16).toString();
+  }
 }

@@ -35,15 +35,15 @@ class GetActivitiesEvent extends ActivityManagementEvent {
 
 class UpdateActivityEvent extends ActivityManagementEvent {
   const UpdateActivityEvent({
-    required this.actions,
     required this.activity,
+    required this.deletedIds,
   });
 
-  final List<UpdateActivityAction> actions;
   final Activity activity;
+  final List<int> deletedIds;
 
   @override
-  List<Object> get props => [actions, activity];
+  List<Object> get props => [activity, deletedIds];
 }
 
 class AddItemEvent extends ActivityManagementEvent {

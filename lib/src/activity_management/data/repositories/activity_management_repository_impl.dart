@@ -120,7 +120,10 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   }
 
   @override
-  ResultFuture<Activity> updateActivity({required Activity activity}) async {
+  ResultFuture<Activity> updateActivity({
+    required Activity activity,
+    required List<int> deletedIds,
+  }) async {
     try {
       final itemsData = List<ItemModel>.from(activity.items
           .map((item) => ItemModel(
@@ -153,6 +156,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
         activity: activityData,
         ships: ships,
         activityRoutes: activityRoutes,
+        deletedIds: deletedIds,
       );
       return Right(result);
     } on ServerException catch (e) {

@@ -5,7 +5,6 @@ import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/widgets/app_bar_core.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
-import 'package:port_pass_app/core/enums/update_activity_action.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
@@ -311,23 +310,6 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                             .read<ActivityManagementBloc>()
                                             .add(
                                               UpdateActivityEvent(
-                                                actions: [
-                                                  if (nameChanged)
-                                                    UpdateActivityAction.name,
-                                                  if (shipNameChanged)
-                                                    UpdateActivityAction
-                                                        .shipName,
-                                                  if (activityTypeChanged)
-                                                    UpdateActivityAction.type,
-                                                  if (activityDateChanged)
-                                                    UpdateActivityAction.date,
-                                                  if (activityHourChanged)
-                                                    UpdateActivityAction.time,
-                                                  if (activityRouteChanged)
-                                                    UpdateActivityAction.route,
-                                                  if (itemsChanged)
-                                                    UpdateActivityAction.items,
-                                                ],
                                                 activity: Activity(
                                                   id: activity.id,
                                                   name: nameController.text,
@@ -349,8 +331,15 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                                   qrCode: activity.qrCode,
                                                   isChecked: activity.isChecked,
                                                 ),
+                                                deletedIds: context
+                                                    .read<ActivityProvider>()
+                                                    .deletedIdItemsEditActivity,
                                               ),
                                             );
+
+                                        context
+                                            .read<ActivityProvider>()
+                                            .resetDeletedIdItemsEditActivity();
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(

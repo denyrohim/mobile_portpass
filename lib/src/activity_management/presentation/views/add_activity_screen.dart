@@ -130,7 +130,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
               );
             },
           );
-          // initController;
+          initController;
         } else if (state is ShipsLoaded) {
           context.read<ActivityProvider>().initShips(state.ships);
         } else if (state is ActivityRoutesLoaded) {
@@ -298,19 +298,14 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              child: state is ActivityManagementLoading
-                                  ? const Center(
-                                      child: CircularProgressIndicator(
-                                      color: Colours.secondaryColour,
-                                    ))
-                                  : const Text(
-                                      "Batal",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: Fonts.inter,
-                                          color: Colours.secondaryColour),
-                                    ),
+                              child: const Text(
+                                "Batal",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: Fonts.inter,
+                                    color: Colours.secondaryColour),
+                              ),
                             ),
                           ),
                         ),

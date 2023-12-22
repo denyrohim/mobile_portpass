@@ -93,7 +93,11 @@ class ItemCard extends StatelessWidget {
                               color: Color(0xFF315784)),
                         ),
                         Text(
-                          item.unit,
+                          item.unit == 'l'
+                              ? 'Liter'
+                              : item.unit == 'kg'
+                                  ? 'Kg'
+                                  : item.unit,
                           style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w400,
@@ -136,7 +140,17 @@ class ItemCard extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  if (activityType == 'Add') {
+                                    context
+                                        .read<ActivityProvider>()
+                                        .deleteItemAddActivity(index);
+                                  } else {
+                                    context
+                                        .read<ActivityProvider>()
+                                        .deleteItemEditActivity(index, item.id);
+                                  }
+                                },
                                 icon: Container(
                                   height: 30,
                                   width: 30,

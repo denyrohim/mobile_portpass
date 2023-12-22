@@ -34,6 +34,7 @@ abstract class ActivityManagementRepository {
 
   ResultFuture<Activity> updateActivity({
     required Activity activity,
+    required List<int> deletedIds,
   });
 
   ResultFuture<Activity> updateItem({

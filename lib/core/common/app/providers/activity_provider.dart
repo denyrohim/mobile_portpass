@@ -157,6 +157,7 @@ class ActivityProvider extends ChangeNotifier {
 
   void resetItemsEditActivity() {
     _itemsEditActivity = [];
+    _deletedIdItemsEditActivity = [];
     Future.delayed(Duration.zero, notifyListeners);
   }
 
@@ -179,6 +180,21 @@ class ActivityProvider extends ChangeNotifier {
         },
       ),
     );
+    Future.delayed(Duration.zero, notifyListeners);
+  }
+
+  List<int> _deletedIdItemsEditActivity = [];
+
+  get deletedIdItemsEditActivity => _deletedIdItemsEditActivity;
+
+  void deleteItemEditActivity(int index, int indexGlobal) {
+    _itemsEditActivity.removeAt(index);
+    _deletedIdItemsEditActivity.add(indexGlobal);
+    Future.delayed(Duration.zero, notifyListeners);
+  }
+
+  void resetDeletedIdItemsEditActivity() {
+    _deletedIdItemsEditActivity = [];
     Future.delayed(Duration.zero, notifyListeners);
   }
 
@@ -228,6 +244,11 @@ class ActivityProvider extends ChangeNotifier {
         },
       ),
     );
+    Future.delayed(Duration.zero, notifyListeners);
+  }
+
+  void deleteItemAddActivity(int index) {
+    _itemsAddActivity.removeAt(index);
     Future.delayed(Duration.zero, notifyListeners);
   }
 }

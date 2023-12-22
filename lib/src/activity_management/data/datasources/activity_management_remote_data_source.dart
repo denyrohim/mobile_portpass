@@ -47,6 +47,7 @@ abstract class ActivityManagementRemoteDataSource {
     required ActivityModel activity,
     required List<ShipModel> ships,
     required List<ActivityRouteModel> activityRoutes,
+    required List<int> deletedIds,
   });
 
   Future<ActivityModel> updateItem({
@@ -394,6 +395,7 @@ class ActivityManagementRemoteDataSourceImpl
     required ActivityModel activity,
     required List<ShipModel> ships,
     required List<ActivityRouteModel> activityRoutes,
+    required List<int> deletedIds,
   }) async {
     try {
       final token = _sharedPreferences.getString(kToken);
@@ -454,15 +456,26 @@ class ActivityManagementRemoteDataSourceImpl
 
       for (var i = 0; i < activity.items.length; i++) {
         if (activity.items[i].id != -1) {
-          final imageUri = CoreUtils.fileToUriBase64(activity.items[i].image);
-          final resultItems = await _dio.put(
-            "${_api.items.items}/${activity.items[i].id}",
-            data: {
+          String? imageUri;
+          DataMap? data;
+          if (activity.items[i].image != null) {
+            imageUri = CoreUtils.fileToUriBase64(activity.items[i].image);
+            data = {
               'name': activity.items[i].name,
-              'amount': activity.items[i].amount,
+              'amount': activity.items[i].amount.toString(),
               'unit': activity.items[i].unit,
               'image': imageUri,
-            },
+            };
+          } else {
+            data = {
+              'name': activity.items[i].name,
+              'amount': activity.items[i].amount.toString(),
+              'unit': activity.items[i].unit,
+            };
+          }
+          final resultItems = await _dio.put(
+            "${_api.items.items}/${activity.items[i].id}",
+            data: data,
             options: Options(
               headers: ApiHeaders.getHeaders(
                 token: token,
@@ -477,6 +490,14 @@ class ActivityManagementRemoteDataSourceImpl
             throw const ServerException(
                 message: "Failed to update item", statusCode: 400);
           }
+          if (resultItems.data['data']['image'] != null) {
+            final imagePath = resultItems.data['data']['image'];
+            resultItems.data['data']['image'] =
+                "${_api.baseUrl}/images/barang/$imagePath";
+          } else {
+            resultItems.data['data']['image'] = '';
+          }
+          activity.items[i] = ItemModel.fromMap(resultItems.data['data']);
         } else {
           final imageUri = CoreUtils.fileToUriBase64(activity.items[i].image);
           final resultItems = await _dio.post(
@@ -484,7 +505,7 @@ class ActivityManagementRemoteDataSourceImpl
             data: {
               'activity_id': activity.id,
               'name': activity.items[i].name,
-              'amount': activity.items[i].amount,
+              'amount': activity.items[i].amount.toString(),
               'unit': activity.items[i].unit,
               'image': imageUri,
             },
@@ -502,8 +523,39 @@ class ActivityManagementRemoteDataSourceImpl
             throw const ServerException(
                 message: "Failed to update item", statusCode: 400);
           }
+
+          if (resultItems.data['data']['image'] != null) {
+            final imagePath = resultItems.data['data']['image'];
+            resultItems.data['data']['image'] =
+                "${_api.baseUrl}/images/barang/$imagePath";
+          } else {
+            resultItems.data['data']['image'] = '';
+          }
+          activity.items[i] = ItemModel.fromMap(resultItems.data['data']);
         }
       }
+      if (deletedIds.isNotEmpty) {
+        final resultItemsDelete = await _dio.post(
+          "${_api.items.items}/delete-list",
+          data: {
+            "ids": deletedIds,
+          },
+          options: Options(
+            headers: ApiHeaders.getHeaders(
+              token: token,
+            ).headers,
+            validateStatus: (status) {
+              return status! < 500;
+            },
+          ),
+        );
+
+        if (resultItemsDelete.statusCode != 200 && result.statusCode != 201) {
+          throw const ServerException(
+              message: "Failed to delete item", statusCode: 400);
+        }
+      }
+
       final activityItems = activity.items
           .map((e) => ItemModel(
                 id: e.id,

@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:port_pass_app/core/enums/update_activity_action.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity_route.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
@@ -183,7 +182,10 @@ class ActivityManagementBloc
     Emitter<ActivityManagementState> emit,
   ) async {
     final result = await _updateActivity(
-      event.activity,
+      UpdateActivityParams(
+        activity: event.activity,
+        deletedIds: event.deletedIds,
+      ),
     );
     result.fold(
       (failure) => emit(ActivityManagementError(failure.errorMessage)),

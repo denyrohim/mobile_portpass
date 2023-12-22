@@ -43,7 +43,7 @@ class GateActivityList extends StatelessWidget {
                     children: [
                       Text(
                         progress.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: Fonts.inter,
                           fontSize: 16,
                           fontWeight: changeFont,
@@ -55,7 +55,7 @@ class GateActivityList extends StatelessWidget {
                       Text(
                           DateFormat('dd-MM-yyyy HH:mm')
                               .format(progress.dateTime),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
                             fontWeight: changeFont,
@@ -69,7 +69,7 @@ class GateActivityList extends StatelessWidget {
               afterLineStyle: checkBawah,
               lineXY: 0.1,
               alignment: TimelineAlign.manual,
-              indicatorStyle: IndicatorStyle(
+              indicatorStyle: const IndicatorStyle(
                 color: changeColor,
                 width: 10,
               ),
@@ -91,7 +91,7 @@ class GateActivityList extends StatelessWidget {
                     children: [
                       Text(
                         progress.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: Fonts.inter,
                           fontSize: 16,
                           fontWeight: changeFont,
@@ -103,7 +103,7 @@ class GateActivityList extends StatelessWidget {
                       Text(
                           DateFormat('dd-MM-yyyy HH:mm')
                               .format(progress.dateTime),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
                             fontWeight: changeFont,
@@ -117,7 +117,7 @@ class GateActivityList extends StatelessWidget {
               alignment: TimelineAlign.manual,
               afterLineStyle: checkBawah,
               beforeLineStyle: checkAtas,
-              indicatorStyle: IndicatorStyle(
+              indicatorStyle: const IndicatorStyle(
                 color: changeColor,
                 width: 10,
               ),
@@ -140,7 +140,7 @@ class GateActivityList extends StatelessWidget {
                     children: [
                       Text(
                         progress.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: Fonts.inter,
                           fontSize: 16,
                           fontWeight: changeFont,
@@ -152,7 +152,7 @@ class GateActivityList extends StatelessWidget {
                       Text(
                           DateFormat('dd-MM-yyyy HH:mm')
                               .format(progress.dateTime),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
                             fontWeight: changeFont,
@@ -166,7 +166,7 @@ class GateActivityList extends StatelessWidget {
               lineXY: 0.1,
               alignment: TimelineAlign.manual,
               beforeLineStyle: checkAtas,
-              indicatorStyle: IndicatorStyle(
+              indicatorStyle: const IndicatorStyle(
                 color: changeColor,
                 width: 10,
               ),

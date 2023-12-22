@@ -23,9 +23,9 @@ class AddReportParams extends Equatable {
     required this.reportData,
   });
 
-  AddReportParams.empty()
+  const AddReportParams.empty()
       : activityId = 0,
-        reportData = Report.empty();
+        reportData = const Report.empty();
 
   final int activityId;
   final Report reportData;

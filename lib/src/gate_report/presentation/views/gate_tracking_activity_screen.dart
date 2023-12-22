@@ -10,7 +10,7 @@ import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc
 import 'package:port_pass_app/src/gate_report/presentation/widget/gate_activity_list.dart';
 
 class GateTrackingActivityScreen extends StatelessWidget {
-  GateTrackingActivityScreen({super.key, required this.activity});
+  const GateTrackingActivityScreen({super.key, required this.activity});
   static const routeName = '/gate-tracking-activity';
 
   final dynamic activity;

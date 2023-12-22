@@ -49,8 +49,21 @@ void main() {
     data: {
       'message': 'Success',
       'data': {
-        'user': tUser.toMap(),
-        'role': 'employee',
+        'user': {
+          'id': 1,
+          'email': 'testing@admin.com',
+          'name': 'testing',
+          'role': 'employee',
+          'profileImg': null,
+          'location': null,
+          'latitude': 0.0,
+          'longitude': 0.0,
+          'checkPoint': {
+            'name': null,
+            'latitude': '0.0',
+            'longitude': '0.0',
+          },
+        },
         'token': 'token',
       },
     },
@@ -73,6 +86,9 @@ void main() {
         'name': 'John Doe',
         'email': 'john@example.com',
         'profile_img': 'photo.jpg',
+        'location': null,
+        'latitude': 0,
+        'longitude': 0,
       },
     },
     statusCode: 200,

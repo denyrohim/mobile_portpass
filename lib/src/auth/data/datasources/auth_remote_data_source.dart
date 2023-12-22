@@ -94,9 +94,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
       }
 
-      user['location'] = user['zoneLocation']['name'];
-      user['latitude'] = double.parse(user['zoneLocation']['latitude']);
-      user['longitude'] = double.parse(user['zoneLocation']['longitude']);
+      user['location'] = user['checkPoint']['name'];
+      user['latitude'] = double.parse(user['checkPoint']['latitude']);
+      user['longitude'] = double.parse(user['checkPoint']['longitude']);
 
       await _sharedPreferences.setString(
         kToken,
@@ -157,9 +157,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
       }
 
-      user['location'] = user['zoneLocation']['name'];
-      user['latitude'] = double.parse(user['zoneLocation']['latitude']);
-      user['longitude'] = double.parse(user['zoneLocation']['longitude']);
+      user['location'] = user['checkPoint']['name'];
+      user['latitude'] = double.parse(user['checkPoint']['latitude']);
+      user['longitude'] = double.parse(user['checkPoint']['longitude']);
 
       return LocalUserModel.fromMap(user);
       // const user = LocalUserModel.empty();

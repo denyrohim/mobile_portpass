@@ -120,6 +120,8 @@ Future<void> _initActivityManagement() async {
         cancelCheckBoxActivities: sl(),
         updateCheckBoxActivity: sl(),
         selectAllActivities: sl(),
+        getShips: sl(),
+        getActivityRoutes: sl(),
       ),
     )
     ..registerLazySingleton(() => AddActivity(sl()))
@@ -134,6 +136,8 @@ Future<void> _initActivityManagement() async {
     ..registerLazySingleton(() => CancelCheckBoxActivities(sl()))
     ..registerLazySingleton(() => UpdateCheckBoxActivity(sl()))
     ..registerLazySingleton(() => SelectAllActivities(sl()))
+    ..registerLazySingleton(() => GetShips(sl()))
+    ..registerLazySingleton(() => GetActivityRoutes(sl()))
     ..registerLazySingleton<ActivityManagementRepository>(
         () => ActivityManagementRepositoryImpl(sl()))
     ..registerLazySingleton<ActivityManagementRemoteDataSource>(

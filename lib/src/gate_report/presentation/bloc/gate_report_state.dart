@@ -33,7 +33,7 @@ class GateReportUpdating extends GateReportState {
 class ScanSuccess extends GateReportState {
   const ScanSuccess(this.result);
 
-  final String result;
+  final int result;
 
   @override
   List<Object> get props => [result];

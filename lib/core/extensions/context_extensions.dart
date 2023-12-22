@@ -34,6 +34,8 @@ extension ContextExtensions on BuildContext {
 
   void pop() => tabNavigator.pop();
 
+  void popToRoot() => tabNavigator.popToRoot();
+
   void push(Widget page) => tabNavigator.push(TabItem(child: page));
 
   DashboardController get dashboardController => read<DashboardController>();

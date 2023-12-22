@@ -52,9 +52,33 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
       activity.time.trim() != activityHourController.text.trim();
   bool get activityRouteChanged =>
       (activity.route?.trim() ?? "") != activityRouteController.text.trim();
-  bool get itemsChanged =>
-      activity.items.toString() !=
-      context.read<ActivityProvider>().itemsEditActivity.toString();
+  bool get itemsChanged {
+    if (activity.items.length !=
+        context.read<ActivityProvider>().itemsEditActivity.length) return true;
+    for (var index = 0; index < activity.items.length; index++) {
+      if (activity.items[index].name !=
+          context.read<ActivityProvider>().itemsEditActivity[index].name) {
+        return true;
+      }
+      if (activity.items[index].amount !=
+          context.read<ActivityProvider>().itemsEditActivity[index].amount) {
+        return true;
+      }
+      if (activity.items[index].unit !=
+          context.read<ActivityProvider>().itemsEditActivity[index].unit) {
+        return true;
+      }
+      if (activity.items[index].image !=
+          context.read<ActivityProvider>().itemsEditActivity[index].image) {
+        return true;
+      }
+      if (activity.items[index].imagePath !=
+          context.read<ActivityProvider>().itemsEditActivity[index].imagePath) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   bool get nothingChanged =>
       !nameChanged &&
@@ -111,6 +135,10 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
             } else if (state is DataAdded) {
               initController;
               CoreUtils.showSnackBar(context, "Data berhasil ditambahkan");
+            } else if (state is DataUpdated) {
+              activity = state.activity;
+              initController;
+              CoreUtils.showSnackBar(context, "Data berhasil diubah");
             }
           },
           builder: (context, state) {
@@ -220,6 +248,7 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                                       activityProvider.itemsEditActivity
                                           .indexOf(item)],
                                   isEdit: true,
+                                  activityType: "Edit",
                                 ),
                                 const SizedBox(height: 10),
                               ]
@@ -233,8 +262,8 @@ class EditdActivityScreenState extends State<EditActivityScreen> {
                           width: 160,
                           height: 40,
                           child: IgnorePointer(
-                            ignoring: nothingChanged ||
-                                state is ActivityManagementLoading,
+                            ignoring:
+                                false || state is ActivityManagementLoading,
                             child: ElevatedButton(
                               onPressed: () {
                                 initController;

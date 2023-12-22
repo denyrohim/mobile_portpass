@@ -3,56 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:port_pass_app/core/common/widgets/app_bar_core.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
+import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
-import 'package:port_pass_app/src/activity_management/domain/entities/activity_progress.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_list.dart';
 
 class TrackingActivityScreen extends StatelessWidget {
-  TrackingActivityScreen({super.key, required this.activity});
+  const TrackingActivityScreen({super.key, required this.activity});
   static const routeName = '/tracking-activity';
 
   final dynamic activity;
 
-  final List<ActivityProgress> _activityProgress = [
-    const ActivityProgress(
-      name: 'Activity Dibuat',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Activity Disetujui',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Lulus Keamanan Pabrik II',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Lulus Keamanan Pelabuhan',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Lulus Pengawas Bongkar Muat',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'false',
-    ),
-    const ActivityProgress(
-      name: 'Selesai',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'false',
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,22 +30,23 @@ class TrackingActivityScreen extends StatelessWidget {
             image: MediaRes.colorBackground,
             child: Center(
               child: ContainerCard(mediaHeight: 0.88, children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 12, left: 12),
+                Padding(
+                  padding: const EdgeInsets.only(top: 12, left: 12),
                   child: Text(
-                    'Nama Aktivitas',
-                    style: TextStyle(
-                        fontFamily: Fonts.inter,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff315784)),
+                    activity.name,
+                    style: const TextStyle(
+                      fontFamily: Fonts.inter,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xff315784),
+                    ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 12),
+                Padding(
+                  padding: const EdgeInsets.only(left: 12),
                   child: Text(
-                    'Memasukkan Barang',
-                    style: TextStyle(
+                    activity.type,
+                    style: const TextStyle(
                         fontFamily: Fonts.inter,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -109,9 +73,22 @@ class TrackingActivityScreen extends StatelessWidget {
                         color: Color(0xff315784)),
                   ),
                 ),
-                ActivityList(
-                  activityProgress: _activityProgress,
-                ),
+                activity.activityProgress.isEmpty
+                    ? SizedBox(
+                        height: context.height * 0.6,
+                        child: const Center(
+                          child: Text(
+                            'Tidak ada data',
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                                color: Colours.primaryColour),
+                          ),
+                        ),
+                      )
+                    : ActivityList(
+                        activityProgress: activity.activityProgress,
+                      ),
               ]),
             ),
           );

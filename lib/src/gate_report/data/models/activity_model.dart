@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/gate_report/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/item_model.dart';
@@ -15,6 +17,7 @@ class ActivityModel extends Activity {
     required super.status,
     required super.activityProgress,
     required super.qrCode,
+    super.isChecked = false,
     super.route,
   });
 
@@ -29,7 +32,8 @@ class ActivityModel extends Activity {
           items: [],
           status: '',
           activityProgress: [],
-          qrCode: '',
+          qrCode: null,
+          isChecked: false,
           route: null,
         );
 
@@ -43,7 +47,8 @@ class ActivityModel extends Activity {
     List<ItemModel>? items,
     String? status,
     List<ActivityProgressModel>? activityProgress,
-    String? qrCode,
+    File? qrCode,
+    bool? isChecked,
     String? route,
   }) {
     return ActivityModel(
@@ -57,6 +62,7 @@ class ActivityModel extends Activity {
       status: status ?? this.status,
       activityProgress: activityProgress ?? this.activityProgress,
       qrCode: qrCode ?? this.qrCode,
+      isChecked: isChecked ?? this.isChecked,
       route: route ?? this.route,
     );
   }
@@ -64,36 +70,60 @@ class ActivityModel extends Activity {
   ActivityModel.fromMap(DataMap map)
       : super(
           id: map['id'] as int,
-          name: map['name'] as String,
-          shipName: map['ship_name'] as String,
-          type: map['type'] as String,
-          date: map['date'] as String,
-          time: map['time'] as String,
-          items: (map['items'] as List<DataMap>)
-              .map((e) => ItemModel.fromMap(e))
-              .toList(),
+          name: (map['title'] ?? "") as String,
+          shipName: map['ship_id'] as String,
+          type: map['jenis_pekerjaan'] as String,
+          date: (map['start_date'] as String).split(' ')[0],
+          time: (map['start_date'] as String).split(' ')[1],
+          items: ((map['goods'] as List<dynamic>).isNotEmpty)
+              ? (map['goods'] as List<dynamic>)
+                  .map((e) => ItemModel.fromMap(e))
+                  .toList()
+              : [],
           status: map['status'] as String,
-          activityProgress: (map['activity_progress'] as List<DataMap>)
-              .map((e) => ActivityProgressModel.fromMap(e))
-              .toList(),
-          qrCode: map['qr_code'] as String,
+          activityProgress:
+              ((map['activity_progress'] as List<dynamic>).isNotEmpty)
+                  ? (map['activity_progress'] as List<dynamic>)
+                      .map((e) => ActivityProgressModel.fromMap(e))
+                      .toList()
+                  : [],
+          qrCode: map['qr_code'] as File?,
+          isChecked: false,
           route: map['route'] as String?,
         );
 
   DataMap toMap() {
     return {
       'id': id,
-      'name': name,
-      'ship_name': shipName,
-      'type': type,
-      'date': date,
-      'time': time,
-      'items': items.map((e) => (e as ItemModel).toMap()).toList(),
+      'code': name,
+      'ship_id': shipName,
+      'jenis_pekerjaan': type,
+      'start_date': "$date $time",
+      'goods': items
+          .map(
+            (e) => ItemModel(
+              id: e.id,
+              imagePath: e.imagePath,
+              image: null,
+              name: e.name,
+              amount: e.amount,
+              unit: e.unit,
+            ).toMap(),
+          )
+          .toList(),
       'status': status,
       'activity_progress': activityProgress
-          .map((e) => (e as ActivityProgressModel).toMap())
+          .map((e) => ActivityProgressModel(
+                id: e.id,
+                activityId: e.activityId,
+                name: e.name,
+                urgentLetter: e.urgentLetter,
+                documentation: e.documentation,
+                dateTime: e.dateTime,
+              ).toMap())
           .toList(),
       'qr_code': qrCode,
+      'isChecked': isChecked,
       'route': route,
     };
   }

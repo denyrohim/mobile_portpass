@@ -1,27 +1,27 @@
 import 'package:equatable/equatable.dart';
 
 class Report extends Equatable {
+  final String name;
   final String urgentLetter;
   final String documentation;
-  final DateTime dateTime;
 
   const Report({
+    required this.name,
     required this.urgentLetter,
     required this.documentation,
-    required this.dateTime,
   });
 
-  Report.empty()
+  const Report.empty()
       : this(
+          name: '',
           urgentLetter: '',
           documentation: '',
-          dateTime: DateTime.now(),
         );
 
   @override
   List<Object?> get props => [
+        name,
         urgentLetter,
         documentation,
-        dateTime,
       ];
 }

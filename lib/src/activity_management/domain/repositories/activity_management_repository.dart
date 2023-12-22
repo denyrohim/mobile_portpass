@@ -1,6 +1,8 @@
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity_route.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/ship.dart';
 
 abstract class ActivityManagementRepository {
   const ActivityManagementRepository();
@@ -25,6 +27,10 @@ abstract class ActivityManagementRepository {
   });
 
   ResultFuture<List<Activity>> getActivities();
+
+  ResultFuture<List<Ship>> getShip();
+
+  ResultFuture<List<ActivityRoute>> getActivityRoutes();
 
   ResultFuture<Activity> updateActivity({
     required Activity activity,

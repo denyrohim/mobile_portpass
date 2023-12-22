@@ -4,7 +4,6 @@ import 'package:port_pass_app/core/common/app/providers/activity_provider.dart';
 import 'package:port_pass_app/core/common/views/loading_view.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
-import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
 import 'package:port_pass_app/src/activity_management/presentation/bloc/activity_management_bloc.dart';
 import 'package:port_pass_app/src/activity_management/presentation/views/activity_detail_activity_screen.dart';
 import 'package:port_pass_app/src/activity_management/presentation/widgets/activity_item.dart';
@@ -22,7 +21,6 @@ class ListActivityScreen extends StatefulWidget {
 }
 
 class _ListActivityScreenState extends State<ListActivityScreen> {
-  List<Activity> activitiesDefault = [];
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
   final TextEditingController _countController = TextEditingController();
@@ -48,7 +46,6 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
   @override
   void initState() {
     super.initState();
-
     context.read<ActivityManagementBloc>().add(const GetActivitiesEvent());
   }
 
@@ -60,13 +57,14 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataLoaded) {
           context.read<ActivityProvider>().initActivities(state.activities);
-          if (activitiesDefault.isEmpty) {
-            activitiesDefault = state.activities;
-          }
+          context
+              .read<ActivityProvider>()
+              .initDefaultActivities(state.activities);
           initController;
           context.read<ActivityManagementBloc>().add(
                 ChangeStatusActivitiesEvent(
-                  activities: activitiesDefault,
+                  activities:
+                      context.read<ActivityProvider>().defaultActivities,
                   status: _statusController.text,
                 ),
               );
@@ -100,7 +98,8 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                 count: activities.length,
                 activityProvider: activityProvider,
                 statusController: _statusController,
-                activitiesDefault: activitiesDefault,
+                activitiesDefault:
+                    context.read<ActivityProvider>().defaultActivities,
               ),
               body: Container(
                 color: Colours.primaryColour,
@@ -151,8 +150,10 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                                 .read<ActivityManagementBloc>()
                                                 .add(
                                                   ChangeStatusActivitiesEvent(
-                                                    activities:
-                                                        activitiesDefault,
+                                                    activities: context
+                                                        .read<
+                                                            ActivityProvider>()
+                                                        .defaultActivities,
                                                     status: "Aktivitas",
                                                   ),
                                                 );
@@ -190,12 +191,14 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                                 .read<ActivityManagementBloc>()
                                                 .add(
                                                   ChangeStatusActivitiesEvent(
-                                                    activities:
-                                                        activitiesDefault,
-                                                    status: "Ditolak",
+                                                    activities: context
+                                                        .read<
+                                                            ActivityProvider>()
+                                                        .defaultActivities,
+                                                    status: "Draft",
                                                   ),
                                                 );
-                                            _statusController.text = 'Ditolak';
+                                            _statusController.text = 'Draft';
                                           },
                                           child: Column(
                                             children: [
@@ -254,40 +257,51 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                                   color: Colours.primaryColour),
                                             ),
                                           ),
-                                        ListView.builder(
-                                          itemCount: activities.length,
-                                          itemBuilder: (context, index) {
-                                            if (activities[index]
-                                                .name
-                                                .toLowerCase()
-                                                .contains(
-                                                    _searchController.text)) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  final navigator =
-                                                      Navigator.of(context);
-                                                  navigator.pushNamed(
-                                                    ActivityDetailActivityScreen
-                                                        .routeName,
-                                                    arguments:
-                                                        activities[index],
-                                                  );
-                                                },
-                                                child: ActivityItem(
-                                                  context,
-                                                  index: index,
-                                                  activities: activities,
-                                                  status:
-                                                      _statusController.text,
-                                                  isShowCheckBox:
-                                                      activityProvider
-                                                          .isShowChecked,
-                                                ),
-                                              );
-                                            } else {
-                                              return const SizedBox.shrink();
-                                            }
+                                        RefreshIndicator(
+                                          onRefresh: () async {
+                                            context
+                                                .read<ActivityManagementBloc>()
+                                                .add(
+                                                    const GetActivitiesEvent());
                                           },
+                                          backgroundColor:
+                                              Colours.secondaryColour,
+                                          color: Colours.primaryColour,
+                                          child: ListView.builder(
+                                            itemCount: activities.length,
+                                            itemBuilder: (context, index) {
+                                              if (activities[index]
+                                                  .name
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      _searchController.text)) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    final navigator =
+                                                        Navigator.of(context);
+                                                    navigator.pushNamed(
+                                                      ActivityDetailActivityScreen
+                                                          .routeName,
+                                                      arguments:
+                                                          activities[index],
+                                                    );
+                                                  },
+                                                  child: ActivityItem(
+                                                    context,
+                                                    index: index,
+                                                    activities: activities,
+                                                    status:
+                                                        _statusController.text,
+                                                    isShowCheckBox:
+                                                        activityProvider
+                                                            .isShowChecked,
+                                                  ),
+                                                );
+                                              } else {
+                                                return const SizedBox.shrink();
+                                              }
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),

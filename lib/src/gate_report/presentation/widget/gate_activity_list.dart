@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/src/gate_report/domain/entities/activity_progress.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -16,32 +17,16 @@ class GateActivityList extends StatelessWidget {
     return Column(
       children: List.generate(activityProgress.length, (index) {
         final progress = activityProgress[index];
-        final changeColor = progress.status == 'true'
-            ? const Color(0xff315784)
-            : const Color(0xff92A6BE);
-        final changeFont =
-            progress.status == 'true' ? FontWeight.w700 : FontWeight.w400;
-        final checkAtas = index > 0 &&
-                activityProgress[index - 1].status == 'true' &&
-                activityProgress[index].status == 'true'
-            ? const LineStyle(
-                color: Color(0xff315784),
-                thickness: 1,
-              )
-            : const LineStyle(
-                color: Color(0xff92A6BE),
-                thickness: 1,
-              );
-        final checkBawah = index < activityProgress.length - 1 &&
-                activityProgress[index + 1].status == 'true'
-            ? const LineStyle(
-                color: Color(0xff315784),
-                thickness: 1,
-              )
-            : const LineStyle(
-                color: Color(0xff92A6BE),
-                thickness: 1,
-              );
+        const changeColor = Color(0xff315784);
+        const changeFont = FontWeight.w700;
+        const checkAtas = LineStyle(
+          color: Color(0xff315784),
+          thickness: 1,
+        );
+        const checkBawah = LineStyle(
+          color: Color(0xff315784),
+          thickness: 1,
+        );
 
         if (index == 0) {
           return SizedBox(
@@ -67,7 +52,9 @@ class GateActivityList extends StatelessWidget {
                       ),
                       const SizedBox(
                           height: 1), // Add some space between the two texts
-                      Text(progress.date,
+                      Text(
+                          DateFormat('dd-MM-yyyy HH:mm')
+                              .format(progress.dateTime),
                           style: TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
@@ -113,7 +100,9 @@ class GateActivityList extends StatelessWidget {
                       ),
                       const SizedBox(
                           height: 1), // Add some space between the two texts
-                      Text(progress.date,
+                      Text(
+                          DateFormat('dd-MM-yyyy HH:mm')
+                              .format(progress.dateTime),
                           style: TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
@@ -160,7 +149,9 @@ class GateActivityList extends StatelessWidget {
                       ),
                       const SizedBox(
                           height: 1), // Add some space between the two texts
-                      Text(progress.date,
+                      Text(
+                          DateFormat('dd-MM-yyyy HH:mm')
+                              .format(progress.dateTime),
                           style: TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,

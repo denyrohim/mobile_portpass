@@ -67,13 +67,18 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
       listener: (context, state) {
         if (state is GateReportError) {
           context.dashboardController.changeIndex(0);
+          setState(() {
+            isCanScan = false;
+            isSuccess = false;
+            isButtonScanPressed = false;
+          });
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is ScanSuccess) {
           setState(() {
             isCanScan = false;
             isSuccess = true;
             isButtonScanPressed = false;
-            context.read<ReportProvider>().initActivityId(1);
+            context.read<ReportProvider>().initActivityId(state.result);
             debugPrint("sukseskah maniezz: $isSuccess");
           });
           _scanBottomSheet();
@@ -87,7 +92,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
         } else if (state is LocationLoaded) {
           setState(() {
             isCanScan = !isCanScan;
-            isButtonScanPressed = !isButtonScanPressed;
+            isButtonScanPressed = false;
           });
           debugPrint("${cameraController.isStarting}");
         }
@@ -125,6 +130,17 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                     }
                   },
                 ),
+                (isButtonScanPressed)
+                    ? SizedBox(
+                        width: context.width,
+                        child: const Center(
+                          child: CircularProgressIndicator(
+                            color: Colours.primaryColour,
+                            strokeWidth: 8,
+                          ),
+                        ),
+                      )
+                    : const SizedBox(),
                 QRScannerOverlay(
                   overlayColour: Colors.black.withOpacity(0.5),
                 ),
@@ -169,50 +185,67 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                             Stack(
                               alignment: Alignment.center,
                               children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    context.read<GateReportBloc>().add(
-                                          GetLocationEvent(
-                                              latitude:
-                                                  context.currentUser!.latitude,
-                                              longitude: context
-                                                  .currentUser!.longitude),
-                                        );
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.white,
-                                    shape: const CircleBorder(),
-                                    elevation: 2,
-                                    padding: const EdgeInsets.all(0),
-                                  ),
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(100),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black
-                                                  .withOpacity(0.25),
-                                              blurRadius: 4,
-                                              offset: const Offset(0, 4),
-                                            ),
-                                          ],
+                                IgnorePointer(
+                                  ignoring: isButtonScanPressed,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        isButtonScanPressed = true;
+                                      });
+                                      // context.read<GateReportBloc>().add(
+                                      //       GetLocationEvent(
+                                      //           latitude: context
+                                      //               .currentUser!.latitude,
+                                      //           longitude: context
+                                      //               .currentUser!.longitude),
+                                      //     );
+                                      setState(() {
+                                        isCanScan = false;
+                                        isSuccess = true;
+                                        isButtonScanPressed = false;
+                                        context
+                                            .read<ReportProvider>()
+                                            .initActivityId(17);
+                                        debugPrint(
+                                            "sukseskah maniezz: $isSuccess");
+                                      });
+                                      _scanBottomSheet();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.white,
+                                      shape: const CircleBorder(),
+                                      elevation: 2,
+                                      padding: const EdgeInsets.all(0),
+                                    ),
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.25),
+                                                blurRadius: 4,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          height: 72,
+                                          width: 72,
                                         ),
-                                        height: 72,
-                                        width: 72,
-                                      ),
-                                      SvgPicture.asset(
-                                        isButtonScanPressed
-                                            ? MediaRes.scanLight
-                                            : MediaRes.scanBold,
-                                        height: 32,
-                                        width: 32,
-                                      ),
-                                    ],
+                                        SvgPicture.asset(
+                                          isButtonScanPressed
+                                              ? MediaRes.scanLight
+                                              : MediaRes.scanBold,
+                                          height: 32,
+                                          width: 32,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],

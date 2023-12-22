@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity_progress.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
@@ -12,7 +14,7 @@ class Activity extends Equatable {
   final List<Item> items;
   final String status;
   final List<ActivityProgress> activityProgress;
-  final String qrCode;
+  final File? qrCode;
   final bool isChecked;
   final String? route;
 
@@ -42,7 +44,7 @@ class Activity extends Equatable {
           items: [],
           status: '',
           activityProgress: List<ActivityProgress>.empty(),
-          qrCode: '',
+          qrCode: null,
           isChecked: false,
           route: null,
         );

@@ -29,6 +29,7 @@ class DetailActivity extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               const Expanded(
@@ -48,7 +49,7 @@ class DetailActivity extends StatelessWidget {
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white,
                                   ),
-                                  overflow: TextOverflow.ellipsis,
+                                  overflow: TextOverflow.visible,
                                 ),
                               )
                             ],
@@ -183,9 +184,10 @@ class DetailActivity extends StatelessWidget {
                                             fontWeight: FontWeight.w400,
                                             color: Colors.white)),
                                     SvgPicture.asset(
-                                      activity.status == "Diterima"
+                                      activity.status == "Accepted"
                                           ? MediaRes.acceptIcon
-                                          : activity.type == "Ditolak"
+                                          : activity.type == "Cancelled" ||
+                                                  activity.type == "Rejected"
                                               ? MediaRes.rejectIcon
                                               : MediaRes.waitingIcon,
                                     ),

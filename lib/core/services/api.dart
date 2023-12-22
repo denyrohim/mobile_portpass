@@ -7,6 +7,8 @@ class API {
   final APIActivity activity;
   final APIItems items;
   final APIReport report;
+  final APIShip ship;
+  final APIActivityRoute activityRoute;
 
   API({String? id})
       : auth = APIAuth(id: id),
@@ -14,7 +16,9 @@ class API {
         agent = APIAgent(id: id),
         activity = APIActivity(id: id),
         items = APIItems(id: id),
-        report = APIReport(id: id);
+        report = APIReport(id: id),
+        ship = APIShip(id: id),
+        activityRoute = APIActivityRoute(id: id);
 
   String get baseUrl => kBaseUrl;
 }
@@ -51,8 +55,9 @@ class APIActivity {
   const APIActivity({this.id});
   final String? id;
 
-  String get activities => "$kHost/activities/security";
-  String get activityDetail => "$activities/$id";
+  String get activities =>
+      "$kHost/activities/ship-chandler?include=goods,activityProgress,activityRoute";
+  String get activityDetail => "$kHost/activities/ship-chandler";
   String get scanQRCode => "$activityDetail/scan-qr-code";
 }
 
@@ -64,10 +69,24 @@ class APIItems {
   String get detailItem => "$items/$id";
 }
 
+class APIShip {
+  const APIShip({this.id});
+  final String? id;
+
+  String get ships => "$kHost/ships";
+}
+
+class APIActivityRoute {
+  const APIActivityRoute({this.id});
+  final String? id;
+
+  String get routes => "$kHost/activity-routes";
+}
+
 class APIReport {
   const APIReport({this.id});
   final String? id;
 
-  String get report => "$kHost/report";
+  String get report => "$kHost/activity-progress";
   String get detailReport => "$report/$id";
 }

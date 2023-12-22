@@ -4,11 +4,11 @@ import 'package:port_pass_app/core/errors/failure.dart';
 import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/activity_management/data/datasources/activity_management_remote_data_source.dart';
 import 'package:port_pass_app/src/activity_management/data/models/activity_model.dart';
-import 'package:port_pass_app/src/activity_management/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/activity_management/data/models/item_model.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
-import 'package:port_pass_app/src/activity_management/domain/entities/activity_progress.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity_route.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/ship.dart';
 import 'package:port_pass_app/src/activity_management/domain/repositories/activity_management_repository.dart';
 
 class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
@@ -17,10 +17,16 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   final ActivityManagementRemoteDataSource _remoteDataSource;
 
   @override
-  ResultFuture<Activity> addActivity({required Activity activity}) async {
+  ResultFuture<Activity> addActivity({
+    required Activity activity,
+  }) async {
     try {
+      final ships = await _remoteDataSource.getShips();
+      final activityRoutes = await _remoteDataSource.getRoutes();
+
       final itemsData = List<ItemModel>.from(activity.items
           .map((item) => ItemModel(
+                id: item.id,
                 imagePath: item.imagePath,
                 image: item.image,
                 name: item.name,
@@ -28,15 +34,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
                 unit: item.unit,
               ))
           .toList());
-      final activityProgressData =
-          List<ActivityProgress>.from(activity.activityProgress
-              .map((progress) => ActivityProgressModel(
-                    name: progress.name,
-                    date: progress.date,
-                    time: progress.time,
-                    status: progress.status,
-                  ))
-              .toList());
+
       final activityData = ActivityModel(
         id: activity.id,
         name: activity.name,
@@ -46,14 +44,17 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
         time: activity.time,
         items: itemsData,
         status: activity.status,
-        activityProgress: activityProgressData,
+        activityProgress: activity.activityProgress,
         qrCode: activity.qrCode,
         isChecked: activity.isChecked,
         route: activity.route,
       );
       final result = await _remoteDataSource.addActivity(
         activity: activityData,
+        ships: ships,
+        activityRoutes: activityRoutes,
       );
+
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
@@ -108,7 +109,10 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
   @override
   ResultFuture<List<Activity>> getActivities() async {
     try {
-      final result = await _remoteDataSource.getActivities();
+      final ships = await _remoteDataSource.getShips();
+      final result = await _remoteDataSource.getActivities(
+        ships: ships,
+      );
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
@@ -120,6 +124,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
     try {
       final itemsData = List<ItemModel>.from(activity.items
           .map((item) => ItemModel(
+                id: item.id,
                 imagePath: item.imagePath,
                 image: item.image,
                 name: item.name,
@@ -127,15 +132,7 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
                 unit: item.unit,
               ))
           .toList());
-      final activityProgressData =
-          List<ActivityProgress>.from(activity.activityProgress
-              .map((progress) => ActivityProgressModel(
-                    name: progress.name,
-                    date: progress.date,
-                    time: progress.time,
-                    status: progress.status,
-                  ))
-              .toList());
+
       final activityData = ActivityModel(
         id: activity.id,
         name: activity.name,
@@ -145,12 +142,17 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
         time: activity.time,
         items: itemsData,
         status: activity.status,
-        activityProgress: activityProgressData,
+        activityProgress: const [],
         qrCode: activity.qrCode,
         isChecked: activity.isChecked,
+        route: activity.route,
       );
+      final ships = await _remoteDataSource.getShips();
+      final activityRoutes = await _remoteDataSource.getRoutes();
       final result = await _remoteDataSource.updateActivity(
         activity: activityData,
+        ships: ships,
+        activityRoutes: activityRoutes,
       );
       return Right(result);
     } on ServerException catch (e) {
@@ -191,25 +193,33 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
       List<Activity> activitiesResult = [];
       if (status == "Aktivitas") {
         for (var i = 0; i < activities.length; i++) {
-          if (activities[i].status != "Ditolak") {
+          if (activities[i].status != "Cancelled" &&
+              activities[i].status != "Rejected") {
             activitiesResult.add(activities[i]);
           }
         }
-      } else if (status == "Diterima") {
+      } else if (status == "Finished") {
         for (var i = 0; i < activities.length; i++) {
-          if (activities[i].status == "Diterima") {
+          if (activities[i].status == "Finished") {
             activitiesResult.add(activities[i]);
           }
         }
-      } else if (status == "Menunggu") {
+      } else if (status == "Pending") {
         for (var i = 0; i < activities.length; i++) {
-          if (activities[i].status == "Menunggu") {
+          if (activities[i].status == "Pending") {
             activitiesResult.add(activities[i]);
           }
         }
-      } else if (status == "Ditolak") {
+      } else if (status == "On Progress") {
         for (var i = 0; i < activities.length; i++) {
-          if (activities[i].status == "Ditolak") {
+          if (activities[i].status == "On Progress") {
+            activitiesResult.add(activities[i]);
+          }
+        }
+      } else if (status == "Draft") {
+        for (var i = 0; i < activities.length; i++) {
+          if (activities[i].status == "Cancelled" ||
+              activities[i].status == "Rejected") {
             activitiesResult.add(activities[i]);
           }
         }
@@ -270,6 +280,26 @@ class ActivityManagementRepositoryImpl implements ActivityManagementRepository {
       return Future.value(Right(result));
     } on ServerException catch (e) {
       return Future.value(Left(ServerFailure.fromException(e)));
+    }
+  }
+
+  @override
+  ResultFuture<List<Ship>> getShip() async {
+    try {
+      final result = await _remoteDataSource.getShips();
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<List<ActivityRoute>> getActivityRoutes() async {
+    try {
+      final result = await _remoteDataSource.getRoutes();
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
     }
   }
 }

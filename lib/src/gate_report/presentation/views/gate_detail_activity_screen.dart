@@ -243,9 +243,9 @@ class _GateDetailActivityScreenState extends State<GateDetailActivityScreen> {
                                                   fontWeight: FontWeight.w400,
                                                   color: Colors.white)),
                                           SvgPicture.asset(
-                                            activity.status == "Diterima"
+                                            activity.status == "Accepted"
                                                 ? MediaRes.acceptIcon
-                                                : activity.type == "Ditolak"
+                                                : activity.type == "Cancelled"
                                                     ? MediaRes.rejectIcon
                                                     : MediaRes.waitingIcon,
                                           ),
@@ -266,7 +266,7 @@ class _GateDetailActivityScreenState extends State<GateDetailActivityScreen> {
                       ],
                     ),
                     ContainerCard(
-                      mediaHeight: 0.62,
+                      mediaHeight: 0.58,
                       header: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(

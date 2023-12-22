@@ -45,7 +45,7 @@ class ActivityManagementAppBar extends StatelessWidget
         ),
       ),
       actions: [
-        (activityProvider.isShowChecked && statusController.text == 'Ditolak')
+        (activityProvider.isShowChecked && statusController.text == 'Cancelled')
             ? Row(
                 children: [
                   Container(
@@ -82,6 +82,7 @@ class ActivityManagementAppBar extends StatelessWidget
                                 colorTextButtonPositive: Colours.errorColour,
                                 activitiesIds:
                                     activityProvider.idCheckedActivities,
+                                status: statusController.text,
                               ),
                             );
                           },
@@ -155,14 +156,14 @@ class ActivityManagementAppBar extends StatelessWidget
                         borderRadius: BorderRadius.circular(20),
                       ),
                       itemBuilder: (_) => [
-                        if (statusController.text != 'Ditolak') ...[
+                        if (statusController.text != 'Draft') ...[
                           PopupMenuItem(
                             value: 1,
                             child: const PopUpItem(
-                              title: 'Diterima',
+                              title: 'Finished',
                             ),
                             onTap: () {
-                              statusController.text = 'Diterima';
+                              statusController.text = 'Finished';
                               context.read<ActivityManagementBloc>().add(
                                     ChangeStatusActivitiesEvent(
                                       activities: activitiesDefault,
@@ -174,10 +175,25 @@ class ActivityManagementAppBar extends StatelessWidget
                           PopupMenuItem(
                             value: 2,
                             child: const PopUpItem(
-                              title: 'Menunggu',
+                              title: 'On Progress',
                             ),
                             onTap: () {
-                              statusController.text = 'Menunggu';
+                              statusController.text = 'On Progress';
+                              context.read<ActivityManagementBloc>().add(
+                                    ChangeStatusActivitiesEvent(
+                                      activities: activitiesDefault,
+                                      status: statusController.text,
+                                    ),
+                                  );
+                            },
+                          ),
+                          PopupMenuItem(
+                            value: 3,
+                            child: const PopUpItem(
+                              title: 'Pending',
+                            ),
+                            onTap: () {
+                              statusController.text = 'Pending';
                               context.read<ActivityManagementBloc>().add(
                                     ChangeStatusActivitiesEvent(
                                       activities: activitiesDefault,

@@ -68,7 +68,7 @@ class _BottomSheetApprovalCardState extends State<BottomSheetApprovalCard> {
                   Center(
                     child: SizedBox(
                       height: 420,
-                      width: 330,
+                      width: MediaQuery.of(context).size.width * 0.8,
                       child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(

@@ -2,7 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:port_pass_app/core/enums/update_activity_action.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity_route.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/ship.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_item.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/add_photo_item.dart';
@@ -11,10 +13,13 @@ import 'package:port_pass_app/src/activity_management/domain/usecase/change_stat
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_items.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/get_ships.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/select_all_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_check_box_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_item.dart';
+
+import '../../domain/usecase/get_activity_routes.dart';
 
 part 'activity_management_event.dart';
 part 'activity_management_state.dart';
@@ -33,7 +38,9 @@ class ActivityManagementBloc
       required ChangeStatusActivities changeStatusActivities,
       required CancelCheckBoxActivities cancelCheckBoxActivities,
       required UpdateCheckBoxActivity updateCheckBoxActivity,
-      required SelectAllActivities selectAllActivities})
+      required SelectAllActivities selectAllActivities,
+      required GetShips getShips,
+      required GetActivityRoutes getActivityRoutes})
       : _addActivity = addActivity,
         _addItem = addItem,
         _deleteActivities = deleteActivities,
@@ -46,6 +53,8 @@ class ActivityManagementBloc
         _cancelCheckBoxActivities = cancelCheckBoxActivities,
         _updateCheckBoxActivity = updateCheckBoxActivity,
         _selectAllActivities = selectAllActivities,
+        _getShips = getShips,
+        _getActivityRoutes = getActivityRoutes,
         super(const ActivityManagementInitial()) {
     on<ActivityManagementEvent>((event, emit) {
       emit(const ActivityManagementLoading());
@@ -62,6 +71,8 @@ class ActivityManagementBloc
     on<CancelCheckBoxActivitiesEvent>(_cancelCheckBoxActivityHandler);
     on<UpdateCheckBoxActivityEvent>(_updateCheckBoxActivityHandler);
     on<SelectAllActivitiesEvent>(_selectAllActivitiesHandler);
+    on<GetShipsEvent>(_getShipsHandler);
+    on<GetActivityRoutesEvent>(_getActivityRoutesHandler);
   }
   final AddActivity _addActivity;
   final AddItem _addItem;
@@ -75,6 +86,8 @@ class ActivityManagementBloc
   final CancelCheckBoxActivities _cancelCheckBoxActivities;
   final UpdateCheckBoxActivity _updateCheckBoxActivity;
   final SelectAllActivities _selectAllActivities;
+  final GetShips _getShips;
+  final GetActivityRoutes _getActivityRoutes;
 
   Future<void> _addActivityHandler(
     AddActivityEvent event,
@@ -140,6 +153,28 @@ class ActivityManagementBloc
     result.fold(
       (failure) => emit(ActivityManagementError(failure.errorMessage)),
       (activities) => emit(DataLoaded(activities)),
+    );
+  }
+
+  Future<void> _getShipsHandler(
+    GetShipsEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
+    final result = await _getShips();
+    result.fold(
+      (failure) => emit(ActivityManagementError(failure.errorMessage)),
+      (ships) => emit(ShipsLoaded(ships)),
+    );
+  }
+
+  Future<void> _getActivityRoutesHandler(
+    GetActivityRoutesEvent event,
+    Emitter<ActivityManagementState> emit,
+  ) async {
+    final result = await _getActivityRoutes();
+    result.fold(
+      (failure) => emit(ActivityManagementError(failure.errorMessage)),
+      (activityRoutes) => emit(ActivityRoutesLoaded(activityRoutes)),
     );
   }
 

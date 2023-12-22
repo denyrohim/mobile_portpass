@@ -38,8 +38,9 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
     final MobileScannerController cameraController = widget.cameraController;
     return BlocConsumer<GateReportBloc, GateReportState>(
       listener: (context, state) async {
-        if (state is ActivityLoaded) {
-          // activityProvider
+        if (state is GateReportError) {
+          debugPrint('error: ${state.message}');
+        } else if (state is ActivityLoaded) {
           context.read<ReportProvider>().initActivity(state.activity);
           final navigator = Navigator.of(context);
 
@@ -126,6 +127,7 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
                 alignment: Alignment.center,
                 children: [
                   Container(
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       color: Colors.white,
@@ -139,45 +141,56 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
                     ),
                     height: 285,
                     width: 256,
-                  ),
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.25),
-                              blurRadius: 4,
-                              offset: const Offset(0, 4),
+                    child: Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 4,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          height: 156,
+                          width: 144,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: SvgPicture.asset(
+                              isSuccess && state is! GateReportError
+                                  ? MediaRes.signalIcon
+                                  : MediaRes.signalIcon2,
                             ),
-                          ],
-                        ),
-                        height: 156,
-                        width: 144,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: SvgPicture.asset(
-                            isSuccess
-                                ? MediaRes.signalIcon
-                                : MediaRes.signalIcon2,
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        isSuccess ? 'Scan Berhasil' : 'Scan Gagal',
-                        style: const TextStyle(
-                          fontFamily: Fonts.inter,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff315784),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                    ],
+                        Text(
+                          isSuccess ? 'Scan Berhasil' : 'Scan Gagal',
+                          style: const TextStyle(
+                            fontFamily: Fonts.inter,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xff315784),
+                          ),
+                        ),
+                        if (state is GateReportError)
+                          Text(
+                            state.message,
+                            style: const TextStyle(
+                              fontFamily: Fonts.inter,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: Colours.errorColour,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                      ],
+                    ),
                   ),
                 ],
               ),

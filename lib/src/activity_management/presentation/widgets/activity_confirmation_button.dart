@@ -20,6 +20,7 @@ class ActivityConfirmationButton extends StatefulWidget {
     required this.textButtonNegative,
     this.colorTextButtonNegative,
     required this.activitiesIds,
+    this.status,
   });
 
   final List<int> activitiesIds;
@@ -29,6 +30,7 @@ class ActivityConfirmationButton extends StatefulWidget {
   final Color? colorTextButtonPositive;
   final String textButtonNegative;
   final Color? colorTextButtonNegative;
+  final String? status;
 
   @override
   State<ActivityConfirmationButton> createState() =>
@@ -50,11 +52,14 @@ class _ActivityConfirmationButtonState
         } else if (state is DataLoaded) {
           debugPrint('Data Loaded');
           context.read<ActivityProvider>().initActivities(state.activities);
+          context
+              .read<ActivityProvider>()
+              .initDefaultActivities(state.activities);
           context.read<ActivityProvider>().setShowChecked(false);
           context.read<ActivityManagementBloc>().add(
                 ChangeStatusActivitiesEvent(
                   activities: state.activities,
-                  status: "Ditolak",
+                  status: widget.status!,
                 ),
               );
         } else if (state is StatusChanged) {
@@ -67,9 +72,6 @@ class _ActivityConfirmationButtonState
           }
 
           debugPrint('Data Deleted');
-          context
-              .read<ActivityManagementBloc>()
-              .add(const GetActivitiesEvent());
 
           showDialog(
             context: context,

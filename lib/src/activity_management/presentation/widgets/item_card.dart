@@ -14,11 +14,13 @@ class ItemCard extends StatelessWidget {
     required this.index,
     required this.item,
     this.isEdit = false,
+    this.activityType,
   });
 
   final int index;
   final Item item;
   final bool isEdit;
+  final String? activityType;
   @override
   Widget build(BuildContext context) {
     return Consumer<ActivityProvider>(
@@ -55,7 +57,7 @@ class ItemCard extends StatelessWidget {
                             fit: BoxFit.cover,
                           )
                         : item.imagePath != null
-                            ? Image.asset(
+                            ? Image.network(
                                 item.imagePath!,
                                 width: 88,
                                 height: 88,
@@ -108,9 +110,12 @@ class ItemCard extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {
+                                  context
+                                      .read<ActivityProvider>()
+                                      .setItemIndex(index);
                                   final navigator = Navigator.of(context);
                                   navigator.pushNamed(EditItemScreen.routeName,
-                                      arguments: index);
+                                      arguments: activityType!);
                                 },
                                 icon: Container(
                                   height: 30,

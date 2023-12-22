@@ -103,6 +103,20 @@ class GetActivityEvent extends ActivityManagementEvent {
   List<Object> get props => [];
 }
 
+class GetShipsEvent extends ActivityManagementEvent {
+  const GetShipsEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
+class GetActivityRoutesEvent extends ActivityManagementEvent {
+  const GetActivityRoutesEvent();
+
+  @override
+  List<Object> get props => [];
+}
+
 class UpdateCheckBoxActivityEvent extends ActivityManagementEvent {
   const UpdateCheckBoxActivityEvent({
     required this.activityId,

@@ -29,16 +29,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // return StreamBuilder<LocalUserModel>(
-    //   stream: DashboardUtils.userDataStream,
-    //   builder: (_, snapshot) {
-    //     if (snapshot.hasData && snapshot.data is LocalUserModel) {
-    //       context.read<UserProvider>().user = snapshot.data;
-    //     }
-
-    //   },
-    // );
-
     return Consumer<DashboardController>(builder: (_, controller, __) {
       return Scaffold(
         body: IndexedStack(

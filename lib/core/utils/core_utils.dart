@@ -63,6 +63,18 @@ class CoreUtils {
     return uriBase64;
   }
 
+  static File? uriBase64ToFile(String? uriBase64, String? fileName,
+      {String? extension}) {
+    if (uriBase64 == null) {
+      return null;
+    }
+    final base64File = uriBase64.split(',').last;
+    final decodedBytes = base64Decode(base64File);
+    final file = File('${Directory.systemTemp.path}/$fileName.$extension');
+    file.writeAsBytesSync(decodedBytes);
+    return file;
+  }
+
   // change string(hex) to string(int)
   static String hexToDec(String hex) {
     var value = hex;

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/activity_route.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/item.dart';
+import 'package:port_pass_app/src/activity_management/domain/entities/ship.dart';
 
 class ActivityProvider extends ChangeNotifier {
   List<Activity>? _activities;
@@ -16,9 +18,61 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addActivities(Activity activity) {
+    _activities!.add(activity);
+    notifyListeners();
+  }
+
   set activities(List<Activity>? activities) {
     if (_activities != activities) {
       _activities = activities;
+      Future.delayed(Duration.zero, notifyListeners);
+    }
+  }
+
+  List<Activity> _defaultActivities = [];
+
+  List<Activity> get defaultActivities => _defaultActivities;
+
+  void initDefaultActivities(List<Activity> activities) {
+    if (_defaultActivities != activities) {
+      _defaultActivities = activities;
+    }
+    notifyListeners();
+  }
+
+  List<Ship> _ships = [];
+
+  List<Ship> get ships => _ships;
+
+  void initShips(List<Ship> ships) {
+    if (_ships != ships) {
+      _ships = ships;
+    }
+    notifyListeners();
+  }
+
+  set ships(List<Ship> ships) {
+    if (_ships != ships) {
+      _ships = ships;
+      Future.delayed(Duration.zero, notifyListeners);
+    }
+  }
+
+  List<ActivityRoute> _activityRoutes = [];
+
+  List<ActivityRoute> get activityRoutes => _activityRoutes;
+
+  void initActivityRoutes(List<ActivityRoute> activityRoutes) {
+    if (_activityRoutes != activityRoutes) {
+      _activityRoutes = activityRoutes;
+    }
+    notifyListeners();
+  }
+
+  set activityRoutes(List<ActivityRoute> activityRoutes) {
+    if (_activityRoutes != activityRoutes) {
+      _activityRoutes = activityRoutes;
       Future.delayed(Duration.zero, notifyListeners);
     }
   }
@@ -70,6 +124,13 @@ class ActivityProvider extends ChangeNotifier {
     return idCheckedActivities;
   }
 
+  int? _itemIndex;
+  int? get itemIndex => _itemIndex;
+  void setItemIndex(int? index) {
+    _itemIndex = index;
+    notifyListeners();
+  }
+
   List<Item> _itemsEditActivity = [];
 
   List<Item> get itemsEditActivity => _itemsEditActivity;
@@ -78,13 +139,16 @@ class ActivityProvider extends ChangeNotifier {
     if (_itemsEditActivity != items) {
       _itemsEditActivity = List.from(
         items.map(
-          (item) => Item(
-            imagePath: item.imagePath,
-            image: item.image,
-            name: item.name,
-            amount: item.amount,
-            unit: item.unit,
-          ),
+          (item) {
+            return Item(
+              id: item.id,
+              imagePath: item.imagePath,
+              image: item.image,
+              name: item.name,
+              amount: item.amount,
+              unit: item.unit,
+            );
+          },
         ),
       );
     }
@@ -102,6 +166,7 @@ class ActivityProvider extends ChangeNotifier {
         (item) {
           if (_itemsEditActivity.indexOf(item) == index) {
             return Item(
+              id: item.id,
               imagePath: image.path,
               image: image,
               name: item.name,
@@ -126,6 +191,7 @@ class ActivityProvider extends ChangeNotifier {
       _itemsAddActivity = List.from(
         items.map(
           (item) => Item(
+            id: item.id,
             imagePath: item.imagePath,
             image: item.image,
             name: item.name,
@@ -149,6 +215,7 @@ class ActivityProvider extends ChangeNotifier {
         (item) {
           if (_itemsAddActivity.indexOf(item) == index) {
             return Item(
+              id: item.id,
               imagePath: image.path,
               image: image,
               name: item.name,

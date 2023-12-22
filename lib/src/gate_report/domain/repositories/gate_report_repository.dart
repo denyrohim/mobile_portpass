@@ -10,7 +10,7 @@ abstract class GateReportRepository {
     required int activityId,
   });
 
-  ResultFuture<String> scanQRActivity({
+  ResultFuture<int> scanQRActivity({
     required List<Barcode> barcodes,
   });
 

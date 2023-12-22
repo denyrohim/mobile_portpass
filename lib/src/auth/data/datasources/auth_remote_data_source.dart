@@ -94,6 +94,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
       }
 
+      user['location'] = user['zoneLocation']['name'];
+      user['latitude'] = double.parse(user['zoneLocation']['latitude']);
+      user['longitude'] = double.parse(user['zoneLocation']['longitude']);
+
       await _sharedPreferences.setString(
         kToken,
         result.data['data']['token'] as String,
@@ -152,6 +156,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
         }
       }
+
+      user['location'] = user['zoneLocation']['name'];
+      user['latitude'] = double.parse(user['zoneLocation']['latitude']);
+      user['longitude'] = double.parse(user['zoneLocation']['longitude']);
 
       return LocalUserModel.fromMap(user);
       // const user = LocalUserModel.empty();
@@ -220,6 +228,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         }
       }
 
+      user['location'] = userData.location;
+      user['latitude'] = userData.latitude;
+      user['longitude'] = userData.longitude;
+
       return LocalUserModel.fromMap(user);
     } on ServerException {
       rethrow;
@@ -241,11 +253,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
             headers: ApiHeaders.getHeaders(
               token: token,
             ).headers,
-            validateStatus: (status) {
-              return status! < 500;
+            validateStatus: (_) {
+              return true;
             },
           ),
         );
+      } else {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
       await _sharedPreferences.remove(kToken);

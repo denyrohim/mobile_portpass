@@ -35,7 +35,7 @@ class ActivityItem extends StatelessWidget {
     return Flex(
       direction: Axis.horizontal,
       children: [
-        if (isShowCheckBox && status == 'Ditolak')
+        if (isShowCheckBox && (status == 'Cancelled' || status == 'Rejected'))
           GestureDetector(
             onTap: () {
               context.read<ActivityManagementBloc>().add(
@@ -93,18 +93,21 @@ class ActivityItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              activities[index].name,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: isShowCheckBox
-                                    ? Colours.primaryColourDisabled
-                                    : Colours.primaryColour,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: Fonts.inter,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: Text(
+                                activities[index].name,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isShowCheckBox
+                                      ? Colours.primaryColourDisabled
+                                      : Colours.primaryColour,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: Fonts.inter,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 4),
                             Text(
@@ -132,7 +135,7 @@ class ActivityItem extends StatelessWidget {
                         Container(
                           alignment: Alignment.topCenter,
                           child: Container(
-                              width: 100,
+                              width: 120,
                               height: 24,
                               decoration: ShapeDecoration(
                                   shape: RoundedRectangleBorder(
@@ -154,10 +157,12 @@ class ActivityItem extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     SvgPicture.asset(
-                                      (activities[index].status == 'Diterima')
+                                      (activities[index].status == 'Finished')
                                           ? MediaRes.acceptIcon
-                                          : (activities[index].status ==
-                                                  'Menunggu')
+                                          : activities[index].status ==
+                                                      'Pending' ||
+                                                  activities[index].status ==
+                                                      'On Progress'
                                               ? MediaRes.waitingIcon
                                               : MediaRes.rejectIcon,
                                       width: 16,
@@ -190,15 +195,22 @@ class ActivityItem extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: IgnorePointer(
-                        ignoring: activities[index].status != 'Diterima',
+                        ignoring: activities[index].status != 'Finished' &&
+                            activities[index].status != 'On Progress' &&
+                            activities[index].status != 'Pending',
                         child: GestureDetector(
                           onTap: () {
-                            if (activities[index].status == 'Diterima') {
+                            if (activities[index].status == 'Finished' ||
+                                activities[index].status == 'On Progress' ||
+                                activities[index].status == 'Pending') {
                               final navigator = Navigator.of(context);
                               navigator.pushNamed(
                                   TrackingActivityScreen.routeName,
                                   arguments: activities[index]);
                               debugPrint('Lacak');
+                              debugPrint(activities[index]
+                                  .activityProgress
+                                  .toString());
                             }
                           },
                           child: Stack(
@@ -208,10 +220,14 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color:
-                                        activities[index].status == "Diterima"
-                                            ? Colours.primaryColour
-                                            : Colours.primaryColourDisabled,
+                                    color: (activities[index].status ==
+                                                "Finished" ||
+                                            activities[index].status ==
+                                                'On Progress' ||
+                                            activities[index].status ==
+                                                'Pending')
+                                        ? Colours.primaryColour
+                                        : Colours.primaryColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               Padding(
@@ -242,10 +258,10 @@ class ActivityItem extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: IgnorePointer(
-                        ignoring: activities[index].status != 'Diterima',
+                        ignoring: activities[index].status != 'On Progress',
                         child: GestureDetector(
                           onTap: () {
-                            if (activities[index].status == 'Diterima') {
+                            if (activities[index].status == 'On Progress') {
                               final navigator = Navigator.of(context);
                               navigator.pushNamed(
                                   QRCodeActivityScreen.routeName,
@@ -260,10 +276,10 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color:
-                                        activities[index].status == "Diterima"
-                                            ? Colours.primaryColour
-                                            : Colours.primaryColourDisabled,
+                                    color: activities[index].status ==
+                                            'On Progress'
+                                        ? Colours.primaryColour
+                                        : Colours.primaryColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               Padding(
@@ -291,11 +307,13 @@ class ActivityItem extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: IgnorePointer(
-                        ignoring: activities[index].status == 'Diterima' ||
-                            (isShowCheckBox && status == 'Ditolak'),
+                        ignoring: (activities[index].status == 'Finished' ||
+                                activities[index].status == 'On Progress') ||
+                            (isShowCheckBox && status == 'Draft'),
                         child: GestureDetector(
                           onTap: () {
-                            if (activities[index].status != 'Diterima') {
+                            if (activities[index].status != 'Finished' &&
+                                activities[index].status != 'On Progress') {
                               context
                                   .read<ActivityProvider>()
                                   .initItemsEditActivity(
@@ -313,11 +331,15 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color: isShowCheckBox && status == 'Ditolak'
-                                        ? Colours.primaryColourDisabled
-                                        : activities[index].status != 'Diterima'
-                                            ? Colours.primaryColour
-                                            : Colours.primaryColourDisabled,
+                                    color:
+                                        isShowCheckBox && status == 'Cancelled'
+                                            ? Colours.primaryColourDisabled
+                                            : activities[index].status !=
+                                                        'Finished' &&
+                                                    activities[index].status !=
+                                                        'On Progress'
+                                                ? Colours.primaryColour
+                                                : Colours.primaryColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               Padding(
@@ -348,11 +370,14 @@ class ActivityItem extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: IgnorePointer(
-                        ignoring: activities[index].status == 'Diterima' ||
-                            (isShowCheckBox && status == 'Ditolak'),
+                        ignoring: (activities[index].status == 'Finished' ||
+                                activities[index].status == 'Pending') ||
+                            (isShowCheckBox && status == 'Draft'),
                         child: GestureDetector(
                           onTap: () {
-                            if (activities[index].status == "Ditolak") {
+                            if (activities[index].status == "Cancelled" ||
+                                activities[index].status == "Rejected" ||
+                                activities[index].status == "On Progress") {
                               showModalBottomSheet<void>(
                                 isScrollControlled: true,
                                 context: context,
@@ -373,6 +398,7 @@ class ActivityItem extends StatelessWidget {
                                       colorTextButtonPositive:
                                           Colours.errorColour,
                                       activitiesIds: [activities[index].id],
+                                      status: status,
                                     ),
                                   );
                                 },
@@ -386,11 +412,17 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color: isShowCheckBox && status == 'Ditolak'
-                                        ? Colours.errorColourDisabled
-                                        : activities[index].status != "Diterima"
-                                            ? Colours.errorColour
-                                            : Colours.errorColourDisabled,
+                                    color:
+                                        isShowCheckBox && status == 'Cancelled'
+                                            ? Colours.errorColourDisabled
+                                            : activities[index].status !=
+                                                        "Finished" &&
+                                                    activities[index].status !=
+                                                        'On Progress' &&
+                                                    activities[index].status !=
+                                                        'Pending'
+                                                ? Colours.errorColour
+                                                : Colours.errorColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               Padding(

@@ -271,6 +271,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                                                       : activityProvider
                                                           .itemsEditActivity,
                                                   item: Item(
+                                                    id: -1,
                                                     name: nameController.text
                                                         .trim(),
                                                     amount: int.parse(

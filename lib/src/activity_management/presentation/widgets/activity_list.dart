@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/src/activity_management/domain/entities/activity_progress.dart';
 import 'package:timeline_tile/timeline_tile.dart';
@@ -17,14 +18,9 @@ class ActivityList extends StatelessWidget {
     return Column(
       children: List.generate(activityProgress.length, (index) {
         final progress = activityProgress[index];
-        final changeColor = progress.status == 'true'
-            ? const Color(0xff315784)
-            : const Color(0xff92A6BE);
-        final changeFont =
-            progress.status == 'true' ? FontWeight.w700 : FontWeight.w400;
-        final checkAtas = index > 0 &&
-                activityProgress[index - 1].status == 'true' &&
-                activityProgress[index].status == 'true'
+        const changeColor = Color(0xff315784);
+        const changeFont = FontWeight.w700;
+        final checkAtas = index > 0
             ? const LineStyle(
                 color: Color(0xff315784),
                 thickness: 1,
@@ -33,8 +29,7 @@ class ActivityList extends StatelessWidget {
                 color: Color(0xff92A6BE),
                 thickness: 1,
               );
-        final checkBawah = index < activityProgress.length - 1 &&
-                activityProgress[index + 1].status == 'true'
+        final checkBawah = index < activityProgress.length - 1
             ? const LineStyle(
                 color: Color(0xff315784),
                 thickness: 1,
@@ -59,7 +54,7 @@ class ActivityList extends StatelessWidget {
                     children: [
                       Text(
                         progress.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: Fonts.inter,
                           fontSize: 16,
                           fontWeight: changeFont,
@@ -68,8 +63,8 @@ class ActivityList extends StatelessWidget {
                       ),
                       const SizedBox(
                           height: 1), // Add some space between the two texts
-                      Text(progress.date,
-                          style: TextStyle(
+                      Text(DateFormat('yyyy-MM-dd').format(progress.dateTime),
+                          style: const TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
                             fontWeight: changeFont,
@@ -83,7 +78,7 @@ class ActivityList extends StatelessWidget {
               afterLineStyle: checkBawah,
               lineXY: 0.1,
               alignment: TimelineAlign.manual,
-              indicatorStyle: IndicatorStyle(
+              indicatorStyle: const IndicatorStyle(
                 color: changeColor,
                 width: 10,
               ),
@@ -105,7 +100,7 @@ class ActivityList extends StatelessWidget {
                     children: [
                       Text(
                         progress.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: Fonts.inter,
                           fontSize: 16,
                           fontWeight: changeFont,
@@ -114,8 +109,8 @@ class ActivityList extends StatelessWidget {
                       ),
                       const SizedBox(
                           height: 1), // Add some space between the two texts
-                      Text(progress.date,
-                          style: TextStyle(
+                      Text(DateFormat('yyyy-MM-dd').format(progress.dateTime),
+                          style: const TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
                             fontWeight: changeFont,
@@ -129,7 +124,7 @@ class ActivityList extends StatelessWidget {
               alignment: TimelineAlign.manual,
               afterLineStyle: checkBawah,
               beforeLineStyle: checkAtas,
-              indicatorStyle: IndicatorStyle(
+              indicatorStyle: const IndicatorStyle(
                 color: changeColor,
                 width: 10,
               ),
@@ -152,7 +147,7 @@ class ActivityList extends StatelessWidget {
                     children: [
                       Text(
                         progress.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: Fonts.inter,
                           fontSize: 16,
                           fontWeight: changeFont,
@@ -161,8 +156,8 @@ class ActivityList extends StatelessWidget {
                       ),
                       const SizedBox(
                           height: 1), // Add some space between the two texts
-                      Text(progress.date,
-                          style: TextStyle(
+                      Text(DateFormat('yyyy-MM-dd').format(progress.dateTime),
+                          style: const TextStyle(
                             fontFamily: Fonts.inter,
                             fontSize: 16,
                             fontWeight: changeFont,
@@ -176,7 +171,7 @@ class ActivityList extends StatelessWidget {
               lineXY: 0.1,
               alignment: TimelineAlign.manual,
               beforeLineStyle: checkAtas,
-              indicatorStyle: IndicatorStyle(
+              indicatorStyle: const IndicatorStyle(
                 color: changeColor,
                 width: 10,
               ),

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
 import 'package:port_pass_app/core/errors/failure.dart';
@@ -22,16 +21,15 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }) async {
     try {
       final reportModel = ReportModel(
+        name: reportData.name,
         urgentLetter: reportData.urgentLetter,
         documentation: reportData.documentation,
-        dateTime: reportData.dateTime,
       );
 
       final result = await _remoteDataSource.addReport(
         activityId: activityId,
         reportData: reportModel,
       );
-      debugPrint(result.toString());
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
@@ -41,8 +39,10 @@ class GateReportRepositoryImpl implements GateReportRepository {
   @override
   ResultFuture<Activity> getActivity({required int activityId}) async {
     try {
+      final ships = await _remoteDataSource.getShips();
       final result = await _remoteDataSource.getActivity(
         activityId: activityId,
+        ships: ships,
       );
       return Right(result);
     } on ServerException catch (e) {
@@ -68,7 +68,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }
 
   @override
-  ResultFuture<String> scanQRActivity({required List<Barcode> barcodes}) async {
+  ResultFuture<int> scanQRActivity({required List<Barcode> barcodes}) async {
     try {
       dynamic result = barcodes.first.displayValue;
 
@@ -76,7 +76,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      return Right(result);
+      return Right(int.parse(result));
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

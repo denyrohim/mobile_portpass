@@ -123,3 +123,21 @@ class PhotoAdded extends ActivityManagementState {
   @override
   List<Object> get props => [photo];
 }
+
+class ShipsLoaded extends ActivityManagementState {
+  const ShipsLoaded(this.ships);
+
+  final List<Ship> ships;
+
+  @override
+  List<Object> get props => [ships];
+}
+
+class ActivityRoutesLoaded extends ActivityManagementState {
+  const ActivityRoutesLoaded(this.activityRoutes);
+
+  final List<ActivityRoute> activityRoutes;
+
+  @override
+  List<Object> get props => [activityRoutes];
+}

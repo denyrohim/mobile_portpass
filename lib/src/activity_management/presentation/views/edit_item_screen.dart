@@ -17,16 +17,17 @@ import 'package:port_pass_app/src/activity_management/presentation/widgets/item_
 import 'package:provider/provider.dart';
 
 class EditItemScreen extends StatefulWidget {
-  const EditItemScreen({super.key, required this.index});
+  const EditItemScreen({super.key, required this.activityType});
   static const routeName = '/edit-item';
 
-  final dynamic index;
+  final dynamic activityType;
 
   @override
   State<EditItemScreen> createState() => _EditItemScreenState();
 }
 
 class _EditItemScreenState extends State<EditItemScreen> {
+  late int index;
   late Item item;
 
   final nameController = TextEditingController();
@@ -61,7 +62,12 @@ class _EditItemScreenState extends State<EditItemScreen> {
   }
 
   void get initItem {
-    item = context.read<ActivityProvider>().itemsEditActivity[widget.index];
+    index = context.read<ActivityProvider>().itemIndex!;
+    if (widget.activityType == 'Add') {
+      item = context.read<ActivityProvider>().itemsAddActivity[index];
+    } else {
+      item = context.read<ActivityProvider>().itemsEditActivity[index];
+    }
   }
 
   @override
@@ -88,13 +94,23 @@ class _EditItemScreenState extends State<EditItemScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is PhotoAdded) {
           if (state.photo != null) {
-            context
-                .read<ActivityProvider>()
-                .updateImageItemEditActivity(state.photo, widget.index);
+            if (widget.activityType == 'Add') {
+              context
+                  .read<ActivityProvider>()
+                  .updateImageItemAddActivity(state.photo, index);
+            } else {
+              context
+                  .read<ActivityProvider>()
+                  .updateImageItemEditActivity(state.photo, index);
+            }
             initItem;
           }
         } else if (state is ItemAdded) {
-          context.read<ActivityProvider>().initItemsEditActivity(state.items);
+          if (widget.activityType == 'Add') {
+            context.read<ActivityProvider>().initItemsAddActivity(state.items);
+          } else {
+            context.read<ActivityProvider>().initItemsEditActivity(state.items);
+          }
           final navigator = Navigator.of(context);
           if (navigator.canPop()) {
             navigator.pop();
@@ -219,7 +235,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                         ? ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(10),
-                                            child: Image.asset(
+                                            child: Image.network(
                                               photoController.text,
                                               width: 120,
                                               height: 120,
@@ -271,9 +287,14 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                               .read<ActivityManagementBloc>()
                                               .add(
                                                 AddItemEvent(
-                                                  items: activityProvider
-                                                      .itemsEditActivity,
+                                                  items: widget.activityType ==
+                                                          "Add"
+                                                      ? activityProvider
+                                                          .itemsAddActivity
+                                                      : activityProvider
+                                                          .itemsEditActivity,
                                                   item: Item(
+                                                    id: item.id,
                                                     name: nameController.text
                                                         .trim(),
                                                     amount: int.parse(
@@ -286,7 +307,7 @@ class _EditItemScreenState extends State<EditItemScreen> {
                                                         .trim(),
                                                     image: item.image,
                                                   ),
-                                                  index: widget.index,
+                                                  index: index,
                                                 ),
                                               );
                                         }

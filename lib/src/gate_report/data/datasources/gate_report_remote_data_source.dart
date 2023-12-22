@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field
-
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -8,20 +6,23 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlng/latlng.dart';
 import 'package:port_pass_app/core/errors/exceptions.dart';
-import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/services/api.dart';
 import 'package:flutter/material.dart';
+import 'package:port_pass_app/core/utils/typedef.dart';
 import 'package:port_pass_app/src/gate_report/data/models/activity_model.dart';
-import 'package:port_pass_app/src/gate_report/data/models/activity_progress_model.dart';
 import 'package:port_pass_app/src/gate_report/data/models/report_model.dart';
-import 'package:port_pass_app/src/gate_report/domain/entities/item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../../core/utils/core_utils.dart';
+import '../../../../core/utils/headers.dart';
+import '../../../activity_management/data/models/ship_model.dart';
 
 abstract class GateReportRemoteDataSource {
   const GateReportRemoteDataSource();
 
   Future<ActivityModel> getActivity({
     required int activityId,
+    required List<ShipModel> ships,
   });
   Future<ActivityModel> addReport({
     required int activityId,
@@ -36,6 +37,8 @@ abstract class GateReportRemoteDataSource {
     required double? longitude,
     required double? latitude,
   });
+
+  Future<List<ShipModel>> getShips();
 }
 
 const kToken = 'token';
@@ -71,102 +74,37 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      final String dateTime = reportData.dateTime.toString().split(' ')[0];
-      debugPrint('dateTime: $dateTime');
-      // final result = await _dio.post(
-      //   _api.report.report,
-      //   data: {
-      //     "activity_id": activityId,
-      //     "urgent_letter": reportData.urgentLetter,
-      //     "documentation": reportData.documentation,
-      //     "date_time": dateTime
-      //   },
-      //   options: Options(
-      //     headers: ApiHeaders.getHeaders(
-      //       token: token,
-      //     ).headers,
-      //     receiveDataWhenStatusError: true,
-      //     validateStatus: (status) {
-      //       return status! < 500;
-      //     },
-      //   ),
-      // );
-      // debugPrint(result.toString());
-      // if (result.statusCode != 200) {
-      //   throw ServerException(
-      //       message: result.data['message'] ?? "Data tidak terkirim",
-      //       statusCode: result.statusCode ?? 505);
-      // }
-
-      // var activityData = result.data['data'] as DataMap?;
-      // if (activityData == null) {
-      //   throw const ServerException(
-      //       message: "Please try again later", statusCode: 505);
-      // }
-      // return ActivityModel.fromMap(activityData);
-      return const ActivityModel(
-        id: 1,
-        name: "Activity",
-        shipName: "Ship ",
-        type: "Memasukkan Barang",
-        date: "Date ",
-        time: "Time ",
-        items: [
-          Item(
-            image: MediaRes.itemExample,
-            name: "Masako",
-            amount: 10,
-            unit: 'ton',
-          ),
-          Item(
-            image: MediaRes.itemExample,
-            name: "Masako",
-            amount: 10,
-            unit: 'ton',
-          ),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-        ],
-        status: "Diterima",
-        activityProgress: [
-          ActivityProgressModel(
-            name: "ActivityProgress ",
-            date: "Date ",
-            time: "Time ",
-            status: "Status ",
-          ),
-          ActivityProgressModel(
-            name: "ActivityProgress ",
-            date: "Date ",
-            time: "Time ",
-            status: "Status ",
-          ),
-        ],
-        qrCode: "QrCode ",
+      final result = await _dio.post(
+        _api.report.report,
+        data: {
+          "activity_id": activityId,
+          "name": reportData.name,
+          "urgent_letter": reportData.urgentLetter,
+          "documentation": reportData.documentation,
+        },
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+          receiveDataWhenStatusError: true,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
       );
+      debugPrint(result.toString());
+      if (result.statusCode != 200) {
+        throw ServerException(
+            message: result.data['message'] ?? "Data tidak terkirim",
+            statusCode: result.statusCode ?? 505);
+      }
+
+      var activityData = result.data['data'] as DataMap?;
+      if (activityData == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+      return ActivityModel.fromMap(activityData);
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -176,118 +114,59 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
   }
 
   @override
-  Future<ActivityModel> getActivity({required int activityId}) async {
+  Future<ActivityModel> getActivity({
+    required int activityId,
+    required List<ShipModel> ships,
+  }) async {
     try {
       final token = _sharedPreferences.getString(kToken);
 
       if (token == null) {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
-      // final result = await _dio.get(
-      //   "${_api.activity.activities}/$activityId",
-      //   options: Options(
-      //     headers: ApiHeaders.getHeaders(
-      //       token: token,
-      //     ).headers,
-      //     receiveDataWhenStatusError: true,
-      //     validateStatus: (status) {
-      //       return status! < 500;
-      //     },
-      //   ),
-      // );
 
-      // if (result.statusCode != 200) {
-      //   throw ServerException(
-      //       message: result.data['message'] ?? "Data tidak terkirim",
-      //       statusCode: result.statusCode ?? 505);
-      // }
-
-      // var activityData = result.data['data'] as DataMap?;
-      // if (activityData == null) {
-      //   throw const ServerException(
-      //       message: "Please try again later", statusCode: 505);
-      // }
-
-      // return ActivityModel.fromMap(activityData);
-
-      return const ActivityModel(
-        id: 1,
-        name: "Activity",
-        shipName: "Ship ",
-        type: "Memasukkan Barang",
-        date: "Date ",
-        time: "Time ",
-        items: [
-          Item(
-            image: MediaRes.itemExample,
-            name: "Masako",
-            amount: 10,
-            unit: 'ton',
-          ),
-          Item(
-            image: MediaRes.itemExample,
-            name: "Masako",
-            amount: 10,
-            unit: 'ton',
-          ),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-          Item(
-              image: MediaRes.itemExample,
-              name: "Masako",
-              amount: 10,
-              unit: 'ton'),
-        ],
-        status: "Diterima",
-        activityProgress: [
-          ActivityProgressModel(
-            name: "ActivityProgress ",
-            date: "Date ",
-            time: "Time ",
-            status: "Status ",
-          ),
-          ActivityProgressModel(
-            name: "ActivityProgress ",
-            date: "Date ",
-            time: "Time ",
-            status: "Status ",
-          ),
-        ],
-        qrCode: "QrCode ",
+      final result = await _dio.get(
+        "${_api.activity.activityDetail}/$activityId/?include=goods,activityProgress,activityRoute",
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+          receiveDataWhenStatusError: true,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
       );
+
+      final activityResult = result.data['data'] as DataMap?;
+
+      if (activityResult == null) {
+        throw const ServerException(
+            message: "There is no activity with this QRCode", statusCode: 505);
+      }
+      final shipId = activityResult['ship_id'] as int;
+      final shipName = ships.firstWhere((element) => element.id == shipId).name;
+      activityResult['ship_id'] = shipName;
+
+      final qrCode = activityResult['qr_code'] as String;
+      final imageQrCode = CoreUtils.uriBase64ToFile(
+          qrCode, "qr-code-activity-${activityResult['id']}",
+          extension: 'png');
+      activityResult['qr_code'] = imageQrCode;
+
+      activityResult['route'] =
+          activityResult['activity_route']['name'] as String;
+
+      activityResult['is_checked'] = false;
+      activityResult['goods'].map((e) {
+        final imagePath = e['image'];
+        e['image'] = "${_api.baseUrl}/images/barang/$imagePath";
+      }).toList();
+      activityResult['activity_progress'].map((e) {
+        final imagePath = e['image'];
+        e['image'] = "${_api.baseUrl}/images/progress/$imagePath";
+      }).toList();
+      return ActivityModel.fromMap(activityResult);
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -374,6 +253,43 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
         throw const ServerException(
             message: "You are not in the location", statusCode: 400);
       }
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<List<ShipModel>> getShips() async {
+    try {
+      final token = _sharedPreferences.getString(kToken);
+
+      if (token == null) {
+        throw const ServerException(message: "Not SignedIn", statusCode: 400);
+      }
+
+      final result = await _dio.get(
+        _api.ship.ships,
+        data: {},
+        options: Options(
+          headers: ApiHeaders.getHeaders(
+            token: token,
+          ).headers,
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
+      final shipsResult = result.data['data'] as List<dynamic>?;
+
+      if (shipsResult == null) {
+        throw const ServerException(
+            message: "Please try again later", statusCode: 505);
+      }
+
+      return shipsResult.map((e) => ShipModel.fromMap(e!)).toList();
     } on ServerException {
       rethrow;
     } catch (e, s) {

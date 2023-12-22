@@ -14,6 +14,7 @@ import 'package:port_pass_app/src/activity_management/domain/usecase/change_stat
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/delete_items.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/get_activities.dart';
+import 'package:port_pass_app/src/activity_management/domain/usecase/get_ships.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/select_all_activities.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_activity.dart';
 import 'package:port_pass_app/src/activity_management/domain/usecase/update_check_box_activity.dart';
@@ -54,5 +55,7 @@ import 'package:port_pass_app/src/gate_report/domain/usecases/get_location.dart'
 import 'package:port_pass_app/src/gate_report/domain/usecases/scan_qr_activity.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../src/activity_management/domain/usecase/get_activity_routes.dart';
 
 part 'injection_container.main.dart';

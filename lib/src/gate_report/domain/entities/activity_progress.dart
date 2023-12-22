@@ -1,26 +1,39 @@
 import 'package:equatable/equatable.dart';
 
 class ActivityProgress extends Equatable {
+  final int id;
+  final int activityId;
   final String name;
-  final String date;
-  final String time;
-  final String status;
+  final String? urgentLetter;
+  final String? documentation;
+  final DateTime dateTime;
 
   const ActivityProgress({
+    required this.id,
+    required this.activityId,
     required this.name,
-    required this.date,
-    required this.time,
-    required this.status,
+    this.urgentLetter,
+    this.documentation,
+    required this.dateTime,
   });
 
-  const ActivityProgress.empty()
+  ActivityProgress.empty()
       : this(
-          name: 'Testing',
-          date: '29/06/2021',
-          time: '09:00',
-          status: 'Testing Status',
+          id: 0,
+          activityId: 0,
+          name: '',
+          urgentLetter: null,
+          documentation: null,
+          dateTime: DateTime.now(),
         );
 
   @override
-  List<Object?> get props => [name, date, time, status];
+  List<Object?> get props => [
+        id,
+        activityId,
+        name,
+        urgentLetter,
+        documentation,
+        dateTime,
+      ];
 }

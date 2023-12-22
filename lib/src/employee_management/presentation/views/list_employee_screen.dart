@@ -115,24 +115,37 @@ class _ListEmployeeScreenState extends State<ListEmployeeScreen> {
                                             color: Colours.primaryColour),
                                       ),
                                     ),
-                                  ListView.builder(
-                                    itemCount: employees.length,
-                                    itemBuilder: (context, index) {
-                                      if (employees[index]
-                                          .name
-                                          .toLowerCase()
-                                          .contains(_searchController.text)) {
-                                        return EmployeeItem(
-                                          context,
-                                          isShowCheckBox:
-                                              employeesProvider.isShowChecked,
-                                          index: index,
-                                          employees: employees,
-                                        );
-                                      } else {
-                                        return const SizedBox.shrink();
-                                      }
+                                  RefreshIndicator(
+                                    onRefresh: () async {
+                                      context
+                                          .read<EmployeeManagementBloc>()
+                                          .add(const GetEmployeesEvent());
+                                      context
+                                          .read<EmployeeManagementBloc>()
+                                          .add(
+                                              const GetEmployeeDivisionEvent());
                                     },
+                                    backgroundColor: Colours.secondaryColour,
+                                    color: Colours.primaryColour,
+                                    child: ListView.builder(
+                                      itemCount: employees.length,
+                                      itemBuilder: (context, index) {
+                                        if (employees[index]
+                                            .name
+                                            .toLowerCase()
+                                            .contains(_searchController.text)) {
+                                          return EmployeeItem(
+                                            context,
+                                            isShowCheckBox:
+                                                employeesProvider.isShowChecked,
+                                            index: index,
+                                            employees: employees,
+                                          );
+                                        } else {
+                                          return const SizedBox.shrink();
+                                        }
+                                      },
+                                    ),
                                   ),
                                 ],
                               ),

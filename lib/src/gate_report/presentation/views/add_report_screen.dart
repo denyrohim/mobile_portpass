@@ -6,6 +6,7 @@ import 'package:port_pass_app/core/common/app/providers/report_provider.dart';
 import 'package:port_pass_app/core/common/widgets/app_bar_core.dart';
 import 'package:port_pass_app/core/common/widgets/container_card.dart';
 import 'package:port_pass_app/core/common/widgets/gradient_background.dart';
+import 'package:port_pass_app/core/extensions/context_extensions.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/core/utils/core_utils.dart';
@@ -166,13 +167,14 @@ class _AddReportScreenState extends State<AddReportScreen> {
                                           AddReportEvent(
                                               activityId: widget.activity.id,
                                               reportData: Report(
+                                                name:
+                                                    "Lulus Keamanan ${context.currentUser!.location!}",
                                                 urgentLetter: context
                                                     .read<FileProvider>()
                                                     .uriAddReport!,
                                                 documentation: context
                                                     .read<FileProvider>()
                                                     .documentationUriAddReport!,
-                                                dateTime: DateTime.now(),
                                               )),
                                         );
                                   },
@@ -184,13 +186,18 @@ class _AddReportScreenState extends State<AddReportScreen> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(10))),
-                                  child: const Text(
-                                    "Simpan",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white),
-                                  ),
+                                  child: state is GateReportLoading
+                                      ? const Center(
+                                          child: CircularProgressIndicator(
+                                          color: Colours.secondaryColour,
+                                        ))
+                                      : const Text(
+                                          "Simpan",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w700,
+                                              color: Colours.secondaryColour),
+                                        ),
                                 );
                               },
                             ),

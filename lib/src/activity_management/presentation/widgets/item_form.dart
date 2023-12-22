@@ -119,9 +119,9 @@ class _ItemFormState extends State<ItemForm> {
                               ),
                             ),
                             DropdownMenuItem(
-                              value: "Ton",
+                              value: "l",
                               child: Text(
-                                'Ton',
+                                'Liter',
                                 style: TextStyle(
                                   color: Colours.primaryColour,
                                   fontFamily: Fonts.inter,
@@ -131,7 +131,7 @@ class _ItemFormState extends State<ItemForm> {
                               ),
                             ),
                             DropdownMenuItem(
-                              value: "Kg",
+                              value: "kg",
                               child: Text(
                                 'Kg',
                                 style: TextStyle(

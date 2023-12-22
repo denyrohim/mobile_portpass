@@ -6,7 +6,6 @@ import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
 import 'package:port_pass_app/core/res/media_res.dart';
 import 'package:port_pass_app/src/auth/presentation/views/splash_screen.dart';
-import 'package:port_pass_app/src/gate_report/domain/entities/activity_progress.dart';
 import 'package:port_pass_app/src/gate_report/presentation/bloc/gate_report_bloc.dart';
 import 'package:port_pass_app/src/gate_report/presentation/widget/gate_activity_list.dart';
 
@@ -15,45 +14,6 @@ class GateTrackingActivityScreen extends StatelessWidget {
   static const routeName = '/gate-tracking-activity';
 
   final dynamic activity;
-
-  final List<ActivityProgress> _activityProgress = [
-    const ActivityProgress(
-      name: 'Activity Dibuat',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Activity Disetujui',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Lulus Keamanan Pabrik II',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Lulus Keamanan Pelabuhan',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'true',
-    ),
-    const ActivityProgress(
-      name: 'Lulus Pengawas Bongkar Muat',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'false',
-    ),
-    const ActivityProgress(
-      name: 'Selesai',
-      date: '00:00, DD/MM/YYYY',
-      time: 'asdfas',
-      status: 'false',
-    ),
-  ];
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -139,7 +99,7 @@ class GateTrackingActivityScreen extends StatelessWidget {
                     ),
                   ),
                   GateActivityList(
-                    activityProgress: _activityProgress,
+                    activityProgress: activity.activityProgress,
                   ),
                 ]),
               ),

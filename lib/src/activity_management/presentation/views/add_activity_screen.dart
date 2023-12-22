@@ -90,6 +90,8 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
   @override
   void initState() {
     super.initState();
+    context.read<ActivityManagementBloc>().add(const GetShipsEvent());
+    context.read<ActivityManagementBloc>().add(const GetActivityRoutesEvent());
     initController;
   }
 
@@ -111,6 +113,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
         if (state is ActivityManagementError) {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is DataAdded) {
+          context.read<ActivityProvider>().addActivities(state.activity);
+          context.read<ActivityProvider>().initDefaultActivities(
+              context.read<ActivityProvider>().activities!);
           showModalBottomSheet<void>(
             isScrollControlled: true,
             context: context,
@@ -125,7 +130,13 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
               );
             },
           );
-          initController;
+          // initController;
+        } else if (state is ShipsLoaded) {
+          context.read<ActivityProvider>().initShips(state.ships);
+        } else if (state is ActivityRoutesLoaded) {
+          context
+              .read<ActivityProvider>()
+              .initActivityRoutes(state.activityRoutes);
         }
       },
       builder: (context, state) {
@@ -246,6 +257,7 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                         activityProvider.itemsAddActivity
                                             .indexOf(item)],
                                     isEdit: true,
+                                    activityType: "Add",
                                   ),
                               ],
                             ),
@@ -341,9 +353,9 @@ class _AddActivityScreenState extends State<AddActivityScreen> {
                                                       .trim(),
                                                   items: activityProvider
                                                       .itemsAddActivity,
-                                                  status: "Menunggu",
+                                                  status: "Pending",
                                                   activityProgress: const [],
-                                                  qrCode: "",
+                                                  qrCode: null,
                                                   isChecked: false,
                                                 ),
                                               ),

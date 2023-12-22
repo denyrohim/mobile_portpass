@@ -3,41 +3,58 @@ import 'package:port_pass_app/src/activity_management/domain/entities/activity_p
 
 class ActivityProgressModel extends ActivityProgress {
   const ActivityProgressModel({
+    required super.id,
+    required super.activityId,
     required super.name,
-    required super.date,
-    required super.time,
-    required super.status,
+    required super.urgentLetter,
+    required super.documentation,
+    required super.dateTime,
   });
-  const ActivityProgressModel.empty()
+  ActivityProgressModel.empty()
       : this(
+          id: 0,
+          activityId: 0,
           name: '',
-          date: '',
-          time: '',
-          status: '',
+          urgentLetter: null,
+          documentation: null,
+          dateTime: DateTime.now(),
         );
 
   ActivityProgressModel copyWith({
+    int? id,
+    int? activityId,
     String? name,
-    String? date,
-    String? time,
+    String? urgentLetter,
+    String? documentation,
+    DateTime? dateTime,
   }) {
     return ActivityProgressModel(
+      id: id ?? this.id,
+      activityId: activityId ?? this.activityId,
       name: name ?? this.name,
-      date: date ?? this.date,
-      time: time ?? this.time,
-      status: status,
+      urgentLetter: urgentLetter ?? this.urgentLetter,
+      documentation: documentation ?? this.documentation,
+      dateTime: dateTime ?? this.dateTime,
     );
   }
 
   ActivityProgressModel.fromMap(DataMap map)
       : super(
-          name: map['name'] as String,
-          date: map['date'] as String,
-          time: map['time'] as String,
-          status: map['status'] as String,
-        );
+            id: map['id'] as int,
+            activityId: map['activity_id'] as int,
+            name: map['name'] as String,
+            urgentLetter: map['file'] as String?,
+            documentation: map['documentation'] as String?,
+            dateTime: DateTime.parse(map['created_at']));
 
   DataMap toMap() {
-    return {};
+    return {
+      'id': id,
+      'activity_id': activityId,
+      'name': name,
+      'file': urgentLetter,
+      'documentation': documentation,
+      'created_at': dateTime
+    };
   }
 }

@@ -263,6 +263,15 @@ class _ListActivityScreenState extends State<ListActivityScreen> {
                                                 .read<ActivityManagementBloc>()
                                                 .add(
                                                     const GetActivitiesEvent());
+                                            context
+                                                .read<ActivityManagementBloc>()
+                                                .add(
+                                                    CancelCheckBoxActivitiesEvent(
+                                                        activities:
+                                                            activityProvider
+                                                                .activities!));
+                                            activityProvider
+                                                .setShowChecked(false);
                                           },
                                           backgroundColor:
                                               Colours.secondaryColour,

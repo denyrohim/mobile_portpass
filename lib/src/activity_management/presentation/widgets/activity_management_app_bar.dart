@@ -45,7 +45,7 @@ class ActivityManagementAppBar extends StatelessWidget
         ),
       ),
       actions: [
-        (activityProvider.isShowChecked && statusController.text == 'Cancelled')
+        (activityProvider.isShowChecked && statusController.text == 'Draft')
             ? Row(
                 children: [
                   Container(

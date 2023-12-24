@@ -110,26 +110,45 @@ class _ActivityConfirmationButtonState
           height: 200,
           buttonsBottomPosition: 20,
           buttons: [
-            RoundedButton(
-              onPressed: () {
-                final navigator = Navigator.of(context);
-                if (navigator.canPop()) {
-                  navigator.pop();
-                }
-              },
-              text: widget.textButtonNegative,
-              backgroundColor: widget.colorTextButtonNegative,
+            IgnorePointer(
+              ignoring: state is ActivityManagementLoading,
+              child: RoundedButton(
+                onPressed: () {
+                  final navigator = Navigator.of(context);
+                  if (navigator.canPop()) {
+                    navigator.pop();
+                  }
+                },
+                text: widget.textButtonNegative,
+                backgroundColor: state is! ActivityManagementLoading
+                    ? widget.colorTextButtonNegative
+                    : Colours.primaryColourDisabled,
+              ),
             ),
-            RoundedButton(
-              onPressed: () {
-                context.read<ActivityManagementBloc>().add(
-                      DeleteActivitiesEvent(
-                          activitiesIds: widget.activitiesIds),
-                    );
-              },
-              text: widget.textButtonPositive,
-              backgroundColor: widget.colorTextButtonPositive,
-            ),
+            (state is! ActivityManagementLoading)
+                ? RoundedButton(
+                    onPressed: () {
+                      context.read<ActivityManagementBloc>().add(
+                            DeleteActivitiesEvent(
+                                activitiesIds: widget.activitiesIds),
+                          );
+                    },
+                    text: widget.textButtonPositive,
+                    backgroundColor: widget.colorTextButtonPositive,
+                  )
+                : Container(
+                    width: 145,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: Colours.errorColour,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Colours.secondaryColour,
+                      ),
+                    ),
+                  )
           ],
           child: Center(
             child: SizedBox(

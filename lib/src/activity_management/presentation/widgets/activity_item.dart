@@ -35,7 +35,7 @@ class ActivityItem extends StatelessWidget {
     return Flex(
       direction: Axis.horizontal,
       children: [
-        if (isShowCheckBox && (status == 'Cancelled' || status == 'Rejected'))
+        if (isShowCheckBox && (status == 'Draft'))
           GestureDetector(
             onTap: () {
               context.read<ActivityManagementBloc>().add(
@@ -135,7 +135,7 @@ class ActivityItem extends StatelessWidget {
                         Container(
                           alignment: Alignment.topCenter,
                           child: Container(
-                              width: 120,
+                              width: (status == "Draft") ? 100 : 120,
                               height: 24,
                               decoration: ShapeDecoration(
                                   shape: RoundedRectangleBorder(
@@ -331,15 +331,14 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color:
-                                        isShowCheckBox && status == 'Cancelled'
-                                            ? Colours.primaryColourDisabled
-                                            : activities[index].status !=
-                                                        'Finished' &&
-                                                    activities[index].status !=
-                                                        'On Progress'
-                                                ? Colours.primaryColour
-                                                : Colours.primaryColourDisabled,
+                                    color: isShowCheckBox && status == 'Draft'
+                                        ? Colours.primaryColourDisabled
+                                        : activities[index].status !=
+                                                    'Finished' &&
+                                                activities[index].status !=
+                                                    'On Progress'
+                                            ? Colours.primaryColour
+                                            : Colours.primaryColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               Padding(
@@ -412,17 +411,16 @@ class ActivityItem extends StatelessWidget {
                                 width: buttonContainerWidth,
                                 height: buttonContainerHeight,
                                 decoration: BoxDecoration(
-                                    color:
-                                        isShowCheckBox && status == 'Cancelled'
-                                            ? Colours.errorColourDisabled
-                                            : activities[index].status !=
-                                                        "Finished" &&
-                                                    activities[index].status !=
-                                                        'On Progress' &&
-                                                    activities[index].status !=
-                                                        'Pending'
-                                                ? Colours.errorColour
-                                                : Colours.errorColourDisabled,
+                                    color: isShowCheckBox && status == 'Draft'
+                                        ? Colours.errorColourDisabled
+                                        : activities[index].status !=
+                                                    "Finished" &&
+                                                activities[index].status !=
+                                                    'On Progress' &&
+                                                activities[index].status !=
+                                                    'Pending'
+                                            ? Colours.errorColour
+                                            : Colours.errorColourDisabled,
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                               Padding(

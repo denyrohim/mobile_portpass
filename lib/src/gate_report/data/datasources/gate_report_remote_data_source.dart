@@ -189,6 +189,11 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
             message: "Camera can't be accessed", statusCode: 505);
       }
       final image = File(result.path);
+      final sizePass = CoreUtils.checkSizeFile(2, image);
+      if (!sizePass) {
+        throw const ServerException(
+            message: "image is larger than 2Mb", statusCode: 413);
+      }
       return image;
     } on ServerException {
       rethrow;
@@ -209,10 +214,15 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
 
       if (result == null) {
         throw const ServerException(
-            message: "storage can't be accessed", statusCode: 505);
+            message: "storage can't be accessed", statusCode: 403);
       }
-      final image = File(result.files.single.path!);
-      return image;
+      final file = File(result.files.single.path!);
+      final sizePass = CoreUtils.checkSizeFile(2, file);
+      if (!sizePass) {
+        throw const ServerException(
+            message: "file is larger than 2Mb", statusCode: 413);
+      }
+      return file;
     } on ServerException {
       rethrow;
     } catch (e, s) {

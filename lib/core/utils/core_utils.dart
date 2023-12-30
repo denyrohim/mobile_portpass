@@ -83,4 +83,13 @@ class CoreUtils {
     }
     return int.parse(value, radix: 16).toString();
   }
+
+  static bool checkSizeFile(double maxSize, File file) {
+    int sizeInBytes = file.lengthSync();
+    double sizeInMb = sizeInBytes / (1024 * 1024);
+    if (sizeInMb > maxSize) {
+      return false;
+    }
+    return true;
+  }
 }

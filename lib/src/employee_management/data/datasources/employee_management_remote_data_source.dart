@@ -291,6 +291,7 @@ class EmploymentManagementRemoteDataSourceImpl
             message: "Doesn't support NFC", statusCode: 400);
       }
       var tag = await FlutterNfcKit.poll(
+        readIso18092: true,
         timeout: const Duration(seconds: 20),
         iosMultipleTagMessage: "Multiple tags found!",
         iosAlertMessage: "Scan your tag",

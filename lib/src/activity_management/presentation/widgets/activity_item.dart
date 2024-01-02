@@ -207,10 +207,6 @@ class ActivityItem extends StatelessWidget {
                               navigator.pushNamed(
                                   TrackingActivityScreen.routeName,
                                   arguments: activities[index]);
-                              debugPrint('Lacak');
-                              debugPrint(activities[index]
-                                  .activityProgress
-                                  .toString());
                             }
                           },
                           child: Stack(

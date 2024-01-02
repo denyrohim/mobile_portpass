@@ -58,7 +58,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    debugPrint(context.currentUser?.profileImg);
     initController;
     super.initState();
   }
@@ -80,7 +79,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         } else if (state is PhotoProfileAdded) {
           CoreUtils.showSnackBar(context, "Foto berhasil diubah");
         } else if (state is UserUpdated) {
-          debugPrint("state.user: ${state.user}");
           context.read<FileProvider>().resetEditUser();
           context.read<UserProvider>().initUser(state.user);
           context.pop();

@@ -37,7 +37,6 @@ class _AddEmployeePhotoScreenState extends State<AddEmployeePhotoScreen> {
                 .read<FileProvider>()
                 .initFilePathAddEmployee(state.photo.path);
             widget.photoController.text = state.photo.path;
-            debugPrint("ss: ");
           } else {
             widget.photoController.text = "";
             context.read<FileProvider>().resetAddEmployee();
@@ -135,7 +134,6 @@ class _AddEmployeePhotoScreenState extends State<AddEmployeePhotoScreen> {
                 const SizedBox(height: 40),
                 GestureDetector(
                   onTap: () {
-                    debugPrint("Camera Clicked");
                     context.read<EmployeeManagementBloc>().add(
                           const AddPhotoEvent(type: 'camera'),
                         );

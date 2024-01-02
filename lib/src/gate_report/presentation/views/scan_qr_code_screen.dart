@@ -79,7 +79,6 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             isSuccess = true;
             isButtonScanPressed = false;
             context.read<ReportProvider>().initActivityId(state.result);
-            debugPrint("sukseskah maniezz: $isSuccess");
           });
           _scanBottomSheet();
         } else if (state is ScanFailed) {
@@ -94,7 +93,6 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             isCanScan = !isCanScan;
             isButtonScanPressed = false;
           });
-          debugPrint("${cameraController.isStarting}");
         }
       },
       builder: (context, state) {
@@ -206,8 +204,6 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                         context
                                             .read<ReportProvider>()
                                             .initActivityId(17);
-                                        debugPrint(
-                                            "sukseskah maniezz: $isSuccess");
                                       });
                                       _scanBottomSheet();
                                     },

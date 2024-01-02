@@ -62,7 +62,6 @@ class ActivityManagementAppBar extends StatelessWidget
                     padding: const EdgeInsets.only(right: 4),
                     child: GestureDetector(
                       onTap: () {
-                        debugPrint('delete di klik');
                         showModalBottomSheet<void>(
                           isScrollControlled: true,
                           context: context,
@@ -218,13 +217,11 @@ class ActivityManagementAppBar extends StatelessWidget
                               title: 'Pilih Semua',
                             ),
                             onTap: () {
-                              debugPrint("disini");
                               context.read<ActivityManagementBloc>().add(
                                     SelectAllActivitiesEvent(
                                       activities: activityProvider.activities!,
                                     ),
                                   );
-                              debugPrint("masuk");
                               activityProvider.setShowChecked(true);
                             },
                           ),

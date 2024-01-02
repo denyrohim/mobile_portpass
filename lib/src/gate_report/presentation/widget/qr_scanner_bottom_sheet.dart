@@ -96,7 +96,6 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
             IconButton(
               onPressed: () {
                 activityId = context.read<ReportProvider>().activityId;
-                debugPrint('activityId = $activityId');
                 context.read<GateReportBloc>().add(
                       GetActivityEvent(activityId: activityId!),
                     );

@@ -88,7 +88,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           user['profile_img'] = null;
         } else {
           final photoPath = photo.split('/').last;
-          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
 
           user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
         }
@@ -151,7 +150,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
           user['profile_img'] = null;
         } else {
           final photoPath = photo.split('/').last;
-          debugPrint("${_api.baseUrl}/images/profile/$photoPath");
 
           user['profile_img'] = "${_api.baseUrl}/images/profile/$photoPath";
         }

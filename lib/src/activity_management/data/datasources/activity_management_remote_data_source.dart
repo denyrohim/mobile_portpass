@@ -99,9 +99,6 @@ class ActivityManagementRemoteDataSourceImpl
           .firstWhere((element) => element.name == activity.route)
           .id;
 
-      debugPrint("shipId: $shipId");
-      debugPrint("activityRouteId: $activityRouteId");
-
       final result = await _dio.post(
         _api.activity.activities,
         data: {
@@ -287,7 +284,6 @@ class ActivityManagementRemoteDataSourceImpl
         final activityRoute = activity['activity_route'];
         activity['route'] =
             activityRoute != null ? activity['activity_route']!['name'] : "";
-        debugPrint("route: ${activity['route']}");
 
         activity['is_checked'] = false;
 
@@ -574,7 +570,6 @@ class ActivityManagementRemoteDataSourceImpl
         MapEntry('route', activity.route),
         const MapEntry('activity_progress', []),
       });
-      debugPrint("activity: ${activityResult['goods']}");
 
       return ActivityModel.fromMap(activityResult);
     } on ServerException {

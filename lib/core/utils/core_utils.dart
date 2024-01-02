@@ -7,21 +7,22 @@ import 'package:flutter/material.dart';
 class CoreUtils {
   const CoreUtils._();
 
-  static void showSnackBar(BuildContext context, String message) {
+  static void showSnackBar(BuildContext context, String message,
+      {Color? foregroundColor, Color? backgroundColor}) {
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           content: Text(
             message,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Colors.white,
+              color: foregroundColor ?? Colours.secondaryColour,
               fontWeight: FontWeight.bold,
             ),
           ),
           behavior: SnackBarBehavior.floating,
-          backgroundColor: Colours.primaryColour,
+          backgroundColor: backgroundColor ?? Colours.primaryColour,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),

@@ -252,16 +252,24 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
           .getCurrentPosition()
           .then((value) => LatLng(value.latitude, value.longitude));
 
-      debugPrint('latLng: ${latLng.latitude}, ${latLng.longitude}');
-
       double distance = Geolocator.distanceBetween(
           latLng.latitude, latLng.longitude, latitude, longitude);
 
       if (distance <= 300) {
         return true;
       } else {
-        throw const ServerException(
-            message: "You are not in the location", statusCode: 400);
+        if (distance > 1000) {
+          distance = distance / 1000;
+          distance = double.parse(distance.toStringAsFixed(2));
+          throw ServerException(
+              message: "You are not in the location ($distance km away)",
+              statusCode: 400);
+        } else {
+          distance = double.parse(distance.toStringAsFixed(2));
+          throw ServerException(
+              message: "You are not in the location ($distance) m away",
+              statusCode: 400);
+        }
       }
     } on ServerException {
       rethrow;

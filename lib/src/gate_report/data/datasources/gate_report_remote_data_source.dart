@@ -21,7 +21,7 @@ abstract class GateReportRemoteDataSource {
   const GateReportRemoteDataSource();
 
   Future<ActivityModel> getActivity({
-    required int activityId,
+    required String activityCode,
     required List<ShipModel> ships,
   });
   Future<ActivityModel> addReport({
@@ -115,7 +115,7 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
 
   @override
   Future<ActivityModel> getActivity({
-    required int activityId,
+    required String activityCode,
     required List<ShipModel> ships,
   }) async {
     try {
@@ -126,7 +126,7 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       }
 
       final result = await _dio.get(
-        "${_api.activity.activityDetail}/$activityId/?include=goods,activityProgress,activityRoute",
+        "${_api.activity.activityDetail}?include=goods,activityProgress,activityRoute&filter[code]=$activityCode",
         options: Options(
           headers: ApiHeaders.getHeaders(
             token: token,

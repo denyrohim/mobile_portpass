@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:port_pass_app/core/common/widgets/i_dropdown.dart';
 import 'package:port_pass_app/core/common/widgets/i_fields.dart';
 import 'package:port_pass_app/core/res/colours.dart';
 import 'package:port_pass_app/core/res/fonts.dart';
@@ -94,59 +93,13 @@ class _ItemFormState extends State<ItemForm> {
                         const SizedBox(
                           height: 10,
                         ),
-                        IDropdown(
+                        IFields(
                           controller: widget.unitController,
-                          hintText: 'Pilih',
-                          hintStyle: const TextStyle(
-                            color: Colours.primaryColour,
-                            fontFamily: Fonts.inter,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          fillColor: Colours.secondaryColour,
-                          items: const [
-                            DropdownMenuItem(
-                              value: "Satuan",
-                              enabled: false,
-                              child: Text(
-                                'Satuan',
-                                style: TextStyle(
-                                  color: Colours.primaryColour,
-                                  fontFamily: Fonts.inter,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: "l",
-                              child: Text(
-                                'Liter',
-                                style: TextStyle(
-                                  color: Colours.primaryColour,
-                                  fontFamily: Fonts.inter,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: "kg",
-                              child: Text(
-                                'Kg',
-                                style: TextStyle(
-                                  color: Colours.primaryColour,
-                                  fontFamily: Fonts.inter,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
+                          hintText: 'Kg/Ton/dsb',
                         )
                       ],
                     ),
-                  )
+                  ),
                 ],
               )
             ],

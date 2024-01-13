@@ -179,7 +179,9 @@ class EmploymentManagementRemoteDataSourceImpl
           } else {
             final photoPath = photo.split('/').last;
 
-            e['photo'] = "${_api.baseUrl}/images/employee/$photoPath";
+            e['photo'] = (photoPath == "ex-photo.png")
+                ? "${_api.baseUrl}/images/$photoPath"
+                : "${_api.baseUrl}/images/employee/$photoPath";
           }
         }
         return e;

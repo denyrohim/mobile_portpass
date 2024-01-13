@@ -83,7 +83,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             isCanScan = false;
             isSuccess = true;
             isButtonScanPressed = false;
-            context.read<ReportProvider>().initActivityId(state.result);
+            context.read<ReportProvider>().initActivityCode(state.result);
           });
           _scanBottomSheet();
         } else if (state is ScanFailed) {
@@ -95,12 +95,11 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
           CoreUtils.showSnackBar(context, state.message);
         } else if (state is LocationLoaded) {
           setState(() {
-            isCanScan = false;
-            isSuccess = true;
-            isButtonScanPressed = false;
-            context.read<ReportProvider>().initActivityId(17);
+            isCanScan = true;
+            // isSuccess = true;
+            // isButtonScanPressed = true;
           });
-          _scanBottomSheet();
+          // _scanBottomSheet();
         }
       },
       builder: (context, state) {
@@ -198,21 +197,18 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                       setState(() {
                                         isButtonScanPressed = true;
                                       });
-                                      context.read<GateReportBloc>().add(
-                                            GetLocationEvent(
-                                                latitude: context
-                                                    .currentUser!.latitude,
-                                                longitude: context
-                                                    .currentUser!.longitude),
-                                          );
-                                      // setState(() {
-                                      //   isCanScan = false;
-                                      //   isSuccess = true;
-                                      //   isButtonScanPressed = false;
-                                      //   context
-                                      //       .read<ReportProvider>()
-                                      //       .initActivityId(17);
-                                      // });
+                                      // context.read<GateReportBloc>().add(
+                                      //       GetLocationEvent(
+                                      //           latitude: context
+                                      //               .currentUser!.latitude,
+                                      //           longitude: context
+                                      //               .currentUser!.longitude),
+                                      //     );
+                                      setState(() {
+                                        isCanScan = true;
+                                        // isSuccess = true;
+                                        // isButtonScanPressed = false;
+                                      });
                                       // _scanBottomSheet();
                                     },
                                     style: ElevatedButton.styleFrom(

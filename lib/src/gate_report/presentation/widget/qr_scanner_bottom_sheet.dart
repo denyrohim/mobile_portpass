@@ -25,7 +25,7 @@ class QrScannerBottomSheet extends StatefulWidget {
 }
 
 class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
-  int? activityId;
+  String? activityCode;
 
   @override
   void initState() {
@@ -39,7 +39,10 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
     return BlocConsumer<GateReportBloc, GateReportState>(
       listener: (context, state) async {
         if (state is GateReportError) {
-          debugPrint('error: ${state.message}');
+          debugPrint('error hehe: ${state.message}');
+          setState(() {
+            isSuccess = false;
+          });
         } else if (state is ActivityLoaded) {
           context.read<ReportProvider>().initActivity(state.activity);
           final navigator = Navigator.of(context);
@@ -95,9 +98,9 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
             ),
             IconButton(
               onPressed: () {
-                activityId = context.read<ReportProvider>().activityId;
+                activityCode = context.read<ReportProvider>().activityCode;
                 context.read<GateReportBloc>().add(
-                      GetActivityEvent(activityId: activityId!),
+                      GetActivityEvent(activityCode: activityCode!),
                     );
               },
               icon: const Icon(
@@ -178,15 +181,15 @@ class _QrScannerBottomSheetState extends State<QrScannerBottomSheet> {
                           ),
                         ),
                         if (state is GateReportError)
-                          Text(
-                            state.message,
-                            style: const TextStyle(
+                          const Text(
+                            'Kode QR tidak ditemukan',
+                            style: TextStyle(
                               fontFamily: Fonts.inter,
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
                               color: Colours.errorColour,
                             ),
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.visible,
                           ),
                       ],
                     ),

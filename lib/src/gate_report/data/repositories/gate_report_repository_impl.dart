@@ -37,11 +37,11 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }
 
   @override
-  ResultFuture<Activity> getActivity({required int activityId}) async {
+  ResultFuture<Activity> getActivity({required String activityCode}) async {
     try {
       final ships = await _remoteDataSource.getShips();
       final result = await _remoteDataSource.getActivity(
-        activityId: activityId,
+        activityCode: activityCode,
         ships: ships,
       );
       return Right(result);
@@ -68,7 +68,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
   }
 
   @override
-  ResultFuture<int> scanQRActivity({required List<Barcode> barcodes}) async {
+  ResultFuture<String> scanQRActivity({required List<Barcode> barcodes}) async {
     try {
       dynamic result = barcodes.first.displayValue;
 
@@ -76,7 +76,7 @@ class GateReportRepositoryImpl implements GateReportRepository {
         throw const ServerException(message: "Not SignedIn", statusCode: 400);
       }
 
-      return Right(int.parse(result));
+      return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));
     }

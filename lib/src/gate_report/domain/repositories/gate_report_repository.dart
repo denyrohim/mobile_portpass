@@ -7,10 +7,10 @@ abstract class GateReportRepository {
   const GateReportRepository();
 
   ResultFuture<Activity> getActivity({
-    required int activityId,
+    required String activityCode,
   });
 
-  ResultFuture<int> scanQRActivity({
+  ResultFuture<String> scanQRActivity({
     required List<Barcode> barcodes,
   });
 

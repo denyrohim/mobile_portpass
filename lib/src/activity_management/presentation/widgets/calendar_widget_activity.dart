@@ -60,7 +60,7 @@ class CalendarWidgetActivity extends StatelessWidget {
               child: CalendarDatePicker(
                 initialDate: DateTime.now(),
                 firstDate: DateTime(1945),
-                lastDate: DateTime(2024),
+                lastDate: DateTime(2100),
                 onDateChanged: (date) {
                   dateController.text = date.toString().split(" ")[0];
                 },

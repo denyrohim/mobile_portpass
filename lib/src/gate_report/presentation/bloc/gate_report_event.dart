@@ -33,13 +33,13 @@ class AddUrgentLetterEvent extends GateReportEvent {
 
 class GetActivityEvent extends GateReportEvent {
   const GetActivityEvent({
-    required this.activityId,
+    required this.activityCode,
   });
 
-  final int activityId;
+  final String activityCode;
 
   @override
-  List<Object> get props => [activityId];
+  List<Object> get props => [activityCode];
 }
 
 class GetLocationEvent extends GateReportEvent {

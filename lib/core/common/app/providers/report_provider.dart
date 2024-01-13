@@ -33,12 +33,12 @@ class ReportProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  int? _activityId;
-  int? get activityId => _activityId;
+  String? _activityCode;
+  String? get activityCode => _activityCode;
 
-  void initActivityId(int? activityId) {
-    if (_activityId != activityId) {
-      _activityId = activityId;
+  void initActivityCode(String? activityCode) {
+    if (_activityCode != activityCode) {
+      _activityCode = activityCode;
     }
     notifyListeners();
   }

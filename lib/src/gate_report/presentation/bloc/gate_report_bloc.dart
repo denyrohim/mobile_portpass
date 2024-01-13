@@ -114,7 +114,7 @@ class GateReportBloc extends Bloc<GateReportEvent, GateReportState> {
     Emitter<GateReportState> emit,
   ) async {
     final result = await _getActivity(
-      event.activityId,
+      event.activityCode,
     );
     result.fold(
       (failure) => emit(GateReportError(failure.errorMessage)),

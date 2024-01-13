@@ -303,7 +303,6 @@ class _EmployeeFormState extends State<EmployeeForm> {
                 IFields(
                   controller: widget.nikController,
                   hintText: 'NIK / No. Batch',
-                  keyboardType: TextInputType.number,
                   fillColor: Colours.primaryColour,
                   overrideValidator: false,
                 ),

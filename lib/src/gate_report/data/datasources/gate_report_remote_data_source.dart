@@ -138,7 +138,7 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
         ),
       );
 
-      final activityResult = result.data['data'] as DataMap?;
+      final activityResult = result.data['data'][0] as DataMap?;
 
       if (activityResult == null) {
         throw const ServerException(

@@ -79,6 +79,7 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             backgroundColor: Colours.secondaryColour,
           );
         } else if (state is ScanSuccess) {
+          print("result: ${state.result}");
           setState(() {
             isCanScan = false;
             isSuccess = true;
@@ -197,19 +198,18 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
                                       setState(() {
                                         isButtonScanPressed = true;
                                       });
-                                      // context.read<GateReportBloc>().add(
-                                      //       GetLocationEvent(
-                                      //           latitude: context
-                                      //               .currentUser!.latitude,
-                                      //           longitude: context
-                                      //               .currentUser!.longitude),
-                                      //     );
-                                      setState(() {
-                                        isCanScan = true;
-                                        // isSuccess = true;
-                                        // isButtonScanPressed = false;
-                                      });
-                                      // _scanBottomSheet();
+                                      context.read<GateReportBloc>().add(
+                                            GetLocationEvent(
+                                                latitude: context
+                                                    .currentUser!.latitude,
+                                                longitude: context
+                                                    .currentUser!.longitude),
+                                          );
+                                      // setState(() {
+                                      //   isCanScan = true;
+                                      //   // isSuccess = true;
+                                      //   // isButtonScanPressed = false;
+                                      // });
                                     },
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.white,

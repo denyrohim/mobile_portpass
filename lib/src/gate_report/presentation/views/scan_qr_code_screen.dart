@@ -79,7 +79,6 @@ class _ScanQRCodeScreenState extends State<ScanQRCodeScreen> {
             backgroundColor: Colours.secondaryColour,
           );
         } else if (state is ScanSuccess) {
-          print("result: ${state.result}");
           setState(() {
             isCanScan = false;
             isSuccess = true;

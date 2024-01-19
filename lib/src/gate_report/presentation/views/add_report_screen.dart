@@ -48,8 +48,10 @@ class _AddReportScreenState extends State<AddReportScreen> {
   bool get documentationChanged => documentationController.text.trim() != "";
 
   bool get nothingChanged => !urgentLetterChanged && !documentationChanged;
+  // bool get nothingChanged => !documentationChanged;
 
-  bool get allChanged => urgentLetterChanged && documentationChanged;
+  // bool get allChanged => urgentLetterChanged && documentationChanged;
+  bool get allChanged => documentationChanged;
 
   void get initController {
     urgentLetterController.text = "";
@@ -171,10 +173,10 @@ class _AddReportScreenState extends State<AddReportScreen> {
                                                     "Lulus Keamanan ${context.currentUser!.location!}",
                                                 urgentLetter: context
                                                     .read<FileProvider>()
-                                                    .uriAddReport!,
+                                                    .uriAddReport,
                                                 documentation: context
                                                     .read<FileProvider>()
-                                                    .documentationUriAddReport!,
+                                                    .documentationUriAddReport,
                                               )),
                                         );
                                   },

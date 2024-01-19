@@ -171,7 +171,6 @@ Future<void> _initGateReport() async {
         sharedPreferences: sl(),
         dio: sl(),
         api: sl(),
-        filePicker: sl(),
         imagePicker: sl(),
         geolocator: sl(),
       ),

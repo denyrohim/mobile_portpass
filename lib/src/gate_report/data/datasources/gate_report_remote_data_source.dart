@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlng/latlng.dart';
@@ -48,20 +47,17 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
       {required SharedPreferences sharedPreferences,
       required Dio dio,
       required API api,
-      required FilePicker filePicker,
       required ImagePicker imagePicker,
       required GeolocatorPlatform geolocator})
       : _dio = dio,
         _api = api,
         _sharedPreferences = sharedPreferences,
-        _filePicker = filePicker,
         _imagePicker = imagePicker,
         _geolocator = geolocator;
 
   final SharedPreferences _sharedPreferences;
   final Dio _dio;
   final API _api;
-  final FilePicker _filePicker;
   final ImagePicker _imagePicker;
   final GeolocatorPlatform _geolocator;
 
@@ -79,7 +75,7 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
         data: {
           "activity_id": activityId,
           "name": reportData.name,
-          "urgent_letter": reportData.urgentLetter,
+          "file": reportData.urgentLetter,
           "documentation": reportData.documentation,
         },
         options: Options(
@@ -206,23 +202,40 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
   @override
   Future addUrgentLetter() async {
     try {
-      final result = await _filePicker.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png', 'jpeg'],
-        allowCompression: true,
+      // final result = await _filePicker.pickFiles(
+      //   type: FileType.custom,
+      //   allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png', 'jpeg'],
+      //   allowCompression: true,
+      // );
+
+      // if (result == null) {
+      //   throw const ServerException(
+      //       message: "storage can't be accessed", statusCode: 403);
+      // }
+      // final file = File(result.files.single.path!);
+      // final sizePass = CoreUtils.checkSizeFile(2, file);
+      // if (!sizePass) {
+      //   throw const ServerException(
+      //       message: "file is larger than 2Mb", statusCode: 413);
+      // }
+      // return file;
+      final result = await _imagePicker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 50,
+        maxWidth: 850,
       );
 
       if (result == null) {
         throw const ServerException(
-            message: "storage can't be accessed", statusCode: 403);
+            message: "Camera can't be accessed", statusCode: 505);
       }
-      final file = File(result.files.single.path!);
-      final sizePass = CoreUtils.checkSizeFile(2, file);
+      final image = File(result.path);
+      final sizePass = CoreUtils.checkSizeFile(2, image);
       if (!sizePass) {
         throw const ServerException(
-            message: "file is larger than 2Mb", statusCode: 413);
+            message: "image is larger than 2Mb", statusCode: 413);
       }
-      return file;
+      return image;
     } on ServerException {
       rethrow;
     } catch (e, s) {
@@ -254,7 +267,6 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
 
       double distance = Geolocator.distanceBetween(
           latLng.latitude, latLng.longitude, latitude, longitude);
-
       if (distance <= 300) {
         return true;
       } else {

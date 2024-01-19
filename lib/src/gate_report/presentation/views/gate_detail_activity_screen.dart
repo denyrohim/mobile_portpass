@@ -302,10 +302,10 @@ class _GateDetailActivityScreenState extends State<GateDetailActivityScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            const Row(
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
+                                const Text(
                                   "Daftar Barang",
                                   style: TextStyle(
                                     fontSize: 16,
@@ -315,8 +315,8 @@ class _GateDetailActivityScreenState extends State<GateDetailActivityScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "5 Daftar",
-                                  style: TextStyle(
+                                  "${activity.items.length} Daftar",
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
                                     color: Colours.primaryColour,

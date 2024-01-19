@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 
 class Report extends Equatable {
   final String name;
-  final String urgentLetter;
-  final String documentation;
+  final String? urgentLetter;
+  final String? documentation;
 
   const Report({
     required this.name,

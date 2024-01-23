@@ -26,6 +26,7 @@ abstract class GateReportRemoteDataSource {
   Future<ActivityModel> addReport({
     required int activityId,
     required ReportModel reportData,
+    required List<ShipModel> ships,
   });
 
   Future<dynamic> addUrgentLetter();
@@ -62,8 +63,11 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
   final GeolocatorPlatform _geolocator;
 
   @override
-  Future<ActivityModel> addReport(
-      {required int activityId, required ReportModel reportData}) async {
+  Future<ActivityModel> addReport({
+    required int activityId,
+    required ReportModel reportData,
+    required List<ShipModel> ships,
+  }) async {
     try {
       final token = _sharedPreferences.getString(kToken);
 
@@ -95,12 +99,34 @@ class GateReportRemoteDataSourceImpl implements GateReportRemoteDataSource {
             statusCode: result.statusCode ?? 505);
       }
 
-      var activityData = result.data['data'] as DataMap?;
-      if (activityData == null) {
+      final activityResult = result.data['data'] as DataMap?;
+
+      if (activityResult == null) {
         throw const ServerException(
-            message: "Please try again later", statusCode: 505);
+            message: "There is no activity with this QRCode", statusCode: 505);
       }
-      return ActivityModel.fromMap(activityData);
+      final shipId = activityResult['ship_id'] as int;
+      final shipName = ships.firstWhere((element) => element.id == shipId).name;
+      activityResult['ship_id'] = shipName;
+
+      final qrCode = activityResult['qr_code'] as String;
+      final imageQrCode = CoreUtils.uriBase64ToFile(
+          qrCode, "qr-code-activity-${activityResult['id']}",
+          extension: 'png');
+      activityResult['qr_code'] = imageQrCode;
+
+      activityResult['route'] = activityResult['activity_route_id'].toString();
+
+      activityResult['is_checked'] = false;
+      activityResult['goods'].map((e) {
+        final imagePath = e['image'];
+        e['image'] = "${_api.baseUrl}/images/barang/$imagePath";
+      }).toList();
+      activityResult['activity_progress'].map((e) {
+        final imagePath = e['image'];
+        e['image'] = "${_api.baseUrl}/images/progress/$imagePath";
+      }).toList();
+      return ActivityModel.fromMap(activityResult);
     } on ServerException {
       rethrow;
     } catch (e, s) {

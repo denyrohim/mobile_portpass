@@ -26,9 +26,12 @@ class GateReportRepositoryImpl implements GateReportRepository {
         documentation: reportData.documentation,
       );
 
+      final ships = await _remoteDataSource.getShips();
+
       final result = await _remoteDataSource.addReport(
         activityId: activityId,
         reportData: reportModel,
+        ships: ships,
       );
       return Right(result);
     } on ServerException catch (e) {

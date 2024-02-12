@@ -1,16 +1,21 @@
-# port_pass_app
+# Portpass App
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## About App
 
-A few resources to get you started if this is your first Flutter project:
+Aplikasi mobile Portpass dengan fitur sbg berikut:
+- Update master data Employee
+- Create Activity Barang Masuk/Keluar
+- Scan QR Code Activity (Barang Masuk/Keluar)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## User Access
+- Employee
+  - sebagai updater master data employee
+- Agent
+  - sebagai pembuat activity Barang Masuk/Keluar pelabuhan
+- Security
+  - sebagai scanner untuk activity barang Masuk/Keluar Pelabuhan sesuai dengan check point yg sudah di tentukan.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Data Teknis
+project dibangun dengan menggunakan framework Flutter
